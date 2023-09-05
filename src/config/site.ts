@@ -19,9 +19,9 @@ export const navLinks = [
 
 export const books = [
     {
-        title: "The Great Symphony",
-        author: "Nancy Brown",
-        cover: "/Book-1.webp",
+        title: "Who Can You Trust?",
+        author: "Rachel Botsman",
+        cover: "/Book-5.webp",
     },
     {
         title: "The Good Guy",
@@ -39,19 +39,19 @@ export const books = [
         cover: "/Book-4.webp",
     },
     {
-        title: "Who Can You Trust?",
-        author: "Rachel Botsman",
-        cover: "/Book-5.webp",
-    },
-    {
-        title: "Lightfall",
-        author: "MOhammed Raad",
-        cover: "/Book-6.webp",
+        title: "The Great Symphony",
+        author: "Nancy Brown",
+        cover: "/Book-1.webp",
     },
     {
         title: "Ford Boyard Challenge",
         author: "Ford Boyard",
         cover: "/Book-7.webp",
+    },
+    {
+        title: "Lightfall",
+        author: "MOhammed Raad",
+        cover: "/Book-6.webp",
     },
     {
         title: "Night Of The Walkers",

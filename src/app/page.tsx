@@ -7,7 +7,7 @@ export default function Home() {
     return (
         <section
             about="Hero"
-            className=" relative min-h-screen pt-40 before:absolute before:top-0 before:z-[-1] before:h-4/5 before:w-full before:bg-[#F6F6FE]"
+            className="relative min-h-screen pt-40 before:absolute before:top-0 before:z-[-1] before:h-4/5 before:w-full before:bg-[#F6F6FE]"
         >
             <div className="">
                 <div className="container text-center">
@@ -27,7 +27,7 @@ export default function Home() {
                         Join Bookie For Free
                     </Button>
                 </div>
-                <div className="relative left-0 top-0 h-[110vh] overflow-x-hidden ">
+                <div className="relative left-0 top-0 h-[120vh] overflow-x-hidden ">
                     <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-24 before:absolute before:left-[-30%] before:z-[999] before:h-[44.375rem] before:w-[50vw] before:bg-gradient-boxGradient before:opacity-50 before:blur-[20px] after:absolute after:right-[-30%] after:z-[999] after:h-[44.375rem] after:w-[50vw] after:bg-gradient-boxGradient after:opacity-50 after:blur-[20px]">
                         <div className="flex h-[30rem] -translate-y-20 flex-col justify-between">
                             {books

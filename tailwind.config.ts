@@ -19,6 +19,9 @@ const config: Config = {
                     lg: "2.5rem",
                 },
             },
+            border: {
+                visual: "red 1px solid",
+            },
             backgroundImage: {
                 "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
                 "gradient-conic":
