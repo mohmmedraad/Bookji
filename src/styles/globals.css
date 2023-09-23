@@ -75,3 +75,23 @@ body {
         --ring: 346.8 77.2% 49.8%;
     }
 }
+.slick-track {
+    width: 9450px;
+    opacity: 1;
+    transform: translate3d(-3600px, 0px, 0px);
+    display: grid;
+    gap: 40px;
+    grid-auto-flow: column;
+}
+
+.slick-slider.slick-initialized {
+    overflow: hidden;
+}
+
+.slick-slide.slick-cloned {
+    width: 200px !important;
+}
+
+.slick-slide {
+    width: 200px !important;
+}
