@@ -26,7 +26,7 @@ interface BookCarouselProps {
 const BookCarousel: FC<BookCarouselProps> = ({ items }) => {
     const currentIndex = Math.round(items.length / 2)
     return (
-        <section about="Best Book" className="pb-8">
+        <section about="Best Book" className="py-20">
             <Swiper
                 style={{ overflowX: "clip", overflowY: "initial" }}
                 slideActiveClass={"swiper-slide-active"}

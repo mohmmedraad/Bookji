@@ -287,13 +287,21 @@ export const Icons = {
     Arrow: (props: SVGProps<SVGSVGElement>) => (
         <svg
             {...props}
-            viewBox="0 0 12 12"
+            viewBox="0 0 24 24"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
         >
             <path
-                d="M9.96004 4.60768L6.70004 7.86768C6.31504 8.25268 5.68504 8.25268 5.30004 7.86768L2.04004 4.60768"
-                stroke="#71717A"
+                d="M14.4297 6.55566L20.4997 12.6257L14.4297 18.6957"
+                stroke="white"
+                strokeWidth="1.5"
+                strokeMiterlimit="10"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+            />
+            <path
+                d="M3.5 12.6256H20.33"
+                stroke="white"
                 strokeWidth="1.5"
                 strokeMiterlimit="10"
                 strokeLinecap="round"
