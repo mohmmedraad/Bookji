@@ -25,48 +25,25 @@ interface BookCarouselProps {
 
 const BookCarousel: FC<BookCarouselProps> = ({ items }) => {
     const currentIndex = Math.round(items.length / 2)
-    const swiper = useSwiper()
-    const [currentSlideIndex, setCurrentSlideIndex] =
-        useState<number>(currentIndex)
-    console.log(swiper)
     return (
         <section about="Best Book" className="pb-8">
             <Swiper
                 style={{ overflowX: "clip", overflowY: "initial" }}
-                slideActiveClass={"scale-105"}
+                slideActiveClass={"swiper-slide-active"}
                 initialSlide={currentIndex}
-                slidesPerView={2}
+                slidesPerView={"auto"}
                 spaceBetween={56}
                 centeredSlides={true}
                 modules={[Pagination, Scrollbar, A11y]}
                 parallax={true}
-                onSlideChange={(swiper) =>
-                    setCurrentSlideIndex(swiper.realIndex)
-                }
-                breakpoints={{
-                    640: {
-                        slidesPerView: 3,
-                    },
-                    768: {
-                        slidesPerView: 4,
-                    },
-                    1024: {
-                        slidesPerView: 5,
-                    },
-                }}
             >
                 {books.map(({ author, cover, title }, index) => (
                     <SwiperSlide
-                        style={
-                            {
-                                // marginRight: currentSlideIndex > index ? 0 : "28px",
-                            }
-                        }
                         key={title}
-                        className={cn("transition-transform duration-300", {})}
+                        className={cn("w-[200px] duration-300")}
                     >
                         <BookCover
-                            className={"h-[300px] w-[200px]"}
+                            className={"h-[300px] w-full"}
                             alt={title}
                             height={300}
                             width={200}
