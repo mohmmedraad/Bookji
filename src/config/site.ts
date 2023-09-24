@@ -64,3 +64,5 @@ export const books = [
         cover: "/Book-9.jpg",
     },
 ]
+
+export type BooksType = typeof books
