@@ -16,6 +16,8 @@ import "swiper/css/scrollbar"
 
 import { cn } from "@/lib/utils"
 
+import MaskText from "../MaskText"
+import Client from "../ui/Client"
 import Slide from "./Slide"
 import SwiperNavButtons from "./SwiperNavButtons"
 
@@ -25,34 +27,53 @@ interface BookCarouselProps {
 
 const BookCarousel: FC<BookCarouselProps> = ({ items }) => {
     const currentIndex = Math.round(items.length / 2)
+    const [activeIndex, setActiveIndex] = useState(currentIndex)
     return (
         <section about="Best Book" className="py-20">
-            <Swiper
-                style={{ overflowX: "clip", overflowY: "initial" }}
-                slideActiveClass={"swiper-slide-active"}
-                initialSlide={currentIndex}
-                slidesPerView={"auto"}
-                spaceBetween={56}
-                centeredSlides={true}
-                modules={[Pagination, Scrollbar, A11y]}
-                parallax={true}
-            >
-                {books.map(({ author, cover, title }, index) => (
-                    <SwiperSlide
-                        key={title}
-                        className={cn("w-[200px] duration-300")}
-                    >
-                        <BookCover
-                            className={"h-[300px] w-full"}
-                            alt={title}
-                            height={300}
-                            width={200}
-                            src={cover}
-                        />
-                    </SwiperSlide>
-                ))}
-                <SwiperNavButtons />
-            </Swiper>
+            <Client>
+                <Swiper
+                    style={{ overflowX: "clip", overflowY: "initial" }}
+                    slideActiveClass={"swiper-slide-active"}
+                    initialSlide={currentIndex}
+                    slidesPerView={"auto"}
+                    spaceBetween={56}
+                    centeredSlides={true}
+                    modules={[Pagination, Scrollbar, A11y]}
+                    parallax={true}
+                    onSlideChange={({ realIndex }) => setActiveIndex(realIndex)}
+                >
+                    {books.map(({ author, cover, title }, index) => (
+                        <SwiperSlide
+                            key={title}
+                            className={cn("w-[200px] text-center duration-300")}
+                        >
+                            <BookCover
+                                className={
+                                    "h-[300px] w-full overflow-hidden rounded-md"
+                                }
+                                alt={title}
+                                height={300}
+                                width={200}
+                                src={cover}
+                            />
+                            <h4 className="text-xl font-bold">
+                                <MaskText
+                                    text={title}
+                                    isActive={index === activeIndex}
+                                />
+                            </h4>
+                            <p className="-mt-2 text-base text-gray-500">
+                                <MaskText
+                                    text={author}
+                                    isActive={index === activeIndex}
+                                    delay={0.25}
+                                />
+                            </p>
+                        </SwiperSlide>
+                    ))}
+                    <SwiperNavButtons />
+                </Swiper>
+            </Client>
         </section>
     )
 }

@@ -79,6 +79,11 @@ body {
     scale: 1.3;
 }
 
+.swiper-slide h4,
+.swiper-slide p {
+    scale: 0.7;
+}
+
 .swiper .swiper-slide {
     width: 200px;
     transition-property: scale;
