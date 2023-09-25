@@ -1,4 +1,4 @@
-import type { FC, HTMLAttributes } from "react"
+import type { FC } from "react"
 import Link from "next/link"
 
 import { navLinks } from "@/config/site"

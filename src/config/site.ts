@@ -1,3 +1,5 @@
+import { Icons } from "@/components/Icons"
+
 export const navLinks = [
     {
         name: "Home",
@@ -62,6 +64,29 @@ export const books = [
         title: "Alone",
         author: "Maurice Madremon",
         cover: "/Book-9.jpg",
+    },
+]
+
+export const socialMediaLinks = [
+    {
+        name: "Facebook",
+        url: "https://www.facebook.com",
+        Icon: Icons.Facebook,
+    },
+    {
+        name: "Twitter",
+        url: "https://www.twitter.com",
+        Icon: Icons.Twitter,
+    },
+    {
+        name: "Instagram",
+        url: "https://www.instagram.com",
+        Icon: Icons.Instagram,
+    },
+    {
+        name: "Youtube",
+        url: "https://www.youtube.com",
+        Icon: Icons.Youtube,
     },
 ]
 

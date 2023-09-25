@@ -1,6 +1,9 @@
-import { Input } from "valibot"
+import { type Input } from "valibot"
 
-import { cartItemSchema, checkoutItemSchema } from "@/lib/validations/cart"
+import {
+    type cartItemSchema,
+    type checkoutItemSchema,
+} from "@/lib/validations/cart"
 
 export type CartItem = Input<typeof cartItemSchema>
 

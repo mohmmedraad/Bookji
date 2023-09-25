@@ -19,6 +19,9 @@ const config: Config = {
                     lg: "2.5rem",
                 },
             },
+            boxShadow: {
+                custom: "-12.09178px 8.06119px 17.73461px 0px rgba(0, 0, 0, 0.15)",
+            },
             border: {
                 visual: "red 1px solid",
             },

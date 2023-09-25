@@ -40,7 +40,7 @@ const Hero: FC = ({}) => {
                                             src={cover}
                                             width={200}
                                             height={300}
-                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden rounded-md"
+                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
                                             {title}
@@ -61,7 +61,7 @@ const Hero: FC = ({}) => {
                                             src={cover}
                                             width={200}
                                             height={300}
-                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden rounded-md"
+                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
                                             {title}
@@ -97,7 +97,7 @@ const Hero: FC = ({}) => {
                                             src={cover}
                                             width={200}
                                             height={300}
-                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden rounded-md"
+                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
                                             {title}
@@ -116,7 +116,7 @@ const Hero: FC = ({}) => {
                                         src={cover}
                                         width={200}
                                         height={300}
-                                        className="h-[10.3125rem] w-[7.1875rem] overflow-hidden rounded-md"
+                                        className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                     />
                                     <h3 className="mt-2 text-sm font-semibold">
                                         {title}

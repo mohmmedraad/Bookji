@@ -4,6 +4,7 @@ import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
 
+import { Toaster } from "@/components/ui/Toaster"
 import NavBar from "@/components/NavBar"
 
 const inter = Inter({
@@ -27,6 +28,7 @@ export default function RootLayout({
                 <body className={`${inter.className} bg-background`}>
                     <NavBar />
                     {children}
+                    <Toaster />
                 </body>
             </html>
         </ClerkProvider>

@@ -22,7 +22,7 @@ const Slide: FC<SlideProps> = ({ author, title, cover, isActive }) => {
             className={cn("w-[200px] text-center duration-300")}
         >
             <BookCover
-                className={"h-[300px] w-full overflow-hidden rounded-md"}
+                className={"h-[300px] w-full overflow-hidden"}
                 alt={title}
                 height={300}
                 width={200}
