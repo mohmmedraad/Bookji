@@ -3,15 +3,18 @@ import { type FC } from "react"
 import { books } from "@/config/site"
 import BookCover from "@/components/ui/BookCover"
 import { Button } from "@/components/ui/Button"
+import Container from "@/components/ui/Container"
+import HeroSvg from "@/components/HeroSvg"
 
 const Hero: FC = ({}) => {
     return (
         <section
             about="Hero"
-            className="relative min-h-screen pt-40 before:absolute before:top-0 before:z-[-1] before:h-4/5 before:w-full before:bg-[#F6F6FE]"
+            className="relative min-h-screen overflow-x-clip pt-40 before:absolute before:top-0 before:z-[-1] before:h-4/5 before:w-full before:bg-[#F6F6FE]"
         >
+            <HeroSvg />
             <div className="">
-                <div className="container text-center">
+                <Container className="text-center">
                     <span className="mb-1 text-sm text-primary">
                         Online-BookStore
                     </span>
@@ -27,14 +30,17 @@ const Hero: FC = ({}) => {
                     <Button className="mt-8 w-full xs:w-auto">
                         Join Bookie For Free
                     </Button>
-                </div>
-                <div className="relative left-0 top-0 h-[120vh] overflow-x-hidden ">
-                    <div className="absolute left-1/2 top-1/2 flex -translate-x-1/2 -translate-y-1/2 items-center gap-24 before:absolute before:left-[-30%] before:z-[999] before:h-[44.375rem] before:w-[50vw] before:bg-gradient-boxGradient before:opacity-50 before:blur-[20px] after:absolute after:right-[-30%] after:z-[999] after:h-[44.375rem] after:w-[50vw] after:bg-gradient-boxGradient after:opacity-50 after:blur-[20px]">
+                </Container>
+                <div className="grid justify-center py-20">
+                    <div className="relative flex items-center gap-24 before:absolute before:left-[-30%] before:z-[999] before:h-[44.375rem] before:w-[50vw] before:bg-gradient-boxGradient before:opacity-50 before:blur-[20px] after:absolute after:right-[-30%] after:z-[999] after:h-[44.375rem] after:w-[50vw] after:bg-gradient-boxGradient after:opacity-50 after:blur-[20px]">
                         <div className="flex h-[30rem] -translate-y-20 flex-col justify-between">
                             {books
                                 .slice(0, 2)
                                 .map(({ author, title, cover }) => (
-                                    <div key={title} className="text-center ">
+                                    <div
+                                        key={title}
+                                        className="w-[7.1875rem] text-center"
+                                    >
                                         <BookCover
                                             alt={title}
                                             src={cover}
@@ -55,7 +61,10 @@ const Hero: FC = ({}) => {
                             {books
                                 .slice(2, 4)
                                 .map(({ author, title, cover }, index) => (
-                                    <div key={title} className="text-center ">
+                                    <div
+                                        key={title}
+                                        className="w-[7.1875rem] text-center"
+                                    >
                                         <BookCover
                                             alt={title}
                                             src={cover}
@@ -91,7 +100,10 @@ const Hero: FC = ({}) => {
                             {books
                                 .slice(5, 7)
                                 .map(({ author, title, cover }) => (
-                                    <div key={title} className="text-center">
+                                    <div
+                                        key={title}
+                                        className="w-[7.1875rem] text-center"
+                                    >
                                         <BookCover
                                             alt={title}
                                             src={cover}
@@ -110,7 +122,10 @@ const Hero: FC = ({}) => {
                         </div>
                         <div className="flex h-[30rem] -translate-y-20 flex-col justify-between">
                             {books.slice(7).map(({ author, title, cover }) => (
-                                <div key={title} className="text-center">
+                                <div
+                                    key={title}
+                                    className="w-[7.1875rem] text-center"
+                                >
                                     <BookCover
                                         alt={title}
                                         src={cover}

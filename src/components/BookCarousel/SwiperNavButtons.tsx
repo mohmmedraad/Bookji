@@ -7,11 +7,12 @@ import { cn } from "@/lib/utils"
 
 import { Icons } from "../Icons"
 import { Button } from "../ui/Button"
+import Container from "../ui/Container"
 
 const SwiperNavButtons: FC = ({}) => {
     const swiper = useSwiper()
     return (
-        <div className="container absolute left-1/2 top-[40%] z-50 flex -translate-x-1/2 -translate-y-1/2 justify-between">
+        <Container className="absolute left-1/2 top-[40%] z-50 flex -translate-x-1/2 -translate-y-1/2 justify-between">
             <Button
                 className={cn("h-10 rounded-full p-2 shadow-md")}
                 onClick={() => swiper.slidePrev()}
@@ -24,7 +25,7 @@ const SwiperNavButtons: FC = ({}) => {
             >
                 <Icons.Arrow width={24} height={24} />
             </Button>
-        </div>
+        </Container>
     )
 }
 

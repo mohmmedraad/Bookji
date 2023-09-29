@@ -6,6 +6,7 @@ import { navLinks } from "@/config/site"
 import { Icons } from "./Icons"
 import MobileNav from "./MobileNav"
 import { buttonVariants } from "./ui/Button"
+import Container from "./ui/Container"
 import NavLink from "./ui/NavLink"
 import { UserAccountNav } from "./UserAccountNav"
 
@@ -18,8 +19,8 @@ const NavBar = async ({}) => {
         )?.emailAddress
     }
     return (
-        <header className="fixed left-0 top-0 z-[9999999] w-full">
-            <div className="container flex h-14 items-center justify-between">
+        <header className="bg-gradient-nav fixed left-0 top-0 z-[9999999] w-full">
+            <Container className=" flex h-14 items-center justify-between">
                 <Link href="/">
                     <div className="flex items-center justify-between lg:flex">
                         <Icons.Logo width="40" height="40" />
@@ -66,7 +67,7 @@ const NavBar = async ({}) => {
                     )}
                     <MobileNav />
                 </div>
-            </div>
+            </Container>
         </header>
     )
 }

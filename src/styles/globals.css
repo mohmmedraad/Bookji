@@ -89,3 +89,9 @@ body {
     width: 200px;
     transition-property: scale;
 }
+
+/* .container {
+    --padding: 2rem;
+    width: min(1170px, calc(100% - var(--padding)));
+    margin: 0 auto;
+} */
