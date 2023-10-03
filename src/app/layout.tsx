@@ -5,6 +5,7 @@ import { Inter } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
 
 import { Toaster } from "@/components/ui/Toaster"
+import Footer from "@/components/Footer"
 import NavBar from "@/components/NavBar"
 
 const inter = Inter({
@@ -29,6 +30,7 @@ export default function RootLayout({
                     <NavBar />
                     {children}
                     <Toaster />
+                    <Footer />
                 </body>
             </html>
         </ClerkProvider>

@@ -15,7 +15,7 @@ export const navLinks = [
     },
     {
         name: "Contact us",
-        url: "/contact",
+        url: "/contact-us",
     },
 ]
 
@@ -177,4 +177,64 @@ export const testimonials: Testimonial[] = [
     },
 ]
 
+export const values = [
+    {
+        title: "Curiosity Unleashed",
+        description:
+            "Embrace endless exploration. We celebrate curiosity's role in unearthing new worlds and broadening horizons.",
+        Icon: Icons.Book,
+        color: "#FFB000",
+    },
+    {
+        title: "Empathy in Stories",
+        description:
+            "Experience lives beyond your own. Through narratives, we cultivate empathy and connect diverse perspectives.",
+        Icon: Icons.Lovely,
+        color: "#4CAF50",
+    },
+    {
+        title: "Curation Excellence",
+        description:
+            "Meticulously selected. Our collection reflects quality, diversity, and the art of meaningful curation.",
+        Icon: Icons.Books,
+        color: "#2979FF",
+    },
+    {
+        title: "Community of Readers",
+        description:
+            "More than a store. We're a haven for like-minded readers, fostering connections, discussions, and shared passion.",
+        Icon: Icons.People,
+        color: "#E91E63",
+    },
+]
+
+export const contactLinks = [
+    {
+        title: "Sales",
+        description:
+            "Explore new literary worlds with us. Reach out for inquiries, book recommendations, and purchases that kindle your imagination.",
+        Icon: Icons.HandPills,
+        color: "#4ADE80",
+        linkName: "Contact sales",
+        url: "contact-us",
+    },
+    {
+        title: "Help & Support",
+        description:
+            "We're here to assist you. Contact us for any support you need, from order inquiries to navigating our offerings.",
+        Icon: Icons.Headset,
+        color: "#7B61FF",
+        linkName: "Get support",
+        url: "contact-us",
+    },
+    {
+        title: "Media & Press",
+        description:
+            "Journalists, reviewers, and partners, let's connect. Reach out to explore collaboration opportunities and discover our latest narratives.",
+        Icon: Icons.Airplay,
+        color: "#0B63E5",
+        linkName: "Get press kit",
+        url: "contact-us",
+    },
+]
 export type BooksType = typeof books

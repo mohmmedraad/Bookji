@@ -9,6 +9,7 @@ interface BookProps extends HTMLAttributes<HTMLDivElement> {
     width: number
     height: number
     className: string
+    loading?: "lazy" | "eager"
 }
 
 const Book: FC<BookProps> = ({
@@ -17,6 +18,7 @@ const Book: FC<BookProps> = ({
     width,
     height,
     className,
+    loading = "lazy",
     ...props
 }) => {
     return (
@@ -30,6 +32,7 @@ const Book: FC<BookProps> = ({
                 alt={alt}
                 src={src}
                 className="h-full w-full"
+                loading={loading}
             />
         </div>
     )

@@ -3,8 +3,6 @@
 import { FC, SVGProps } from "react"
 import { motion } from "framer-motion"
 
-// interface HeroSvgProps extends AnimationEventHandler<SVGSVGElement> {
-// }
 const HeroSvg: FC = () => {
     return (
         <motion.svg

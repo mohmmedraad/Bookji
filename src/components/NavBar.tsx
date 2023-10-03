@@ -19,7 +19,7 @@ const NavBar = async ({}) => {
         )?.emailAddress
     }
     return (
-        <header className="bg-gradient-nav fixed left-0 top-0 z-[9999999] w-full">
+        <header className="fixed left-0 top-0 z-40 w-full bg-gradient-nav">
             <Container className=" flex h-14 items-center justify-between">
                 <Link href="/">
                     <div className="flex items-center justify-between lg:flex">

@@ -20,7 +20,6 @@ const TestimonialCard: FC<TestimonialCardProps> = ({
     children,
     className,
 }) => {
-    console.log(avatar)
     return (
         <div
             className={cn(

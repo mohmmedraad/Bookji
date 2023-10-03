@@ -1,5 +1,3 @@
-import Footer from "@/components/ui/Footer"
-
 import AboutUs from "./_sections/AboutUs"
 import BestBook from "./_sections/BestBook"
 import Hero from "./_sections/Hero"
@@ -13,9 +11,7 @@ export default function Home() {
             <BestBook />
             <AboutUs />
             <Testimonials />
-
             <JoinUs />
-            <Footer />
         </>
     )
 }
