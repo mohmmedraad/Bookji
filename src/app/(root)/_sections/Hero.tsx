@@ -87,6 +87,7 @@ const Hero: FC = ({}) => {
                                 src={books[4].cover}
                                 width={200}
                                 height={300}
+                                loading="eager" 
                                 className="h-[30.5rem] w-80 overflow-hidden rounded-xl xs:w-[21.1875rem]"
                             />
                             <h3 className="mt-2 text-base font-semibold">
