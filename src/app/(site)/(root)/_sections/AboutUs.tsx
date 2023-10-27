@@ -59,9 +59,7 @@ const AboutUs: FC<AboutUsProps> = ({}) => {
                                     "p-2 shadow-md"
                                 )}
                             >
-                                <Icon
-                                    /*width={32} height={33}*/ className="h-[33px] w-8"
-                                />
+                                <Icon className="h-[33px] w-8 text-white" />
                             </a>
                         ))}
                     </div>

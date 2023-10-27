@@ -10,6 +10,8 @@ interface BookProps extends HTMLAttributes<HTMLDivElement> {
     height: number
     className: string
     loading?: "lazy" | "eager"
+    priority?: boolean
+    fetchPriority?: "high" | "low" | "auto"
 }
 
 const Book: FC<BookProps> = ({
@@ -19,6 +21,8 @@ const Book: FC<BookProps> = ({
     height,
     className,
     loading = "lazy",
+    priority = false,
+    fetchPriority = "auto",
     ...props
 }) => {
     return (
@@ -33,6 +37,8 @@ const Book: FC<BookProps> = ({
                 src={src}
                 className="h-full w-full"
                 loading={loading}
+                priority={priority}
+                fetchPriority={fetchPriority}
             />
         </div>
     )

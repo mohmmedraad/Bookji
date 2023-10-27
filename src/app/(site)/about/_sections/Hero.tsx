@@ -29,7 +29,7 @@ const Hero: FC<HeroProps> = ({}) => {
                         height={500}
                         alt="about image"
                         className="h-full w-full bg-cover"
-                        loading="lazy"
+                        loading="eager"
                     />
                 </div>
             </Container>

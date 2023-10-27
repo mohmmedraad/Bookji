@@ -32,7 +32,7 @@ const Hero: FC = ({}) => {
                     </Button>
                 </Container>
                 <div className="grid justify-center py-20">
-                    <div className="relative flex items-center gap-24 before:absolute before:left-[-30%] before:z-[999] before:h-[44.375rem] before:w-[50vw] before:bg-gradient-boxGradient before:opacity-50 before:blur-[20px] after:absolute after:right-[-30%] after:z-[999] after:h-[44.375rem] after:w-[50vw] after:bg-gradient-boxGradient after:opacity-50 after:blur-[20px]">
+                    <div className="relative flex items-center gap-24 before:absolute before:left-[-30%] before:z-10 before:h-[44.375rem] before:w-[50vw] before:bg-gradient-boxGradient before:opacity-50 before:blur-[20px] after:absolute after:right-[-30%] after:z-10 after:h-[44.375rem] after:w-[50vw] after:bg-gradient-boxGradient after:opacity-50 after:blur-[20px]">
                         <div className="flex h-[30rem] -translate-y-20 flex-col justify-between">
                             {books
                                 .slice(0, 2)
@@ -46,6 +46,7 @@ const Hero: FC = ({}) => {
                                             src={cover}
                                             width={200}
                                             height={300}
+                                            loading="eager"
                                             className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
@@ -70,6 +71,7 @@ const Hero: FC = ({}) => {
                                             src={cover}
                                             width={200}
                                             height={300}
+                                            loading="eager"
                                             className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
@@ -87,7 +89,9 @@ const Hero: FC = ({}) => {
                                 src={books[4].cover}
                                 width={200}
                                 height={300}
-                                loading="eager" 
+                                loading="eager"
+                                priority={true}
+                                fetchPriority="high"
                                 className="h-[30.5rem] w-80 overflow-hidden rounded-xl xs:w-[21.1875rem]"
                             />
                             <h3 className="mt-2 text-base font-semibold">
@@ -110,6 +114,7 @@ const Hero: FC = ({}) => {
                                             src={cover}
                                             width={200}
                                             height={300}
+                                            loading="eager"
                                             className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
@@ -132,6 +137,7 @@ const Hero: FC = ({}) => {
                                         src={cover}
                                         width={200}
                                         height={300}
+                                        loading="eager"
                                         className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
                                     />
                                     <h3 className="mt-2 text-sm font-semibold">

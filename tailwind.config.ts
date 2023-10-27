@@ -45,6 +45,7 @@ const config: Config = {
                 accent: "hsla(var(--accent))",
                 accentForeground: "hsla(var(--accent-foreground))",
                 background: "hsl(var(--background))",
+                destructive: "hsl(var(--destructive))",
             },
         },
     },

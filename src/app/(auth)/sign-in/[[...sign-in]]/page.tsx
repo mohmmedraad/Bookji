@@ -1,14 +1,11 @@
 import { FC } from "react"
-import { SignUp } from "@clerk/nextjs"
+
+import SignIn from "@/components/auth/SignIn"
 
 interface pageProps {}
 
 const page: FC<pageProps> = ({}) => {
-    return (
-        <div>
-            <SignUp />
-        </div>
-    )
+    return <SignIn />
 }
 
 export default page

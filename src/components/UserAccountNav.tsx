@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { useClerk } from "@clerk/nextjs"
 import type { EmailAddress, User } from "@clerk/nextjs/server"
 
 import {
@@ -19,6 +20,7 @@ interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
 }
 
 export function UserAccountNav({ user }: UserAccountNavProps) {
+    const { signOut } = useClerk()
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
@@ -28,7 +30,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                         lastName: user.lastName || null,
                         imageUrl: user.imageUrl || "",
                     }}
-                    className="h-8 w-8"
+                    className="h-8 w-8 shadow-md"
                 />
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-white" align="end">
@@ -60,9 +62,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                     className="cursor-pointer"
                     onSelect={(event) => {
                         event.preventDefault()
-                        // signOut({
-                        //     callbackUrl: `${window.location.origin}/sign-in`,
-                        // });
+                        void signOut()
                     }}
                 >
                     Sign out
