@@ -76,7 +76,27 @@ const SignInForm = () => {
 
     async function setUserSession() {
         if (isAuthNotComplete(signIn!.status)) return
+
+        if (isVerifiedFromAnotherClient())
+            return handleVerifiedFromAnotherClient()
+
         await setSession!(signIn!.createdSessionId, handleSignInComplete)
+    }
+
+    function isVerifiedFromAnotherClient() {
+        const verification = signIn!.firstFactorVerification
+        return verification.verifiedFromTheSameClient()
+    }
+
+    function handleVerifiedFromAnotherClient() {
+        toast.error("You are already signed in on another tab")
+        setFormState("signIn")
+    }
+
+    function handleSignInComplete() {
+        toast.success("You have successfully signed in!")
+        router.push("/")
+        setFormState("signIn")
     }
 
     function handleSignInError(error: unknown) {
@@ -91,12 +111,6 @@ const SignInForm = () => {
             return handleSessionExistsError(errorMessage, router)
 
         return handleGenericError()
-    }
-
-    function handleSignInComplete() {
-        toast.success("You have successfully signed in!")
-        router.push("/")
-        setFormState("signIn")
     }
 
     function setEmailError(errorMessage: string) {
