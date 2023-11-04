@@ -1,49 +1,57 @@
 "use client"
 
-import { useEffect, type FC } from "react"
-import { useSignIn, useSignUp } from "@clerk/nextjs"
+import { useEffect, useRef, type FC } from "react"
+import { useRouter } from "next/navigation"
+import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { PenSquare } from "lucide-react"
+import { toast } from "sonner"
 
-import { handleGenericError } from "@/lib/utils"
+import {
+    clerkError,
+    handleGenericError,
+    handleSessionExistsError,
+    isAuthNotComplete,
+    sendSignInVerificationEmail,
+} from "@/lib/utils"
 import useCount from "@/hooks/useCount"
 import useSignInForm from "@/hooks/useSignInForm"
+import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 
 import { Button } from "../ui/Button"
 
 const VerifySignInForm: FC = () => {
-    const { countdownTime, restartCountdown } = useCount()
+    const { countdownTime, restartCountdown } = useCount({
+        initialCountdownTime: 10,
+    })
     const { setFormState } = useSignInForm()
     const { signIn } = useSignIn()
+    const { websiteURL } = useWebsiteURL()
+    const router = useRouter()
 
-    function sendVerificationEmail() {
+    async function handleResendEmail() {
         try {
-            void signIn!.prepareFirstFactor({
-                emailAddressId: getEmailAddressId(),
-                strategy: "email_link",
-                redirectUrl: "http://localhost:3000/verification",
-            })
+            restartCountdown()
+            await sendSignInVerificationEmail(signIn!, websiteURL!)
         } catch (error) {
             handleVerificationError(error)
         }
     }
 
-    function getEmailAddressId() {
-        console.log("identifier:", signIn!.identifier)
-        for (const factor of signIn!.supportedFirstFactors) {
-            if (
-                signIn!.identifier != null &&
-                factor.strategy === "email_link" &&
-                factor.safeIdentifier === signIn!.identifier
-            ) {
-                console.log("factor.emailAddressId: ", factor.emailAddressId)
-                return factor.emailAddressId
-            }
-        }
-        throw new Error("Email address id not found")
+    function handleVerificationError(error: unknown) {
+        if (!isClerkAPIResponseError(error)) return handleGenericError()
+        const { errorCode, errorMessage } = clerkError(error)
+
+        if (errorCode === "session_exists")
+            return handleSessionExistsError(errorMessage, router)
+
+        if (errorCode === "form_identifier_not_found")
+            return handleEmailNotExistsError(errorMessage)
+
+        return handleGenericError()
     }
 
-    function handleVerificationError(error: unknown) {
-        handleGenericError()
+    function handleEmailNotExistsError(message: string) {
+        toast.error(message)
         setFormState("signIn")
     }
 
@@ -73,8 +81,7 @@ const VerifySignInForm: FC = () => {
                 className="mt-4 text-primary disabled:text-primary/25"
                 disabled={countdownTime > 0}
                 onClick={() => {
-                    sendVerificationEmail()
-                    restartCountdown()
+                    void handleResendEmail()
                 }}
             >
                 Didn&apos;t receive a link? Resend{" "}

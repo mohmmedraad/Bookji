@@ -1,26 +1,67 @@
 "use client"
 
 import React from "react"
+import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { isMagicLinkError, MagicLinkErrorCode, useClerk } from "@clerk/nextjs"
 
-function Verification() {
-    const { handleMagicLinkVerification } = useClerk()
+import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 
+type VerificationStatus = "loading" | "failed" | "expired" | "verified" | null
+
+function Verification() {
+    const [verificationStatus, setVerificationStatus] =
+        React.useState<VerificationStatus>("loading")
+    const searchParams = useSearchParams()
+    const verificationLinkStatus = searchParams.get(
+        "__clerk_status"
+    ) as VerificationStatus
+
+    const { handleMagicLinkVerification } = useClerk()
+    const { websiteURL } = useWebsiteURL()
     React.useEffect(() => {
         async function verify() {
             try {
+                if (verificationLinkStatus !== "verified") {
+                    setVerificationStatus(verificationLinkStatus)
+                    return
+                }
+
                 await handleMagicLinkVerification({
-                    redirectUrl: "http://localhost:3000/pending",
-                    redirectUrlComplete: "http://localhost:3000/",
+                    redirectUrl: `${websiteURL}/pending`,
+                    redirectUrlComplete: `${websiteURL}`,
                 })
-            } catch (err) {
-                console.log(err)
+
+                setVerificationStatus("verified")
+            } catch (error) {
+                handleMagicLinkVerificationError(error)
             }
         }
         void verify()
-    }, [])
 
-    return null
+        function handleMagicLinkVerificationError(error: unknown) {
+            setVerificationStatus("failed")
+        }
+    }, [websiteURL, handleMagicLinkVerification, verificationLinkStatus])
+
+    if (verificationStatus === "loading") {
+        return <div>Loading...</div>
+    }
+
+    if (verificationStatus === "verified") {
+        return (
+            <div>
+                Successfully signed up. if you are not redirected in 5 seconds,
+                click <Link href={"/"}>here</Link>
+            </div>
+        )
+    }
+
+    if (verificationStatus === "expired") {
+        return <div>Magic link expired</div>
+    }
+
+    return <div>Magic link verification failed</div>
 }
 
 export default Verification

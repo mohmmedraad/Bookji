@@ -1,25 +1,60 @@
 "use client"
 
-import { useEffect, type FC } from "react"
-import { useSignUp } from "@clerk/nextjs"
+import { type FC } from "react"
+import { useRouter } from "next/navigation"
+import { isClerkAPIResponseError, useSignUp } from "@clerk/nextjs"
 import { PenSquare } from "lucide-react"
+import { toast } from "sonner"
 
+import {
+    clerkError,
+    handleGenericError,
+    handleSessionExistsError,
+    isAuthNotComplete,
+    sendSignUpVerificationEmail,
+} from "@/lib/utils"
 import useCount from "@/hooks/useCount"
 import useSignUpForm from "@/hooks/useSignUpForm"
+import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 
 import { Button } from "../ui/Button"
 
 const VerifySignUpForm: FC = () => {
-    const { countdownTime, restartCountdown } = useCount()
-    const { setFormState } = useSignUpForm()
+    const { countdownTime, restartCountdown } = useCount({
+        initialCountdownTime: 10,
+    })
+    const { setFormState, emailAddress } = useSignUpForm()
     const { signUp } = useSignUp()
+    const { websiteURL } = useWebsiteURL()
+    const router = useRouter()
 
-    function sendVerificationEmail() {
-        void signUp!.prepareEmailAddressVerification({
-            strategy: "email_link",
-            redirectUrl: "http://localhost:3000/verification",
-        })
+    async function handleResendEmail() {
+        try {
+            restartCountdown()
+            await sendSignUpVerificationEmail(signUp!, websiteURL!)
+        } catch (error) {
+            handleVerificationError(error)
+        }
     }
+
+    function handleVerificationError(error: unknown) {
+        if (!isClerkAPIResponseError(error)) return handleGenericError()
+        const { errorCode, errorMessage } = clerkError(error)
+
+        if (errorCode === "session_exists")
+            return handleSessionExistsError(errorMessage, router)
+
+        if (errorCode === "form_identifier_exists")
+            return handleEmailExistsError(errorMessage)
+
+        return handleGenericError()
+    }
+
+    function handleEmailExistsError(message: string) {
+        toast.error(message)
+        setFormState("signUp")
+    }
+
     return (
         <div>
             <p className="text-2xl font-bold">Verify your email</p>
@@ -27,7 +62,7 @@ const VerifySignUpForm: FC = () => {
                 to continue to Book Store
             </p>
             <div className="my-6 flex max-w-min items-center gap-4 rounded-md border-2 border-gray-100 bg-gray-50 p-1">
-                <p className="text-sm text-gray-700">{signUp?.emailAddress}</p>
+                <p className="text-sm text-gray-700">{emailAddress}</p>
                 <Button
                     variant={"ghost"}
                     className="p-0"
@@ -43,10 +78,7 @@ const VerifySignUpForm: FC = () => {
             <button
                 className="mt-4 text-primary disabled:text-primary/25"
                 disabled={countdownTime > 0}
-                onClick={() => {
-                    sendVerificationEmail()
-                    restartCountdown()
-                }}
+                onClick={() => void handleResendEmail()}
             >
                 Didn&apos;t receive a link? Resend{" "}
                 {countdownTime != 0 && `(${countdownTime})`}

@@ -3,7 +3,6 @@
 import * as React from "react"
 import { useClerk } from "@clerk/nextjs"
 
-// import { Icons } from "@/components/cons"
 import { type SSOCallbackPageProps } from "@/app/(auth)/sso-callback/page"
 
 export default function SSOCallback({ searchParams }: SSOCallbackPageProps) {

@@ -2,7 +2,7 @@
 
 import Image from "next/image"
 import type { User } from "@clerk/nextjs/server"
-import { AvatarProps } from "@radix-ui/react-avatar"
+import { type AvatarProps } from "@radix-ui/react-avatar"
 
 import { Avatar, AvatarFallback } from "@/components/ui/Avatar"
 
@@ -20,6 +20,7 @@ export const UserAvatar = ({ user, ...props }: UserAvatarProps) => {
                         src={user.imageUrl}
                         alt="profile picture"
                         referrerPolicy="no-referrer"
+                        loading="eager"
                     />
                 </div>
             ) : (

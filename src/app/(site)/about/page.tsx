@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { type FC } from "react"
 
 import About from "./_sections/About"
 import Hero from "./_sections/Hero"

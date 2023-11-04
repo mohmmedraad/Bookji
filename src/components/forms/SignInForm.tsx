@@ -13,9 +13,12 @@ import {
     clerkError,
     getEmailAddressId,
     handleGenericError,
+    handleSessionExistsError,
     isAuthNotComplete,
+    sendSignInVerificationEmail,
 } from "@/lib/utils"
 import useSignInForm from "@/hooks/useSignInForm"
+import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 import { Button } from "@/components/ui/Button"
 import {
     Form,
@@ -41,25 +44,26 @@ const defaultValues: Partial<SignInFormSchema> = {
 }
 
 const SignInForm = () => {
-    const { isLoaded, signIn, setActive } = useSignIn()
-    const [isSubmitting, setIsSubmitting] = useState(false)
-    const { setFormState } = useSignInForm()
+    const { isLoaded, signIn, setSession } = useSignIn()
+    const { setFormState, setEmailAddress } = useSignInForm()
     const form = useForm<SignInFormSchema>({
         resolver: valibotResolver(signInFormSchema),
         defaultValues,
     })
     const router = useRouter()
+    const { websiteURL } = useWebsiteURL()
 
     async function onSubmit(data: SignInFormSchema) {
-        // setIsSubmitting(true)
         if (!isLoaded) return
         try {
             await createUser(data)
-            sendVerificationEmail()
+            setEmailAddress(data.email)
+
             setFormState("verify")
-            await setSession()
+            await sendSignInVerificationEmail(signIn, websiteURL!)
+
+            await setUserSession()
         } catch (error) {
-            // setIsSubmitting(false)
             handleSignInError(error)
         }
     }
@@ -70,17 +74,9 @@ const SignInForm = () => {
         })
     }
 
-    function sendVerificationEmail() {
-        void signIn!.prepareFirstFactor({
-            emailAddressId: getEmailAddressId(signIn!),
-            strategy: "email_link",
-            redirectUrl: "http://localhost:3000/verification",
-        })
-    }
-
-    async function setSession() {
+    async function setUserSession() {
         if (isAuthNotComplete(signIn!.status)) return
-        await setActive!({ session: signIn!.createdSessionId })
+        await setSession!(signIn!.createdSessionId, handleSignInComplete)
     }
 
     function handleSignInError(error: unknown) {
@@ -92,12 +88,15 @@ const SignInForm = () => {
             setEmailError(errorMessage)
 
         if (errorCode === "session_exists")
-            return handleSessionExistsError(errorMessage)
+            return handleSessionExistsError(errorMessage, router)
+
+        return handleGenericError()
     }
 
-    function handleSessionExistsError(errorMessage: string) {
-        toast.error(errorMessage)
+    function handleSignInComplete() {
+        toast.success("You have successfully signed in!")
         router.push("/")
+        setFormState("signIn")
     }
 
     function setEmailError(errorMessage: string) {

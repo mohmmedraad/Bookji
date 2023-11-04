@@ -1,5 +1,7 @@
 "use client"
 
+import Link from "next/link"
+
 import useSignInForm from "@/hooks/useSignInForm"
 
 import SignInForm from "../forms/SignInForm"
@@ -21,10 +23,13 @@ const SignUp = () => {
                     <OauthSignIn />
                     <SignInForm />
                     <p className="text-sm text-gray-400">
-                        Already have an account?{" "}
-                        <a className="font-medium text-primary" href="sign-in">
-                            Sign In
-                        </a>
+                        Dos&apos;t have an account?{" "}
+                        <Link
+                            className="font-medium text-primary hover:underline"
+                            href="sign-up"
+                        >
+                            Sign Up
+                        </Link>
                     </p>
                 </>
             ) : (

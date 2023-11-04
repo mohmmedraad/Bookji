@@ -61,7 +61,7 @@ const Hero: FC = ({}) => {
                         <div className="flex h-[30rem] flex-col justify-between">
                             {books
                                 .slice(2, 4)
-                                .map(({ author, title, cover }, index) => (
+                                .map(({ author, title, cover }) => (
                                     <div
                                         key={title}
                                         className="w-[7.1875rem] text-center"

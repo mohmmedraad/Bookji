@@ -1,9 +1,16 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { type OAuthStrategy } from "@clerk/types"
 import { toast } from "sonner"
+
+import {
+    clerkError,
+    handleGenericError,
+    handleSessionExistsError,
+} from "@/lib/utils"
 
 import { Icons } from "../Icons"
 import { Button } from "../ui/Button"
@@ -23,6 +30,7 @@ const oauthProviders: OauthProvider = [
 const OauthSignIn = () => {
     const [isLoading, setIsLoading] = useState<OAuthStrategy | null>(null)
     const { signIn, isLoaded: signInLoaded } = useSignIn()
+    const router = useRouter()
 
     async function oauthSignIn(provider: OAuthStrategy) {
         if (!signInLoaded) return null
@@ -44,11 +52,12 @@ const OauthSignIn = () => {
     }
 
     function handleSignInError(error: unknown) {
-        const unknownError = "Something went wrong, please try again."
-
-        isClerkAPIResponseError(error)
-            ? toast.error(error.errors[0]?.longMessage ?? unknownError)
-            : toast.error(unknownError)
+        if (!isClerkAPIResponseError(error)) return handleGenericError()
+        const { errorCode, errorMessage } = clerkError(error)
+        if (errorCode === "session_exists")
+            return handleSessionExistsError(errorMessage, router)
+        console.log("errorCode:", errorCode)
+        return handleGenericError()
     }
 
     return (

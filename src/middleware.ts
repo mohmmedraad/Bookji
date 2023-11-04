@@ -21,6 +21,7 @@ export default authMiddleware({
         "/email-preferences(.*)",
         "/blog(.*)",
         "/about(.*)",
+        "/shop(.*)",
         "/contact(.*)",
         "/terms(.*)",
         "/privacy(.*)",

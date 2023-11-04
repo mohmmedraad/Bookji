@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useClerk } from "@clerk/nextjs"
-import type { EmailAddress, User } from "@clerk/nextjs/server"
+import type { User } from "@clerk/nextjs/server"
 
 import {
     DropdownMenu,
