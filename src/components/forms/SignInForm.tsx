@@ -62,6 +62,9 @@ const SignInForm = () => {
             setFormState("verify")
             await sendSignInVerificationEmail(signIn, websiteURL!)
 
+            if (isVerifiedFromAnotherClient())
+                return handleVerifiedFromAnotherClient()
+
             await setUserSession()
         } catch (error) {
             handleSignInError(error)
@@ -76,9 +79,6 @@ const SignInForm = () => {
 
     async function setUserSession() {
         if (isAuthNotComplete(signIn!.status)) return
-
-        if (isVerifiedFromAnotherClient())
-            return handleVerifiedFromAnotherClient()
 
         await setSession!(signIn!.createdSessionId, handleSignInComplete)
     }
