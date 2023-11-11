@@ -10,6 +10,7 @@ const config: Config = {
         extend: {
             gridTemplateColumns: {
                 // Simple 16 column grid
+                test: "2fr 1fr 1fr",
                 profile: "160px 1fr",
             },
             screens: {
