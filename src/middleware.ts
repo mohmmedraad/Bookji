@@ -27,7 +27,7 @@ export default authMiddleware({
         "/privacy(.*)",
         "/api(.*)",
     ],
-    async afterAuth(auth, req) {
+    afterAuth(auth, req) {
         if (auth.isPublicRoute) {
             //  For public routes, we don't need to do anything
             return NextResponse.next()
@@ -43,11 +43,12 @@ export default authMiddleware({
         }
 
         // Set the user's role to user if it doesn't exist
-        const user = await clerkClient.users.getUser(auth.userId)
+        // const user = await clerkClient.users.getUser(auth.userId)
+        // console.log(user)
 
-        if (!user) {
-            throw new Error("User not found.")
-        }
+        // if (!user) {
+        //     throw new Error("User not found.")
+        // }
 
         // If the user doesn't have a role, set it to user
         // if (!user.privateMetadata.role) {

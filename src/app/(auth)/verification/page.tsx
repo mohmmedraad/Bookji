@@ -51,8 +51,7 @@ function Verification() {
     if (verificationStatus === "verified") {
         return (
             <div>
-                Successfully signed up. if you are not redirected in 5 seconds,
-                click <Link href={"/"}>here</Link>
+                Successfully signed up. Return to the original tab to continue.
             </div>
         )
     }

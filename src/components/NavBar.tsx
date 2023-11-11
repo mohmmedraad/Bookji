@@ -1,5 +1,6 @@
 import Link from "next/link"
 import { currentUser } from "@clerk/nextjs"
+import type { EmailAddress } from "@clerk/nextjs/server"
 
 import { navLinks } from "@/config/site"
 
@@ -10,13 +11,23 @@ import Container from "./ui/Container"
 import NavLink from "./ui/NavLink"
 import { UserAccountNav } from "./UserAccountNav"
 
+function getUserPrimaryEmailAddress(
+    emailAddresses: EmailAddress[],
+    primaryEmailAddressId: string | null
+) {
+    return emailAddresses.find((email) => email.id === primaryEmailAddressId)
+        ?.emailAddress
+}
+
 const NavBar = async ({}) => {
     const user = await currentUser()
     let primaryEmailAddress: string | undefined
+
     if (user != null) {
-        primaryEmailAddress = user.emailAddresses.find(
-            (email) => email.id === user.primaryEmailAddressId
-        )?.emailAddress
+        primaryEmailAddress = getUserPrimaryEmailAddress(
+            user.emailAddresses,
+            user.primaryEmailAddressId
+        )
     }
     return (
         <header className="fixed left-0 top-0 z-40 w-full bg-gradient-nav">

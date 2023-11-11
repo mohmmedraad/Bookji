@@ -1,11 +1,10 @@
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
+import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import type { ClerkAPIError, ClerkErrorCode } from "@/types"
 import {
-    SignInFirstFactor,
-    SignInResource,
-    SignInStatus,
-    SignUpResource,
-    SignUpStatus,
+    type SignInResource,
+    type SignInStatus,
+    type SignUpResource,
+    type SignUpStatus,
 } from "@clerk/types"
 import { clsx, type ClassValue } from "clsx"
 import { toast } from "sonner"
@@ -75,4 +74,8 @@ export function handleSessionExistsError(
      * TODO: Redirect to the profile page or to page he was trying to access.
      */
     router.push("/")
+}
+
+export function getCurrentPageNumber(page: string | undefined) {
+    return Number(page) || 1
 }

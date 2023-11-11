@@ -1,4 +1,7 @@
+"use client"
+
 import { type FC } from "react"
+import { motion } from "framer-motion"
 
 import { books } from "@/config/site"
 import BookCover from "@/components/ui/BookCover"
@@ -33,7 +36,20 @@ const Hero: FC = ({}) => {
                 </Container>
                 <div className="grid justify-center py-20">
                     <div className="relative flex items-center gap-24 before:absolute before:left-[-30%] before:z-10 before:h-[44.375rem] before:w-[50vw] before:bg-gradient-boxGradient before:opacity-50 before:blur-[20px] after:absolute after:right-[-30%] after:z-10 after:h-[44.375rem] after:w-[50vw] after:bg-gradient-boxGradient after:opacity-50 after:blur-[20px]">
-                        <div className="flex h-[30rem] -translate-y-20 flex-col justify-between">
+                        <motion.div
+                            className="flex h-[30rem] -translate-y-20 flex-col justify-between"
+                            variants={{
+                                hidden: {
+                                    y: "100vh",
+                                },
+                                visible: {
+                                    y: -20,
+                                },
+                            }}
+                            transition={{ duration: 0.5, delay: 1 }}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             {books
                                 .slice(0, 2)
                                 .map(({ author, title, cover }) => (
@@ -57,8 +73,21 @@ const Hero: FC = ({}) => {
                                         </h4>
                                     </div>
                                 ))}
-                        </div>
-                        <div className="flex h-[30rem] flex-col justify-between">
+                        </motion.div>
+                        <motion.div
+                            className="flex h-[30rem] flex-col justify-between"
+                            variants={{
+                                hidden: {
+                                    y: "100vh",
+                                },
+                                visible: {
+                                    y: 0,
+                                },
+                            }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             {books
                                 .slice(2, 4)
                                 .map(({ author, title, cover }) => (
@@ -82,8 +111,21 @@ const Hero: FC = ({}) => {
                                         </h4>
                                     </div>
                                 ))}
-                        </div>
-                        <div className="text-center">
+                        </motion.div>
+                        <motion.div
+                            className="text-center  "
+                            variants={{
+                                hidden: {
+                                    y: "100vh",
+                                },
+                                visible: {
+                                    y: 0,
+                                },
+                            }}
+                            transition={{ duration: 0.5, ease: "easeIn" }}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             <BookCover
                                 alt={books[4].title}
                                 src={books[4].cover}
@@ -100,8 +142,21 @@ const Hero: FC = ({}) => {
                             <h4 className="mt-2 text-sm text-gray-500">
                                 {books[4].author}
                             </h4>
-                        </div>
-                        <div className="flex h-[30rem] flex-col justify-between">
+                        </motion.div>
+                        <motion.div
+                            className="flex h-[30rem] flex-col justify-between"
+                            variants={{
+                                hidden: {
+                                    y: "100vh",
+                                },
+                                visible: {
+                                    y: 0,
+                                },
+                            }}
+                            transition={{ duration: 0.5, delay: 0.5 }}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             {books
                                 .slice(5, 7)
                                 .map(({ author, title, cover }) => (
@@ -125,8 +180,21 @@ const Hero: FC = ({}) => {
                                         </h4>
                                     </div>
                                 ))}
-                        </div>
-                        <div className="flex h-[30rem] -translate-y-20 flex-col justify-between">
+                        </motion.div>
+                        <motion.div
+                            className="flex h-[30rem] -translate-y-20 flex-col justify-between"
+                            variants={{
+                                hidden: {
+                                    y: "100vh",
+                                },
+                                visible: {
+                                    y: -20,
+                                },
+                            }}
+                            transition={{ duration: 0.5, delay: 1 }}
+                            initial="hidden"
+                            animate="visible"
+                        >
                             {books.slice(7).map(({ author, title, cover }) => (
                                 <div
                                     key={title}
@@ -148,7 +216,7 @@ const Hero: FC = ({}) => {
                                     </h4>
                                 </div>
                             ))}
-                        </div>
+                        </motion.div>
                     </div>
                 </div>
             </div>

@@ -3,13 +3,14 @@
 import type { AnchorHTMLAttributes, FC, ReactNode } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
+import type { ClassValue } from "class-variance-authority/types"
 
 import { cn } from "@/lib/utils"
 
 interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     href: string
     className?: string
-    activeClass?: string
+    activeClass?: ClassValue
     children?: ReactNode
 }
 

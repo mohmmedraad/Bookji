@@ -10,7 +10,7 @@ const config: Config = {
         extend: {
             gridTemplateColumns: {
                 // Simple 16 column grid
-                test: "2fr 1fr 1fr",
+                profile: "160px 1fr",
             },
             screens: {
                 xs: "480px",
@@ -41,10 +41,12 @@ const config: Config = {
             colors: {
                 primary: "hsla(var(--primary))",
                 primaryDark: "hsla(var(--primaryDark))",
+                foreground: "hsl(var(--foreground))",
                 secondary: "hsla(var(--secondary))",
                 accent: "hsla(var(--accent))",
                 accentForeground: "hsla(var(--accent-foreground))",
                 background: "hsl(var(--background))",
+                border: "hsl(var(--border))",
                 destructive: "hsl(var(--destructive))",
             },
         },

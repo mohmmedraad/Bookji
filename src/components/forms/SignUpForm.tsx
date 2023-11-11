@@ -97,20 +97,7 @@ const SignUpForm = () => {
     async function setUserSession() {
         if (isAuthNotComplete(signUp!.status)) return
 
-        if (isVerifiedFromAnotherClient())
-            return handleVerifiedFromAnotherClient()
-
         await setSession!(signUp!.createdSessionId, handleSignUpComplete)
-    }
-
-    function isVerifiedFromAnotherClient() {
-        const verification = signUp!.verifications.emailAddress
-        return verification.verifiedFromTheSameClient()
-    }
-
-    function handleVerifiedFromAnotherClient() {
-        toast.error("You are already signed in on another tab")
-        setFormState("signUp")
     }
 
     function handleSignUpComplete() {

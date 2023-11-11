@@ -62,9 +62,6 @@ const SignInForm = () => {
             setFormState("verify")
             await sendSignInVerificationEmail(signIn, websiteURL!)
 
-            if (isVerifiedFromAnotherClient())
-                return handleVerifiedFromAnotherClient()
-
             await setUserSession()
         } catch (error) {
             handleSignInError(error)
@@ -81,16 +78,6 @@ const SignInForm = () => {
         if (isAuthNotComplete(signIn!.status)) return
 
         await setSession!(signIn!.createdSessionId, handleSignInComplete)
-    }
-
-    function isVerifiedFromAnotherClient() {
-        const verification = signIn!.firstFactorVerification
-        return verification.verifiedFromTheSameClient()
-    }
-
-    function handleVerifiedFromAnotherClient() {
-        toast.error("You are already signed in on another tab")
-        setFormState("signIn")
     }
 
     function handleSignInComplete() {

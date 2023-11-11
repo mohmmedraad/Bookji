@@ -1,9 +1,9 @@
 import { type FC } from "react"
 
-import { books } from "@/config/site"
+import { orders } from "@/config/site"
 import { getCurrentPageNumber } from "@/lib/utils"
 import { DataTable } from "@/components/ui/DataTable"
-import { Columns } from "@/components/MyBooksColumns"
+import { Columns } from "@/components/OrdersColumns"
 
 interface pageProps {
     searchParams: {
@@ -17,8 +17,8 @@ const Page: FC<pageProps> = ({ searchParams }) => {
         <>
             <DataTable
                 columns={Columns}
-                data={books}
-                url="/profile"
+                data={orders}
+                url="/orders"
                 currentPage={currentPage}
             />
         </>
