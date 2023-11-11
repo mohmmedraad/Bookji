@@ -3,7 +3,6 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Table } from "@tanstack/react-table"
 
-import { statuses } from "@/config/tableData"
 import { Button } from "@/components/ui/Button"
 import { DataTableFacetedFilter } from "@/components/ui/DataTableFacetedFilter"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
