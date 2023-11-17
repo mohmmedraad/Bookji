@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { type FC } from "react"
 import Image from "next/image"
 
 import Container from "@/components/ui/Container"
@@ -11,7 +11,7 @@ const About: FC<AboutProps> = ({}) => {
             <Container className="grid items-center gap-20 lg:grid-cols-2">
                 <div>
                     <p className="mb-2 text-sm text-primary">About</p>
-                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                         About Book Store
                     </h2>
                     <p className="mt-4 text-base text-gray-500">

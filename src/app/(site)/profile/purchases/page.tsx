@@ -1,6 +1,6 @@
-import { FC } from "react"
+import { type FC } from "react"
 
-import { DataTable } from "@/components/ui/DataTable"
+// import { DataTable } from "@/components/ui/DataTable"
 
 // import { columns } from "@/components/MyBooksColumns"
 

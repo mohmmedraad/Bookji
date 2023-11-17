@@ -1,8 +1,7 @@
-import { FC } from "react"
+import { type FC } from "react"
 import Image from "next/image"
 
 import { values } from "@/config/site"
-import { cn } from "@/lib/utils"
 import Container from "@/components/ui/Container"
 
 interface AboutProps {}
@@ -13,7 +12,7 @@ const About: FC<AboutProps> = ({}) => {
             <Container>
                 <div>
                     <p className="mb-2 text-sm text-primary">Values</p>
-                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                         Our values
                     </h2>
                     <p className="mt-4 text-base text-gray-500">

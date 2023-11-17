@@ -4,7 +4,6 @@ import { currentUser } from "@clerk/nextjs"
 
 import Container from "@/components/ui/Container"
 import ProfileContainer from "@/components/ui/ProfileContainer"
-import { Separator } from "@/components/ui/Separator"
 
 import ProfileInfo from "./_sections/ProfileInfo"
 import ProfilePagesLinks from "./_sections/ProfilePages"

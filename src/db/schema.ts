@@ -1,4 +1,4 @@
-import { CartItem, CheckoutItem } from "@/types"
+import type { CartItem, CheckoutItem } from "@/types"
 import { relations, type InferModel } from "drizzle-orm"
 import {
     boolean,

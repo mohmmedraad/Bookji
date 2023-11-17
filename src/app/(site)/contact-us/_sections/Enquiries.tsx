@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { type FC } from "react"
 
 import Container from "@/components/ui/Container"
 
@@ -11,7 +11,7 @@ const Enquiries: FC<EnquiriesProps> = ({}) => {
                 <div className="mx-auto max-w-2xl text-center">
                     <p className="mb-2 text-sm text-primary">Enquiries</p>
 
-                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                         General enquiries
                     </h2>
                     <p className="mt-4 text-base text-gray-500">

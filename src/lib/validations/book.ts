@@ -5,7 +5,6 @@ import {
     maxSize,
     mimeType,
     minLength,
-    minRange,
     minValue,
     number,
     object,

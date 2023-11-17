@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { type FC } from "react"
 
 import { contactLinks } from "@/config/site"
 import { buttonVariants } from "@/components/ui/Button"
@@ -14,7 +14,7 @@ const Hero: FC<HeroProps> = ({}) => {
                     <span className="mb-1 text-sm text-primary">
                         contact us
                     </span>
-                    <h2 className="text-[3.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-[4.5rem] md:leading-[80px]">
+                    <h2 className="text-[3.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-[4.5rem] md:leading-[80px]">
                         Let&apos;s Stay Connected
                     </h2>
                     <p className="mt-4 text-base text-gray-500">

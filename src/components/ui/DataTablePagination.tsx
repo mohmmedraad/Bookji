@@ -8,7 +8,7 @@ import {
 import { Table } from "@tanstack/react-table"
 import { MoveLeft, MoveRight } from "lucide-react"
 
-import { Button, buttonVariants } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/Button"
 import {
     Select,
     SelectContent,

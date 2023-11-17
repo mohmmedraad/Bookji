@@ -1,10 +1,10 @@
 "use client"
 
 import { Cross2Icon } from "@radix-ui/react-icons"
-import { Table } from "@tanstack/react-table"
+import { type Table } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/Button"
-import { DataTableFacetedFilter } from "@/components/ui/DataTableFacetedFilter"
+// import { DataTableFacetedFilter } from "@/components/ui/DataTableFacetedFilter"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
 import { Input } from "@/components/ui/Input"
 

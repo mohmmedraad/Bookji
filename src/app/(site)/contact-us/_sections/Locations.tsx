@@ -1,10 +1,9 @@
-import { FC } from "react"
+import { type FC } from "react"
 import Image from "next/image"
 import { ChevronRight } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
-import { Icons } from "@/components/Icons"
 
 interface LocationsProps {}
 
@@ -15,7 +14,7 @@ const Locations: FC<LocationsProps> = ({}) => {
                 <div className="mx-auto max-w-2xl text-center">
                     <p className="mb-2 text-sm text-primary">Locations</p>
 
-                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                         Our locations
                     </h2>
                     <p className="mt-4 text-base text-gray-500">

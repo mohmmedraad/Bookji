@@ -18,7 +18,6 @@ interface ProfileInfoProps {
 }
 
 const ProfileInfo: FC<ProfileInfoProps> = ({
-    userName,
     firstName,
     lastName,
     avatarUrl,

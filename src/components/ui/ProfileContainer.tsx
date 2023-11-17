@@ -1,8 +1,6 @@
-import { HTMLAttributes, type FC, type ReactNode } from "react"
+import { type FC, type ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
-
-import Container from "./Container"
 
 type ProfileContainerProps = { className?: string; children: ReactNode }
 

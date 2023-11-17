@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { type FC } from "react"
 import Image from "next/image"
 
 import Container from "@/components/ui/Container"
@@ -12,7 +12,7 @@ const Hero: FC<HeroProps> = ({}) => {
                 <span className="mb-1 text-sm text-primary">
                     Online-BookStore
                 </span>
-                <h2 className="max-w-2xl text-[3.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-[4.5rem] md:leading-[80px]">
+                <h2 className="max-w-2xl text-[3.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-[4.5rem] md:leading-[80px]">
                     Discover the Chronicles of Our Literary Haven
                 </h2>
                 <p className="mt-4 max-w-2xl text-base text-gray-500">

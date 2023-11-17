@@ -11,7 +11,7 @@ const BestBook: FC = ({}) => {
                 <p className="mb-2 text-sm text-primary">
                     Great collection for all{" "}
                 </p>
-                <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                     The Best Books
                 </h2>
             </Container>

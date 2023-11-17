@@ -1,5 +1,5 @@
-import { FC } from "react"
-import { ArrowRightIcon, Mail, MoveRight } from "lucide-react"
+import { type FC } from "react"
+import { Mail, MoveRight } from "lucide-react"
 
 import { Button } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"

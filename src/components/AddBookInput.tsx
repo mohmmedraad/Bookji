@@ -1,44 +1,15 @@
 "use client"
 
-import {
-    ChangeEvent,
-    useEffect,
-    useState,
-    type FC,
-    type HTMLAttributes,
-} from "react"
-import Image from "next/image"
+import { useState, type ChangeEvent, type FC, type HTMLAttributes } from "react"
 import { Trash, Upload } from "lucide-react"
-import { UseFormReturn } from "react-hook-form"
+import { type UseFormReturn } from "react-hook-form"
 import { parse, ValiError } from "valibot"
 
 import { bookCoverSchema } from "@/lib/validations/book"
 
 import Book from "./ui/BookCover"
 import { Button } from "./ui/Button"
-import {
-    FormControl,
-    FormDescription,
-    FormField,
-    FormItem,
-    FormLabel,
-    FormMessage,
-} from "./ui/Form"
 import { Label } from "./ui/Label"
-
-type UseFormReturnType = UseFormReturn<
-    {
-        title: string
-        description: string
-        tags: string[]
-        price: string
-        inventory: string
-        cover: Blob
-    },
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    any,
-    undefined
->
 
 interface AddBookInputProps extends HTMLAttributes<HTMLDivElement> {
     onFile: (file: Blob | null) => void
@@ -61,7 +32,7 @@ const AddBookInput: FC<AddBookInputProps> = ({ onFile }) => {
     }
 
     function handleCoverFile(cover: File) {
-        const validCover = parse(bookCoverSchema, cover)
+        parse(bookCoverSchema, cover)
         const reader = new FileReader()
         reader.onloadend = () => {
             setImage(reader.result)

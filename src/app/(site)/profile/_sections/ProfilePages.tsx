@@ -1,8 +1,6 @@
 import type { FC } from "react"
 
-import Container from "@/components/ui/Container"
 import NavLink from "@/components/ui/NavLink"
-import ProfileContainer from "@/components/ui/ProfileContainer"
 
 interface ProfilePagesProps {}
 

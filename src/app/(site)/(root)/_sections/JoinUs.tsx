@@ -14,7 +14,7 @@ const JoinUs: FC<JoinUsProps> = ({}) => {
             <Container className="relative flex items-center justify-center">
                 <div className="max-w-lg text-center">
                     <p className="mb-2 text-sm text-primary">Join Us</p>
-                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                         Become one of our authors
                     </h2>
                     <p className="mb-6 mt-4 max-w-lg text-base text-gray-500">

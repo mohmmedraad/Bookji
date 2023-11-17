@@ -1,9 +1,8 @@
 "use client"
 
 import React from "react"
-import Link from "next/link"
 import { useSearchParams } from "next/navigation"
-import { isMagicLinkError, MagicLinkErrorCode, useClerk } from "@clerk/nextjs"
+import { useClerk } from "@clerk/nextjs"
 
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 
@@ -39,7 +38,7 @@ function Verification() {
         }
         void verify()
 
-        function handleMagicLinkVerificationError(error: unknown) {
+        function handleMagicLinkVerificationError(_: unknown) {
             setVerificationStatus("failed")
         }
     }, [websiteURL, handleMagicLinkVerification, verificationLinkStatus])

@@ -9,7 +9,7 @@ interface FormStore {
     setFormState: (state: FormState) => void
 }
 
-const useStore = create<FormStore>((set, get) => ({
+const useStore = create<FormStore>((set) => ({
     formState: "signUp",
     emailAddress: "",
     setEmailAddress: (emailAddress) => set({ emailAddress }),

@@ -26,7 +26,7 @@ const Testimonials: FC<TestimonialsProps> = ({}) => {
             <Container className="relative">
                 <div className="max-w-[26rem]">
                     <p className="mb-2 text-sm text-primary">Testimonies</p>
-                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                         What People Say About Us
                     </h2>
                     <p className="mt-4 text-base text-gray-500">

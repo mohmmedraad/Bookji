@@ -46,8 +46,7 @@ export async function sendSignUpVerificationEmail(
     signUp: SignUpResource,
     websiteURL: string
 ) {
-    const { startMagicLinkFlow, cancelMagicLinkFlow } =
-        signUp.createMagicLinkFlow()
+    const { startMagicLinkFlow } = signUp.createMagicLinkFlow()
     await startMagicLinkFlow({
         redirectUrl: `${websiteURL}/verification`,
     })
@@ -57,8 +56,7 @@ export async function sendSignInVerificationEmail(
     signIn: SignInResource,
     websiteURL: string
 ) {
-    const { startMagicLinkFlow, cancelMagicLinkFlow } =
-        signIn.createMagicLinkFlow()
+    const { startMagicLinkFlow } = signIn.createMagicLinkFlow()
     await startMagicLinkFlow({
         emailAddressId: getEmailAddressId(signIn),
         redirectUrl: `${websiteURL}/verification`,

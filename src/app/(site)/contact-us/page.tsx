@@ -1,4 +1,4 @@
-import { FC } from "react"
+import { type FC } from "react"
 
 import ContactForm from "./_sections/ContactForm"
 import Enquiries from "./_sections/Enquiries"

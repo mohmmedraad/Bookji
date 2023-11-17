@@ -40,7 +40,7 @@ const AboutUs: FC<AboutUsProps> = ({}) => {
                 </div>
                 <div className="flex max-w-xl flex-col justify-center text-center lg:text-left">
                     <p className="mb-2 text-sm text-primary">About Us</p>
-                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-5xl">
+                    <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
                         The Long Story about Our Bookstore
                     </h2>
                     <p className="mb-6 mt-4 max-w-lg text-base text-gray-500">

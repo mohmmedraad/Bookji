@@ -21,7 +21,7 @@ const Hero: FC = ({}) => {
                     <span className="mb-1 text-sm text-primary">
                         Online-BookStore
                     </span>
-                    <h1 className="text-[3.5rem] font-bold leading-none tracking-tighter text-accentForeground md:text-[4.5rem] md:leading-[80px]">
+                    <h1 className="text-[3.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-[4.5rem] md:leading-[80px]">
                         A World of{" "}
                         <span className="bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
                             Stories
