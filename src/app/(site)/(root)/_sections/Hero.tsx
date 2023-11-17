@@ -13,7 +13,7 @@ const Hero: FC = ({}) => {
     return (
         <section
             about="Hero"
-            className="relative overflow-x-clip pt-40 before:absolute before:top-0 before:h-4/5 before:w-full before:bg-[#F6F6FE]"
+            className="relative overflow-x-clip pt-40 before:absolute before:top-0 before:z-[-2] before:h-4/5 before:w-full before:bg-[#F6F6FE]"
         >
             <HeroSvg />
             <div className="">
