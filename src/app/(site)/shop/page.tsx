@@ -1,9 +1,20 @@
-import { FC } from "react"
+import { type FC } from "react"
 
-interface pageProps {}
+import { books } from "@/config/site"
+import Container from "@/components/ui/Container"
 
-const page: FC<pageProps> = ({}) => {
-    return <div>page</div>
+import BooksFeed from "./_sections/BooksFeed"
+import FilterBar from "./_sections/FilterBar"
+
+const Page: FC = ({}) => {
+    return (
+        <main className="pb-8 pt-32">
+            <Container>
+                <FilterBar />
+                <BooksFeed initialBooks={books} />
+            </Container>
+        </main>
+    )
 }
 
-export default page
+export default Page

@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { useClerk } from "@clerk/nextjs"
 import type { User } from "@clerk/nextjs/server"
+import { ChevronDown } from "lucide-react"
 
 import {
     DropdownMenu,
@@ -12,6 +13,8 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu"
 import { UserAvatar } from "@/components/UserAvatar"
+
+import AddBookDialog from "./AddBookDialog"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
     user: Pick<User, "firstName" | "lastName" | "imageUrl"> & {
@@ -24,14 +27,17 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger>
-                <UserAvatar
-                    user={{
-                        firstName: user.firstName || null,
-                        lastName: user.lastName || null,
-                        imageUrl: user.imageUrl || "",
-                    }}
-                    className="h-8 w-8 shadow-md"
-                />
+                <div className="flex items-center gap-[2px]">
+                    <UserAvatar
+                        user={{
+                            firstName: user.firstName || null,
+                            lastName: user.lastName || null,
+                            imageUrl: user.imageUrl || "",
+                        }}
+                        className="h-8 w-8 shadow-md"
+                    />
+                    <ChevronDown className="h-3 w-3 text-gray-500" />
+                </div>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="bg-white" align="end">
                 <div className="flex items-center justify-start gap-2 p-2">
@@ -42,7 +48,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                             </p>
                         )}
                         {user.primaryEmailAddress && (
-                            <p className="text-muted-foreground w-[200px] truncate text-sm">
+                            <p className="w-[200px] truncate text-sm text-muted-foreground">
                                 {user.primaryEmailAddress}
                             </p>
                         )}
@@ -53,10 +59,10 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                 <DropdownMenuItem asChild>
                     <Link href="/profile">Profile</Link>
                 </DropdownMenuItem>
-
-                <DropdownMenuItem asChild>
-                    <Link href="/my-articles">My Articles</Link>
-                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                {/* <DropdownMenuItem asChild> */}
+                <AddBookDialog />
+                {/* </DropdownMenuItem> */}
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="cursor-pointer"

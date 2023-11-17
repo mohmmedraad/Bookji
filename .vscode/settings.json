@@ -4,6 +4,8 @@
         "Swiper",
         "swiperjs",
         "tailwindcss",
+        "tanstack",
+        "trpc",
         "Uploadthing",
         "valibot",
         "webp"

@@ -9,21 +9,13 @@ const config: Config = {
     theme: {
         extend: {
             gridTemplateColumns: {
-                // Simple 16 column grid
                 test: "2fr 1fr 1fr",
                 profile: "160px 1fr",
+                addBook: "176px 1fr",
             },
             screens: {
                 xs: "480px",
             },
-            // container: {
-            //     center: true,
-            //     padding: {
-            //         DEFAULT: "1rem",
-            //         sm: "1.5rem",
-            //         lg: "2.5rem",
-            //     },
-            // },
             boxShadow: {
                 custom: "-12.09178px 8.06119px 17.73461px 0px rgba(0, 0, 0, 0.15)",
             },
@@ -40,15 +32,49 @@ const config: Config = {
                     "linear-gradient(180deg, #FFF -9.26%, rgba(255, 255, 255, 0.00) 84.26%)",
             },
             colors: {
-                primary: "hsla(var(--primary))",
-                primaryDark: "hsla(var(--primaryDark))",
-                foreground: "hsl(var(--foreground))",
-                secondary: "hsla(var(--secondary))",
-                accent: "hsla(var(--accent))",
-                accentForeground: "hsla(var(--accent-foreground))",
                 background: "hsl(var(--background))",
+                foreground: "hsl(var(--foreground))",
+                card: {
+                    DEFAULT: "hsl(var(--card))",
+                    foreground: "hsl(var(--card-foreground))",
+                },
+
+                popover: {
+                    DEFAULT: "hsl(var(--popover))",
+                    foreground: "hsl(var(--popover-foreground))",
+                },
+                primary: {
+                    DEFAULT: "hsl(var(--primary))",
+                    foreground: "hsl(var(--primary-foreground))",
+                },
+                primaryDark: "hsla(var(--primaryDark))",
+
+                secondary: {
+                    DEFAULT: "hsl(var(--secondary))",
+                    foreground: "hsl(var(--secondary-foreground))",
+                },
+                muted: {
+                    DEFAULT: "hsl(var(--muted))",
+                    foreground: "hsl(var(--muted-foreground))",
+                },
+
+                accent: {
+                    DEFAULT: "hsl(var(--accent))",
+                    foreground: "hsl(var(--accent-foreground))",
+                },
+
+                destructive: {
+                    DEFAULT: "hsl(var(--destructive))",
+                    foreground: "hsl(var(--destructive-foreground))",
+                },
+                success: {
+                    DEFAULT: "hsl(var(--success))",
+                    foreground: "hsl(var(--success-foreground))",
+                },
+                input: "hsl(var(--input))",
                 border: "hsl(var(--border))",
-                destructive: "hsl(var(--destructive))",
+                ring: "hsl(var(--ring))",
+                radius: "hsl(var(--radius))",
             },
         },
     },

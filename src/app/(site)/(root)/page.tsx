@@ -6,12 +6,12 @@ import Testimonials from "./_sections/Testimonials"
 
 export default function Home() {
     return (
-        <>
+        <main>
             <Hero />
             <BestBook />
             <AboutUs />
             <Testimonials />
             <JoinUs />
-        </>
+        </main>
     )
 }
