@@ -1,16 +1,8 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
 import { useRouter } from "next/navigation"
-import type { ClerkAPIError } from "@/types"
-import {
-    isClerkAPIResponseError,
-    isMagicLinkError,
-    MagicLinkErrorCode,
-    useClerk,
-    useSignUp,
-} from "@clerk/nextjs"
-import { type SignUpStatus } from "@clerk/types"
+import { isClerkAPIResponseError, useSignUp } from "@clerk/nextjs"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -61,7 +53,7 @@ const defaultValues: Partial<SignUpFormSchema> = {
 }
 
 const SignUpForm = () => {
-    const { isLoaded, signUp, setActive, setSession } = useSignUp()
+    const { isLoaded, signUp, setSession } = useSignUp()
     const { setFormState, setEmailAddress } = useSignUpForm()
     const form = useForm<SignUpFormSchema>({
         resolver: valibotResolver(signUpFormSchema),

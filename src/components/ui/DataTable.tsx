@@ -16,8 +16,6 @@ import {
     type VisibilityState,
 } from "@tanstack/react-table"
 
-import { BookType } from "@/lib/validations/book"
-import { OrderType } from "@/lib/validations/order"
 import { DataTablePagination } from "@/components/ui/DataTablePagination"
 import { DataTableToolbar } from "@/components/ui/DataTableToolbar"
 import {

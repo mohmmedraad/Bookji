@@ -4,7 +4,7 @@ import { type Testimonial } from "@/config/site"
 import { cn } from "@/lib/utils"
 
 import { Icons } from "./Icons"
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/Avatar"
+import { Avatar, AvatarImage } from "./ui/Avatar"
 
 interface TestimonialCardProps
     extends Testimonial,

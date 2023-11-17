@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useRef, type FC } from "react"
+import { type FC } from "react"
 import { useRouter } from "next/navigation"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { PenSquare } from "lucide-react"
@@ -10,7 +10,6 @@ import {
     clerkError,
     handleGenericError,
     handleSessionExistsError,
-    isAuthNotComplete,
     sendSignInVerificationEmail,
 } from "@/lib/utils"
 import useCount from "@/hooks/useCount"

@@ -1,21 +1,8 @@
 import Link from "next/link"
-import {
-    ChevronLeftIcon,
-    ChevronRightIcon,
-    DoubleArrowLeftIcon,
-    DoubleArrowRightIcon,
-} from "@radix-ui/react-icons"
-import { Table } from "@tanstack/react-table"
+import { type Table } from "@tanstack/react-table"
 import { MoveLeft, MoveRight } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/Button"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/Select"
 
 interface DataTablePaginationProps<TData> {
     table: Table<TData>

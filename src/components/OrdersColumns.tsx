@@ -4,13 +4,9 @@ import { type ColumnDef } from "@tanstack/react-table"
 import { Star } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { type BookType } from "@/lib/validations/book"
-import { OrderType } from "@/lib/validations/order"
+import { type OrderType } from "@/lib/validations/order"
 import BookCover from "@/components/ui/BookCover"
-import { Checkbox } from "@/components/ui/Checkbox"
-import { DataTableRowActions } from "@/components/ui/DataTableRowActions"
 
-import { Avatar } from "./ui/Avatar"
 import { Badge } from "./ui/Badge"
 import { DataTableColumnHeader } from "./ui/DataTableColumnHeader"
 import { UserAvatar } from "./UserAvatar"
@@ -71,7 +67,7 @@ export const Columns: ColumnDef<OrderType>[] = [
                 .toLowerCase()
                 .includes(value.toLowerCase())
         },
-        sortingFn: (rowA, rowB, id) => {
+        sortingFn: (rowA, rowB) => {
             return rowA.original.customerName.localeCompare(
                 rowB.original.customerName
             )
@@ -102,7 +98,7 @@ export const Columns: ColumnDef<OrderType>[] = [
                 </div>
             )
         },
-        sortingFn: (rowA, rowB, id) => {
+        sortingFn: (rowA, rowB) => {
             return rowA.original.status.localeCompare(rowB.original.status)
         },
         enableSorting: true,

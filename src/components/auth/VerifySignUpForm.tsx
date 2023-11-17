@@ -10,7 +10,6 @@ import {
     clerkError,
     handleGenericError,
     handleSessionExistsError,
-    isAuthNotComplete,
     sendSignUpVerificationEmail,
 } from "@/lib/utils"
 import useCount from "@/hooks/useCount"

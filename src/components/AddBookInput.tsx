@@ -2,7 +2,6 @@
 
 import { useState, type ChangeEvent, type FC, type HTMLAttributes } from "react"
 import { Trash, Upload } from "lucide-react"
-import { type UseFormReturn } from "react-hook-form"
 import { parse, ValiError } from "valibot"
 
 import { bookCoverSchema } from "@/lib/validations/book"

@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, SVGProps } from "react"
+import { type FC } from "react"
 import { motion } from "framer-motion"
 
 const HeroSvg: FC = () => {

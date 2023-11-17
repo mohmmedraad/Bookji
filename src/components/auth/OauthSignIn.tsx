@@ -4,7 +4,6 @@ import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { type OAuthStrategy } from "@clerk/types"
-import { toast } from "sonner"
 
 import {
     clerkError,

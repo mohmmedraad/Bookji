@@ -1,7 +1,7 @@
 "use client"
 
 import { type FC } from "react"
-import { SwiperSlide, useSwiper, useSwiperSlide } from "swiper/react"
+import { SwiperSlide } from "swiper/react"
 
 import { cn } from "@/lib/utils"
 

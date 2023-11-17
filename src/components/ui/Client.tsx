@@ -1,6 +1,6 @@
 "use client"
 
-import { FC, useEffect, useState } from "react"
+import { useEffect, useState, type FC } from "react"
 
 interface ClientProps {
     children?: React.ReactNode
