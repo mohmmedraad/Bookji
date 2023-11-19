@@ -2,15 +2,19 @@ import {
     array,
     blob,
     coerce,
+    enumType,
     maxLength,
     maxSize,
     merge,
     mimeType,
     minLength,
     minValue,
+    nonNullish,
+    nullType,
     number,
     object,
     string,
+    union,
     type Input,
 } from "valibot"
 
@@ -63,6 +67,13 @@ export const updateBookSchema = merge([
     addBookFormSchema,
     object({ id: number(), cover: string("The cover key is required") }),
 ])
+
+export const getBooksSchema = object({
+    limit: coerce(number([minValue(1)]), Number),
+    cursor: union([nullType(), number()]),
+    searchBy: union([enumType(["title", "tag"]), nullType()]),
+    searchInput: union([nullType(), string()]),
+})
 
 export type BookCoverSchema = Input<typeof bookCoverSchema>
 export type AddBookFormSchema = Input<typeof addBookFormSchema>

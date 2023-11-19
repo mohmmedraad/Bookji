@@ -45,7 +45,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
         resolver: valibotResolver(addBookFormSchema),
         defaultValues,
     })
-    const [coverKey, setCoverKey] = useState<string | null>(null)
+    const [coverUrl, setCoverUrl] = useState<string | null>(null)
     const router = useRouter()
 
     const { data, mutate: addBook } = trpc.addBook.useMutation({
@@ -53,18 +53,13 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
             toast.success("Book added successfully")
             closeFun()
         },
-        onError: (error) => {
-            if (error instanceof TRPCClientError) {
-                console.log(error.message)
-            }
-        },
     })
 
     function onSubmit(data: AddBookFormSchema) {
         console.log(data)
-        if (!coverKey) return
+        if (!coverUrl) return
         try {
-            addBook({ ...data, cover: coverKey })
+            addBook({ ...data, cover: coverUrl })
         } catch (error) {
             if (error instanceof TRPCError) {
                 return handleTRPCError(error)
@@ -92,7 +87,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
                 className="grid  gap-8  sm:grid-cols-addBook"
             >
                 <AddBookInput
-                    onCoverUploaded={(coverKey) => setCoverKey(coverKey)}
+                    onCoverUploaded={(coverUrl) => setCoverUrl(coverUrl)}
                 />
                 <div>
                     <FormField

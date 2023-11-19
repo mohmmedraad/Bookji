@@ -1,9 +1,9 @@
 "use client"
 
+import { type Book as BookType } from "@/db/schema"
 import { type ColumnDef } from "@tanstack/react-table"
 import { Star } from "lucide-react"
 
-import { type BookType } from "@/lib/validations/book"
 import BookCover from "@/components/ui/BookCover"
 import { Checkbox } from "@/components/ui/Checkbox"
 import { DataTableRowActions } from "@/components/ui/DataTableRowActions"
@@ -43,7 +43,7 @@ export const Columns: ColumnDef<BookType>[] = [
             return (
                 <div className="flex w-[250px] items-center gap-3">
                     <BookCover
-                        src={row.original.cover}
+                        src={row.original.cover!}
                         alt={`The Secret Story cover`}
                         width={40}
                         height={56}

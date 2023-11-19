@@ -18,7 +18,7 @@ const AddBookInput: FC<AddBookInputProps> = ({ onCoverUploaded }) => {
 
     async function handleOnFileChange(cover: File | null) {
         /**
-         * TODO: return error if file is not null
+         * TODO: return error if file is null
          */
         if (!cover) return
         try {
@@ -26,7 +26,7 @@ const AddBookInput: FC<AddBookInputProps> = ({ onCoverUploaded }) => {
             setUploadProgress(0)
             parse(bookCoverSchema, cover)
             const uploadedCover = await uploadCover(cover)
-            onCoverUploaded(uploadedCover[0].key)
+            onCoverUploaded(uploadedCover[0].url)
         } catch (error) {
             handleCoverError(error)
         }

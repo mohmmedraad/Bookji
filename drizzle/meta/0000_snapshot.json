@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "2784ee26-e9bf-4616-9e62-1d27e60978fb",
+  "id": "76a36539-0e14-4699-bc25-0ef1687b3309",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -122,6 +122,14 @@
           "notNull": true,
           "autoincrement": false,
           "default": "'0'"
+        },
+        "tags": {
+          "name": "tags",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "('null')"
         },
         "inventory": {
           "name": "inventory",
@@ -497,36 +505,6 @@
       "compositePrimaryKeys": {
         "Bookji_ratings_id": {
           "name": "Bookji_ratings_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
-      "uniqueConstraints": {}
-    },
-    "Bookji_test": {
-      "name": "Bookji_test",
-      "columns": {
-        "id": {
-          "name": "id",
-          "type": "serial",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": true
-        },
-        "age": {
-          "name": "age",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        }
-      },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "Bookji_test_id": {
-          "name": "Bookji_test_id",
           "columns": [
             "id"
           ]

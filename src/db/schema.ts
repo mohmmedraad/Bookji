@@ -21,7 +21,7 @@ export const books = mysqlTable(`${APP_NAME}_books`, {
     description: text("description"),
     cover: varchar("cover", { length: 200 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-    tag: json("items").$type<string[] | null>().default(null),
+    tag: json("tags").$type<string[] | null>().default(null),
     inventory: int("inventory").notNull().default(0),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),

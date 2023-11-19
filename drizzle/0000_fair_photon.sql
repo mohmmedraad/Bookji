@@ -17,6 +17,7 @@ CREATE TABLE `Bookji_books` (
 	`description` text,
 	`cover` varchar(200),
 	`price` decimal(10,2) NOT NULL DEFAULT '0',
+	`tags` json DEFAULT ('null'),
 	`inventory` int NOT NULL DEFAULT 0,
 	`createdAt` timestamp DEFAULT (now()),
 	`updatedAt` timestamp ON UPDATE CURRENT_TIMESTAMP,
@@ -77,10 +78,4 @@ CREATE TABLE `Bookji_ratings` (
 	`rating` int NOT NULL,
 	`createdAt` timestamp DEFAULT (now()),
 	CONSTRAINT `Bookji_ratings_id` PRIMARY KEY(`id`)
-);
---> statement-breakpoint
-CREATE TABLE `Bookji_test` (
-	`id` serial AUTO_INCREMENT NOT NULL,
-	`age` int NOT NULL,
-	CONSTRAINT `Bookji_test_id` PRIMARY KEY(`id`)
 );
