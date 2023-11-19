@@ -1,14 +1,20 @@
 "use client"
 
 import { useState, type FC } from "react"
+import { useRouter } from "next/navigation"
 import { valibotResolver } from "@hookform/resolvers/valibot"
+import { TRPCClientError } from "@trpc/client"
+import { TRPCError } from "@trpc/server"
 import { useForm } from "react-hook-form"
+import { toast } from "sonner"
 
+import { handleGenericError } from "@/lib/utils"
 import {
     addBookFormSchema,
     type AddBookFormSchema,
 } from "@/lib/validations/book"
 import { Input as FormInput } from "@/components/ui/Input"
+import { trpc } from "@/app/_trpc/client"
 
 import AddBookInput from "./AddBookInput"
 import { Button } from "./ui/Button"
@@ -23,25 +29,59 @@ import {
 } from "./ui/Form"
 import { Textarea } from "./ui/Textarea"
 
-interface AddBookFormProps {}
+interface AddBookFormProps {
+    closeFun: () => void
+}
 
 const defaultValues: Partial<AddBookFormSchema> = {
     title: "",
     description: "",
     tags: [],
     price: "0",
-    inventory: "1",
+    inventory: 1,
 }
-const AddBookForm: FC<AddBookFormProps> = ({}) => {
+const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
     const form = useForm<AddBookFormSchema>({
         resolver: valibotResolver(addBookFormSchema),
         defaultValues,
     })
-    const [file, setFile] = useState<Blob | null>(null)
+    const [coverKey, setCoverKey] = useState<string | null>(null)
+    const router = useRouter()
+
+    const { data, mutate: addBook } = trpc.addBook.useMutation({
+        onSuccess: () => {
+            toast.success("Book added successfully")
+            closeFun()
+        },
+        onError: (error) => {
+            if (error instanceof TRPCClientError) {
+                console.log(error.message)
+            }
+        },
+    })
+
     function onSubmit(data: AddBookFormSchema) {
-        if (!file) return
-        console.log(file, data)
+        console.log(data)
+        if (!coverKey) return
+        try {
+            addBook({ ...data, cover: coverKey })
+        } catch (error) {
+            if (error instanceof TRPCError) {
+                return handleTRPCError(error)
+            }
+            return handleGenericError()
+        }
     }
+
+    function handleTRPCError(error: TRPCError) {
+        if (error.code === "UNAUTHORIZED") {
+            return router.push("/sign-in")
+        }
+
+        if (error.code === "BAD_REQUEST")
+            return toast.error("Invalid data, please check your inputs")
+    }
+
     return (
         <Form {...form}>
             <form
@@ -51,7 +91,9 @@ const AddBookForm: FC<AddBookFormProps> = ({}) => {
                 }}
                 className="grid  gap-8  sm:grid-cols-addBook"
             >
-                <AddBookInput onFile={(file) => setFile(file)} />
+                <AddBookInput
+                    onCoverUploaded={(coverKey) => setCoverKey(coverKey)}
+                />
                 <div>
                     <FormField
                         control={form.control}

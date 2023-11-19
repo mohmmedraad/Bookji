@@ -1,4 +1,6 @@
-import { type FC } from "react"
+"use client"
+
+import { useState, type FC } from "react"
 
 import AddBookForm from "./AddBookForm"
 import {
@@ -14,8 +16,9 @@ import { Separator } from "./ui/Separator"
 interface AddBookDialogProps {}
 
 const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
+    const [open, setOpen] = useState(false)
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     Add Book
@@ -30,7 +33,7 @@ const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
                 </DialogHeader>
                 <Separator />
 
-                <AddBookForm />
+                <AddBookForm closeFun={() => setOpen(false)} />
             </DialogContent>
         </Dialog>
     )

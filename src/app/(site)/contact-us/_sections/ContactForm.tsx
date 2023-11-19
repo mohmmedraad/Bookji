@@ -8,6 +8,9 @@ import { Textarea } from "@/components/ui/Textarea"
 
 interface ContactFormProps {}
 
+/**
+ * TODO: Use custom form & Add the send functionality
+ */
 const ContactForm: FC<ContactFormProps> = ({}) => {
     return (
         <section className="relative overflow-x-clip py-20">

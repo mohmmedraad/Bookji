@@ -9,6 +9,9 @@ interface pageProps {}
 const page: FC<pageProps> = ({}) => {
     return (
         <div>
+            {/**
+             * TODO: Add suspense
+             */}
             {/* <DataTable columns={columns} data={[]} /> */}
             hello world
         </div>

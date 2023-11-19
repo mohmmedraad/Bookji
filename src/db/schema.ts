@@ -1,5 +1,5 @@
 import type { CartItem, CheckoutItem } from "@/types"
-import { relations, type InferModel } from "drizzle-orm"
+import { inArray, relations, type InferModel } from "drizzle-orm"
 import {
     boolean,
     decimal,
@@ -12,25 +12,28 @@ import {
     varchar,
 } from "drizzle-orm/mysql-core"
 
-export const books = mysqlTable("books", {
+const APP_NAME = "Bookji"
+
+export const books = mysqlTable(`${APP_NAME}_books`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    title: varchar("name", { length: 191 }).notNull(),
+    title: varchar("title", { length: 191 }).notNull(),
     description: text("description"),
-    coverImage: varchar("coverImage", { length: 191 }),
+    cover: varchar("cover", { length: 200 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
+    tag: json("items").$type<string[] | null>().default(null),
     inventory: int("inventory").notNull().default(0),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })
 
-export type Books = InferModel<typeof books>
+export type Book = InferModel<typeof books>
 
 export const booksRelations = relations(books, ({ many }) => ({
     ratings: many(ratings),
 }))
 
-export const ratings = mysqlTable("ratings", {
+export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
     bookId: varchar("bookId", { length: 191 }).notNull(),
@@ -47,7 +50,7 @@ export const ratingsRelations = relations(ratings, ({ one }) => ({
     }),
 }))
 
-export const carts = mysqlTable("carts", {
+export const carts = mysqlTable(`${APP_NAME}_carts`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }),
     paymentIntentId: varchar("paymentIntentId", { length: 191 }),
@@ -58,7 +61,7 @@ export const carts = mysqlTable("carts", {
 
 export type Cart = InferModel<typeof carts>
 
-export const emailPreferences = mysqlTable("email_preferences", {
+export const emailPreferences = mysqlTable(`${APP_NAME}_email_preferences`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }),
     email: varchar("email", { length: 191 }).notNull(),
@@ -71,7 +74,7 @@ export const emailPreferences = mysqlTable("email_preferences", {
 
 export type EmailPreference = InferModel<typeof emailPreferences>
 
-export const payments = mysqlTable("payments", {
+export const payments = mysqlTable(`${APP_NAME}_payments`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }),
     stripeAccountId: varchar("stripeAccountId", { length: 191 }).notNull(),
@@ -83,7 +86,7 @@ export const payments = mysqlTable("payments", {
 
 export type Payment = InferModel<typeof payments>
 
-export const orders = mysqlTable("orders", {
+export const orders = mysqlTable(`${APP_NAME}_orders`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }),
     items: json("items").$type<CheckoutItem[] | null>().default(null),
@@ -91,9 +94,12 @@ export const orders = mysqlTable("orders", {
     stripePaymentIntentId: varchar("stripePaymentIntentId", {
         length: 191,
     }).notNull(),
-    stripePaymentIntentStatus: varchar("stripePaymentIntentStatus", {
-        length: 191,
-    }).notNull(),
+    stripePaymentIntentStatus: varchar(
+        "${APP_NAME}_stripePaymentIntentStatus",
+        {
+            length: 191,
+        }
+    ).notNull(),
     name: varchar("name", { length: 191 }),
     email: varchar("email", { length: 191 }),
     addressId: int("addressId"),
@@ -102,7 +108,7 @@ export const orders = mysqlTable("orders", {
 
 export type Order = InferModel<typeof orders>
 
-export const addresses = mysqlTable("addresses", {
+export const addresses = mysqlTable(`${APP_NAME}_addresses`, {
     id: serial("id").primaryKey(),
     line1: varchar("line1", { length: 191 }),
     line2: varchar("line2", { length: 191 }),

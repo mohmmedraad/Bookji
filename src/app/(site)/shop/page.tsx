@@ -11,6 +11,9 @@ const Page: FC = ({}) => {
         <main className="pb-8 pt-32">
             <Container>
                 <FilterBar />
+                {/**
+                 * TODO: Add suspense
+                 */}
                 <BooksFeed initialBooks={books} />
             </Container>
         </main>

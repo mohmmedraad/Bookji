@@ -15,6 +15,9 @@ const Page: FC<pageProps> = ({ searchParams }) => {
     const currentPage = getCurrentPageNumber(searchParams?._page)
     return (
         <>
+        {/**
+             * TODO: Add suspense 
+             */}
             <DataTable
                 columns={Columns}
                 data={books}

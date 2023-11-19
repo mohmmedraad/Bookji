@@ -34,7 +34,7 @@ const Footer: FC<FooterProps> = ({}) => {
                             <div className="mt-6 grid gap-4">
                                 {group.links.map((link) => (
                                     <Link
-                                        className="text-base font-semibold text-gray-400"
+                                        className="w-fit text-base font-semibold text-gray-400 hover:underline"
                                         key={link.name}
                                         href={link.url}
                                     >

@@ -64,6 +64,9 @@ const NavBar: FC = async ({}) => {
                         </div>
                     </div>
                     {user != null ? (
+                        /**
+                         * TODO: Add suspense
+                         */
                         <UserAccountNav
                             user={{
                                 firstName: user.firstName,

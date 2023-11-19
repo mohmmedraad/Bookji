@@ -1,9 +1,8 @@
 "use client"
 
-import React, { useState } from "react"
+import React from "react"
 import { useRouter } from "next/navigation"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
-import type { SignInStatus } from "@clerk/types"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -11,7 +10,6 @@ import { email, minLength, object, string, type Input } from "valibot"
 
 import {
     clerkError,
-    getEmailAddressId,
     handleGenericError,
     handleSessionExistsError,
     isAuthNotComplete,
