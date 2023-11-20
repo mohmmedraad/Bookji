@@ -77,3 +77,11 @@ export function handleSessionExistsError(
 export function getCurrentPageNumber(page: string | undefined) {
     return Number(page) || 1
 }
+
+export function absoluteUrl(path: string) {
+    if (typeof window !== 'undefined') return path
+    if (process.env.NEXT_PUBLIC_VERCEL_URL)
+      return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${path}`
+    return `http://localhost:3000/${path}`
+  }
+  

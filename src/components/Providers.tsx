@@ -5,6 +5,7 @@ import { NextUIProvider } from "@nextui-org/react"
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
 import { httpBatchLink } from "@trpc/client"
 
+import { absoluteUrl } from "@/lib/utils"
 import { trpc } from "@/app/_trpc/client"
 
 interface LayoutProps {
@@ -26,7 +27,7 @@ const Providers: FC<LayoutProps> = ({ children }) => {
         trpc.createClient({
             links: [
                 httpBatchLink({
-                    url: `http://localhost:3000/api/trpc`,
+                    url: absoluteUrl("api/trpc"),
                 }),
             ],
         })
