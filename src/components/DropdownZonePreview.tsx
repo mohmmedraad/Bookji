@@ -5,6 +5,7 @@ import { Trash } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 import Book from "./ui/BookCover"
+import BookWrapper from "./ui/BookWrapper"
 import { Button } from "./ui/Button"
 
 interface DropdownZonePreviewProps extends HTMLAttributes<HTMLDivElement> {
@@ -21,7 +22,7 @@ const DropdownZonePreview: FC<DropdownZonePreviewProps> = ({
     ...props
 }) => {
     return (
-        <div className={cn("relative", className)} {...props}>
+        <BookWrapper className={cn("relative", className)} {...props}>
             {uploadProgress >= 100 ? null : (
                 <div className="absolute inset-0 z-50 flex aspect-[2/3] items-center justify-center bg-background/80 backdrop-blur-sm">
                     <CircularProgress
@@ -50,7 +51,7 @@ const DropdownZonePreview: FC<DropdownZonePreviewProps> = ({
             >
                 <Trash className="h-6 w-6 text-white" />
             </Button>
-        </div>
+        </BookWrapper>
     )
 }
 

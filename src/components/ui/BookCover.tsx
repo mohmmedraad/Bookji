@@ -1,7 +1,7 @@
 import type { FC, HTMLAttributes } from "react"
 import Image from "next/image"
 
-import { cn } from "@/lib/utils"
+import BookWrapper from "./BookWrapper"
 
 interface BookProps extends HTMLAttributes<HTMLDivElement> {
     src: string
@@ -12,6 +12,7 @@ interface BookProps extends HTMLAttributes<HTMLDivElement> {
     loading?: "lazy" | "eager"
     priority?: boolean
     fetchPriority?: "high" | "low" | "auto"
+    fill?: boolean
 }
 
 const Book: FC<BookProps> = ({
@@ -23,13 +24,11 @@ const Book: FC<BookProps> = ({
     loading = "lazy",
     priority = false,
     fetchPriority = "auto",
+    fill = false,
     ...props
 }) => {
     return (
-        <div
-            className={cn("overflow-hidden rounded-md shadow-xl", className)}
-            {...props}
-        >
+        <BookWrapper className={className} {...props}>
             <Image
                 width={width}
                 height={height}
@@ -39,8 +38,9 @@ const Book: FC<BookProps> = ({
                 loading={loading}
                 priority={priority}
                 fetchPriority={fetchPriority}
+                fill={fill}
             />
-        </div>
+        </BookWrapper>
     )
 }
 
