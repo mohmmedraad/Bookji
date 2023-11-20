@@ -1,5 +1,9 @@
 export const categories = [
     {
+        value: "",
+        label: "All",
+    },
+    {
         value: "next.js",
         label: "Next.js",
     },

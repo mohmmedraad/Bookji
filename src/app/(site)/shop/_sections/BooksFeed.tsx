@@ -1,63 +1,68 @@
 "use client"
 
-import { useEffect, useRef, type FC } from "react"
+import { useEffect, useRef, useState, type FC } from "react"
 import { type Book as BookType } from "@/db/schema"
 import { useIntersection } from "@mantine/hooks"
-import { useInfiniteQuery } from "@tanstack/react-query"
-import { TRPCError } from "@trpc/server"
 
 import useShopSearch from "@/hooks/useShopSearch"
 import Book from "@/components/ui/BookCover"
 import { trpc } from "@/app/_trpc/client"
 
 interface BooksFeedProps {
-    initialBooks: {
-        id: number
-        userId: string
-        title: string
-        description: string | null
-        cover: string | null
-        price: string
-        tag: string[] | null
-        inventory: number
-        createdAt: Date | null
-        updatedAt: Date | null
-        userFullName: string // Additional property
-    }[]
+    initialBooks: (BookType & { userFullName: string | undefined })[]
+    userId?: string
 }
 
-const BooksFeed: FC<BooksFeedProps> = ({ initialBooks }) => {
-    const { category, coast, searchValue } = useShopSearch()
+const BooksFeed: FC<BooksFeedProps> = ({ initialBooks, userId = "" }) => {
+    // const { category, coast, searchValue } = useShopSearch()
     const lastPostRef = useRef<HTMLElement>(null)
     const { ref, entry } = useIntersection({
         root: lastPostRef.current,
         threshold: 1,
     })
+    // const [cursor, setCursor] = useState<number>(1)
 
     const { data, fetchNextPage } = trpc.getBooks.useInfiniteQuery(
         {
             limit: 10,
-            searchBy: null,
-            searchInput: null,
+            searchBy: {
+                category: "",
+                coast: "free",
+                text: "a",
+                userId,
+            },
         },
         {
-            // queryKey: ["getBooks", "infinite"],
+            queryKey: [
+                "getBooks",
+                {
+                    limit: 10,
+                    searchBy: {
+                        category: "",
+                        coast: "free",
+                        text: "a",
+                        userId,
+                    },
+                },
+            ],
             getNextPageParam: (lastPage, pages) => pages.length + 1,
-            // @ts-expect-error invalid type
-            initialData: initialBooks,
-            initialCursor: 0,
+            // @ts-expect-error TODO: Fix this
+            initialData: { pageParams: [undefined], pages: [initialBooks] },
+            initialCursor: 1,
         }
     )
 
     useEffect(() => {
         const isIntersecting = entry?.isIntersecting
+        console.log("isIntersecting: ", isIntersecting)
         if (isIntersecting) {
             void fetchNextPage()
         }
     }, [entry, fetchNextPage])
+
     console.log(data?.pages)
 
-    const books = data?.pages?.flatMap((page) => page) || initialBooks
+    const books = data?.pages?.flatMap((page) => page)
     return (
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
             {books?.map((book, index) => {

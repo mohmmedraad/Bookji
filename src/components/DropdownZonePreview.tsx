@@ -46,6 +46,7 @@ const DropdownZonePreview: FC<DropdownZonePreviewProps> = ({
                 variant={"destructive"}
                 className="mt-4 w-full"
                 onClick={handleRemoveFile}
+                disabled={uploadProgress < 100}
             >
                 <Trash className="h-6 w-6 text-white" />
             </Button>

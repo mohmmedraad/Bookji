@@ -71,8 +71,12 @@ export const updateBookSchema = merge([
 export const getBooksSchema = object({
     limit: coerce(number([minValue(1)]), Number),
     cursor: union([nullType(), number()]),
-    searchBy: union([enumType(["title", "tag"]), nullType()]),
-    searchInput: union([nullType(), string()]),
+    searchBy: object({
+        userId: string(),
+        text: string(),
+        category: string(),
+        coast: string(),
+    }),
 })
 
 export type BookCoverSchema = Input<typeof bookCoverSchema>

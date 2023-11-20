@@ -1,9 +1,9 @@
 import { db } from "@/db"
-import { books } from "@/db/schema"
+import { Book, books } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { asc, DrizzleError, eq, like } from "drizzle-orm"
+import { and, asc, DrizzleError, eq, inArray, like } from "drizzle-orm"
 
 import {
     extendedBookSchema,
@@ -24,13 +24,11 @@ const getUsersNames = async (userList: string[]) => {
     return usersFullNames
 }
 
-const withUsers = async <T>(
-    items: (T & { userId: string })[],
-    usersIds: string[]
-) => {
+export const withUsers = async (bookList: Book[]) => {
+    const usersIds = getUsersIds(bookList)
     const usersFullNames = await getUsersNames(usersIds)
 
-    return items.map((item) => {
+    return bookList.map((item) => {
         return {
             ...item,
             userFullName: usersFullNames.get(item.userId),
@@ -38,58 +36,56 @@ const withUsers = async <T>(
     })
 }
 
+const getUsersIds = (bookList: Book[]) => {
+    return bookList.map((book) => book.userId)
+}
+
 export const appRouter = router({
     getBooks: publicProcedure
         .input(wrap(getBooksSchema))
         .query(async ({ input, ctx }) => {
-            const { limit, cursor, searchBy, searchInput } = input
+            const { limit, cursor, searchBy } = input
+            const offset = (cursor || 0) * limit
+            console.log("input: ", input)
+            // if (!searchBy) {
+            const foundBooks = await db.query.books.findMany({
+                limit,
+                offset,
+                // where: (book) =>
+                //     // and(
+                //     like(book.title, `%${searchBy.text}%`),
+                // eq(book.userId, searchBy.userId)
+                // ),
+                orderBy: (book) => [asc(book.createdAt)],
+            })
 
-            if (!searchBy) {
-                const foundBooks = await db.query.books.findMany({
-                    limit,
-                    offset: cursor || 0,
-                    orderBy: (book) => [asc(book.createdAt)],
-                })
+            console.log("books: ", foundBooks)
 
-                if (!foundBooks) {
-                    return []
-                }
-                const usersIds = foundBooks.map((book) => book.userId)
-                const books = withUsers(foundBooks, usersIds)
-                return books
+            if (!foundBooks) {
+                return foundBooks
             }
-            // if (searchBy === "title") {
-            //     const foundBooks = await db.query.books.findMany({
-            //         where: (book) => like(book.title, searchInput || ""),
-            //         limit,
-            //         offset,
-            //         orderBy: (book) => [asc(book.createdAt)],
-            //     })
-            //     return foundBooks
-            // }
-            // if (searchBy === "tag") {
-            //     const foundBooks = await db.query.books.findMany({
-            //         where: (book ) => inArray(book.tags,  searchInput),
-            //         limit,
-            //         offset,
-            //         orderBy: (book) => [asc(book.createdAt)],
-            //     })
-            //     return {
-            //         message: "success",
-            //         data: {
-            //             books: foundBooks,
-            //         },
-            //     }
-            // }
+            const books = await withUsers(foundBooks)
+
+            if (searchBy.category === "all") return books
+            /**
+             * TODO: handle if the category is a list
+             */
+            return books.filter(
+                (book) => book.tags?.includes(searchBy.category)
+            )
         }),
+
     addBook: privateProcedure
         .input(wrap(extendedBookSchema))
         .mutation(async ({ input, ctx }) => {
+            console.log("inputs: ", input)
             try {
                 const book = await db.insert(books).values({
                     ...input,
                     userId: ctx.userId,
                 })
+
+                console.log("book added")
 
                 return {
                     message: "success",
@@ -102,9 +98,10 @@ export const appRouter = router({
                 throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
             }
         }),
+
     updateBook: privateProcedure
         .input(wrap(updateBookSchema))
-        .mutation(async ({ input, ctx }) => {
+        .mutation(async ({ input }) => {
             const { id, ...values } = input
             try {
                 const book = await db

@@ -61,6 +61,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
         try {
             addBook({ ...data, cover: coverUrl })
         } catch (error) {
+            console.log("error: ", error)
             if (error instanceof TRPCError) {
                 return handleTRPCError(error)
             }
@@ -143,6 +144,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
                                         <FormInput
                                             type="number"
                                             placeholder="100"
+                                            min={0}
                                             {...field}
                                         />
                                     </FormControl>
@@ -160,6 +162,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
                                         <FormInput
                                             type="number"
                                             placeholder="100"
+                                            min={0}
                                             {...field}
                                         />
                                     </FormControl>
