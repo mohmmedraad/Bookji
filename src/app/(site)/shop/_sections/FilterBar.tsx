@@ -5,8 +5,8 @@ import { useState, type FC } from "react"
 import { categories, coasts } from "@/config/shop"
 import useShopSearch from "@/hooks/useShopSearch"
 import { ComboboxDemo } from "@/components/ui/Combobox"
-import MobileSearchBar from "@/components/MobileSearchBar"
 import SearchBar from "@/components/ui/SearchBar"
+import MobileSearchBar from "@/components/MobileSearchBar"
 
 interface FilterBarProps {}
 

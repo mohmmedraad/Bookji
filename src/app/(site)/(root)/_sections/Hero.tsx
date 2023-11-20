@@ -52,7 +52,7 @@ const Hero: FC = ({}) => {
                         >
                             {books
                                 .slice(0, 2)
-                                .map(({ author, title, cover }) => (
+                                .map(({ userFullName, title, cover }) => (
                                     <div
                                         key={title}
                                         className="w-[7.1875rem] text-center"
@@ -69,7 +69,7 @@ const Hero: FC = ({}) => {
                                             {title}
                                         </h3>
                                         <h4 className="mt-2 text-xs text-gray-500">
-                                            {author}
+                                            {userFullName}
                                         </h4>
                                     </div>
                                 ))}
@@ -90,7 +90,7 @@ const Hero: FC = ({}) => {
                         >
                             {books
                                 .slice(2, 4)
-                                .map(({ author, title, cover }) => (
+                                .map(({ userFullName, title, cover }) => (
                                     <div
                                         key={title}
                                         className="w-[7.1875rem] text-center"
@@ -107,7 +107,7 @@ const Hero: FC = ({}) => {
                                             {title}
                                         </h3>
                                         <h4 className="mt-2 text-xs text-gray-500">
-                                            {author}
+                                            {userFullName}
                                         </h4>
                                     </div>
                                 ))}
@@ -140,7 +140,7 @@ const Hero: FC = ({}) => {
                                 {books[4].title}
                             </h3>
                             <h4 className="mt-2 text-sm text-gray-500">
-                                {books[4].author}
+                                {books[4].userFullName}
                             </h4>
                         </motion.div>
                         <motion.div
@@ -159,7 +159,7 @@ const Hero: FC = ({}) => {
                         >
                             {books
                                 .slice(5, 7)
-                                .map(({ author, title, cover }) => (
+                                .map(({ userFullName, title, cover }) => (
                                     <div
                                         key={title}
                                         className="w-[7.1875rem] text-center"
@@ -176,7 +176,7 @@ const Hero: FC = ({}) => {
                                             {title}
                                         </h3>
                                         <h4 className="mt-2 text-xs text-gray-500">
-                                            {author}
+                                            {userFullName}
                                         </h4>
                                     </div>
                                 ))}
@@ -195,27 +195,29 @@ const Hero: FC = ({}) => {
                             initial="hidden"
                             animate="visible"
                         >
-                            {books.slice(7).map(({ author, title, cover }) => (
-                                <div
-                                    key={title}
-                                    className="w-[7.1875rem] text-center"
-                                >
-                                    <BookCover
-                                        alt={title}
-                                        src={cover}
-                                        width={200}
-                                        height={300}
-                                        loading="eager"
-                                        className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
-                                    />
-                                    <h3 className="mt-2 text-sm font-semibold">
-                                        {title}
-                                    </h3>
-                                    <h4 className="mt-2 text-xs text-gray-500">
-                                        {author}
-                                    </h4>
-                                </div>
-                            ))}
+                            {books
+                                .slice(7)
+                                .map(({ userFullName, title, cover }) => (
+                                    <div
+                                        key={title}
+                                        className="w-[7.1875rem] text-center"
+                                    >
+                                        <BookCover
+                                            alt={title}
+                                            src={cover}
+                                            width={200}
+                                            height={300}
+                                            loading="eager"
+                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
+                                        />
+                                        <h3 className="mt-2 text-sm font-semibold">
+                                            {title}
+                                        </h3>
+                                        <h4 className="mt-2 text-xs text-gray-500">
+                                            {userFullName}
+                                        </h4>
+                                    </div>
+                                ))}
                         </motion.div>
                     </div>
                 </div>

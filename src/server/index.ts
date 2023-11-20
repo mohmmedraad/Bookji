@@ -1,9 +1,9 @@
 import { db } from "@/db"
-import { Book, books } from "@/db/schema"
+import { books, type Book } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, asc, DrizzleError, eq, inArray, like } from "drizzle-orm"
+import { and, asc, DrizzleError, eq, like } from "drizzle-orm"
 
 import {
     extendedBookSchema,
@@ -12,6 +12,9 @@ import {
 } from "@/lib/validations/book"
 
 import { privateProcedure, publicProcedure, router } from "./trpc"
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const dynamic = "force-dynamic"
 
 const getUsersNames = async (userList: string[]) => {
     //@ts-expect-error clerk types are UserListParam but they are actually string[]
@@ -43,7 +46,7 @@ const getUsersIds = (bookList: Book[]) => {
 export const appRouter = router({
     getBooks: publicProcedure
         .input(wrap(getBooksSchema))
-        .query(async ({ input, ctx }) => {
+        .query(async ({ input }) => {
             const { limit, cursor, searchBy } = input
             const offset = (cursor || 0) * limit
             console.log("input: ", input)
@@ -51,9 +54,9 @@ export const appRouter = router({
             const foundBooks = await db.query.books.findMany({
                 limit,
                 offset,
-                // where: (book) =>
-                //     // and(
-                //     like(book.title, `%${searchBy.text}%`),
+                where: (book) =>
+                    // and(
+                    like(book.title, `%${searchBy.text}%`),
                 // eq(book.userId, searchBy.userId)
                 // ),
                 orderBy: (book) => [asc(book.createdAt)],
@@ -62,17 +65,19 @@ export const appRouter = router({
             console.log("books: ", foundBooks)
 
             if (!foundBooks) {
-                return foundBooks
+                console.log("no book to show")
+                return null
             }
             const books = await withUsers(foundBooks)
+            return books
 
-            if (searchBy.category === "all") return books
-            /**
-             * TODO: handle if the category is a list
-             */
-            return books.filter(
-                (book) => book.tags?.includes(searchBy.category)
-            )
+            // if (searchBy.category === "all") return books
+            // /**
+            //  * TODO: handle if the category is a list
+            //  */
+            // return books.filter(
+            //     (book) => book.tags?.includes(searchBy.category)
+            // )
         }),
 
     addBook: privateProcedure

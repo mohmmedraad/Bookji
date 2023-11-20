@@ -39,6 +39,7 @@ export const ComboboxDemo: React.FC<ComboboxProps> = ({
 
     React.useEffect(() => {
         setFun(value)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [value])
 
     return (

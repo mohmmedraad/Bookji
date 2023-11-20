@@ -1,10 +1,8 @@
 import { type FC } from "react"
 import { db } from "@/db"
 import { withUsers } from "@/server"
-import { asc, like } from "drizzle-orm"
-import { Book } from "lucide-react"
+import { asc } from "drizzle-orm"
 
-import { books } from "@/config/site"
 import Container from "@/components/ui/Container"
 
 import BooksFeed from "./_sections/BooksFeed"
@@ -18,15 +16,6 @@ const Page: FC = async ({}) => {
     })
 
     const initialBooks = await withUsers(books)
-    // const searchBy = "Al"
-    // const books = await db.query.books.findMany({
-    //     limit: 10,
-    //     offset: 0,
-    //     where: (Book) => like(Book.title, `%${searchBy}%`),
-    //     orderBy: (book) => [asc(book.createdAt)],
-    // })
-
-    // console.log("book Alone:", books)
     return (
         <main className="pb-8 pt-32">
             <Container>

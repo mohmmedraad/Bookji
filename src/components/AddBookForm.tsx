@@ -3,7 +3,6 @@
 import { useState, type FC } from "react"
 import { useRouter } from "next/navigation"
 import { valibotResolver } from "@hookform/resolvers/valibot"
-import { TRPCClientError } from "@trpc/client"
 import { TRPCError } from "@trpc/server"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -48,7 +47,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
     const [coverUrl, setCoverUrl] = useState<string | null>(null)
     const router = useRouter()
 
-    const { data, mutate: addBook } = trpc.addBook.useMutation({
+    const { mutate: addBook } = trpc.addBook.useMutation({
         onSuccess: () => {
             toast.success("Book added successfully")
             closeFun()

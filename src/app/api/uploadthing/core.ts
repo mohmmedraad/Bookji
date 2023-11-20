@@ -2,7 +2,7 @@ import { createUploadthing, type FileRouter } from "uploadthing/next"
 
 const f = createUploadthing()
 
-const auth = (req: Request) => ({ id: "fakeId" })
+const auth = (_: Request) => ({ id: "fakeId" })
 
 export const ourFileRouter = {
     bookCoverUploader: f({ image: { maxFileSize: "1MB", maxFileCount: 1 } })

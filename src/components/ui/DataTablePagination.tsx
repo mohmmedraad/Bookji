@@ -11,7 +11,6 @@ interface DataTablePaginationProps<TData> {
 }
 
 export function DataTablePagination<TData>({
-    table,
     url,
     currentPage,
 }: DataTablePaginationProps<TData>) {

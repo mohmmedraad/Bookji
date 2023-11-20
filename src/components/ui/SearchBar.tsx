@@ -22,6 +22,7 @@ const SearchBar: FC<SearchBarProps> = ({
 
     useEffect(() => {
         onValueChange(searchValue)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchValue])
 
     return (

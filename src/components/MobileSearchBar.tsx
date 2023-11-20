@@ -26,6 +26,7 @@ const MobileSearchBar: FC<MobileSearchBarProps> = ({
 
     useEffect(() => {
         onValueChange(searchValue)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchValue])
 
     return (

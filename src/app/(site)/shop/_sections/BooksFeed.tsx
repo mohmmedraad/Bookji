@@ -1,8 +1,10 @@
 "use client"
 
-import { useEffect, useRef, useState, type FC } from "react"
+import { useEffect, useRef, type FC } from "react"
 import { type Book as BookType } from "@/db/schema"
 import { useIntersection } from "@mantine/hooks"
+import { useQueryClient } from "@tanstack/react-query"
+import { getQueryKey } from "@trpc/react-query"
 
 import useShopSearch from "@/hooks/useShopSearch"
 import Book from "@/components/ui/BookCover"
@@ -14,41 +16,43 @@ interface BooksFeedProps {
 }
 
 const BooksFeed: FC<BooksFeedProps> = ({ initialBooks, userId = "" }) => {
-    // const { category, coast, searchValue } = useShopSearch()
+    const { category, coast, searchValue } = useShopSearch()
+    const queryClient = useQueryClient()
+
     const lastPostRef = useRef<HTMLElement>(null)
     const { ref, entry } = useIntersection({
         root: lastPostRef.current,
         threshold: 1,
     })
-    // const [cursor, setCursor] = useState<number>(1)
 
     const { data, fetchNextPage } = trpc.getBooks.useInfiniteQuery(
         {
             limit: 10,
             searchBy: {
-                category: "",
-                coast: "free",
-                text: "a",
+                category,
+                coast,
+                text: searchValue,
                 userId,
             },
         },
         {
-            queryKey: [
-                "getBooks",
-                {
-                    limit: 10,
-                    searchBy: {
-                        category: "",
-                        coast: "free",
-                        text: "a",
-                        userId,
-                    },
-                },
-            ],
-            getNextPageParam: (lastPage, pages) => pages.length + 1,
+            // cacheTime: 0,
+            // queryKey: [
+            //     "getBooks",
+            //     {
+            //         limit: 10,
+            //         searchBy: {
+            //             category: "",
+            //             coast: "free",
+            //             text: "a",
+            //             userId,
+            //         },
+            //     },
+            // ],
+            getNextPageParam: (lastPage, pages) =>
+                lastPage?.length !== 0 ? pages.length : undefined,
             // @ts-expect-error TODO: Fix this
-            initialData: { pageParams: [undefined], pages: [initialBooks] },
-            initialCursor: 1,
+            initialData: { pages: [initialBooks], pageParams: [0] },
         }
     )
 
@@ -60,7 +64,12 @@ const BooksFeed: FC<BooksFeedProps> = ({ initialBooks, userId = "" }) => {
         }
     }, [entry, fetchNextPage])
 
-    console.log(data?.pages)
+    useEffect(() => {
+        console.log("queryKey", getQueryKey(trpc.getBooks))
+        void queryClient.invalidateQueries(["getBooks"])
+    }, [category, coast, searchValue, queryClient])
+
+    console.log(data?.pages?.length)
 
     const books = data?.pages?.flatMap((page) => page)
     return (

@@ -1,5 +1,5 @@
 import type { CartItem, CheckoutItem } from "@/types"
-import { inArray, relations, type InferModel } from "drizzle-orm"
+import { relations, type InferModel } from "drizzle-orm"
 import {
     boolean,
     decimal,

@@ -6,8 +6,6 @@ import {
     type SignUpResource,
     type SignUpStatus,
 } from "@clerk/types"
-import { TRPCClientError } from "@trpc/client"
-import { TRPCError } from "@trpc/server"
 import { clsx, type ClassValue } from "clsx"
 import { toast } from "sonner"
 import { twMerge } from "tailwind-merge"

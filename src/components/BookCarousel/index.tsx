@@ -35,10 +35,10 @@ const BookCarousel: FC<BookCarouselProps> = ({ items }) => {
                 parallax={true}
                 onSlideChange={({ realIndex }) => setActiveIndex(realIndex)}
             >
-                {items.map(({ author, cover, title }, index) => (
+                {items.map(({ userFullName, cover, title }, index) => (
                     <SwiperSlide
                         key={title}
-                        author={author}
+                        author={userFullName}
                         title={title}
                         cover={cover}
                         isActive={index === activeIndex}
