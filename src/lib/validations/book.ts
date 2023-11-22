@@ -1,7 +1,7 @@
 import {
-    array,
     blob,
     coerce,
+    enumType,
     maxLength,
     maxSize,
     merge,
@@ -35,11 +35,8 @@ export const addBookFormSchema = object({
         minLength(10, "The description length must be above 10 characters"),
         maxLength(250, "The description length must be below 250 characters"),
     ]),
-    tags: array(string(), "The tags must be an array of strings"),
-    price:
-        // coerce(
-        string([minValue("0", "The price must be positive.")]),
-    // ,Number)
+    category: string("The categories key is required"),
+    price: string([minValue("0", "The price must be positive.")]),
     inventory: coerce(
         number([minValue(1, "The number of items must be above the 1")]),
         Number
@@ -73,7 +70,7 @@ export const getBooksSchema = object({
         userId: string(),
         text: string(),
         category: string(),
-        coast: string(),
+        coast: enumType(["free", "paid", "free&paid"]),
     }),
 })
 

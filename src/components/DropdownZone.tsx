@@ -44,7 +44,7 @@ const DropdownZone: FC<DropdownZoneProps> = ({
                     cover={cover}
                     uploadProgress={uploadProgress}
                     handleRemoveFile={handleRemoveCover}
-                    className="w-[176px]"
+                    className="w-[176px] "
                 />
             ) : (
                 <div className={className} {...props}>

@@ -1,6 +1,6 @@
 export const categories = [
     {
-        value: "",
+        value: "all",
         label: "All",
     },
     {
@@ -24,6 +24,8 @@ export const categories = [
         label: "Astro",
     },
 ]
+
+export type Categories = typeof categories
 
 export const coasts = [
     {

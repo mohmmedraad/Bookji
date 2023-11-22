@@ -6,6 +6,7 @@ import {
     int,
     json,
     mysqlTable,
+    primaryKey,
     serial,
     text,
     timestamp,
@@ -21,7 +22,7 @@ export const books = mysqlTable(`${APP_NAME}_books`, {
     description: text("description"),
     cover: varchar("cover", { length: 200 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-    tags: json("tags").$type<string[]>().default([]),
+    // category: varchar("category", { length: 191 }),
     inventory: int("inventory").notNull().default(0),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
@@ -31,6 +32,7 @@ export type Book = InferModel<typeof books>
 
 export const booksRelations = relations(books, ({ many }) => ({
     ratings: many(ratings),
+    categories: many(booksToCategories),
 }))
 
 export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
@@ -49,6 +51,41 @@ export const ratingsRelations = relations(ratings, ({ one }) => ({
         references: [books.id],
     }),
 }))
+
+export const categories = mysqlTable(`${APP_NAME}_categories`, {
+    id: serial("id").primaryKey(),
+    name: varchar("name", { length: 191 }).notNull(),
+    createdAt: timestamp("createdAt").defaultNow(),
+})
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+    book: many(booksToCategories),
+}))
+
+export const booksToCategories = mysqlTable(
+    `${APP_NAME}_booksToGroups`,
+    {
+        bookId: int("bookId").notNull(),
+        categoryId: int("categoryId").notNull(),
+    },
+    (t) => ({
+        pk: primaryKey(t.bookId, t.categoryId),
+    })
+)
+
+export const booksToCategoriesRelations = relations(
+    booksToCategories,
+    ({ one }) => ({
+        category: one(categories, {
+            fields: [booksToCategories.categoryId],
+            references: [categories.id],
+        }),
+        book: one(books, {
+            fields: [booksToCategories.bookId],
+            references: [books.id],
+        }),
+    })
+)
 
 export const carts = mysqlTable(`${APP_NAME}_carts`, {
     id: serial("id").primaryKey(),

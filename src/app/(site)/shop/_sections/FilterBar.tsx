@@ -4,7 +4,7 @@ import { useState, type FC } from "react"
 
 import { categories, coasts } from "@/config/shop"
 import useShopSearch from "@/hooks/useShopSearch"
-import { ComboboxDemo } from "@/components/ui/Combobox"
+import { FilterCombobox } from "@/components/ui/FilterCombobox"
 import SearchBar from "@/components/ui/SearchBar"
 import MobileSearchBar from "@/components/MobileSearchBar"
 
@@ -28,12 +28,12 @@ const FilterBar: FC<FilterBarProps> = ({}) => {
             />
             {!isClosed ? null : (
                 <div className="flex gap-4">
-                    <ComboboxDemo
+                    <FilterCombobox
                         options={categories}
                         name="Category"
                         setFun={(value) => setCategory(value)}
                     />
-                    <ComboboxDemo
+                    <FilterCombobox
                         options={coasts}
                         name="Coast"
                         setFun={(value) => setCoast(value)}

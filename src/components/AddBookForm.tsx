@@ -7,6 +7,7 @@ import { TRPCError } from "@trpc/server"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
+import { categories } from "@/config/shop"
 import { handleGenericError } from "@/lib/utils"
 import {
     addBookFormSchema,
@@ -17,6 +18,7 @@ import { trpc } from "@/app/_trpc/client"
 
 import AddBookInput from "./AddBookInput"
 import { Button } from "./ui/Button"
+import { Combobox } from "./ui/Combobox"
 import {
     Form,
     FormControl,
@@ -35,7 +37,7 @@ interface AddBookFormProps {
 const defaultValues: Partial<AddBookFormSchema> = {
     title: "",
     description: "",
-    tags: [],
+    category: "",
     price: "0",
     inventory: 1,
 }
@@ -44,6 +46,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
         resolver: valibotResolver(addBookFormSchema),
         defaultValues,
     })
+
     const [coverUrl, setCoverUrl] = useState<string | null>(null)
     const router = useRouter()
 
@@ -101,6 +104,7 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
                                         type="text"
                                         placeholder="Title"
                                         {...field}
+                                        autoFocus
                                     />
                                 </FormControl>
                                 <FormDescription>
@@ -132,6 +136,28 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
                             </FormItem>
                         )}
                     />
+
+                    <FormField
+                        control={form.control}
+                        name="category"
+                        render={({ field }) => (
+                            <FormItem className="mb-4">
+                                <FormLabel>Category</FormLabel>
+                                <FormControl>
+                                    <Combobox
+                                        placeholder="Select a category"
+                                        options={categories.slice(1)}
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Enter book category
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
                     <div className="gap-8 md:flex">
                         <FormField
                             control={form.control}

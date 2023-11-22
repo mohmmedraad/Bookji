@@ -22,27 +22,29 @@ const DropdownZonePreview: FC<DropdownZonePreviewProps> = ({
     ...props
 }) => {
     return (
-        <BookWrapper className={cn("relative", className)} {...props}>
-            {uploadProgress >= 100 ? null : (
-                <div className="absolute inset-0 z-50 flex aspect-[2/3] items-center justify-center bg-background/80 backdrop-blur-sm">
-                    <CircularProgress
-                        aria-label="uploading..."
-                        size="md"
-                        value={uploadProgress}
-                        color="success"
-                        showValueLabel={true}
-                        maxValue={100}
-                    />
-                </div>
-            )}
-            <Book
-                // @ts-expect-error cover is a string
-                src={cover}
-                alt="cover"
-                width={176}
-                height={264}
-                className="aspect-[2/3] w-full"
-            />
+        <div className={className} {...props}>
+            <BookWrapper className="relative w-full">
+                {uploadProgress >= 100 ? null : (
+                    <div className="absolute inset-0 z-50 flex aspect-[2/3] items-center justify-center bg-background/80 backdrop-blur-sm">
+                        <CircularProgress
+                            aria-label="uploading..."
+                            size="md"
+                            value={uploadProgress}
+                            color="success"
+                            showValueLabel={true}
+                            maxValue={100}
+                        />
+                    </div>
+                )}
+                <Book
+                    // @ts-expect-error cover is a string
+                    src={cover}
+                    alt="cover"
+                    width={176}
+                    height={264}
+                    className="aspect-[2/3] w-full"
+                />
+            </BookWrapper>
             <Button
                 variant={"destructive"}
                 className="mt-4 w-full"
@@ -51,7 +53,7 @@ const DropdownZonePreview: FC<DropdownZonePreviewProps> = ({
             >
                 <Trash className="h-6 w-6 text-white" />
             </Button>
-        </BookWrapper>
+        </div>
     )
 }
 

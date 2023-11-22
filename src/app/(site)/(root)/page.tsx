@@ -1,20 +1,20 @@
-import AboutUs from "./_sections/AboutUs"
-import BestBook from "./_sections/BestBook"
-import Hero from "./_sections/Hero"
-import JoinUs from "./_sections/JoinUs"
-import Testimonials from "./_sections/Testimonials"
+// import AboutUs from "./_sections/AboutUs"
+// import BestBook from "./_sections/BestBook"
+// import Hero from "./_sections/Hero"
+// import JoinUs from "./_sections/JoinUs"
+// import Testimonials from "./_sections/Testimonials"
 
 export default function Home() {
     return (
         <main>
-            <Hero />
+            {/* <Hero />
             {/**
              * TODO: Add suspense
              */}
-            <BestBook />
+            {/* <BestBook />
             <AboutUs />
             <Testimonials />
-            <JoinUs />
+            <JoinUs /> */}
         </main>
     )
 }

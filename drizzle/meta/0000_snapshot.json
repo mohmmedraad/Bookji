@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "edc03494-1f6c-4b24-8f24-c89e01fc971c",
+  "id": "1551f8fc-a250-448e-b71a-2517712c116e",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -123,14 +123,6 @@
           "autoincrement": false,
           "default": "'0'"
         },
-        "tags": {
-          "name": "tags",
-          "type": "json",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "('null')"
-        },
         "inventory": {
           "name": "inventory",
           "type": "int",
@@ -163,6 +155,37 @@
           "name": "Bookji_books_id",
           "columns": [
             "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Bookji_booksToGroups": {
+      "name": "Bookji_booksToGroups",
+      "columns": {
+        "bookId": {
+          "name": "bookId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "categoryId": {
+          "name": "categoryId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Bookji_booksToGroups_bookId_categoryId": {
+          "name": "Bookji_booksToGroups_bookId_categoryId",
+          "columns": [
+            "bookId",
+            "categoryId"
           ]
         }
       },
@@ -221,6 +244,44 @@
       "compositePrimaryKeys": {
         "Bookji_carts_id": {
           "name": "Bookji_carts_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
+    "Bookji_categories": {
+      "name": "Bookji_categories",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "name": {
+          "name": "name",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Bookji_categories_id": {
+          "name": "Bookji_categories_id",
           "columns": [
             "id"
           ]

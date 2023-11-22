@@ -17,11 +17,16 @@ CREATE TABLE `Bookji_books` (
 	`description` text,
 	`cover` varchar(200),
 	`price` decimal(10,2) NOT NULL DEFAULT '0',
-	`tags` json DEFAULT ('null'),
 	`inventory` int NOT NULL DEFAULT 0,
 	`createdAt` timestamp DEFAULT (now()),
 	`updatedAt` timestamp ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `Bookji_books_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `Bookji_booksToGroups` (
+	`bookId` int NOT NULL,
+	`categoryId` int NOT NULL,
+	CONSTRAINT `Bookji_booksToGroups_bookId_categoryId` PRIMARY KEY(`bookId`,`categoryId`)
 );
 --> statement-breakpoint
 CREATE TABLE `Bookji_carts` (
@@ -32,6 +37,13 @@ CREATE TABLE `Bookji_carts` (
 	`items` json DEFAULT ('null'),
 	`createdAt` timestamp DEFAULT (now()),
 	CONSTRAINT `Bookji_carts_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
+CREATE TABLE `Bookji_categories` (
+	`id` serial AUTO_INCREMENT NOT NULL,
+	`name` varchar(191) NOT NULL,
+	`createdAt` timestamp DEFAULT (now()),
+	CONSTRAINT `Bookji_categories_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
 CREATE TABLE `Bookji_email_preferences` (
