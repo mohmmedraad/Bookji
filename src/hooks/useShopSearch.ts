@@ -1,21 +1,24 @@
 import { create } from "zustand"
 
+import { type Cost } from "@/lib/validations/book"
+import { type Option } from "@/components/ui/MultiSelect"
+
 interface Store {
     searchValue: string
-    category: string
-    coast: string
+    categories: Option[]
+    cost: Cost
     setSearchValue: (searchValue: string) => void
-    setCategory: (category: string) => void
-    setCoast: (coast: string) => void
+    setCategories: (categories: Option[]) => void
+    setCoast: (cost: Cost) => void
 }
 
 const useShopSearch = create<Store>((set) => ({
     searchValue: "",
-    category: "",
-    coast: "",
+    categories: [],
+    cost: "free",
     setSearchValue: (searchValue) => set({ searchValue }),
-    setCategory: (category) => set({ category }),
-    setCoast: (coast) => set({ coast }),
+    setCategories: (categories) => set({ categories }),
+    setCoast: (cost) => set({ cost }),
 }))
 
 export default useShopSearch

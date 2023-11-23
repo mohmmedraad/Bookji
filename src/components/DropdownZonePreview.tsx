@@ -2,8 +2,6 @@ import { type FC, type HTMLAttributes } from "react"
 import { CircularProgress } from "@nextui-org/react"
 import { Trash } from "lucide-react"
 
-import { cn } from "@/lib/utils"
-
 import Book from "./ui/BookCover"
 import BookWrapper from "./ui/BookWrapper"
 import { Button } from "./ui/Button"

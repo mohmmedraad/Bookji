@@ -1,5 +1,6 @@
 import { type Input } from "valibot"
 
+import { type Cost } from "@/lib/validations/book"
 import {
     type cartItemSchema,
     type checkoutItemSchema,
@@ -19,4 +20,15 @@ export type ClerkAPIError = {
         code: string
         message: string
     }[]
+}
+
+export interface Category {
+    id: number
+    name: string
+    icon?: React.ComponentType<{ className?: string }>
+}
+
+export interface FiltersType {
+    categories: Category[] | null
+    cost: Cost
 }

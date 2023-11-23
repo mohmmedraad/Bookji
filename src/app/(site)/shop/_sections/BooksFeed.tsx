@@ -6,23 +6,27 @@ import { useIntersection, usePrevious } from "@mantine/hooks"
 import { Skeleton } from "@nextui-org/react"
 import { useQueryClient } from "@tanstack/react-query"
 
-import useShopSearch from "@/hooks/useShopSearch"
+import { type SearchParams } from "@/lib/validations/book"
 import Book from "@/components/ui/BookCover"
 import BooksWrapper from "@/components/ui/BooksWrapper"
 import BookWrapper from "@/components/ui/BookWrapper"
 import { trpc } from "@/app/_trpc/client"
 
-interface BooksFeedProps {
-    initialBooks: (BookType & { userFullName: string | undefined })[]
-    userId?: string
-    category?: string
-    coast?: string
-    searchValue?: string
+interface ExtendedBooksType extends BookType {
+    userFullName: string | undefined
 }
 
-const BooksFeed: FC<BooksFeedProps> = ({ initialBooks, userId = "" }) => {
-    const { category, coast, searchValue } = useShopSearch()
-    const previousValue = usePrevious(searchValue)
+interface BooksFeedProps {
+    initialBooks: ExtendedBooksType[]
+    searchParams: SearchParams
+}
+
+const BooksFeed: FC<BooksFeedProps> = ({
+    initialBooks,
+    searchParams: { userId = "", categories, cost, text },
+}) => {
+    // const { categories, cost, text } = useShopSearch()
+    const previousValue = usePrevious(text)
     const [isFetchingWithSearch, setIsFetchingWithSearch] = useState(false)
     const queryClient = useQueryClient()
 
@@ -36,29 +40,17 @@ const BooksFeed: FC<BooksFeedProps> = ({ initialBooks, userId = "" }) => {
         trpc.getBooks.useInfiniteQuery(
             {
                 limit: 10,
-                searchBy: {
-                    category,
-                    coast,
-                    text: searchValue,
+                searchParams: {
+                    categories,
+                    cost,
+                    text,
                     userId,
                 },
             },
             {
-                // queryKey: [
-                //     "getBooks",
-                //     {
-                //         limit: 10,
-                //         searchBy: {
-                //             category: "",
-                //             coast: "free",
-                //             text: "a",
-                //             userId,
-                //         },
-                //     },
-                // ],
                 getNextPageParam: (lastPage, pages) =>
                     lastPage?.length !== 0 ? pages.length : undefined,
-                // @ts-expect-error TODO: Fix this
+                //@ts-expect-error TODO: fix this
                 initialData: { pages: [initialBooks], pageParams: [0] },
             }
         )
@@ -72,15 +64,15 @@ const BooksFeed: FC<BooksFeedProps> = ({ initialBooks, userId = "" }) => {
     }, [entry, fetchNextPage])
 
     useEffect(() => {
-        console.log(searchValue)
+        console.log(text)
         void queryClient.resetQueries(["getBooks"])
-        setIsFetchingWithSearch(searchValue !== "" || previousValue !== "")
+        setIsFetchingWithSearch(text !== "" || previousValue !== "")
         return () => {
             setIsFetchingWithSearch(false)
             void queryClient.invalidateQueries(["getBooks"])
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [category, coast, searchValue, queryClient])
+    }, [categories, cost, text, queryClient])
 
     const books = data?.pages?.flatMap((page) => page)
     return (

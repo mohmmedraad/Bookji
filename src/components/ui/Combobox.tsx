@@ -2,22 +2,15 @@
 
 import * as React from "react"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
-import { Command as CommandPrimitive } from "cmdk"
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/Button"
 import {
     Command,
-    CommandEmpty,
     CommandGroup,
     CommandInput,
     CommandItem,
 } from "@/components/ui/Command"
-import {
-    Popover,
-    PopoverContent,
-    PopoverTrigger,
-} from "@/components/ui/Popover"
 
 export interface Option {
     label: string
@@ -75,7 +68,6 @@ export const Combobox: React.FC<ComboboxDemoProps> = ({
                     onValueChange={setQuery}
                     className="pointer-events-auto h-9"
                 />
-                {/* <CommandEmpty>{placeholder}</CommandEmpty> */}
                 {open && (
                     <div className="animate-in absolute top-0 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
                         <CommandGroup>

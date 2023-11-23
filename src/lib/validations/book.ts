@@ -1,7 +1,7 @@
 import {
+    array,
     blob,
     coerce,
-    enumType,
     maxLength,
     maxSize,
     merge,
@@ -35,7 +35,13 @@ export const addBookFormSchema = object({
         minLength(10, "The description length must be above 10 characters"),
         maxLength(250, "The description length must be below 250 characters"),
     ]),
-    category: string("The categories key is required"),
+    categories: array(
+        object({
+            id: number(),
+            name: string(),
+        }),
+        "Invalid categories"
+    ),
     price: string([minValue("0", "The price must be positive.")]),
     inventory: coerce(
         number([minValue(1, "The number of items must be above the 1")]),
@@ -63,16 +69,29 @@ export const updateBookSchema = merge([
     object({ id: number(), cover: string("The cover key is required") }),
 ])
 
+const cost = object({
+    min: number(),
+    max: number(),
+})
+
+export const searchParams = object({
+    userId: string(),
+    text: string(),
+    categories: array(number(), [
+        minLength(1, "You must select at least one category"),
+    ]),
+    cost,
+})
+
+export type SearchParams = Input<typeof searchParams>
+
 export const getBooksSchema = object({
     limit: coerce(number([minValue(1)]), Number),
     cursor: union([nullType(), number()]),
-    searchBy: object({
-        userId: string(),
-        text: string(),
-        category: string(),
-        coast: enumType(["free", "paid", "free&paid"]),
-    }),
+    searchParams,
 })
+
+export type Cost = Input<typeof cost>
 
 export type BookCoverSchema = Input<typeof bookCoverSchema>
 export type AddBookFormSchema = Input<typeof addBookFormSchema>

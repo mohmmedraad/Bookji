@@ -2,12 +2,12 @@
 
 import { useState, type FC } from "react"
 import { useRouter } from "next/navigation"
+import { type Category } from "@/types"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { TRPCError } from "@trpc/server"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
-import { categories } from "@/config/shop"
 import { handleGenericError } from "@/lib/utils"
 import {
     addBookFormSchema,
@@ -18,7 +18,6 @@ import { trpc } from "@/app/_trpc/client"
 
 import AddBookInput from "./AddBookInput"
 import { Button } from "./ui/Button"
-import { Combobox } from "./ui/Combobox"
 import {
     Form,
     FormControl,
@@ -28,6 +27,7 @@ import {
     FormLabel,
     FormMessage,
 } from "./ui/Form"
+import { MultiSelect } from "./ui/MultiSelect"
 import { Textarea } from "./ui/Textarea"
 
 interface AddBookFormProps {
@@ -37,7 +37,7 @@ interface AddBookFormProps {
 const defaultValues: Partial<AddBookFormSchema> = {
     title: "",
     description: "",
-    category: "",
+    categories: [],
     price: "0",
     inventory: 1,
 }
@@ -49,6 +49,9 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
 
     const [coverUrl, setCoverUrl] = useState<string | null>(null)
     const router = useRouter()
+    const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(
+        null
+    )
 
     const { mutate: addBook } = trpc.addBook.useMutation({
         onSuccess: () => {
@@ -139,14 +142,15 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
 
                     <FormField
                         control={form.control}
-                        name="category"
+                        name="categories"
                         render={({ field }) => (
                             <FormItem className="mb-4">
                                 <FormLabel>Category</FormLabel>
                                 <FormControl>
-                                    <Combobox
+                                    <MultiSelect
+                                        selected={selectedCategory}
+                                        setSelected={setSelectedCategory}
                                         placeholder="Select a category"
-                                        options={categories.slice(1)}
                                         {...field}
                                     />
                                 </FormControl>

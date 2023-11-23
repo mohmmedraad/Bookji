@@ -1,15 +1,11 @@
 import { db } from "@/db"
-import { books, type Book } from "@/db/schema"
+import { books, booksToCategories, categories, type Book } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, asc, DrizzleError, eq, gt, like } from "drizzle-orm"
+import { and, asc, between, eq, inArray, like } from "drizzle-orm"
 
-import {
-    extendedBookSchema,
-    getBooksSchema,
-    updateBookSchema,
-} from "@/lib/validations/book"
+import { extendedBookSchema, getBooksSchema } from "@/lib/validations/book"
 
 import { privateProcedure, publicProcedure, router } from "./trpc"
 
@@ -47,43 +43,42 @@ export const appRouter = router({
     getBooks: publicProcedure
         .input(wrap(getBooksSchema))
         .query(async ({ input }) => {
-            const { limit, cursor, searchBy } = input
+            const { limit, cursor, searchParams } = input
             const offset = (cursor || 0) * limit
             console.log("input: ", input)
-            // if (!searchBy) {
-            // let foundBooks: Book[]
-            // if (searchBy.userId) {
             const foundBooks = await db.query.books.findMany({
                 limit,
                 offset,
                 where: (book) =>
                     and(
-                        like(book.title, `%${searchBy.text}%`),
-                        searchBy.userId
-                            ? eq(book.userId, searchBy.userId)
+                        like(book.title, `%${searchParams.text}%`),
+                        searchParams.userId
+                            ? eq(book.userId, searchParams.userId)
                             : undefined,
-                        searchBy.coast === "free"
-                            ? eq(book.price, "0.00")
-                            : searchBy.coast === "paid"
-                            ? gt(book.price, "0.00")
-                            : undefined
+                        between(
+                            book.price,
+                            searchParams.cost.min.toString(),
+                            searchParams.cost.max.toString()
+                        )
                     ),
+                with: {
+                    categories: {
+                        where: (category) =>
+                            inArray(
+                                category.categoryId,
+                                searchParams.categories || undefined
+                            ),
+                    },
+                },
                 orderBy: (book) => [asc(book.createdAt)],
             })
-            // } else {
-            //     foundBooks = await db.query.books.findMany({
-            //         limit,
-            //         offset,
-            //         where: (book) => like(book.title, `%${searchBy.text}%`),
-            //         orderBy: (book) => [asc(book.createdAt)],
-            //     })
-            // }
 
             if (!foundBooks) {
                 console.log("no book to show")
                 return null
             }
             const books = await withUsers(foundBooks)
+            return books
 
             console.log("books: ", books)
             console.log("#######################################")
@@ -91,15 +86,19 @@ export const appRouter = router({
 
     addBook: privateProcedure
         .input(wrap(extendedBookSchema))
-        .mutation(async ({ input, ctx }) => {
-            console.log("inputs: ", input)
+        .mutation(async ({ input: { categories, ...input }, ctx }) => {
             try {
                 const book = await db.insert(books).values({
                     ...input,
                     userId: ctx.userId,
                 })
 
-                console.log("book added")
+                await db.insert(booksToCategories).values(
+                    categories.map((category) => ({
+                        bookId: Number(book.insertId),
+                        categoryId: category.id,
+                    }))
+                )
 
                 return {
                     message: "success",
@@ -113,30 +112,44 @@ export const appRouter = router({
             }
         }),
 
-    updateBook: privateProcedure
-        .input(wrap(updateBookSchema))
-        .mutation(async ({ input }) => {
-            const { id, ...values } = input
-            try {
-                const book = await db
-                    .update(books)
-                    .set(values)
-                    .where(eq(books.id, id))
+    // updateBook: privateProcedure
+    //     .input(wrap(updateBookSchema))
+    //     .mutation(async ({ input }) => {
+    //         const { id, ...values } = input
+    //         try {
+    //             const book = await db
+    //                 .update(books)
+    //                 .set(values)
+    //                 .where(eq(books.id, id))
 
-                return {
-                    message: "success",
-                    data: {
-                        bookId: book.insertId,
-                    },
-                }
-            } catch (error) {
-                console.log(error)
-                if (error instanceof DrizzleError) {
-                    throw new TRPCError({ code: "BAD_REQUEST" })
-                }
-                throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
-            }
-        }),
+    //             return {
+    //                 message: "success",
+    //                 data: {
+    //                     bookId: book.insertId,
+    //                 },
+    //             }
+    //         } catch (error) {
+    //             console.log(error)
+    //             if (error instanceof DrizzleError) {
+    //                 throw new TRPCError({ code: "BAD_REQUEST" })
+    //             }
+    //             throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+    //         }
+    //     }),
+    getAllCategories: publicProcedure.query(async () => {
+        try {
+            const foundCategories = await db
+                .select({
+                    id: categories.id,
+                    name: categories.name,
+                })
+                .from(categories)
+            return foundCategories
+        } catch (error) {
+            console.log(error)
+            throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+        }
+    }),
 })
 
 export type AppRouter = typeof appRouter

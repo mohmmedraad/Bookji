@@ -63,7 +63,7 @@ export const categoriesRelations = relations(categories, ({ many }) => ({
 }))
 
 export const booksToCategories = mysqlTable(
-    `${APP_NAME}_booksToGroups`,
+    `${APP_NAME}_booksToCategories`,
     {
         bookId: int("bookId").notNull(),
         categoryId: int("categoryId").notNull(),

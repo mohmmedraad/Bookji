@@ -5,8 +5,7 @@ import { asc } from "drizzle-orm"
 
 import Container from "@/components/ui/Container"
 
-import BooksFeed from "./_sections/BooksFeed"
-import FilterBar from "./_sections/FilterBar"
+import BookExplorer from "./_sections/BookExplorer"
 
 const Page: FC = async ({}) => {
     const books = await db.query.books.findMany({
@@ -19,11 +18,12 @@ const Page: FC = async ({}) => {
     return (
         <main className="pb-8 pt-32">
             <Container>
-                <FilterBar />
+                <BookExplorer initialBooks={initialBooks} />
+
                 {/**
                  * TODO: Add suspense
                  */}
-                <BooksFeed initialBooks={initialBooks} />
+                {/* <BooksFeed initialBooks={initialBooks} /> */}
             </Container>
         </main>
     )

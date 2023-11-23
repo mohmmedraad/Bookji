@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "1551f8fc-a250-448e-b71a-2517712c116e",
+  "id": "86db7d00-827c-437c-9d38-10e60def9f40",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -160,8 +160,8 @@
       },
       "uniqueConstraints": {}
     },
-    "Bookji_booksToGroups": {
-      "name": "Bookji_booksToGroups",
+    "Bookji_booksToCategories": {
+      "name": "Bookji_booksToCategories",
       "columns": {
         "bookId": {
           "name": "bookId",
@@ -181,8 +181,8 @@
       "indexes": {},
       "foreignKeys": {},
       "compositePrimaryKeys": {
-        "Bookji_booksToGroups_bookId_categoryId": {
-          "name": "Bookji_booksToGroups_bookId_categoryId",
+        "Bookji_booksToCategories_bookId_categoryId": {
+          "name": "Bookji_booksToCategories_bookId_categoryId",
           "columns": [
             "bookId",
             "categoryId"

@@ -23,10 +23,10 @@ CREATE TABLE `Bookji_books` (
 	CONSTRAINT `Bookji_books_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
-CREATE TABLE `Bookji_booksToGroups` (
+CREATE TABLE `Bookji_booksToCategories` (
 	`bookId` int NOT NULL,
 	`categoryId` int NOT NULL,
-	CONSTRAINT `Bookji_booksToGroups_bookId_categoryId` PRIMARY KEY(`bookId`,`categoryId`)
+	CONSTRAINT `Bookji_booksToCategories_bookId_categoryId` PRIMARY KEY(`bookId`,`categoryId`)
 );
 --> statement-breakpoint
 CREATE TABLE `Bookji_carts` (
