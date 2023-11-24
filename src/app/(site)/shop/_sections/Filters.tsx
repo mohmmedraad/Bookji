@@ -29,7 +29,7 @@ const Filters: FC<FiltersProps> = ({ onFiltersChange }) => {
     const [categories, setCategories] = useState<Category[] | null>(null)
     const [cost, setCost] = useState<Cost>({ min: 0, max: 500 })
     const [minCost, setMinCost] = useState(0)
-    const [maxCost, setMaxCost] = useState(0)
+    const [maxCost, setMaxCost] = useState(500)
 
     function handleClearFilters() {
         setCategories(null)

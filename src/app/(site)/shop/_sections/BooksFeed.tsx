@@ -36,6 +36,8 @@ const BooksFeed: FC<BooksFeedProps> = ({
         threshold: 1,
     })
 
+    console.log("searchParams: ", userId, categories, cost, text)
+
     const { data, isFetchingNextPage, isFetched, fetchNextPage } =
         trpc.getBooks.useInfiniteQuery(
             {

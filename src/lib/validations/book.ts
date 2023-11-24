@@ -40,7 +40,8 @@ export const addBookFormSchema = object({
             id: number(),
             name: string(),
         }),
-        "Invalid categories"
+        "Invalid categories",
+        [minLength(1, "You must select at least one category")]
     ),
     price: string([minValue("0", "The price must be positive.")]),
     inventory: coerce(
@@ -77,9 +78,7 @@ const cost = object({
 export const searchParams = object({
     userId: string(),
     text: string(),
-    categories: array(number(), [
-        minLength(1, "You must select at least one category"),
-    ]),
+    categories: array(number()),
     cost,
 })
 
