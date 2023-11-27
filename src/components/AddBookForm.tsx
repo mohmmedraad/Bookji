@@ -41,6 +41,7 @@ const defaultValues: Partial<AddBookFormSchema> = {
     price: "0",
     inventory: 1,
 }
+
 const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
     const form = useForm<AddBookFormSchema>({
         resolver: valibotResolver(addBookFormSchema),

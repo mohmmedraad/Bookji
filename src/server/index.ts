@@ -1,11 +1,17 @@
 import { db } from "@/db"
-import { books, booksToCategories, categories, type Book } from "@/db/schema"
+import { books, booksToCategories, categories, ratings } from "@/db/schema"
+import { type PartialBook } from "@/types"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, asc, between, eq, inArray, like } from "drizzle-orm"
+import { and, asc, between, eq, exists, inArray, like } from "drizzle-orm"
 
-import { extendedBookSchema, getBooksSchema } from "@/lib/validations/book"
+import {
+    extendedBookSchema,
+    getBooksSchema,
+    rateBookSchema,
+    userRatingSchema,
+} from "@/lib/validations/book"
 
 import { privateProcedure, publicProcedure, router } from "./trpc"
 
@@ -23,7 +29,7 @@ const getUsersNames = async (userList: string[]) => {
     return usersFullNames
 }
 
-export const withUsers = async (bookList: Book[]) => {
+export const withUsers = async (bookList: PartialBook[]) => {
     const usersIds = getUsersIds(bookList)
     const usersFullNames = await getUsersNames(usersIds)
 
@@ -35,7 +41,7 @@ export const withUsers = async (bookList: Book[]) => {
     })
 }
 
-const getUsersIds = (bookList: Book[]) => {
+const getUsersIds = (bookList: PartialBook[]) => {
     return bookList.map((book) => book.userId)
 }
 
@@ -46,9 +52,16 @@ export const appRouter = router({
             const { limit, cursor, searchParams } = input
             const offset = (cursor || 0) * limit
             console.log("input: ", input)
+
             const foundBooks = await db.query.books.findMany({
                 limit,
                 offset,
+                columns: {
+                    id: true,
+                    userId: true,
+                    title: true,
+                    cover: true,
+                },
                 where: (book) =>
                     and(
                         like(book.title, `%${searchParams.text}%`),
@@ -59,17 +72,27 @@ export const appRouter = router({
                             book.price,
                             searchParams.cost.min.toString(),
                             searchParams.cost.max.toString()
-                        )
+                        ),
+                        searchParams.categories.length === 0
+                            ? undefined
+                            : exists(
+                                  db
+                                      .select({ id: booksToCategories.bookId })
+                                      .from(booksToCategories)
+                                      .where(
+                                          and(
+                                              eq(
+                                                  booksToCategories.bookId,
+                                                  book.id
+                                              ),
+                                              inArray(
+                                                  booksToCategories.categoryId,
+                                                  searchParams.categories
+                                              )
+                                          )
+                                      )
+                              )
                     ),
-                with: {
-                    categories: {
-                        where: (category) =>
-                            inArray(
-                                category.categoryId,
-                                searchParams.categories || undefined
-                            ),
-                    },
-                },
                 orderBy: (book) => [asc(book.createdAt)],
             })
 
@@ -79,9 +102,6 @@ export const appRouter = router({
             }
             const books = await withUsers(foundBooks)
             return books
-
-            console.log("books: ", books)
-            console.log("#######################################")
         }),
 
     addBook: privateProcedure
@@ -150,6 +170,90 @@ export const appRouter = router({
             throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
         }
     }),
+
+    rateBook: privateProcedure
+        .input(wrap(rateBookSchema))
+        .mutation(async ({ input, ctx }) => {
+            console.log("here")
+            const { bookId, rating, comment } = input
+            const isBookExists = await db.query.books.findFirst({
+                columns: {
+                    id: true,
+                },
+                where: (book) => eq(book.id, +bookId),
+            })
+
+            if (!isBookExists) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Book not found",
+                })
+            }
+
+            const isUserAlreadyRateBook = await db.query.ratings.findFirst({
+                columns: {
+                    id: true,
+                },
+                where: (rate) =>
+                    and(eq(rate.bookId, bookId), eq(rate.userId, ctx.userId)),
+            })
+
+            if (isUserAlreadyRateBook) {
+                throw new TRPCError({
+                    code: "CONFLICT",
+                    message: "You already rate this book",
+                })
+            }
+
+            const rate = await db.insert(ratings).values({
+                bookId,
+                userId: ctx.userId,
+                rating,
+                comment,
+            })
+
+            return {
+                message: "success",
+                data: {
+                    rateId: rate.insertId,
+                },
+            }
+        }),
+
+    getUserRating: privateProcedure
+        .input(wrap(userRatingSchema))
+        .query(async ({ input, ctx }) => {
+            const userRating = await db.query.ratings.findFirst({
+                columns: {
+                    rating: true,
+                },
+                where: (rate) =>
+                    and(
+                        eq(rate.bookId, input.bookId),
+                        eq(rate.userId, ctx.userId)
+                    ),
+            })
+
+            if (!userRating) {
+                return null
+            }
+            return { rating: userRating.rating }
+        }),
+    getBookRating: publicProcedure
+        .input(wrap(userRatingSchema))
+        .query(async ({ input }) => {
+            const bookRating = await db.query.ratings.findMany({
+                columns: {
+                    rating: true,
+                },
+                where: (rate) => eq(rate.bookId, input.bookId),
+            })
+
+            if (!bookRating) {
+                return null
+            }
+            return bookRating
+        }),
 })
 
 export type AppRouter = typeof appRouter

@@ -1,15 +1,16 @@
 "use client"
 
 import { useState, type FC } from "react"
-import { type Book as BookType } from "@/db/schema"
+import { type PartialBook } from "@/types"
 
 import { type SearchParams } from "@/lib/validations/book"
+import useDebounce from "@/hooks/useDebounce"
 
 import BooksFeed from "./BooksFeed"
 import FilterBar from "./FilterBar"
 
 interface BookExplorerProps {
-    initialBooks: (BookType & { userFullName: string | undefined })[]
+    initialBooks: (PartialBook & { userFullName: string | undefined })[]
     userId?: string
 }
 
@@ -23,6 +24,7 @@ const BookExplorer: FC<BookExplorerProps> = ({ initialBooks, userId = "" }) => {
         },
         text: "",
     })
+    const searchParamsValue = useDebounce(searchParams, 700)
     return (
         <>
             <FilterBar
@@ -32,7 +34,7 @@ const BookExplorer: FC<BookExplorerProps> = ({ initialBooks, userId = "" }) => {
             />
             <BooksFeed
                 initialBooks={initialBooks}
-                searchParams={searchParams}
+                searchParams={searchParamsValue}
             />
         </>
     )

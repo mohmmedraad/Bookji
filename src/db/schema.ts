@@ -40,6 +40,7 @@ export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     userId: varchar("userId", { length: 191 }).notNull(),
     bookId: varchar("bookId", { length: 191 }).notNull(),
     rating: int("rating").notNull(),
+    comment: text("comment"),
     createdAt: timestamp("createdAt").defaultNow(),
 })
 

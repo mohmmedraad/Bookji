@@ -28,13 +28,10 @@ export function MultiSelect({
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState("")
 
-    const { data, isError, isLoading } = trpc.getAllCategories.useQuery(
-        undefined,
-        {
-            cacheTime: Infinity,
-            staleTime: Infinity,
-        }
-    )
+    const { data, isLoading } = trpc.getAllCategories.useQuery(undefined, {
+        cacheTime: Infinity,
+        staleTime: Infinity,
+    })
 
     // Register as input field to be used in react-hook-form
     React.useEffect(() => {

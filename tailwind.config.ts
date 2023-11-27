@@ -14,6 +14,7 @@ const config: Config = {
                 test: "2fr 1fr 1fr",
                 profile: "160px 1fr",
                 addBook: "176px 1fr",
+                bookPage: "1fr 1fr 150px",
             },
             screens: {
                 xs: "480px",

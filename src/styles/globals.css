@@ -16,6 +16,27 @@
   }
 } */
 
+@layer utilities {
+    .polygon {
+        clip-path: polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%);
+        border-radius: 50px;
+    }
+    .star {
+        clip-path: polygon(
+            50% 0%,
+            61% 35%,
+            98% 35%,
+            68% 57%,
+            79% 91%,
+            50% 70%,
+            21% 91%,
+            32% 57%,
+            2% 35%,
+            39% 35%
+        );
+    }
+}
+
 *,
 *::after,
 *::before {

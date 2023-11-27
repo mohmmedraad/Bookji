@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "86db7d00-827c-437c-9d38-10e60def9f40",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "aaaad9d1-4c28-4205-9f5a-b6618bc85dad",
+  "prevId": "86db7d00-827c-437c-9d38-10e60def9f40",
   "tables": {
     "Bookji_addresses": {
       "name": "Bookji_addresses",
@@ -550,6 +550,13 @@
           "type": "int",
           "primaryKey": false,
           "notNull": true,
+          "autoincrement": false
+        },
+        "comment": {
+          "name": "comment",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
           "autoincrement": false
         },
         "createdAt": {

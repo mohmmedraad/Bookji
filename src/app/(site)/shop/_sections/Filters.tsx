@@ -27,6 +27,7 @@ interface FiltersProps {
 
 const Filters: FC<FiltersProps> = ({ onFiltersChange }) => {
     const [categories, setCategories] = useState<Category[] | null>(null)
+    // const categoriesValue = useDebounce(categories, 500)
     const [cost, setCost] = useState<Cost>({ min: 0, max: 500 })
     const [minCost, setMinCost] = useState(0)
     const [maxCost, setMaxCost] = useState(500)
@@ -36,7 +37,11 @@ const Filters: FC<FiltersProps> = ({ onFiltersChange }) => {
         setCost({ min: 0, max: 500 })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(() => onFiltersChange({ categories, cost }), [categories, cost])
+    useEffect(
+        () => onFiltersChange({ categories, cost }),
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [categories, cost]
+    )
     return (
         <Sheet>
             <SheetTrigger asChild>

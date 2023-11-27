@@ -13,6 +13,7 @@ interface BookProps extends HTMLAttributes<HTMLDivElement> {
     priority?: boolean
     fetchPriority?: "high" | "low" | "auto"
     fill?: boolean
+    children?: React.ReactNode
 }
 
 const Book: FC<BookProps> = ({
@@ -25,6 +26,7 @@ const Book: FC<BookProps> = ({
     priority = false,
     fetchPriority = "auto",
     fill = false,
+    children,
     ...props
 }) => {
     return (
@@ -40,6 +42,7 @@ const Book: FC<BookProps> = ({
                 fetchPriority={fetchPriority}
                 fill={fill}
             />
+            {children}
         </BookWrapper>
     )
 }

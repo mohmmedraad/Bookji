@@ -1,3 +1,5 @@
+import { type Book } from "@/db/schema"
+import { TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
 
 import { type Cost } from "@/lib/validations/book"
@@ -31,4 +33,13 @@ export interface Category {
 export interface FiltersType {
     categories: Category[] | null
     cost: Cost
+}
+
+export type PartialBook = Pick<Book, "id" | "userId" | "cover" | "title">
+
+export type StarType = number
+
+export interface TRPCErrorType {
+    code: TRPCError["code"] | undefined
+    message: TRPCError["message"]
 }

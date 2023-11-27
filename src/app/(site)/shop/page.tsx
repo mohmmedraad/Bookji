@@ -11,6 +11,12 @@ const Page: FC = async ({}) => {
     const books = await db.query.books.findMany({
         limit: 10,
         offset: 0,
+        columns: {
+            userId: true,
+            cover: true,
+            id: true,
+            title: true,
+        },
         orderBy: (book) => [asc(book.createdAt)],
     })
 
