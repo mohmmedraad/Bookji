@@ -79,9 +79,13 @@ export function getCurrentPageNumber(page: string | undefined) {
 }
 
 export function absoluteUrl(path: string) {
-    if (typeof window !== 'undefined') return path
+    if (typeof window !== "undefined") return path
     if (process.env.NEXT_PUBLIC_VERCEL_URL)
-      return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}/${path}`
+        return `https://${process.env.NEXT_PUBLIC_APP_URL}/${path}`
     return `http://localhost:3000/${path}`
-  }
-  
+}
+
+export function getRandomNumber(min: number, max: number) {
+    // Generate a random number within the specified range
+    return Math.floor(Math.random() * (max - min + 1)) + min
+}

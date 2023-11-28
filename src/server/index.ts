@@ -5,10 +5,12 @@ import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, asc, between, eq, exists, inArray, like } from "drizzle-orm"
+import { omit } from "valibot"
 
 import {
     extendedBookSchema,
     getBooksSchema,
+    getRatingsSchema,
     rateBookSchema,
     userRatingSchema,
 } from "@/lib/validations/book"
@@ -18,31 +20,33 @@ import { privateProcedure, publicProcedure, router } from "./trpc"
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamic = "force-dynamic"
 
-const getUsersNames = async (userList: string[]) => {
+const getUsers = async (userList: string[]) => {
     //@ts-expect-error clerk types are UserListParam but they are actually string[]
     const users = await clerkClient.users.getUserList(userList)
     const usersFullNames: Map<string, string> = new Map()
 
-    users.forEach((user) =>
+    users.forEach((user) => {
         usersFullNames.set(user.id, `${user.firstName} ${user.lastName}`)
-    )
+        usersFullNames.set(user.id + "-img", user.imageUrl)
+    })
     return usersFullNames
 }
 
-export const withUsers = async (bookList: PartialBook[]) => {
-    const usersIds = getUsersIds(bookList)
-    const usersFullNames = await getUsersNames(usersIds)
+export const withUsers = async <T extends { userId: string }>(list: T[]) => {
+    const usersIds = getUsersIds(list)
+    const usersFullNames = await getUsers(usersIds)
 
-    return bookList.map((item) => {
+    return list.map((item) => {
         return {
             ...item,
             userFullName: usersFullNames.get(item.userId),
+            userImg: usersFullNames.get(item.userId + "-img"),
         }
     })
 }
 
-const getUsersIds = (bookList: PartialBook[]) => {
-    return bookList.map((book) => book.userId)
+const getUsersIds = <T extends { userId: string }>(list: T[]) => {
+    return list.map((item) => item.userId)
 }
 
 export const appRouter = router({
@@ -239,6 +243,7 @@ export const appRouter = router({
             }
             return { rating: userRating.rating }
         }),
+
     getBookRating: publicProcedure
         .input(wrap(userRatingSchema))
         .query(async ({ input }) => {
@@ -253,6 +258,34 @@ export const appRouter = router({
                 return null
             }
             return bookRating
+        }),
+
+    getRatings: publicProcedure
+        .input(wrap(getRatingsSchema))
+        .query(async ({ input }) => {
+            const { limit, cursor, bookId } = input
+            const offset = (cursor || 0) * limit
+            console.log("input: ", input)
+
+            const foundRatings = await db.query.ratings.findMany({
+                limit,
+                offset,
+                columns: {
+                    rating: true,
+                    userId: true,
+                    comment: true,
+                },
+                where: (rating) => eq(rating.bookId, bookId),
+                orderBy: (rating) => [asc(rating.createdAt)],
+            })
+
+            console.log("foundRatings: ", foundRatings)
+
+            if (!foundRatings) {
+                return []
+            }
+            const ratings = await withUsers(foundRatings)
+            return ratings
         }),
 })
 

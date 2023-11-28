@@ -31,7 +31,7 @@ const Page: FC<pageProps> = async ({ params: { bookId } }) => {
     }
 
     return (
-        <section className="overflow-x-hidden">
+        <section className="overflow-x-clip">
             <Container className="grid gap-48 pt-40 lg:grid-cols-2 lg:gap-14 xl:grid-cols-bookPage xl:justify-between">
                 <div className="grid h-[100vh] items-start justify-center lg:block">
                     <div className="sticky top-14">

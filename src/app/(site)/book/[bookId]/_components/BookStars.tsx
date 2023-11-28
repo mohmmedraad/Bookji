@@ -84,6 +84,7 @@ const BookStars: FC<BookStarsProps> = ({ id }) => {
                             <Progress
                                 size="sm"
                                 className="w-32"
+                                aria-label="Rating"
                                 value={stars[star]}
                             />
                         </div>

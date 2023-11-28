@@ -109,6 +109,12 @@ export const userRatingSchema = object({
     bookId: string(),
 })
 
+export const getRatingsSchema = object({
+    limit: coerce(number([minValue(1)]), Number),
+    cursor: union([nullType(), number()]),
+    bookId: string(),
+})
+
 export type RateBookSchema = Input<typeof rateBookSchema>
 export type BookCoverSchema = Input<typeof bookCoverSchema>
 export type AddBookFormSchema = Input<typeof addBookFormSchema>
