@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useRef, useState, type FC } from "react"
+import Link from "next/link"
 import { type Book as BookType } from "@/db/schema"
 import { type PartialBook } from "@/types"
 import { useIntersection, usePrevious } from "@mantine/hooks"
@@ -110,17 +111,19 @@ const BooksFeed: FC<BooksFeedProps> = ({
                             // Add a ref to the last post in the list
                             return (
                                 <div
-                                    key={book?.title}
                                     className="text-center"
                                     ref={ref}
+                                    key={book?.id}
                                 >
-                                    <Book
-                                        alt={`${book?.title}`}
-                                        src={`${book?.cover}`}
-                                        width={264}
-                                        height={380}
-                                        className="aspect-[2/3]"
-                                    />
+                                    <Link href={`/book/${book?.id}`}>
+                                        <Book
+                                            alt={`${book?.title}`}
+                                            src={`${book?.cover}`}
+                                            width={264}
+                                            height={380}
+                                            className="aspect-[2/3]"
+                                        />
+                                    </Link>
                                     <h3 className="mt-2 text-sm font-semibold">
                                         {book?.title}
                                     </h3>
@@ -131,14 +134,16 @@ const BooksFeed: FC<BooksFeedProps> = ({
                             )
                         } else {
                             return (
-                                <div key={book?.title} className="text-center">
-                                    <Book
-                                        alt={`${book?.title}`}
-                                        src={`${book?.cover}`}
-                                        width={264}
-                                        height={380}
-                                        className="aspect-[2/3]"
-                                    />
+                                <div key={book?.id} className="text-center">
+                                    <Link href={`/book/${book?.id}`}>
+                                        <Book
+                                            alt={`${book?.title}`}
+                                            src={`${book?.cover}`}
+                                            width={264}
+                                            height={380}
+                                            className="aspect-[2/3]"
+                                        />
+                                    </Link>
                                     <h3 className="mt-2 text-sm font-semibold">
                                         {book?.title}
                                     </h3>
