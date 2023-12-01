@@ -12,15 +12,6 @@ interface LayoutProps {
     children: ReactNode
 }
 
-// const queryClient = new QueryClient()
-// const trpcClient = trpc.createClient({
-//     links: [
-//         httpBatchLink({
-//             url: `http://localhost:3000/api/trpc`,
-//         }),
-//     ],
-// })
-
 const Providers: FC<LayoutProps> = ({ children }) => {
     const [queryClient] = useState(() => new QueryClient())
     const [trpcClient] = useState(() =>

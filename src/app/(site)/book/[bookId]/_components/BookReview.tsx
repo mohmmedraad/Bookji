@@ -1,5 +1,6 @@
 import { type FC } from "react"
 
+import { Separator } from "@/components/ui/Separator"
 import { UserAvatar } from "@/components/UserAvatar"
 
 import Stars from "./Stars"
@@ -33,10 +34,12 @@ const BookReview: FC<BookReviewProps> = ({
                     className="h-8 w-8"
                 />
                 <div>
-                    <h5>
+                    <h5 className="text-xs font-bold text-gray-900">
                         {firstName} {lastName}
                     </h5>
-                    <p>Collage student</p>
+                    <p className="mt-1 text-[10px] text-gray-500">
+                        Collage student
+                    </p>
                 </div>
             </div>
             <Stars
@@ -45,7 +48,8 @@ const BookReview: FC<BookReviewProps> = ({
                 className="mt-2 flex items-center gap-0"
                 starsClassName="w-4 h-4"
             />
-            <p className="mt-4">{comment}</p>
+            <p className="mt-4 text-sm text-gray-500">{comment}</p>
+            <Separator className="mt-8" />
         </div>
     )
 }

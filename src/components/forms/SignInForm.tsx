@@ -90,7 +90,7 @@ const SignInForm = () => {
         const { errorCode, errorMessage } = clerkError(error)
 
         if (errorCode === "form_identifier_not_found")
-            setEmailError(errorMessage)
+            return setEmailError(errorMessage)
 
         if (errorCode === "session_exists")
             return handleSessionExistsError(errorMessage, router)

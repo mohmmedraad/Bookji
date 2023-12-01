@@ -26,6 +26,7 @@ export default authMiddleware({
         "/terms(.*)",
         "/privacy(.*)",
         "/api(.*)",
+        "/book(.*)",
     ],
     afterAuth(auth, req) {
         if (auth.isPublicRoute) {
@@ -38,7 +39,7 @@ export default authMiddleware({
         if (!auth.userId) {
             //  If user tries to access a private route without being authenticated,
             //  redirect them to the sign in page
-            url.pathname = "/signin"
+            url.pathname = "/sign-in"
             return NextResponse.redirect(url)
         }
 

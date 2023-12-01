@@ -4,13 +4,22 @@ import { type PartialBook } from "@/types"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, asc, between, eq, exists, inArray, like } from "drizzle-orm"
-import { omit } from "valibot"
+import {
+    and,
+    asc,
+    between,
+    eq,
+    exists,
+    inArray,
+    like,
+    notInArray,
+} from "drizzle-orm"
 
 import {
     extendedBookSchema,
     getBooksSchema,
     getRatingsSchema,
+    getUserBooksSchema,
     rateBookSchema,
     userRatingSchema,
 } from "@/lib/validations/book"
@@ -30,6 +39,11 @@ const getUsers = async (userList: string[]) => {
         usersFullNames.set(user.id + "-img", user.imageUrl)
     })
     return usersFullNames
+}
+
+const getUser = async (userId: string) => {
+    const user = await clerkClient.users.getUser(userId)
+    return user
 }
 
 export const withUsers = async <T extends { userId: string }>(list: T[]) => {
@@ -55,7 +69,6 @@ export const appRouter = router({
         .query(async ({ input }) => {
             const { limit, cursor, searchParams } = input
             const offset = (cursor || 0) * limit
-            console.log("input: ", input)
 
             const foundBooks = await db.query.books.findMany({
                 limit,
@@ -101,7 +114,6 @@ export const appRouter = router({
             })
 
             if (!foundBooks) {
-                console.log("no book to show")
                 return null
             }
             const books = await withUsers(foundBooks)
@@ -131,7 +143,6 @@ export const appRouter = router({
                     },
                 }
             } catch (error) {
-                console.log("error: ", error)
                 throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
             }
         }),
@@ -153,7 +164,6 @@ export const appRouter = router({
     //                 },
     //             }
     //         } catch (error) {
-    //             console.log(error)
     //             if (error instanceof DrizzleError) {
     //                 throw new TRPCError({ code: "BAD_REQUEST" })
     //             }
@@ -170,7 +180,6 @@ export const appRouter = router({
                 .from(categories)
             return foundCategories
         } catch (error) {
-            console.log(error)
             throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
         }
     }),
@@ -178,7 +187,6 @@ export const appRouter = router({
     rateBook: privateProcedure
         .input(wrap(rateBookSchema))
         .mutation(async ({ input, ctx }) => {
-            console.log("here")
             const { bookId, rating, comment } = input
             const isBookExists = await db.query.books.findFirst({
                 columns: {
@@ -265,7 +273,6 @@ export const appRouter = router({
         .query(async ({ input }) => {
             const { limit, cursor, bookId } = input
             const offset = (cursor || 0) * limit
-            console.log("input: ", input)
 
             const foundRatings = await db.query.ratings.findMany({
                 limit,
@@ -279,12 +286,48 @@ export const appRouter = router({
                 orderBy: (rating) => [asc(rating.createdAt)],
             })
 
-            console.log("foundRatings: ", foundRatings)
-
             if (!foundRatings) {
                 return []
             }
             const ratings = await withUsers(foundRatings)
+            return ratings
+        }),
+
+    getUserBooks: publicProcedure
+        .input(wrap(getUserBooksSchema))
+        .query(async ({ input }) => {
+            const { limit, cursor, userId, excludedBooks } = input
+            const offset = (cursor || 0) * limit
+            console.log("input: ", input)
+
+            const foundBooks = await db.query.books.findMany({
+                limit,
+                offset,
+                columns: {
+                    id: true,
+                    userId: true,
+                    title: true,
+                    cover: true,
+                },
+                where: (book) =>
+                    and(
+                        eq(book.userId, userId),
+                        excludedBooks.length === 0
+                            ? undefined
+                            : notInArray(book.id, excludedBooks)
+                    ),
+                orderBy: (book) => [asc(book.createdAt)],
+            })
+
+            if (!foundBooks) {
+                return []
+            }
+            const user = await getUser(userId)
+            const ratings = foundBooks.map((book) => ({
+                ...book,
+                userFullName: `${user.firstName} ${user.lastName}`,
+                userImg: user.imageUrl,
+            }))
             return ratings
         }),
 })

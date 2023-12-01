@@ -15,12 +15,12 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
     return (
         <section className="relative overflow-x-clip py-20">
             <div
-                className="absolute left-0 top-0 z-[-1] h-[830px] w-full min-w-[1536px] bg-primary lg:h-[732px]"
+                className="absolute left-0 top-0 h-[830px] w-full min-w-[1536px] bg-primary lg:h-[732px]"
                 style={{
                     clipPath: "polygon(0 0, 100% 0, 100% 60%, 0 80%)",
                 }}
             />
-            <Container className="grid items-center gap-20 lg:grid-cols-2">
+            <Container className="grid items-center gap-20 lg:grid-cols-2 isolate">
                 <div className="max-w-2xl">
                     <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-white md:text-5xl">
                         Have a Problem!

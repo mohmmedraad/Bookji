@@ -7,6 +7,7 @@ import Container from "@/components/ui/Container"
 import { Icons } from "@/components/Icons"
 
 import BookInfo from "./_sections/BookInfo"
+import UserBooks from "./_sections/UserBooks"
 
 interface pageProps {
     params: {
@@ -32,7 +33,7 @@ const Page: FC<pageProps> = async ({ params: { bookId } }) => {
 
     return (
         <section className="overflow-x-clip">
-            <Container className="grid gap-48 pt-40 lg:grid-cols-2 lg:gap-14 xl:grid-cols-bookPage xl:justify-between">
+            <Container className="grid gap-48 pt-40 md:grid-cols-2 lg:gap-14 xl:grid-cols-bookPage xl:justify-between">
                 <div className="grid items-start justify-center lg:block">
                     <div className="sticky top-14">
                         <Book
@@ -57,7 +58,14 @@ const Page: FC<pageProps> = async ({ params: { bookId } }) => {
                     bookId={bookId}
                 />
 
-                <div className=" xl:block"></div>
+                <div className=" xl:block">
+                    <h4 className="mb-8 text-sm font-bold text-gray-900">
+                        BOOKS BY THIS AUTHOR
+                    </h4>
+                    <div className="sticky top-14 h-[calc(100vh-160px)] ">
+                        <UserBooks userId={book.userId} bookId={book.id} />
+                    </div>
+                </div>
             </Container>
         </section>
     )

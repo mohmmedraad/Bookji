@@ -1,7 +1,7 @@
 "use client"
 
 import { type FC } from "react"
-import { Progress } from "@nextui-org/react"
+import { Progress, Skeleton } from "@nextui-org/react"
 
 import { trpc } from "@/app/_trpc/client"
 
@@ -56,21 +56,32 @@ function calculateAverageRating(
 }
 
 const BookStars: FC<BookStarsProps> = ({ id }) => {
-    const { data } = trpc.getBookRating.useQuery({ bookId: id })
+    const { data, isFetching, isRefetching } = trpc.getBookRating.useQuery({
+        bookId: id,
+    })
 
     const { averageRating, stars } = calculateAverageRating(data || [])
+    console.log(averageRating)
     return (
         <div className="my-8 flex flex-wrap items-center gap-8">
             <div>
                 <div className="mx-auto text-6xl font-bold text-gray-900 md:text-7xl">
                     {averageRating.toFixed(1)}
                 </div>
-                <Stars
-                    className="mt-4 gap-0"
-                    starsClassName="h-4 w-4"
-                    isStatic={true}
-                    stars={averageRating}
-                />
+                {isFetching && !isRefetching ? (
+                    <div className="mt-4 flex">
+                        {new Array(5).fill(0).map((_, i) => (
+                            <Skeleton key={i} className="star h-4 w-4" />
+                        ))}
+                    </div>
+                ) : (
+                    <Stars
+                        className="mt-4 gap-0"
+                        starsClassName="h-4 w-4"
+                        isStatic={true}
+                        stars={averageRating}
+                    />
+                )}
                 <p className="mt-2 text-sm text-gray-500">
                     {data?.length.toLocaleString() || 0}
                 </p>
