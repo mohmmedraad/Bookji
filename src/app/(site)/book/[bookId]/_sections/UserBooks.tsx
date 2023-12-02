@@ -1,19 +1,18 @@
 "use client"
 
 import { useEffect, useState, type FC } from "react"
-import { Skeleton } from "@nextui-org/react"
 import { A11y, Pagination, Scrollbar } from "swiper/modules"
-import { Swiper, SwiperSlide } from "swiper/react"
+import { Swiper } from "swiper/react"
 
-// import { books } from "@/config/site"
-import Book from "@/components/ui/BookCover"
-import BookWrapper from "@/components/ui/BookWrapper"
-import MaskText from "@/components/MaskText"
 import { trpc } from "@/app/_trpc/client"
+
+import SwiperSlide from "../_components/UserBookSlide"
 
 import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/scrollbar"
+
+import UserBooksSkeleton from "../_components/UserBooksSkeleton"
 
 interface UserBooksProps {
     userId: string
@@ -21,44 +20,45 @@ interface UserBooksProps {
 }
 
 const UserBooks: FC<UserBooksProps> = ({ userId, bookId }) => {
-    const { data, isFetching, isFetchingNextPage, fetchNextPage } =
-        trpc.getUserBooks.useInfiniteQuery(
-            {
-                limit: 5,
-                userId,
-                excludedBooks: [Number(bookId)],
-            },
-            {
-                getNextPageParam: (lastPage, pages) =>
-                    lastPage?.length !== 0 ? pages.length : undefined,
-                initialCursor: 0,
-            }
-        )
+    const {
+        data,
+        isFetching,
+        isFetchingNextPage,
+        isRefetching,
+        fetchNextPage,
+    } = trpc.getUserBooks.useInfiniteQuery(
+        {
+            limit: 5,
+            userId,
+            excludedBooks: [Number(bookId)],
+        },
+        {
+            getNextPageParam: (lastPage, pages) =>
+                lastPage?.length !== 0 ? pages.length : undefined,
+            initialCursor: 0,
+        }
+    )
 
     const [activeIndex, setActiveIndex] = useState(0)
 
+    const books = data?.pages?.flatMap((page) => page)
     useEffect(() => {
-        if (!data?.pages.length) return
+        if (!books) return
 
-        if (activeIndex === data?.pages.length - 1) {
+        if (activeIndex === books.length - 1) {
+            console.log("fetching next page")
             void fetchNextPage()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [activeIndex, fetchNextPage])
 
-    const books = data?.pages?.flatMap((page) => page)
-
     return (
         <>
-            {isFetching && !isFetchingNextPage ? (
+            {isFetching && !isFetchingNextPage && !isRefetching ? (
                 <div className="flex h-full flex-col items-end gap-6 overflow-hidden">
                     {new Array(3).fill(0).map((_, i) => (
                         <div key={i}>
-                            <BookWrapper className="h-[165px] w-[115px]">
-                                <Skeleton className="h-full w-full" />
-                            </BookWrapper>
-                            <Skeleton className="mt-2 h-3 w-[100px]" />
-                            <Skeleton className="mt-1 h-2 w-[80px]" />
+                            <UserBooksSkeleton />
                         </div>
                     ))}
                 </div>
@@ -88,32 +88,11 @@ const UserBooks: FC<UserBooksProps> = ({ userId, bookId }) => {
                     {books?.map(({ userFullName, cover, title }, index) => (
                         <SwiperSlide
                             key={title}
-                            className={
-                                "h-min w-[115px] text-center duration-300"
-                            }
-                            style={{ height: "min-content", width: "115px" }}
-                        >
-                            <Book
-                                className={"h-[165px] w-full overflow-hidden"}
-                                alt={title}
-                                height={165}
-                                width={115}
-                                src={cover!}
-                            />
-                            <h4 className="text-base font-semibold text-gray-900">
-                                <MaskText
-                                    text={title}
-                                    isActive={index === activeIndex}
-                                />
-                            </h4>
-                            <p className="-mt-2 text-sm text-gray-500">
-                                <MaskText
-                                    text={userFullName}
-                                    isActive={index === activeIndex}
-                                    delay={0.25}
-                                />
-                            </p>
-                        </SwiperSlide>
+                            userFullName={userFullName}
+                            title={title}
+                            cover={cover!}
+                            isActive={index === activeIndex}
+                        />
                     ))}
                 </Swiper>
             )}

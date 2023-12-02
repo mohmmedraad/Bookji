@@ -3,7 +3,6 @@
 import { type FC } from "react"
 import { SwiperSlide } from "swiper/react"
 
-import { cn } from "@/lib/utils"
 import Book from "@/components/ui/BookCover"
 import MaskText from "@/components/MaskText"
 
@@ -18,7 +17,8 @@ const Slide: FC<SlideProps> = ({ userFullName, title, cover, isActive }) => {
     return (
         <SwiperSlide
             key={title}
-            className={cn("w-[200px] text-center duration-300")}
+            className={"h-min w-[115px] text-center duration-300"}
+            style={{ height: "min-content", width: "115px" }}
         >
             <Book
                 className={"h-[165px] w-full overflow-hidden"}
@@ -27,10 +27,10 @@ const Slide: FC<SlideProps> = ({ userFullName, title, cover, isActive }) => {
                 width={115}
                 src={cover}
             />
-            <h4 className="text-sm font-semibold text-gray-900">
+            <h4 className="text-base font-semibold text-gray-900">
                 <MaskText text={title} isActive={isActive} />
             </h4>
-            <p className="-mt-2 text-xs text-gray-500">
+            <p className="-mt-2 text-sm text-gray-500">
                 <MaskText
                     text={userFullName}
                     isActive={isActive}

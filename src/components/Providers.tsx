@@ -18,7 +18,7 @@ const Providers: FC<LayoutProps> = ({ children }) => {
         trpc.createClient({
             links: [
                 httpBatchLink({
-                    url: "https://bookji.vercel.app/api/trpc",
+                    url: absoluteUrl("/api/trpc"),
                 }),
             ],
         })

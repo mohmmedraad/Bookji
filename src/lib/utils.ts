@@ -9,6 +9,7 @@ import {
 import { clsx, type ClassValue } from "clsx"
 import { toast } from "sonner"
 import { twMerge } from "tailwind-merge"
+import { env } from "@/env.mjs"
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -79,11 +80,13 @@ export function getCurrentPageNumber(page: string | undefined) {
 }
 
 export function absoluteUrl(path: string) {
-    if (typeof window !== "undefined") return path
-    if (process.env.NEXT_PUBLIC_VERCEL_URL)
-        return `https://${process.env.NEXT_PUBLIC_APP_URL}/${path}`
-    return `http://localhost:3000/${path}`
-}
+    if (typeof window !== 'undefined') return path
+    if (process.env.VERCEL_URL)
+      return `https://${process.env.VERCEL_URL}${path}`
+    return `http://localhost:${
+      process.env.PORT ?? 3000
+    }${path}`
+  }
 
 export function getRandomNumber(min: number, max: number) {
     // Generate a random number within the specified range

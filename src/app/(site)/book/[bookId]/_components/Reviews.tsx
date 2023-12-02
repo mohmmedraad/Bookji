@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type FC } from "react"
 import { useIntersection } from "@mantine/hooks"
+
 import { trpc } from "@/app/_trpc/client"
 
 import BookReview from "./BookReview"
@@ -35,20 +36,14 @@ const Reviews: FC<ReviewsProps> = ({ bookId }) => {
             initialCursor: 0,
         }
     )
-
-    console.log("isFetchingNextPage: ", isFetchingNextPage)
-    console.log("isFetching: ", isFetching)
-
     useEffect(() => {
         const isIntersecting = entry?.isIntersecting
-        console.log("isIntersecting: ", isIntersecting)
         if (isIntersecting) {
             void fetchNextPage()
         }
     }, [entry, fetchNextPage])
 
     const reviews = data?.pages?.flatMap((page) => page)
-    console.log(data)
     return (
         <div className="mt-8">
             <h4 className="text-xl font-bold text-gray-900">
