@@ -1,6 +1,10 @@
 import { db } from "@/db"
-import { books, booksToCategories, categories, ratings } from "@/db/schema"
-import { type PartialBook } from "@/types"
+import {
+    books,
+    booksToCategories,
+    categories,
+    ratings,
+} from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
@@ -24,6 +28,7 @@ import {
     userRatingSchema,
 } from "@/lib/validations/book"
 
+import { cartRouter } from "./routers/cart"
 import { privateProcedure, publicProcedure, router } from "./trpc"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -330,6 +335,7 @@ export const appRouter = router({
             }))
             return ratings
         }),
+    cart: cartRouter,
 })
 
 export type AppRouter = typeof appRouter

@@ -1,6 +1,7 @@
 import { type FC } from "react"
 import { notFound } from "next/navigation"
 import { db } from "@/db"
+import { env } from "@/env.mjs"
 
 import Book from "@/components/ui/BookCover"
 import Container from "@/components/ui/Container"
@@ -58,7 +59,7 @@ const Page: FC<pageProps> = async ({ params: { bookId } }) => {
                     bookId={bookId}
                 />
 
-                <div className=" xl:block">
+                <div className="hidden xl:block">
                     <h4 className="mb-8 text-sm font-bold text-gray-900">
                         BOOKS BY THIS AUTHOR
                     </h4>

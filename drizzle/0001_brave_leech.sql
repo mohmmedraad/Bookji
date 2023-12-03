@@ -1,1 +1,0 @@
-ALTER TABLE `Bookji_ratings` ADD `comment` text;
