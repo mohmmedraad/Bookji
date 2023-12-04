@@ -29,7 +29,7 @@ const BookInfo: FC<BookInfoProps> = ({
             <h2 className="mt-7 text-4xl font-bold text-gray-900">{title}</h2>
             <p className="mt-4 text-xl text-gray-500">{description}</p>
             <BookStars id={id.toString()} />
-            <AddToCartButton bookId={id.toString()} />
+            <AddToCartButton />
             <Separator className="my-8" />
             <Ratting title={title} bookId={bookId} />
             <Reviews bookId={bookId} />

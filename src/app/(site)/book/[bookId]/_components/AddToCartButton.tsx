@@ -2,28 +2,30 @@
 
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
-import { TRPCClientError } from "@trpc/client"
-import { TRPCError } from "@trpc/server"
+import { type TRPCError } from "@trpc/server"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
+import useBook from "@/hooks/useBook"
 import useCart from "@/hooks/useCart"
 import { Button } from "@/components/ui/Button"
 import { trpc } from "@/app/_trpc/client"
 
-interface AddToCartButtonProps {
-    bookId: string
-}
+interface AddToCartButtonProps {}
 
-const AddToCartButton: FC<AddToCartButtonProps> = ({ bookId }) => {
+const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
     const { addBook, undoChanging } = useCart((store) => ({
         addBook: store.addBook,
         undoChanging: store.undoChanging,
     }))
+    const book = useBook((state) => state.book)
     const router = useRouter()
+
     const { data, mutate: addToCart } = trpc.cart.add.useMutation({
         onMutate: () => {
-            addBook({ bookId, quantity: 1 })
+            if (!book) return
+            book.id
+            addBook({ bookId: book.id.toString(), quantity: 1, ...book })
             toast.success("Added to cart")
         },
         onError: (error) => {
@@ -41,7 +43,8 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({ bookId }) => {
     }
 
     function handleClick() {
-        addToCart({ bookId, quantity: 1 })
+        if (!book) return
+        addToCart({ bookId: book.id.toString(), quantity: 1 })
     }
     return <Button onClick={handleClick}>Add To Cart</Button>
 }

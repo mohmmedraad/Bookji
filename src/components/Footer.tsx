@@ -18,7 +18,7 @@ const Footer: FC<FooterProps> = ({}) => {
                             <div className="flex gap-2">
                                 <Icons.Logo width="24" height="24" />
                                 <span className="ml-2 text-2xl font-bold text-white">
-                                    BOOK STORE
+                                    BOOKJI
                                 </span>
                             </div>
                         </Link>

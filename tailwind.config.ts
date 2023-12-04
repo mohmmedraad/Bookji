@@ -15,6 +15,7 @@ const config: Config = {
                 profile: "160px 1fr",
                 addBook: "176px 1fr",
                 bookPage: "1fr 1fr 170px",
+                cart: "1fr auto",
             },
             screens: {
                 xs: "480px",

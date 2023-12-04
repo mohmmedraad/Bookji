@@ -1,28 +1,4 @@
-import { db } from "@/db"
-import { carts } from "@/db/schema"
 import { type CartItem } from "@/types"
-
-export async function createCart(
-    userId: string,
-    items: CartItem[] | undefined = []
-) {
-    const cart = await db.insert(carts).values({
-        userId,
-        items,
-    })
-    return cart
-}
-
-export async function getCart(userId: string) {
-    const cart = await db.query.carts.findFirst({
-        columns: {
-            id: true,
-            items: true,
-        },
-        where: (cart, { eq }) => eq(cart.userId, userId),
-    })
-    return cart
-}
 
 export function updateCartBook(cartBooks: CartItem[], bookToUpdate: CartItem) {
     if (isBookNotExists(cartBooks, bookToUpdate)) {

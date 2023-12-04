@@ -5,6 +5,7 @@ import type { EmailAddress } from "@clerk/nextjs/server"
 
 import { navLinks } from "@/config/site"
 
+import Cart from "./Cart"
 import { Icons } from "./Icons"
 import MobileNav from "./MobileNav"
 import { buttonVariants } from "./ui/Button"
@@ -37,7 +38,7 @@ const NavBar: FC = async ({}) => {
                     <div className="flex items-center justify-between lg:flex">
                         <Icons.Logo width="40" height="40" />
                         <span className="hidden lg:ml-2 lg:inline lg:text-2xl lg:font-bold">
-                            BOOK STORE
+                            BOOKJI
                         </span>
                     </div>
                 </Link>
@@ -57,12 +58,7 @@ const NavBar: FC = async ({}) => {
                     </ul>
                 </nav>
                 <div className="flex items-center justify-center gap-3 ">
-                    <div className="relative flex rounded-full bg-primary p-2.5">
-                        <Icons.Cart width="16px" height="16px" />
-                        <div className="absolute -right-2 -top-2 inline-flex h-6 w-6 items-center rounded-full border border-transparent bg-secondary p-2 text-xs font-semibold text-gray-900 transition-colors hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
-                            10
-                        </div>
-                    </div>
+                    <Cart />
                     {user != null ? (
                         /**
                          * TODO: Add suspense

@@ -1,20 +1,40 @@
 import { db } from "@/db"
-import { carts, type Cart } from "@/db/schema"
+import { books, carts, type Cart } from "@/db/schema"
 import { type CartItem } from "@/types"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { eq } from "drizzle-orm"
+import { eq, inArray } from "drizzle-orm"
 
 import {
-    createCart,
     decreaseBookQuantity,
-    getCart,
     isBookNotExists,
     updateCartBook,
 } from "@/lib/utils/cart"
 import { cartItemSchema } from "@/lib/validations/cart"
 
 import { privateProcedure, router } from "../trpc"
+
+export async function createCart(
+    userId: string,
+    items: CartItem[] | undefined = []
+) {
+    const cart = await db.insert(carts).values({
+        userId,
+        items,
+    })
+    return cart
+}
+
+export async function getCart(userId: string) {
+    const cart = await db.query.carts.findFirst({
+        columns: {
+            id: true,
+            items: true,
+        },
+        where: (cart, { eq }) => eq(cart.userId, userId),
+    })
+    return cart
+}
 
 async function addBookToCart(
     cart: Pick<Cart, "id" | "items">,
@@ -46,7 +66,26 @@ export const cartRouter = router({
             return []
         }
 
-        return cart.items
+        if (!cart.items) {
+            return []
+        }
+
+        const booksIds = cart.items.map((item) => +item.bookId)
+
+        const cartItems = await db
+            .select({
+                bookId: books.id,
+                cover: books.cover,
+                title: books.title,
+                price: books.price,
+            })
+            .from(books)
+            .where(inArray(books.id, booksIds))
+
+        return cart.items.map((item) => ({
+            ...cartItems.find((book) => book.bookId === +item.bookId),
+            ...item,
+        }))
     }),
 
     add: privateProcedure
