@@ -29,7 +29,7 @@ const Ratting: FC<RateProps> = ({}) => {
             handleTRPCError({ code, message })
         },
         onSuccess: () => {
-            revalidatePath(`/book/[bookId]`)
+            revalidatePath(`/book/`)
         },
         retry: 0,
     })

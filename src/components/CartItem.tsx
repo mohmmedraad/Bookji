@@ -51,7 +51,7 @@ const CartItem: FC<CartItemProps> = ({
         const newCartBooks = cartBooks.filter((book) => book.bookId !== bookId)
         console.log("newCartBooks: ", newCartBooks)
         deleteItem(newCartBooks)
-        // setCartBooks(newCartBooks)
+        setCartBooks(newCartBooks)
     }
 
     function handleTRPCError(error: TRPCErrorType) {
