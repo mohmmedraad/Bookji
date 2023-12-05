@@ -10,6 +10,9 @@ const config: Config = {
     ],
     theme: {
         extend: {
+            transitionDuration: {
+                DEFAULT: "250ms",
+            },
             gridTemplateColumns: {
                 test: "2fr 1fr 1fr",
                 profile: "160px 1fr",
