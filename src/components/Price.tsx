@@ -7,7 +7,7 @@ interface PriceProps {
 
 const Price: FC<PriceProps> = ({ quantity, price }) => {
     return (
-        <div className="text-sm text-foreground">
+        <div className="text-xm mt-2 text-foreground">
             {price} x {quantity} = {quantity * price}
         </div>
     )

@@ -14,18 +14,29 @@ import { trpc } from "@/app/_trpc/client"
 interface AddToCartButtonProps {}
 
 const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
-    const { addBook, undoChanging } = useCart((store) => ({
-        addBook: store.addBook,
+    const { updateCart, undoChanging, cartBooks } = useCart((store) => ({
+        updateCart: store.updateCart,
         undoChanging: store.undoChanging,
+        cartBooks: store.cartBooks,
     }))
     const book = useBook((state) => state.book)
     const router = useRouter()
 
-    const { data, mutate: addToCart } = trpc.cart.add.useMutation({
+    const { data, mutate: addToCart } = trpc.cart.update.useMutation({
         onMutate: () => {
             if (!book) return
-            book.id
-            addBook({ bookId: book.id.toString(), quantity: 1, ...book })
+            const isBookInCart = cartBooks.find(
+                (item) => item.bookId === book.id.toString()
+            )
+            if (isBookInCart) {
+                updateCart({
+                    bookId: book.id.toString(),
+                    quantity: isBookInCart.quantity + 1,
+                    ...book,
+                })
+            } else {
+                updateCart({ bookId: book.id.toString(), quantity: 1, ...book })
+            }
             toast.success("Added to cart")
         },
         onError: (error) => {
@@ -44,7 +55,7 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
 
     function handleClick() {
         if (!book) return
-        addToCart({ bookId: book.id.toString(), quantity: 1 })
+        addToCart(cartBooks)
     }
     return <Button onClick={handleClick}>Add To Cart</Button>
 }

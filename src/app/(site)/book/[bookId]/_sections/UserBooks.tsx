@@ -12,14 +12,14 @@ import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/scrollbar"
 
+import useBook from "@/hooks/useBook"
+
 import UserBooksSkeleton from "../_components/UserBooksSkeleton"
 
-interface UserBooksProps {
-    userId: string
-    bookId: number
-}
+interface UserBooksProps {}
 
-const UserBooks: FC<UserBooksProps> = ({ userId, bookId }) => {
+const UserBooks: FC<UserBooksProps> = ({}) => {
+    const book = useBook((state) => state.book)
     const {
         data,
         isFetching,
@@ -29,8 +29,8 @@ const UserBooks: FC<UserBooksProps> = ({ userId, bookId }) => {
     } = trpc.getUserBooks.useInfiniteQuery(
         {
             limit: 5,
-            userId,
-            excludedBooks: [Number(bookId)],
+            userId: book?.userId || "",
+            excludedBooks: [Number(book?.id)],
         },
         {
             getNextPageParam: (lastPage, pages) =>

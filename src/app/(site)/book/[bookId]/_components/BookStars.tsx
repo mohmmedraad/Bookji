@@ -3,13 +3,12 @@
 import { type FC } from "react"
 import { Progress, Skeleton } from "@nextui-org/react"
 
+import useBook from "@/hooks/useBook"
 import { trpc } from "@/app/_trpc/client"
 
 import Stars from "./Stars"
 
-interface BookStarsProps {
-    id: string
-}
+interface BookStarsProps {}
 
 const getStarsAverage = (stars: Record<string, number>, totalStars: number) => {
     const keys = Object.keys(stars)
@@ -26,6 +25,7 @@ function calculateAverageRating(
     }[]
 ) {
     // Check if the ratings array is not empty
+    console.log("ratings: ", ratings)
 
     const stars: Record<string, number> = {
         "1": 0,
@@ -55,9 +55,10 @@ function calculateAverageRating(
     return { averageRating, stars: getStarsAverage(stars, totalResponses) }
 }
 
-const BookStars: FC<BookStarsProps> = ({ id }) => {
+const BookStars: FC<BookStarsProps> = ({}) => {
+    const book = useBook((state) => state.book)
     const { data, isFetching, isRefetching } = trpc.getBookRating.useQuery({
-        bookId: id,
+        bookId: book?.id.toString() || "",
     })
 
     const { averageRating, stars } = calculateAverageRating(data || [])

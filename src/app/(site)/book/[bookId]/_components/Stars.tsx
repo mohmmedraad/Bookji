@@ -33,6 +33,7 @@ const Stars: FC<StarsProps> = ({
 
     function handleClicked(index: number) {
         if (isStatic) return
+        console.log(index)
         setStar(index)
         onChose && onChose(index)
     }
@@ -84,7 +85,7 @@ const Stars: FC<StarsProps> = ({
 
     useEffect(() => {
         if (onChange) {
-            onChange(star + 1)
+            onChange(star)
         }
     }, [onChange, star])
 

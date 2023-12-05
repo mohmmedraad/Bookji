@@ -1,12 +1,12 @@
 import { type CartItem } from "@/types"
-import { create, useStore } from "zustand"
+import { create } from "zustand"
 
 import { decreaseBookQuantity, updateCartBook } from "@/lib/utils/cart"
 
-interface ExtendedCartItem extends CartItem {
+export interface ExtendedCartItem extends CartItem {
     cover?: string | null | undefined
     title?: string | undefined
-    price?: string | undefined
+    price?: string
 }
 
 interface Store {
@@ -15,12 +15,17 @@ interface Store {
 
     setCartBooks: (cartBooks: ExtendedCartItem[]) => void
     updateCart: (book: CartItem) => void
-    decreaseQuantity: (bookToUpdate: ExtendedCartItem) => void
     addBook: (bookToUpdate: ExtendedCartItem) => void
     undoChanging: () => void
 }
 // : cartBooks.filter((book) => book.quantity > 0)
 function update(cartBooks: ExtendedCartItem[], book: CartItem) {
+    const isBookNotExists = !cartBooks.some(
+        (item) => item.bookId === book.bookId
+    )
+    if (isBookNotExists) {
+        return [...cartBooks, book]
+    }
     const updatedCartBooks = cartBooks.map((item) => {
         if (item.bookId !== book.bookId) {
             return item
@@ -37,16 +42,13 @@ const useCart = create<Store>((set, get) => ({
     cartBooks: [],
     prevCartBooks: [],
     setCartBooks: (cartBooks) => set({ cartBooks }),
-    updateCart: (book) => set({ cartBooks: update(get().cartBooks, book) }),
-    decreaseQuantity: (bookToUpdate) => {
+    updateCart: (book) => {
         set({ prevCartBooks: get().cartBooks })
-        set({ cartBooks: decreaseBookQuantity(get().cartBooks, bookToUpdate) })
+        set({ cartBooks: update(get().cartBooks, book) })
     },
     addBook: (book) => {
         set({ prevCartBooks: get().cartBooks })
-        set({ cartBooks: updateCartBook(get().cartBooks, book) })
-
-        console.log("cartBooks: ", get().cartBooks)
+        set({ cartBooks: update(get().cartBooks, book) })
     },
     undoChanging: () => set((state) => ({ cartBooks: state.prevCartBooks })),
 }))

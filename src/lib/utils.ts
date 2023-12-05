@@ -76,7 +76,7 @@ export function handleSessionExistsError(
 }
 
 export function getCurrentPageNumber(page: string | undefined) {
-    return Number(page) || 0
+    return page === undefined ? 0 : Number(page) < 0 ? 0 : Number(page)
 }
 
 export function absoluteUrl(path: string) {

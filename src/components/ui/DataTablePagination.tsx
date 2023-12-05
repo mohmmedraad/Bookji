@@ -15,7 +15,7 @@ export function DataTablePagination<TData>({
     currentPage,
 }: DataTablePaginationProps<TData>) {
     const nextPage = currentPage + 1
-    const previousPage = currentPage - 1 || 1
+    const previousPage = currentPage < 0 ? 0 : currentPage - 1
     return (
         <div>
             <div>

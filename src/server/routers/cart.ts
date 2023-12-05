@@ -4,6 +4,7 @@ import { type CartItem } from "@/types"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { eq, inArray } from "drizzle-orm"
+import { array } from "valibot"
 
 import {
     decreaseBookQuantity,
@@ -66,7 +67,7 @@ export const cartRouter = router({
             return []
         }
 
-        if (!cart.items) {
+        if (cart.items === null || cart.items.length === 0) {
             return []
         }
 
@@ -103,7 +104,7 @@ export const cartRouter = router({
         }),
 
     update: privateProcedure
-        .input(wrap(cartItemSchema))
+        .input(wrap(array(cartItemSchema)))
         .mutation(async ({ input, ctx }) => {
             const cart = await getCart(ctx.userId)
 
@@ -115,7 +116,13 @@ export const cartRouter = router({
                 })
             }
 
-            const updatedCart = await addBookToCart(cart, input, ctx.userId)
+            const updatedCart = await db
+                .update(carts)
+                .set({
+                    items: input,
+                })
+                .where(eq(carts.userId, ctx.userId))
+
             return updatedCart.insertId
         }),
 

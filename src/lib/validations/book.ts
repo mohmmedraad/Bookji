@@ -96,8 +96,8 @@ export type Cost = Input<typeof cost>
 export const rateBookSchema = object({
     bookId: string(),
     rating: number([
-        minValue(0.5, "The rating must be above .5"),
-        maxValue(5, "The rating must be below 5"),
+        minValue(1, "The rating must be above 0"),
+        maxValue(5, "The rating must be below 6"),
     ]),
     comment: string([
         maxLength(500, "The comment length must be below 500 characters"),

@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form"
 import { omit } from "valibot"
 
 import { rateBookSchema, type RateBookSchema } from "@/lib/validations/book"
+import useBook from "@/hooks/useBook"
 import { Button } from "@/components/ui/Button"
 import {
     Dialog,
@@ -29,9 +30,7 @@ import { trpc } from "@/app/_trpc/client"
 import Stars from "./Stars"
 
 interface RatingDialogProps {
-    title: string
     open: boolean
-    bookId: string
     setOpen: Dispatch<SetStateAction<boolean>>
     onSubmit: (data: RateBookSchema) => void
 }
@@ -41,21 +40,16 @@ const defaultValues: Omit<RateBookSchema, "bookId"> = {
     rating: 0,
 }
 
-const RatingDialog: FC<RatingDialogProps> = ({
-    title,
-    open,
-    bookId,
-    setOpen,
-    onSubmit,
-}) => {
+const RatingDialog: FC<RatingDialogProps> = ({ open, setOpen, onSubmit }) => {
     const [star, setRate] = useState<StarType>()
     const form = useForm<RateBookSchema>({
         resolver: valibotResolver(omit(rateBookSchema, ["bookId"])),
         defaultValues,
     })
+    const book = useBook((state) => state.book)
 
     const { data, isFetching } = trpc.getUserRating.useQuery({
-        bookId,
+        bookId: book?.id.toString() || "",
     })
 
     return (
@@ -79,7 +73,7 @@ const RatingDialog: FC<RatingDialogProps> = ({
             <Dialog open={open} onOpenChange={setOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Rate {title}</DialogTitle>
+                        <DialogTitle>Rate {book?.title}</DialogTitle>
                         <DialogDescription>
                             Reviews art public and Include your account and
                             device information

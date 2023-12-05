@@ -1,36 +1,35 @@
 "use client"
 
 import { useState, type FC } from "react"
+import { revalidatePath } from "next/cache"
 import { type TRPCErrorType } from "@/types"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
 import { type RateBookSchema } from "@/lib/validations/book"
+import useBook from "@/hooks/useBook"
 import { useSignIn } from "@/hooks/useSignIn"
 import { trpc } from "@/app/_trpc/client"
 
 import RatingDialog from "./RatingDialog"
 
-interface RateProps {
-    title: string
-    bookId: string
-}
+interface RateProps {}
 
-const Ratting: FC<RateProps> = ({ title, bookId }) => {
+const Ratting: FC<RateProps> = ({}) => {
     const [open, setOpen] = useState(false)
+    const book = useBook((state) => state.book)
 
     const { signIn } = useSignIn()
 
     const { mutate: rateBook } = trpc.rateBook.useMutation({
         onError: (error) => {
+            console.log("error: ", error)
             const code = error.data?.code
             const message = error.message
             handleTRPCError({ code, message })
         },
         onSuccess: () => {
-            /**
-             * TODO: revalidate the rating section
-             */
+            revalidatePath(`/book/${book?.id}`)
         },
         retry: 0,
     })
@@ -51,27 +50,18 @@ const Ratting: FC<RateProps> = ({ title, bookId }) => {
 
     function onSubmit(data: RateBookSchema) {
         console.log(data)
-        rateBook({ ...data, bookId })
+        rateBook({ ...data, bookId: book?.id.toString() || "" })
         setOpen(false)
         toast.success("Rating added")
-        /**
-         * TODO: revalidate the book page
-         */
     }
 
     return (
         <>
-            <p className="text-sm text-gray-900">Rate {title}</p>
+            <p className="text-sm text-gray-900">Rate {book?.title}</p>
             <p className="mt-2 text-xs text-gray-500">
                 Tell other what your thinks
             </p>
-            <RatingDialog
-                open={open}
-                title={title}
-                onSubmit={onSubmit}
-                setOpen={setOpen}
-                bookId={bookId}
-            />
+            <RatingDialog open={open} onSubmit={onSubmit} setOpen={setOpen} />
         </>
     )
 }

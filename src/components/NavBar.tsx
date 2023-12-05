@@ -59,6 +59,7 @@ const NavBar: FC = async ({}) => {
                 </nav>
                 <div className="flex items-center justify-center gap-3 ">
                     <Cart />
+
                     {user != null ? (
                         /**
                          * TODO: Add suspense
@@ -76,6 +77,7 @@ const NavBar: FC = async ({}) => {
                             Sign In
                         </Link>
                     )}
+
                     <MobileNav />
                 </div>
             </Container>

@@ -1,5 +1,12 @@
-import { type FC } from "react"
-import { Trash } from "lucide-react"
+import { use, type FC } from "react"
+import { TRPCErrorType } from "@/types"
+import { AwardIcon, Trash } from "lucide-react"
+import { toast } from "sonner"
+
+import { handleGenericError } from "@/lib/utils"
+import useCart from "@/hooks/useCart"
+import { useSignIn } from "@/hooks/useSignIn"
+import { trpc } from "@/app/_trpc/client"
 
 import EditQuantity from "./EditQuantity"
 import Price from "./Price"
@@ -22,6 +29,48 @@ const CartItem: FC<CartItemProps> = ({
     quantity,
     coverImage,
 }) => {
+    const { cartBooks, setCartBooks, undoChanging } = useCart((state) => ({
+        cartBooks: state.cartBooks,
+        setCartBooks: state.setCartBooks,
+        undoChanging: state.undoChanging,
+    }))
+
+    const { data, mutate: deleteItem } = trpc.cart.update.useMutation({
+        onError: (error) => {
+            undoChanging()
+            const code = error.data?.code
+            const message = error.message
+
+            handleTRPCError({ code, message })
+        },
+    })
+
+    const { signIn } = useSignIn()
+
+    function handleRemoveItem() {
+        const newCartBooks = cartBooks.filter((book) => book.bookId !== bookId)
+        console.log("newCartBooks: ", newCartBooks)
+        deleteItem(newCartBooks)
+        // setCartBooks(newCartBooks)
+    }
+
+    function handleTRPCError(error: TRPCErrorType) {
+        if (error.code === "UNAUTHORIZED") {
+            toast.error("You need to be logged in")
+            return signIn()
+        }
+
+        if (error.code === "NOT_FOUND") {
+            return toast.error("Cart not found we will create a new one")
+        }
+
+        if (error.code === "BAD_REQUEST") {
+            return toast.error(error.message)
+        }
+
+        return handleGenericError()
+    }
+
     return (
         <div>
             <div className="flex gap-3">
@@ -32,18 +81,22 @@ const CartItem: FC<CartItemProps> = ({
                     height={112}
                     src={coverImage}
                 />
-                <div className="flex flex-col justify-between">
-                    <div className="flex gap-3">
+                <div className="flex w-full flex-wrap items-start justify-between gap-4">
+                    <div>
                         <p className="line-clamp-1 overflow-y-hidden text-sm font-semibold text-gray-900">
                             {title}
                         </p>
-                        <EditQuantity bookId={bookId} bookQuantity={quantity} />
+                        <Price price={price} quantity={quantity} />
                     </div>
-                    <div className="flex items-center justify-between">
-                        <Button variant={"outline"} className="p-2">
+                    <div className="flex items-center gap-2">
+                        <EditQuantity bookId={bookId} bookQuantity={quantity} />
+                        <Button
+                            variant={"outline"}
+                            className="p-2"
+                            onClick={handleRemoveItem}
+                        >
                             <Trash className="h-4 w-4 text-foreground" />
                         </Button>
-                        <Price price={price} quantity={quantity} />
                     </div>
                 </div>
             </div>

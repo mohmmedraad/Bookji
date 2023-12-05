@@ -1,7 +1,13 @@
-import { useState, type FC } from "react"
+import { useEffect, useState, type FC } from "react"
+import { useRouter } from "next/navigation"
+import { type TRPCError } from "@trpc/server"
 import { Minus, Plus } from "lucide-react"
+import { toast } from "sonner"
 
+import { handleGenericError } from "@/lib/utils"
 import useCart from "@/hooks/useCart"
+import useDebounce from "@/hooks/useDebounce"
+import { trpc } from "@/app/_trpc/client"
 
 import { Button } from "./ui/Button"
 import { Input } from "./ui/Input"
@@ -14,6 +20,24 @@ interface EditQuantityProps {
 const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
     const [quantity, setQuantity] = useState(bookQuantity)
     const updateCart = useCart((state) => state.updateCart)
+    const undoChanging = useCart((state) => state.undoChanging)
+    const cartBooks = useCart((state) => state.cartBooks)
+    const quantityValue = useDebounce(quantity, 1000)
+    const router = useRouter()
+    const { mutate: addToCart } = trpc.cart.update.useMutation({
+        onError: (error) => {
+            undoChanging()
+            handleTRPCError(error.data?.code)
+        },
+    })
+
+    function handleTRPCError(errorCode: TRPCError["code"] | undefined) {
+        if (errorCode === "UNAUTHORIZED") {
+            toast.error("Please login first")
+            router.push("/sign-in")
+        }
+        return handleGenericError()
+    }
 
     const handleIncrement = () => {
         if (quantity >= 100) return
@@ -28,6 +52,11 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
         })
         setQuantity(quantity - 1)
     }
+
+    useEffect(() => {
+        if (!quantityValue) return
+        addToCart(cartBooks)
+    }, [quantityValue])
 
     return (
         <div className="flex items-center justify-center">

@@ -61,21 +61,21 @@ export const Columns: ColumnDef<BookType>[] = [
         enableSorting: false,
         enableHiding: false,
     },
-    {
-        accessorKey: "categories",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="categories" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium text-gray-800">
-                        {row.getValue("categories")}
-                    </span>
-                </div>
-            )
-        },
-    },
+    // {
+    //     accessorKey: "categories",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title="categories" />
+    //     ),
+    //     cell: ({ row }) => {
+    //         return (
+    //             <div className="flex space-x-2">
+    //                 <span className="max-w-[500px] truncate font-medium text-gray-800">
+    //                     {row.getValue("categories")}
+    //                 </span>
+    //             </div>
+    //         )
+    //     },
+    // },
     {
         accessorKey: "inventory",
         header: ({ column }) => (
@@ -91,27 +91,27 @@ export const Columns: ColumnDef<BookType>[] = [
             )
         },
     },
-    {
-        accessorKey: "rating",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="rating" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex w-[50px] items-center gap-3">
-                    <Star
-                        className="fill-primary text-primary"
-                        width={16}
-                        height={16}
-                    />
-                    <span className="text-sm font-bold text-primary">
-                        {row.getValue("rating")}
-                        <span className="text-gray-300">/5</span>
-                    </span>
-                </div>
-            )
-        },
-    },
+    // {
+    //     accessorKey: "rating",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title="rating" />
+    //     ),
+    //     cell: ({ row }) => {
+    //         return (
+    //             <div className="flex w-[50px] items-center gap-3">
+    //                 <Star
+    //                     className="fill-primary text-primary"
+    //                     width={16}
+    //                     height={16}
+    //                 />
+    //                 <span className="text-sm font-bold text-primary">
+    //                     {row.getValue("rating")}
+    //                     <span className="text-gray-300">/5</span>
+    //                 </span>
+    //             </div>
+    //         )
+    //     },
+    // },
     {
         accessorKey: "price",
         header: ({ column }) => (

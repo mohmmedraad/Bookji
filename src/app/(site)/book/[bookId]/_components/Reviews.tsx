@@ -3,21 +3,21 @@
 import { useEffect, useRef, type FC } from "react"
 import { useIntersection } from "@mantine/hooks"
 
+import useBook from "@/hooks/useBook"
 import { trpc } from "@/app/_trpc/client"
 
 import BookReview from "./BookReview"
 import RatingSkeleton from "./RatingSkeleton"
 
-interface ReviewsProps {
-    bookId: string
-}
+interface ReviewsProps {}
 
-const Reviews: FC<ReviewsProps> = ({ bookId }) => {
+const Reviews: FC<ReviewsProps> = () => {
     const lastPostRef = useRef<HTMLElement>(null)
     const { ref, entry } = useIntersection({
         root: lastPostRef.current,
         threshold: 1,
     })
+    const book = useBook((state) => state.book)
 
     const {
         data,
@@ -28,7 +28,7 @@ const Reviews: FC<ReviewsProps> = ({ bookId }) => {
     } = trpc.getRatings.useInfiniteQuery(
         {
             limit: 10,
-            bookId,
+            bookId: book?.id.toString() || "",
         },
         {
             getNextPageParam: (lastPage, pages) =>

@@ -1,5 +1,7 @@
 import { type CartItem } from "@/types"
 
+import { type ExtendedCartItem } from "@/hooks/useCart"
+
 export function updateCartBook(cartBooks: CartItem[], bookToUpdate: CartItem) {
     if (isBookNotExists(cartBooks, bookToUpdate)) {
         cartBooks.push(bookToUpdate)
@@ -40,4 +42,11 @@ export function decreaseBookQuantity(
 
 export function isBookNotExists(cartBooks: CartItem[], bookToCheck: CartItem) {
     return !cartBooks.some((book) => book.bookId === bookToCheck.bookId)
+}
+
+export function getCartTotal(cartBooks: ExtendedCartItem[]) {
+    return cartBooks.reduce(
+        (total, book) => total + +book.price! * book.quantity,
+        0
+    )
 }
