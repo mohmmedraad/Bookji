@@ -85,8 +85,9 @@ const UserBooks: FC<UserBooksProps> = ({}) => {
                     onSlideChange={({ realIndex }) => setActiveIndex(realIndex)}
                     wrapperClass="items-end"
                 >
-                    {books?.map(({ userFullName, cover, title }, index) => (
+                    {books?.map(({ userFullName, cover, title, id }, index) => (
                         <SwiperSlide
+                            id={id}
                             key={title}
                             userFullName={userFullName}
                             title={title}

@@ -22,7 +22,7 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
     const book = useBook((state) => state.book)
     const router = useRouter()
 
-    const { data, mutate: addToCart } = trpc.cart.update.useMutation({
+    const { data, mutate: addToCart } = trpc.cart.add.useMutation({
         onMutate: () => {
             if (!book) return
             const isBookInCart = cartBooks.find(
@@ -55,7 +55,7 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
 
     function handleClick() {
         if (!book) return
-        addToCart(cartBooks)
+        addToCart({ bookId: book.id.toString(), quantity: 1 })
     }
     return <Button onClick={handleClick}>Add To Cart</Button>
 }

@@ -1,7 +1,7 @@
 "use client"
 
 import { useState, type FC } from "react"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, revalidateTag } from "next/cache"
 import { type TRPCErrorType } from "@/types"
 import { toast } from "sonner"
 
@@ -29,7 +29,7 @@ const Ratting: FC<RateProps> = ({}) => {
             handleTRPCError({ code, message })
         },
         onSuccess: () => {
-            revalidatePath(`/book/${book?.id}`)
+            revalidatePath(`/book/[bookId]`)
         },
         retry: 0,
     })
