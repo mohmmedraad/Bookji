@@ -85,6 +85,6 @@ const config: Config = {
         },
     },
     darkMode: "class",
-    plugins: [nextui(), require("tailwindcss-animate")],
+    plugins: [require("tailwindcss-animate"), nextui()],
 }
 export default config

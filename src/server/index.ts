@@ -1,10 +1,6 @@
+import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import {
-    books,
-    booksToCategories,
-    categories,
-    ratings,
-} from "@/db/schema"
+import { books, booksToCategories, categories, ratings } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
@@ -228,6 +224,8 @@ export const appRouter = router({
                 rating,
                 comment,
             })
+
+            revalidatePath("/")
 
             return {
                 message: "success",
