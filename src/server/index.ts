@@ -8,6 +8,7 @@ import {
     and,
     asc,
     between,
+    desc,
     eq,
     exists,
     inArray,
@@ -286,7 +287,7 @@ export const appRouter = router({
                     comment: true,
                 },
                 where: (rating) => eq(rating.bookId, bookId),
-                orderBy: (rating) => [asc(rating.createdAt)],
+                orderBy: (rating) => [desc(rating.createdAt)],
             })
 
             if (!foundRatings) {
