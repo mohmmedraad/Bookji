@@ -14,6 +14,7 @@ import {
     object,
     string,
     union,
+    url,
     type Input,
 } from "valibot"
 
@@ -30,7 +31,7 @@ export const bookSchema = object({
 
 export type BookType = Input<typeof bookSchema>
 
-export const addBookFormSchema = object({
+export const bookFormSchema = object({
     title: string([minLength(5, "The title must be above the 5 characters")]),
     description: string([
         minLength(10, "The description length must be above 10 characters"),
@@ -41,7 +42,6 @@ export const addBookFormSchema = object({
             id: number(),
             name: string(),
         }),
-        "Invalid categories",
         [minLength(1, "You must select at least one category")]
     ),
     price: string([minValue("0", "The price must be positive.")]),
@@ -49,6 +49,7 @@ export const addBookFormSchema = object({
         number([minValue(1, "The number of items must be above the 1")]),
         Number
     ),
+    cover: string([url()]),
 })
 
 export const bookCoverSchema = blob([
@@ -60,14 +61,14 @@ export const bookCoverSchema = blob([
 ])
 
 export const extendedBookSchema = merge([
-    addBookFormSchema,
+    bookFormSchema,
     object({
         cover: string("The cover key is required"),
     }),
 ])
 
 export const updateBookSchema = merge([
-    addBookFormSchema,
+    bookFormSchema,
     object({ id: number(), cover: string("The cover key is required") }),
 ])
 
@@ -124,4 +125,4 @@ export const getUserBooksSchema = object({
 
 export type RateBookSchema = Input<typeof rateBookSchema>
 export type BookCoverSchema = Input<typeof bookCoverSchema>
-export type AddBookFormSchema = Input<typeof addBookFormSchema>
+export type BookFormSchema = Input<typeof bookFormSchema>

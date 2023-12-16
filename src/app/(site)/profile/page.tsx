@@ -17,7 +17,9 @@ interface pageProps {
 const Page: FC<pageProps> = async ({ searchParams }) => {
     const currentPage = getCurrentPageNumber(searchParams?._page)
     const user = await currentUser()
-    if (!user) return redirect("/sign-in")
+    if (!user || !user.id) {
+        return
+    }
 
     const userBooks = await db.query.books.findMany({
         offset: currentPage * 10,

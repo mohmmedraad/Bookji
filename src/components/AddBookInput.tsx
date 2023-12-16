@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type FC, type HTMLAttributes } from "react"
+import { useEffect, useState, type FC, type HTMLAttributes } from "react"
 import { parse, ValiError } from "valibot"
 
 import { uploadFiles } from "@/lib/uploadthing"
@@ -8,13 +8,20 @@ import { bookCoverSchema } from "@/lib/validations/book"
 
 import DropdownZone from "./DropdownZone"
 
-interface AddBookInputProps extends HTMLAttributes<HTMLDivElement> {
-    onCoverUploaded: (fileKey: string | null) => void
+interface AddBookInputProps {
+    onChange?: (coverUrl: string) => void
 }
 
-const AddBookInput: FC<AddBookInputProps> = ({ onCoverUploaded }) => {
+const AddBookInput: FC<AddBookInputProps> = ({ onChange }) => {
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [uploadProgress, setUploadProgress] = useState<number>(0)
+    const [coverUrl, setCoverUrl] = useState<string>("")
+
+    useEffect(() => {
+        if (onChange) {
+            onChange(coverUrl)
+        }
+    }, [onChange, coverUrl])
 
     async function handleOnFileChange(cover: File | null) {
         /**
@@ -26,7 +33,7 @@ const AddBookInput: FC<AddBookInputProps> = ({ onCoverUploaded }) => {
             setUploadProgress(0)
             parse(bookCoverSchema, cover)
             const uploadedCover = await uploadCover(cover)
-            onCoverUploaded(uploadedCover[0].url)
+            setCoverUrl(uploadedCover[0].url)
         } catch (error) {
             handleCoverError(error)
         }
@@ -44,8 +51,7 @@ const AddBookInput: FC<AddBookInputProps> = ({ onCoverUploaded }) => {
     }
 
     function handleCoverError(error: unknown) {
-        onCoverUploaded(null)
-        console.log(error instanceof ValiError)
+        setCoverUrl("")
         if (error instanceof ValiError) {
             return setErrorMessage(error.message)
         }

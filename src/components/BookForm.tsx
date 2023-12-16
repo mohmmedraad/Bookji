@@ -9,10 +9,7 @@ import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
-import {
-    addBookFormSchema,
-    type AddBookFormSchema,
-} from "@/lib/validations/book"
+import { bookFormSchema, type BookFormSchema } from "@/lib/validations/book"
 import { Input as FormInput } from "@/components/ui/Input"
 import { trpc } from "@/app/_trpc/client"
 
@@ -30,59 +27,50 @@ import {
 import { MultiSelect } from "./ui/MultiSelect"
 import { Textarea } from "./ui/Textarea"
 
-interface AddBookFormProps {
+interface BookFormProps extends Partial<BookFormSchema> {
     closeFun: () => void
+    onSubmit: (data: BookFormSchema) => void
+    // title?: string
+    // description?: string
+    // categories?: Category[]
+    // price?: string
+    // inventory?: number
 }
 
-const defaultValues: Partial<AddBookFormSchema> = {
-    title: "",
-    description: "",
-    categories: [],
-    price: "0",
-    inventory: 1,
-}
+// const defaultValues: Partial<BookFormSchema> = {
+//     title: "",
+//     description: "",
+//     categories: [],
+//     price: "0",
+//     inventory: 1,
+// }
 
-const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
-    const form = useForm<AddBookFormSchema>({
-        resolver: valibotResolver(addBookFormSchema),
-        defaultValues,
-    })
+const BookForm: FC<BookFormProps> = ({
+    closeFun,
+    title = "",
+    description = "",
+    categories = [],
+    price = "0",
+    inventory = 1,
+    cover = "",
+    onSubmit,
+}) => {
+    const form = useForm<BookFormSchema>({
+        resolver: valibotResolver(bookFormSchema),
 
-    const [coverUrl, setCoverUrl] = useState<string | null>(null)
-    const router = useRouter()
-    const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(
-        null
-    )
-
-    const { mutate: addBook } = trpc.addBook.useMutation({
-        onSuccess: () => {
-            toast.success("Book added successfully")
-            closeFun()
+        defaultValues: {
+            title,
+            description,
+            categories,
+            price,
+            inventory,
+            cover,
         },
     })
 
-    function onSubmit(data: AddBookFormSchema) {
-        console.log(data)
-        if (!coverUrl) return
-        try {
-            addBook({ ...data, cover: coverUrl })
-        } catch (error) {
-            console.log("error: ", error)
-            if (error instanceof TRPCError) {
-                return handleTRPCError(error)
-            }
-            return handleGenericError()
-        }
-    }
-
-    function handleTRPCError(error: TRPCError) {
-        if (error.code === "UNAUTHORIZED") {
-            return router.push("/sign-in")
-        }
-
-        if (error.code === "BAD_REQUEST")
-            return toast.error("Invalid data, please check your inputs")
-    }
+    const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(
+        null
+    )
 
     return (
         <Form {...form}>
@@ -93,9 +81,18 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
                 }}
                 className="grid  gap-8  sm:grid-cols-addBook"
             >
-                <AddBookInput
-                    onCoverUploaded={(coverUrl) => setCoverUrl(coverUrl)}
+                <FormField
+                    control={form.control}
+                    name="cover"
+                    render={({ field }) => (
+                        <FormItem>
+                            <FormControl>
+                                <AddBookInput {...field} />
+                            </FormControl>
+                        </FormItem>
+                    )}
                 />
+
                 <div>
                     <FormField
                         control={form.control}
@@ -214,4 +211,4 @@ const AddBookForm: FC<AddBookFormProps> = ({ closeFun }) => {
     )
 }
 
-export default AddBookForm
+export default BookForm

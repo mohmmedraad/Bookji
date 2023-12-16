@@ -8,6 +8,7 @@ import { navLinks } from "@/config/site"
 import Cart from "./Cart"
 import { Icons } from "./Icons"
 import MobileNav from "./MobileNav"
+import AuthLink from "./ui/AuthLink"
 import { buttonVariants } from "./ui/Button"
 import Container from "./ui/Container"
 import NavLink from "./ui/NavLink"
@@ -73,9 +74,12 @@ const NavBar: FC = async ({}) => {
                             }}
                         />
                     ) : (
-                        <Link className={buttonVariants({})} href={"/sign-in"}>
+                        <AuthLink
+                            className={buttonVariants({})}
+                            href={"/sign-in"}
+                        >
                             Sign In
-                        </Link>
+                        </AuthLink>
                     )}
 
                     <MobileNav />

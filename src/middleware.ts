@@ -39,7 +39,8 @@ export default authMiddleware({
         if (!auth.userId) {
             //  If user tries to access a private route without being authenticated,
             //  redirect them to the sign in page
-            url.pathname = "/sign-in"
+            url.searchParams.set("_origin", req.nextUrl.pathname)
+            url.pathname = `/sign-in`
             return NextResponse.redirect(url)
         }
 

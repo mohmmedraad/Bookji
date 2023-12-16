@@ -17,7 +17,7 @@ export default function SSOCallback({ searchParams }: SSOCallbackPageProps) {
             role="status"
             aria-label="Loading"
             aria-describedby="loading-description"
-            className="flex items-center justify-center"
+            className="flex items-center"
         >
             loading
         </div>

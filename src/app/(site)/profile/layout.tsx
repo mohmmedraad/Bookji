@@ -14,7 +14,7 @@ const bio =
 const Layout = async ({ children }: { children: React.ReactNode }) => {
     const user = await currentUser()
 
-    if (user == null || user.id == null) return redirect("/sign-in")
+    if (user == null || user.id == null) return
     return (
         <>
             <ProfileInfo

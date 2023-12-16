@@ -1,8 +1,15 @@
 "use client"
 
 import { useState, type FC } from "react"
+import { useRouter } from "next/navigation"
+import { TRPCError } from "@trpc/server"
+import { toast } from "sonner"
 
-import AddBookForm from "./AddBookForm"
+import { handleGenericError } from "@/lib/utils"
+import { type BookFormSchema } from "@/lib/validations/book"
+import { trpc } from "@/app/_trpc/client"
+
+import BookForm from "./BookForm"
 import {
     Dialog,
     DialogContent,
@@ -17,6 +24,36 @@ interface AddBookDialogProps {}
 
 const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
     const [open, setOpen] = useState(false)
+    const router = useRouter()
+
+    const { mutate: addBook } = trpc.addBook.useMutation({
+        onSuccess: () => {
+            toast.success("Book added successfully")
+            setOpen(false)
+        },
+    })
+
+    function onSubmit(data: BookFormSchema) {
+        try {
+            console.log("data: ", data)
+            addBook({ ...data })
+        } catch (error) {
+            if (error instanceof TRPCError) {
+                return handleTRPCError(error)
+            }
+            return handleGenericError()
+        }
+    }
+
+    function handleTRPCError(error: TRPCError) {
+        if (error.code === "UNAUTHORIZED") {
+            return router.push("/sign-in")
+        }
+
+        if (error.code === "BAD_REQUEST")
+            return toast.error("Invalid data, please check your inputs")
+    }
+
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
@@ -33,7 +70,7 @@ const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
                 </DialogHeader>
                 <Separator />
 
-                <AddBookForm closeFun={() => setOpen(false)} />
+                <BookForm closeFun={() => setOpen(false)} onSubmit={onSubmit} />
             </DialogContent>
         </Dialog>
     )

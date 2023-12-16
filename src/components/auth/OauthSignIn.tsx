@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { FC, useState } from "react"
 import { useRouter } from "next/navigation"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { type OAuthStrategy } from "@clerk/types"
@@ -26,7 +26,11 @@ const oauthProviders: OauthProvider = [
     { name: "Apple", strategy: "oauth_apple", icon: "Apple" },
 ]
 
-const OauthSignIn = () => {
+interface OauthSignInProps {
+    redirectUrlComplete?: string
+}
+
+const OauthSignIn: FC<OauthSignInProps> = ({ redirectUrlComplete }) => {
     const [isLoading, setIsLoading] = useState<OAuthStrategy | null>(null)
     const { signIn, isLoaded: signInLoaded } = useSignIn()
     const router = useRouter()
@@ -46,7 +50,7 @@ const OauthSignIn = () => {
         await signIn!.authenticateWithRedirect({
             strategy: provider,
             redirectUrl: "/sso-callback",
-            redirectUrlComplete: "/",
+            redirectUrlComplete: redirectUrlComplete || "/",
         })
     }
 

@@ -4,9 +4,14 @@ import Image from "next/image"
 import Container from "@/components/ui/Container"
 import SignIn from "@/components/auth/SignIn"
 
-interface pageProps {}
+interface pageProps {
+    searchParams: {
+        _origin: string | undefined
+    }
+}
 
-const page: FC<pageProps> = ({}) => {
+const Page: FC<pageProps> = ({ searchParams }) => {
+    const origin = searchParams?._origin
     return (
         <Container className="grid min-h-screen items-center justify-center gap-32 py-10 lg:grid-cols-2 ">
             <Image
@@ -17,9 +22,9 @@ const page: FC<pageProps> = ({}) => {
                 loading="eager"
                 className="hidden h-[50.25rem] w-full rounded-3xl lg:block"
             />
-            <SignIn />
+            <SignIn origin={origin} />
         </Container>
     )
 }
 
-export default page
+export default Page

@@ -43,7 +43,10 @@ const defaultValues: Partial<SignInFormSchema> = {
 
 const SignInForm = () => {
     const { isLoaded, signIn, setSession } = useSignIn()
-    const { setFormState, setEmailAddress } = useSignInForm()
+    const setFormState = useSignInForm((state) => state.setFormState)
+    const setEmailAddress = useSignInForm((state) => state.setEmailAddress)
+    const origin = useSignInForm((state) => state.origin)
+
     const form = useForm<SignInFormSchema>({
         resolver: valibotResolver(signInFormSchema),
         defaultValues,
@@ -80,7 +83,7 @@ const SignInForm = () => {
 
     function handleSignInComplete() {
         toast.success("You have successfully signed in!")
-        router.push("/")
+        router.push(origin)
         setFormState("signIn")
     }
 
