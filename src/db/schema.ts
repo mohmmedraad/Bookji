@@ -22,13 +22,13 @@ export const books = mysqlTable(`${APP_NAME}_books`, {
     description: text("description"),
     cover: varchar("cover", { length: 200 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-    // category: varchar("category", { length: 191 }),
     inventory: int("inventory").notNull().default(0),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })
 
-export type Book = InferModel<typeof books>
+export type Book = typeof books.$inferSelect
+export type NewBook = typeof books.$inferInsert
 
 export const booksRelations = relations(books, ({ many }) => ({
     ratings: many(ratings),
@@ -44,7 +44,8 @@ export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
-export type Rating = InferModel<typeof ratings>
+export type Rating = typeof ratings.$inferSelect
+export type NewRating = typeof ratings.$inferInsert
 
 export const ratingsRelations = relations(ratings, ({ one }) => ({
     book: one(books, {
@@ -97,7 +98,23 @@ export const carts = mysqlTable(`${APP_NAME}_carts`, {
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
-export type Cart = InferModel<typeof carts>
+export type Cart = typeof carts.$inferSelect
+export type NewCart = typeof carts.$inferInsert
+
+export const stores = mysqlTable(`${APP_NAME}_ratings`, {
+    id: serial("id").primaryKey(),
+    ownerId: varchar("userId", { length: 191 }).notNull(),
+    name: varchar("name", { length: 191 }).notNull(),
+    description: text("description"),
+    logo: varchar("logo", { length: 200 }),
+    thumbnail: varchar("thumbnail", { length: 200 }),
+    stripeAccountId: varchar("stripeAccountId", { length: 191 }),
+    createdAt: timestamp("createdAt").defaultNow(),
+    updatedAt: timestamp("updatedAt").onUpdateNow(),
+})
+
+export type Store = typeof stores.$inferSelect
+export type NewStore = typeof stores.$inferInsert
 
 export const emailPreferences = mysqlTable(`${APP_NAME}_email_preferences`, {
     id: serial("id").primaryKey(),
@@ -110,7 +127,8 @@ export const emailPreferences = mysqlTable(`${APP_NAME}_email_preferences`, {
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
-export type EmailPreference = InferModel<typeof emailPreferences>
+export type EmailPreference = typeof emailPreferences.$inferSelect
+export type NewEmailPreference = typeof emailPreferences.$inferInsert
 
 export const payments = mysqlTable(`${APP_NAME}_payments`, {
     id: serial("id").primaryKey(),
@@ -123,7 +141,8 @@ export const payments = mysqlTable(`${APP_NAME}_payments`, {
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
-export type Payment = InferModel<typeof payments>
+export type Payment = typeof payments.$inferSelect
+export type NewPayment = typeof payments.$inferInsert
 
 export const orders = mysqlTable(`${APP_NAME}_orders`, {
     id: serial("id").primaryKey(),
@@ -145,7 +164,8 @@ export const orders = mysqlTable(`${APP_NAME}_orders`, {
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
-export type Order = InferModel<typeof orders>
+export type Order = typeof orders.$inferSelect
+export type NewOrder = typeof orders.$inferInsert
 
 export const addresses = mysqlTable(`${APP_NAME}_addresses`, {
     id: serial("id").primaryKey(),
@@ -158,4 +178,5 @@ export const addresses = mysqlTable(`${APP_NAME}_addresses`, {
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
-export type Address = InferModel<typeof addresses>
+export type Address = typeof addresses.$inferSelect
+export type NewAddress = typeof addresses.$inferInsert
