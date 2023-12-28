@@ -9,12 +9,12 @@ interface pageProps {}
 
 const page: FC<pageProps> = ({}) => {
     return (
-        <main className="bg-background">
+        <div className="bg-background">
             <Hero />
             <About />
             <OurVision />
             <OurValues />
-        </main>
+        </div>
     )
 }
 

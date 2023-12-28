@@ -101,7 +101,7 @@ export const carts = mysqlTable(`${APP_NAME}_carts`, {
 export type Cart = typeof carts.$inferSelect
 export type NewCart = typeof carts.$inferInsert
 
-export const stores = mysqlTable(`${APP_NAME}_ratings`, {
+export const stores = mysqlTable(`${APP_NAME}_stores`, {
     id: serial("id").primaryKey(),
     ownerId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
