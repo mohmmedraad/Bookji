@@ -15,8 +15,6 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/Card"
-import { DataTable } from "@/components/ui/DataTable"
-import { Columns } from "@/components/MyBooksColumns"
 
 import PageHeading from "./_components/PageHeading"
 import { StoreLogo } from "./_components/StoreLogo"

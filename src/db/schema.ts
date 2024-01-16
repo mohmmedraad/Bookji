@@ -132,8 +132,7 @@ export type NewEmailPreference = typeof emailPreferences.$inferInsert
 
 export const payments = mysqlTable(`${APP_NAME}_payments`, {
     id: serial("id").primaryKey(),
-    userId: varchar("userId", { length: 191 }),
-    bookId: varchar("bookId", { length: 191 }),
+    storeId: varchar("bookId", { length: 191 }),
     stripeAccountId: varchar("stripeAccountId", { length: 191 }).notNull(),
     stripeAccountCreatedAt: int("stripeAccountCreatedAt").notNull(),
     stripeAccountExpiresAt: int("stripeAccountExpiresAt").notNull(),

@@ -8,6 +8,7 @@ import NavLink from "@/components/ui/NavLink"
 import ProfileContainer from "@/components/ui/ProfileContainer"
 import { Separator } from "@/components/ui/Separator"
 
+import DashboardNav from "./_components/DashboardNav"
 import ProfileInfo from "./_sections/ProfileInfo"
 import ProfilePagesLinks from "./_sections/ProfilePages"
 
@@ -36,7 +37,7 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
     return (
         <Container className="min-h-screen pb-8 pt-[104px]">
             <Breadcrumbs />
-            <nav className="py-8">
+            {/* <nav className="py-8">
                 <ul className="flex gap-1">
                     {dashboardLinks.map(({ href, label }, index) => (
                         <NavLink
@@ -49,7 +50,8 @@ const Layout = async ({ children }: { children: React.ReactNode }) => {
                         </NavLink>
                     ))}
                 </ul>
-            </nav>
+            </nav> */}
+            <DashboardNav links={dashboardLinks} />
             <Separator className="mb-8" />
             {children}
             {/* <ProfileInfo

@@ -15,6 +15,7 @@ import {
     like,
     notInArray,
 } from "drizzle-orm"
+import { number, object, string } from "valibot"
 
 import {
     extendedBookSchema,
@@ -172,6 +173,46 @@ export const appRouter = router({
     //             throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
     //         }
     //     }),
+    getBookCategories: privateProcedure
+        .input(
+            wrap(
+                object({
+                    bookId: number(),
+                })
+            )
+        )
+        .query(async ({ input, ctx }) => {
+            try {
+                const foundCategories = await db
+                    .select({
+                        id: categories.id,
+                        name: categories.name,
+                    })
+                    .from(categories)
+                    .where(
+                        exists(
+                            db
+                                .select({ id: booksToCategories.bookId })
+                                .from(booksToCategories)
+                                .where(
+                                    and(
+                                        eq(
+                                            booksToCategories.bookId,
+                                            input.bookId
+                                        ),
+                                        eq(
+                                            booksToCategories.categoryId,
+                                            categories.id
+                                        )
+                                    )
+                                )
+                        )
+                    )
+                return foundCategories
+            } catch (error) {
+                throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+            }
+        }),
     getAllCategories: publicProcedure.query(async () => {
         try {
             const foundCategories = await db

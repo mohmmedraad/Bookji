@@ -8,6 +8,7 @@ interface DropdownZoneProps extends HTMLAttributes<HTMLDivElement> {
     uploadProgress: number
     isError: boolean
     errorMessage: string
+    coverUrl?: string
     onFile: (file: File | null) => void
 }
 
@@ -17,9 +18,12 @@ const DropdownZone: FC<DropdownZoneProps> = ({
     errorMessage,
     onFile,
     className,
+    coverUrl,
     ...props
 }) => {
-    const [cover, setCover] = useState<string | ArrayBuffer | null>(null)
+    const [cover, setCover] = useState<string | ArrayBuffer | null>(
+        coverUrl || null
+    )
 
     function handleOnFileChange(e: ChangeEvent<HTMLInputElement>) {
         if (!e.target.files) return

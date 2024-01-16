@@ -55,6 +55,7 @@ const BookForm: FC<BookFormProps> = ({
     cover = "",
     onSubmit,
 }) => {
+    console.log("cover:", cover)
     const form = useForm<BookFormSchema>({
         resolver: valibotResolver(bookFormSchema),
 
@@ -69,7 +70,7 @@ const BookForm: FC<BookFormProps> = ({
     })
 
     const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(
-        null
+        categories || null
     )
 
     return (
@@ -87,7 +88,7 @@ const BookForm: FC<BookFormProps> = ({
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <AddBookInput {...field} />
+                                <AddBookInput {...field} cover={cover} />
                             </FormControl>
                         </FormItem>
                     )}

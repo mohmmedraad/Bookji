@@ -799,4 +799,72 @@ export const Icons = {
             </defs>
         </svg>
     ),
+    UpChart: (props: SVGProps<SVGSVGElement>) => (
+        <svg
+            width="162"
+            height="48"
+            viewBox="0 0 162 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            {...props}
+        >
+            <path
+                d="M16.07 15.5403L1 1.14795V47.2865H161.507V35.2985L147.097 10.7673L132.324 19.9804L117.852 17.1342L103.5 29.8752L88.5493 23.5217L74.0773 5.25522L59.2466 18.5373L44.5354 5.25522L29.8243 2.55324L16.07 15.5403Z"
+                fill="url(#paint0_linear_934_6021)"
+                fill-opacity="0.3"
+            />
+            <path
+                d="M1 1.14795L16.07 15.5403L29.8243 2.55324L44.5354 5.25522L59.2466 18.5373L74.0773 5.25522L88.5493 23.5217L103.5 29.8752L117.852 17.1342L132.324 19.9804L147.097 10.7673L161.507 35.2985"
+                stroke="#10B981"
+                stroke-width="0.444003"
+            />
+            <defs>
+                <linearGradient
+                    id="paint0_linear_934_6021"
+                    x1="81.2535"
+                    y1="1.14795"
+                    x2="81.2535"
+                    y2="47.2865"
+                    gradientUnits="userSpaceOnUse"
+                >
+                    <stop stop-color="#10B880" />
+                    <stop offset="1" stop-color="#10B880" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+        </svg>
+    ),
+    DownChart: (props: SVGProps<SVGSVGElement>) => (
+        <svg
+            width="161"
+            height="48"
+            viewBox="0 0 161 48"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            {...props}
+        >
+            <path
+                d="M15.4829 22.9924L0.506836 20.1124V47.9916H160.014V2.14057L145.693 1L131.012 18.4995L116.631 19.9971L102.368 23.9141L87.5106 24.3749L73.1288 27.6006L58.3905 26.3334L43.771 22.9924L29.1515 21.8404L15.4829 22.9924Z"
+                fill="url(#paint0_linear_934_6016)"
+                fill-opacity="0.3"
+            />
+            <path
+                d="M0.506836 20.1124L15.4829 22.9924L29.1515 21.8404L43.771 22.9924L58.3905 26.3334L73.1288 27.6006L87.5106 24.3749L102.368 23.9141L116.631 19.9971L131.012 18.4995L145.693 1L160.014 2.14057"
+                stroke="#F43F5E"
+                stroke-width="0.441236"
+            />
+            <defs>
+                <linearGradient
+                    id="paint0_linear_934_6016"
+                    x1="80.2603"
+                    y1="1"
+                    x2="80.2603"
+                    y2="47.9916"
+                    gradientUnits="userSpaceOnUse"
+                >
+                    <stop stop-color="#F33F5E" />
+                    <stop offset="1" stop-color="#F33F5E" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+        </svg>
+    ),
 }

@@ -26,14 +26,15 @@ export function DataTablePagination<TData>({
                     >
                         <span className="sr-only">Go to previous page</span>
                         <MoveLeft className="mr-2 h-4 w-4" />
-                        Previous
+                        <span className="hidden xs:block">Previous</span>
                     </Link>
                     <Link
                         className={buttonVariants({ variant: "outline" })}
                         href={`${url}?_page=${nextPage}`}
                     >
                         <span className="sr-only">Go to next page</span>
-                        Next
+                        <span className="hidden xs:block">Next</span>
+
                         <MoveRight className="ml-2 h-4 w-4" />
                     </Link>
                 </div>

@@ -1,15 +1,12 @@
 "use client"
 
 import { type ColumnDef } from "@tanstack/react-table"
-import { Star } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { type OrderType } from "@/lib/validations/order"
+import { Badge } from "@/components/ui/Badge"
 import BookCover from "@/components/ui/BookCover"
-
-import { Badge } from "./ui/Badge"
-import { DataTableColumnHeader } from "./ui/DataTableColumnHeader"
-import { UserAvatar } from "./UserAvatar"
+import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
 
 export const Columns: ColumnDef<OrderType>[] = [
     {
@@ -51,13 +48,6 @@ export const Columns: ColumnDef<OrderType>[] = [
         cell: ({ row }) => {
             return (
                 <div className="flex w-[150px] items-center gap-3">
-                    <UserAvatar
-                        user={{
-                            firstName: "hello",
-                            lastName: "world",
-                            imageUrl: row.original.customerAvatar,
-                        }}
-                    />
                     <p>{row.original.customerName}</p>
                 </div>
             )
@@ -84,11 +74,12 @@ export const Columns: ColumnDef<OrderType>[] = [
             return (
                 <div className="flex w-[150px] items-center gap-3">
                     <Badge
-                        className={cn({
+                        // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
+                        className={cn("hover:bg-opacity-50", {
                             "bg-green-100 text-green-800":
                                 row.original.status === "delivered",
                             "bg-yellow-100 text-yellow-800":
-                                row.original.status === "onWay",
+                                row.original.status === "on way",
                             "bg-red-100 text-red-800":
                                 row.original.status === "canceled",
                         })}
@@ -102,43 +93,7 @@ export const Columns: ColumnDef<OrderType>[] = [
             return rowA.original.status.localeCompare(rowB.original.status)
         },
         enableSorting: true,
-        enableHiding: false,
-    },
-    {
-        accessorKey: "categories",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Categories" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex space-x-2">
-                    <span className="max-w-[500px] truncate font-medium text-gray-800">
-                        {row.getValue("categories")}
-                    </span>
-                </div>
-            )
-        },
-    },
-    {
-        accessorKey: "rating",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Rating" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex w-[50px] items-center gap-3">
-                    <Star
-                        className="fill-primary text-primary"
-                        width={16}
-                        height={16}
-                    />
-                    <span className="text-sm font-bold text-primary">
-                        {row.getValue("rating")}
-                        <span className="text-gray-300">/5</span>
-                    </span>
-                </div>
-            )
-        },
+        enableHiding: true,
     },
     {
         accessorKey: "price",

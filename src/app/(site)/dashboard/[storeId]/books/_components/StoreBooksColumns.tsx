@@ -2,13 +2,13 @@
 
 import { type Book as BookType } from "@/db/schema"
 import { type ColumnDef } from "@tanstack/react-table"
-import { Star } from "lucide-react"
 
 import BookCover from "@/components/ui/BookCover"
 import { Checkbox } from "@/components/ui/Checkbox"
-import { DataTableRowActions } from "@/components/ui/DataTableRowActions"
+import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
+import Stars from "@/app/(site)/book/[bookId]/_components/Stars"
 
-import { DataTableColumnHeader } from "./ui/DataTableColumnHeader"
+import { DataTableRowActions } from "./DataTableRowActions"
 
 export const Columns: ColumnDef<BookType>[] = [
     {
@@ -61,21 +61,22 @@ export const Columns: ColumnDef<BookType>[] = [
         enableSorting: false,
         enableHiding: false,
     },
-    // {
-    //     accessorKey: "categories",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="categories" />
-    //     ),
-    //     cell: ({ row }) => {
-    //         return (
-    //             <div className="flex space-x-2">
-    //                 <span className="max-w-[500px] truncate font-medium text-gray-800">
-    //                     {row.getValue("categories")}
-    //                 </span>
-    //             </div>
-    //         )
-    //     },
-    // },
+    {
+        accessorKey: "sold",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Sold" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[100px] items-center">
+                    <span className="text-gray-800">
+                        {/* {row.getValue("sold")} */}
+                        10
+                    </span>
+                </div>
+            )
+        },
+    },
     {
         accessorKey: "inventory",
         header: ({ column }) => (
@@ -91,27 +92,24 @@ export const Columns: ColumnDef<BookType>[] = [
             )
         },
     },
-    // {
-    //     accessorKey: "rating",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="rating" />
-    //     ),
-    //     cell: ({ row }) => {
-    //         return (
-    //             <div className="flex w-[50px] items-center gap-3">
-    //                 <Star
-    //                     className="fill-primary text-primary"
-    //                     width={16}
-    //                     height={16}
-    //                 />
-    //                 <span className="text-sm font-bold text-primary">
-    //                     {row.getValue("rating")}
-    //                     <span className="text-gray-300">/5</span>
-    //                 </span>
-    //             </div>
-    //         )
-    //     },
-    // },
+    {
+        accessorKey: "rating",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="rating" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[100px] items-center gap-3">
+                    <Stars
+                        className="mt-0 gap-0"
+                        isStatic
+                        stars={5}
+                        starsClassName="h-4 w-4"
+                    />
+                </div>
+            )
+        },
+    },
     {
         accessorKey: "price",
         header: ({ column }) => (
@@ -127,6 +125,8 @@ export const Columns: ColumnDef<BookType>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => <DataTableRowActions row={row} />,
+        cell: ({ row }) => (
+            <DataTableRowActions row={row} book={row.original} />
+        ),
     },
 ]

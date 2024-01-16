@@ -57,21 +57,31 @@ const Stars: FC<StarsProps> = ({
                 )
             } else if (hasHalf) {
                 stars.push(
-                    <StarHalf
-                        className={cn(
-                            "h-6 w-6 cursor-pointer fill-primary text-primary",
-                            starsClassName
-                        )}
-                        key={i}
-                        onClick={() => handleClicked(i)}
-                    />
+                    <div className="relative" key={i}>
+                        <StarHalf
+                            className={cn(
+                                "relative z-10 h-6 w-6 cursor-pointer fill-primary text-primary",
+                                starsClassName
+                            )}
+                            key={i}
+                            onClick={() => handleClicked(i)}
+                        />
+                        <Star
+                            className={cn(
+                                "absolute left-1/2 top-1/2 z-[1] h-6 w-6 -translate-x-1/2 -translate-y-1/2 cursor-pointer fill-primary/25 text-primary/25",
+                                starsClassName
+                            )}
+                            key={i}
+                            onClick={() => handleClicked(i)}
+                        />
+                    </div>
                 )
                 hasHalf = false
             } else {
                 stars.push(
                     <Star
                         className={cn(
-                            "h-6 w-6 cursor-pointer text-primary",
+                            "h-6 w-6 cursor-pointer fill-primary/25 text-primary/25",
                             starsClassName
                         )}
                         key={i}

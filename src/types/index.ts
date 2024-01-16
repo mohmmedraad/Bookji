@@ -43,3 +43,10 @@ export interface TRPCErrorType {
     code: TRPCError["code"] | undefined
     message: TRPCError["message"]
 }
+
+export type Customer = {
+    id: number
+    email: string
+    place: string
+    totalSpend: number
+}

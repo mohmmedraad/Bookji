@@ -9,9 +9,8 @@ import { cn } from "@/lib/utils"
 
 interface NavLinkProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
     href: string
-    className?: string
     activeClass?: ClassValue
-    children?: ReactNode
+    hoverClass?: ReactNode
 }
 
 const NavLink: FC<NavLinkProps> = ({
@@ -19,14 +18,19 @@ const NavLink: FC<NavLinkProps> = ({
     className,
     activeClass,
     children,
+    hoverClass,
     ...props
 }) => {
     const pathname = usePathname()
-    const isActive = pathname === href
+    const isActive = href === "/" ? pathname === href : pathname.includes(href)
     if (isActive) className = cn(className, activeClass)
 
     return (
-        <Link href={href} className={className} {...props}>
+        <Link
+            href={href}
+            className={cn(className, !isActive && hoverClass)}
+            {...props}
+        >
             {children}
         </Link>
     )

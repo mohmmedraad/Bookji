@@ -1,6 +1,7 @@
 "use client"
 
 import Link from "next/link"
+import { type Book } from "@/db/schema"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type Row } from "@tanstack/react-table"
 
@@ -14,13 +15,18 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu"
 
+import DeleteBookDialog from "./DeleteBookDialog"
+import EditBookDialog from "./EditBookDialog"
+
 interface DataTableRowActionsProps<TData> {
     row: Row<TData>
+    book: Book
 }
 
-export function DataTableRowActions<
-    TData,
->({}: DataTableRowActionsProps<TData>) {
+export function DataTableRowActions<TData>({
+    row,
+    book,
+}: DataTableRowActionsProps<TData>) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -33,14 +39,11 @@ export function DataTableRowActions<
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <DropdownMenuItem>
-                    <Link href={"/"}>Edit</Link>
-                </DropdownMenuItem>
+                <EditBookDialog {...book} />
+
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
-                    Delete
-                    <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
-                </DropdownMenuItem>
+
+                <DeleteBookDialog />
             </DropdownMenuContent>
         </DropdownMenu>
     )

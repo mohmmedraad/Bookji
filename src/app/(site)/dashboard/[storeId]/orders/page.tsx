@@ -3,7 +3,8 @@ import { type FC } from "react"
 import { orders } from "@/config/site"
 import { getCurrentPageNumber } from "@/lib/utils"
 import { DataTable } from "@/components/ui/DataTable"
-import { Columns } from "@/components/OrdersColumns"
+
+import { Columns } from "./_components/OrdersColumns"
 
 interface pageProps {
     searchParams: {

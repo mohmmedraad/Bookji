@@ -188,7 +188,7 @@ export const orders = [
         price: 380,
         customerName: "a",
         customerAvatar: "/person-1.webp",
-        status: "onWay",
+        status: "on way",
     },
     {
         id: 2,
@@ -237,7 +237,7 @@ export const orders = [
         price: 10,
         customerName: "e",
         customerAvatar: "/person-5.webp",
-        status: "onWay",
+        status: "on way",
     },
     {
         id: 6,
@@ -289,6 +289,59 @@ export const orders = [
         customerName: "i",
         customerAvatar: "/person-2.webp",
         status: "delivered",
+    },
+]
+
+export const customers = [
+    {
+        id: 1,
+        email: "mraad6689@gmail.com",
+        place: "Baghdad",
+    },
+    {
+        id: 2,
+        email: "example1@gmail.com",
+        place: "New York",
+    },
+    {
+        id: 3,
+        email: "example2@gmail.com",
+        place: "London",
+    },
+    {
+        id: 4,
+        email: "example3@gmail.com",
+        place: "Tokyo",
+    },
+    {
+        id: 5,
+        email: "example4@gmail.com",
+        place: "Sydney",
+    },
+    {
+        id: 6,
+        email: "example5@gmail.com",
+        place: "Paris",
+    },
+    {
+        id: 7,
+        email: "example6@gmail.com",
+        place: "Berlin",
+    },
+    {
+        id: 8,
+        email: "example7@gmail.com",
+        place: "Toronto",
+    },
+    {
+        id: 9,
+        email: "example8@gmail.com",
+        place: "Mumbai",
+    },
+    {
+        id: 10,
+        email: "example9@gmail.com",
+        place: "Rio de Janeiro",
     },
 ]
 

@@ -10,12 +10,13 @@ import DropdownZone from "./DropdownZone"
 
 interface AddBookInputProps {
     onChange?: (coverUrl: string) => void
+    cover?: string
 }
 
-const AddBookInput: FC<AddBookInputProps> = ({ onChange }) => {
+const AddBookInput: FC<AddBookInputProps> = ({ onChange, cover }) => {
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [uploadProgress, setUploadProgress] = useState<number>(0)
-    const [coverUrl, setCoverUrl] = useState<string>("")
+    const [coverUrl, setCoverUrl] = useState<string>(cover || "")
 
     useEffect(() => {
         if (onChange) {
@@ -68,6 +69,7 @@ const AddBookInput: FC<AddBookInputProps> = ({ onChange }) => {
                 isError={!!errorMessage}
                 errorMessage={errorMessage}
                 onFile={(cover) => void handleOnFileChange(cover)}
+                coverUrl={coverUrl}
                 className="aspect-[2/3] max-w-[176px]"
             />
         </>
