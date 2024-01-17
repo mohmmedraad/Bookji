@@ -207,7 +207,12 @@ const SalesChart: FC<SalesChartProps> = ({}) => {
                         <Legend />
                     </LineChart>
                 </ResponsiveContainer> */}
-                <Chart autoFit height={300} data={data2}>
+                <Chart
+                    autoFit
+                    padding={[10, 20, 50, 40]}
+                    height={300}
+                    data={data2}
+                >
                     <h1>1111</h1>
                     <LineAdvance
                         shape="smooth"
