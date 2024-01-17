@@ -138,12 +138,12 @@ export async function POST(req: Request) {
 
                     const payment = await db.query.payments.findFirst({
                         columns: {
-                            bookId: true,
+                            storeId: true,
                         },
                         where: eq(payments.stripeAccountId, event.account),
                     })
 
-                    if (!payment?.bookId) {
+                    if (!payment?.storeId) {
                         return new Response("Book not found.", { status: 404 })
                     }
 
