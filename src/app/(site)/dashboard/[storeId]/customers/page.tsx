@@ -19,12 +19,12 @@ const Page: FC<pageProps> = ({ searchParams }) => {
             {/**
              * TODO: Add suspense
              */}
-            <DataTable
+            {/* <DataTable
                 columns={Columns}
                 data={customers}
                 url="/orders"
                 currentPage={currentPage}
-            />
+            /> */}
         </>
     )
 }
