@@ -84,7 +84,7 @@ export const Icons = {
         >
             <path
                 d="M1.33301 1.45898H2.49301C3.21301 1.45898 3.77968 2.07898 3.71968 2.79232L3.16634 9.43231C3.07301 10.519 3.933 11.4523 5.02634 11.4523H12.1263C13.0863 11.4523 13.9263 10.6657 13.9997 9.71232L14.3597 4.71232C14.4397 3.60565 13.5997 2.70565 12.4863 2.70565H3.87968"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth="1.5"
                 strokeMiterlimit="10"
                 strokeLinecap="round"
@@ -92,7 +92,7 @@ export const Icons = {
             />
             <path
                 d="M10.8333 14.7923C11.2936 14.7923 11.6667 14.4192 11.6667 13.959C11.6667 13.4987 11.2936 13.1256 10.8333 13.1256C10.3731 13.1256 10 13.4987 10 13.959C10 14.4192 10.3731 14.7923 10.8333 14.7923Z"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth="1.5"
                 strokeMiterlimit="10"
                 strokeLinecap="round"
@@ -100,7 +100,7 @@ export const Icons = {
             />
             <path
                 d="M5.50033 14.7923C5.96056 14.7923 6.33366 14.4192 6.33366 13.959C6.33366 13.4987 5.96056 13.1256 5.50033 13.1256C5.04009 13.1256 4.66699 13.4987 4.66699 13.959C4.66699 14.4192 5.04009 14.7923 5.50033 14.7923Z"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth="1.5"
                 strokeMiterlimit="10"
                 strokeLinecap="round"
@@ -108,7 +108,7 @@ export const Icons = {
             />
             <path
                 d="M6 5.45898H14"
-                stroke="white"
+                stroke="currentColor"
                 strokeWidth="1.5"
                 strokeMiterlimit="10"
                 strokeLinecap="round"

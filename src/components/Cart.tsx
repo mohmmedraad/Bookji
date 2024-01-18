@@ -1,6 +1,7 @@
 "use client"
 
 import { type FC } from "react"
+import { ShoppingCart } from "lucide-react"
 
 import useCart from "@/hooks/useCart"
 import { trpc } from "@/app/_trpc/client"
@@ -34,9 +35,13 @@ const Cart: FC = () => {
     return (
         <Sheet>
             <SheetTrigger asChild>
-                <Button className="relative flex rounded-full bg-primary p-2.5">
-                    <Icons.Cart width="16px" height="16px" />
-                    <div className="absolute -right-2 -top-2 inline-flex h-6 w-6 items-center rounded-full border border-transparent bg-secondary p-2 text-xs font-semibold text-gray-900 transition-colors hover:bg-secondary/80 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
+                <Button className="relative flex p-2.5" variant={"ghost"}>
+                    <Icons.Cart
+                        className="text-gray-500"
+                        width="20px"
+                        height="20px"
+                    />
+                    <div className="absolute -right-2 -top-2 inline-flex h-6 w-6 items-center rounded-full border border-transparent p-2 text-xs font-semibold text-gray-800 transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2">
                         {cartBooks?.length || 0}
                     </div>
                 </Button>
