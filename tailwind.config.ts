@@ -1,6 +1,5 @@
 import { nextui } from "@nextui-org/react"
 import type { Config } from "tailwindcss"
-import colors from "tailwindcss/colors"
 
 const config: Config = {
     content: [
@@ -21,6 +20,7 @@ const config: Config = {
                 addBook: "176px 1fr",
                 bookPage: "1fr 1fr 170px",
                 updateStore: "300px 1fr",
+                analytics: "1fr auto",
             },
             gridTemplateRows: {
                 cart: "1fr auto",
@@ -44,37 +44,6 @@ const config: Config = {
                     "linear-gradient(180deg, #FFF -9.26%, rgba(255, 255, 255, 0.00) 84.26%)",
             },
             colors: {
-                tremor: {
-                    brand: {
-                        faint: colors.blue[50],
-                        muted: colors.blue[200],
-                        subtle: colors.blue[400],
-                        DEFAULT: colors.blue[500],
-                        emphasis: colors.blue[700],
-                        inverted: colors.white,
-                    },
-                    background: {
-                        muted: "hsl(var(--muted))",
-                        subtle: colors.gray[100],
-                        DEFAULT: "hsl(var(--background))",
-                        emphasis: colors.gray[700],
-                        neutral: colors.green[500],
-                    },
-                    border: {
-                        DEFAULT: colors.gray[200],
-                    },
-                    ring: {
-                        DEFAULT: colors.gray[200],
-                    },
-                    content: {
-                        subtle: colors.gray[400],
-                        DEFAULT: colors.gray[500],
-                        emphasis: colors.gray[700],
-                        strong: colors.gray[900],
-                        inverted: colors.white,
-                        green: colors.green[500],
-                    },
-                },
                 background: "hsl(var(--background))",
                 foreground: "hsl(var(--foreground))",
                 card: {

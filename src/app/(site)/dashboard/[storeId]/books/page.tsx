@@ -23,6 +23,7 @@ const Page: FC<pageProps> = async ({ params: { storeId } }) => {
             data={userBooks}
             url="/profile"
             currentPage={1}
+            withPagination={false}
         />
     )
 }

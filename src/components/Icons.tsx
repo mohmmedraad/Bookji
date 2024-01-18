@@ -801,69 +801,75 @@ export const Icons = {
     ),
     UpChart: (props: SVGProps<SVGSVGElement>) => (
         <svg
-            width="162"
-            height="48"
-            viewBox="0 0 162 48"
+            viewBox="0 0 233 69"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
-            <path
-                d="M16.07 15.5403L1 1.14795V47.2865H161.507V35.2985L147.097 10.7673L132.324 19.9804L117.852 17.1342L103.5 29.8752L88.5493 23.5217L74.0773 5.25522L59.2466 18.5373L44.5354 5.25522L29.8243 2.55324L16.07 15.5403Z"
-                fill="url(#paint0_linear_934_6021)"
-                fill-opacity="0.3"
-            />
-            <path
-                d="M1 1.14795L16.07 15.5403L29.8243 2.55324L44.5354 5.25522L59.2466 18.5373L74.0773 5.25522L88.5493 23.5217L103.5 29.8752L117.852 17.1342L132.324 19.9804L147.097 10.7673L161.507 35.2985"
-                stroke="#10B981"
-                stroke-width="0.444003"
-            />
+            <g clip-path="url(#clip0_1052_2466)">
+                <path
+                    d="M21.8763 22.5587L0 1.66602V68.6431H233V51.2406L212.081 15.6299L190.636 29.0041L169.628 24.8725L148.794 43.3679L127.091 34.1448L106.083 7.62833L84.5537 26.9093L63.1982 7.62833L41.8428 3.70601L21.8763 22.5587Z"
+                    fill="url(#paint0_linear_1052_2466)"
+                    fill-opacity="0.3"
+                />
+                <path
+                    d="M0 1.66602L21.8763 22.5587L41.8428 3.70601L63.1982 7.62833L84.5537 26.9093L106.083 7.62833L127.091 34.1448L148.794 43.3679L169.628 24.8725L190.636 29.0041L212.081 15.6299L233 51.2406"
+                    stroke="#10B981"
+                    stroke-width="0.644537"
+                />
+            </g>
             <defs>
                 <linearGradient
-                    id="paint0_linear_934_6021"
-                    x1="81.2535"
-                    y1="1.14795"
-                    x2="81.2535"
-                    y2="47.2865"
+                    id="paint0_linear_1052_2466"
+                    x1="116.5"
+                    y1="1.66602"
+                    x2="116.5"
+                    y2="68.6431"
                     gradientUnits="userSpaceOnUse"
                 >
                     <stop stop-color="#10B880" />
                     <stop offset="1" stop-color="#10B880" stop-opacity="0" />
                 </linearGradient>
+                <clipPath id="clip0_1052_2466">
+                    <rect width="233" height="69" fill="white" />
+                </clipPath>
             </defs>
         </svg>
     ),
     DownChart: (props: SVGProps<SVGSVGElement>) => (
         <svg
-            width="161"
-            height="48"
-            viewBox="0 0 161 48"
+            viewBox="0 0 160 47"
             fill="none"
             xmlns="http://www.w3.org/2000/svg"
             {...props}
         >
-            <path
-                d="M15.4829 22.9924L0.506836 20.1124V47.9916H160.014V2.14057L145.693 1L131.012 18.4995L116.631 19.9971L102.368 23.9141L87.5106 24.3749L73.1288 27.6006L58.3905 26.3334L43.771 22.9924L29.1515 21.8404L15.4829 22.9924Z"
-                fill="url(#paint0_linear_934_6016)"
-                fill-opacity="0.3"
-            />
-            <path
-                d="M0.506836 20.1124L15.4829 22.9924L29.1515 21.8404L43.771 22.9924L58.3905 26.3334L73.1288 27.6006L87.5106 24.3749L102.368 23.9141L116.631 19.9971L131.012 18.4995L145.693 1L160.014 2.14057"
-                stroke="#F43F5E"
-                stroke-width="0.441236"
-            />
+            <g clip-path="url(#clip0_1052_2470)">
+                <path
+                    d="M14.9761 21.9924L0 19.1124V46.9916H159.507V1.14057L145.186 0L130.506 17.4995L116.124 18.9971L101.861 22.9141L87.0037 23.3749L72.622 26.6006L57.8836 25.3334L43.2642 21.9924L28.6447 20.8404L14.9761 21.9924Z"
+                    fill="url(#paint0_linear_1052_2470)"
+                    fill-opacity="0.3"
+                />
+                <path
+                    d="M0 19.1124L14.9761 21.9924L28.6447 20.8404L43.2642 21.9924L57.8836 25.3334L72.622 26.6006L87.0037 23.3749L101.861 22.9141L116.124 18.9971L130.506 17.4995L145.186 0L159.507 1.14057"
+                    stroke="#F43F5E"
+                    stroke-width="0.441236"
+                />
+            </g>
             <defs>
                 <linearGradient
-                    id="paint0_linear_934_6016"
-                    x1="80.2603"
-                    y1="1"
-                    x2="80.2603"
-                    y2="47.9916"
+                    id="paint0_linear_1052_2470"
+                    x1="79.7534"
+                    y1="0"
+                    x2="79.7534"
+                    y2="46.9916"
                     gradientUnits="userSpaceOnUse"
                 >
                     <stop stop-color="#F33F5E" />
                     <stop offset="1" stop-color="#F33F5E" stop-opacity="0" />
                 </linearGradient>
+                <clipPath id="clip0_1052_2470">
+                    <rect width="160" height="47" fill="white" />
+                </clipPath>
             </defs>
         </svg>
     ),

@@ -6,9 +6,19 @@ import {
     type LucideIcon,
 } from "lucide-react"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
+import { orders } from "@/config/site"
+import Book from "@/components/ui/BookCover"
+import {
+    Card,
+    CardContent,
+    CardDescription,
+    CardHeader,
+    CardTitle,
+} from "@/components/ui/Card"
+import { DataTable } from "@/components/ui/DataTable"
 import { Icons } from "@/components/Icons"
 
+import { Columns } from "../orders/_components/OrdersColumns"
 import SalesChart from "./_components/SalesChart"
 import TrendingArrow from "./_components/TrendingArrow"
 
@@ -86,6 +96,45 @@ const page: FC<pageProps> = ({}) => {
                 ))}
             </div>
             <SalesChart />
+            <div className="mt-10 grid items-start gap-8 md:grid-cols-analytics">
+                <Card className="overflow-x-hidden">
+                    <CardHeader>
+                        <CardTitle>Recent Order</CardTitle>
+                        <CardDescription>
+                            Last ten orders in your store
+                        </CardDescription>
+                    </CardHeader>
+
+                    <CardContent>
+                        <DataTable
+                            columns={Columns}
+                            data={orders}
+                            withPagination={false}
+                        />
+                    </CardContent>
+                </Card>
+
+                <Card>
+                    <CardHeader>
+                        <CardTitle>Top books</CardTitle>
+                        <CardDescription>
+                            Top three sale books in your store
+                        </CardDescription>
+                    </CardHeader>
+                    <CardContent className="flex items-center gap-3">
+                        {[1, 2, 3].map((num) => (
+                            <Book
+                                key={num}
+                                className="aspect-[2/3] w-full md:w-24"
+                                height={115}
+                                src={`/Book-${num}.webp`}
+                                alt="book"
+                                width={89}
+                            />
+                        ))}
+                    </CardContent>
+                </Card>
+            </div>
         </div>
     )
 }

@@ -30,8 +30,9 @@ import {
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
-    url: string
-    currentPage: number
+    url?: string
+    currentPage?: number
+    withPagination?: boolean
 }
 
 export function DataTable<TData, TValue>({
@@ -39,6 +40,7 @@ export function DataTable<TData, TValue>({
     data,
     url,
     currentPage,
+    withPagination = true,
 }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
@@ -126,11 +128,13 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            <DataTablePagination
-                table={table}
-                url={url}
-                currentPage={currentPage}
-            />
+            {withPagination ? (
+                <DataTablePagination
+                    table={table}
+                    url={url!}
+                    currentPage={currentPage!}
+                />
+            ) : null}
         </div>
     )
 }
