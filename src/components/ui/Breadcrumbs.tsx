@@ -37,7 +37,7 @@ const Breadcrumbs: FC = () => {
 
     return (
         <nav>
-            <ol className="flex items-center gap-2 text-xs font-medium text-gray-700">
+            <ol className="flex flex-wrap items-center gap-2 text-xs font-medium text-gray-700">
                 <li className="flex items-center gap-2">
                     <Link
                         href={"/"}
