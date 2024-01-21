@@ -6,12 +6,14 @@
         "nextjs",
         "nextui",
         "planetscale",
+        "sonner",
         "Swiper",
         "swiperjs",
         "tailwindcss",
         "tanstack",
         "trpc",
         "Uploadthing",
+        "Vali",
         "valibot",
         "webp"
     ]

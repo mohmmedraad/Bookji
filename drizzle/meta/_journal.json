@@ -1,13 +1,1 @@
-{
-  "version": "5",
-  "dialect": "mysql",
-  "entries": [
-    {
-      "idx": 0,
-      "version": "5",
-      "when": 1701611532756,
-      "tag": "0000_first_starjammers",
-      "breakpoints": true
-    }
-  ]
-}
+{"version":"5","dialect":"mysql","entries":[{"idx":1,"version":"5","when":1705856001115,"tag":"0001_brave_jamie_braddock","breakpoints":true}]}
