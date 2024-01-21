@@ -1,22 +1,23 @@
 "use client"
 
 import { useEffect, useState, type FC, type HTMLAttributes } from "react"
-import { parse, ValiError } from "valibot"
+import { type Endpoint } from "@/types"
+import { parse, ValiError, type BlobSchema } from "valibot"
 
 import { uploadFiles } from "@/lib/uploadthing"
 import { bookCoverSchema } from "@/lib/validations/book"
 
-import DropdownZone from "./DropdownZone"
+import DropdownZone from "./uploadFileDropZone/DropdownZone"
 
 interface AddBookInputProps {
-    onChange?: (coverUrl: string) => void
-    cover?: string
+    onChange: (coverUrl: string) => void
+    className?: string
 }
 
-const AddBookInput: FC<AddBookInputProps> = ({ onChange, cover }) => {
+const AddBookInput: FC<AddBookInputProps> = ({ onChange, className }) => {
     const [errorMessage, setErrorMessage] = useState<string>("")
     const [uploadProgress, setUploadProgress] = useState<number>(0)
-    const [coverUrl, setCoverUrl] = useState<string>(cover || "")
+    // const [coverUrl, setCoverUrl] = useState<string>(cover || "")
 
     useEffect(() => {
         if (onChange) {
@@ -42,7 +43,7 @@ const AddBookInput: FC<AddBookInputProps> = ({ onChange, cover }) => {
 
     async function uploadCover(cover: File) {
         const uploadedFile = await uploadFiles({
-            endpoint: "bookCoverUploader",
+            endpoint,
             files: [cover],
             onUploadProgress({ progress }) {
                 setUploadProgress(progress)
@@ -51,28 +52,28 @@ const AddBookInput: FC<AddBookInputProps> = ({ onChange, cover }) => {
         return uploadedFile
     }
 
-    function handleCoverError(error: unknown) {
-        setCoverUrl("")
-        if (error instanceof ValiError) {
-            return setErrorMessage(error.message)
-        }
-        /**
-         * TODO: Handle uploadthing errors
-         */
-        return setErrorMessage("Something went wrong while uploading the file")
-    }
+    // function handleCoverError(error: unknown) {
+    //     setCoverUrl("")
+    //     if (error instanceof ValiError) {
+    //         return setErrorMessage(error.message)
+    //     }
+    //     /**
+    //      * TODO: Handle uploadthing errors
+    //      */
+    //     return setErrorMessage("Something went wrong while uploading the file")
+    // }
 
     return (
-        <>
-            <DropdownZone
+        <div className={className}>
+            {/* <DropdownZone
                 uploadProgress={uploadProgress}
                 isError={!!errorMessage}
                 errorMessage={errorMessage}
                 onFile={(cover) => void handleOnFileChange(cover)}
                 coverUrl={coverUrl}
                 className="aspect-[2/3] max-w-[176px]"
-            />
-        </>
+            /> */}
+        </div>
     )
 }
 

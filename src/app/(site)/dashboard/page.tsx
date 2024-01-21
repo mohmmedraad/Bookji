@@ -1,13 +1,10 @@
 import { type FC } from "react"
 import Image from "next/image"
 import Link from "next/link"
-import { redirect } from "next/navigation"
 import { db } from "@/db"
 import { currentUser } from "@clerk/nextjs"
 import { eq } from "drizzle-orm"
-import { Plus } from "lucide-react"
 
-import { getCurrentPageNumber } from "@/lib/utils"
 import {
     Card,
     CardContent,
@@ -16,14 +13,11 @@ import {
     CardTitle,
 } from "@/components/ui/Card"
 
+import CreateStoreButton from "./_components/CreateStoreButton"
 import PageHeading from "./_components/PageHeading"
 import { StoreLogo } from "./_components/StoreLogo"
 
-interface pageProps {
-    searchParams: {
-        _page: string | undefined
-    }
-}
+interface pageProps {}
 
 const stores = [
     {
@@ -40,17 +34,14 @@ const stores = [
     },
 ]
 
-const Page: FC<pageProps> = async ({ searchParams }) => {
-    const currentPage = getCurrentPageNumber(searchParams?._page)
+const Page: FC<pageProps> = async () => {
     const user = await currentUser()
     if (!user || !user.id) {
         return
     }
 
-    // const userBooks = await db.query.books.findMany({
-    //     offset: currentPage * 10,
-    //     limit: 10,
-    //     where: (book) => eq(book.userId, user.id),
+    // const stores = await db.query.stores.findMany({
+    //     where: (store) => eq(store.ownerId, user.id),
     // })
 
     return (
@@ -60,25 +51,20 @@ const Page: FC<pageProps> = async ({ searchParams }) => {
              */}
             <PageHeading>Stores</PageHeading>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                <button>
-                    <Card className="flex h-60 flex-col items-center justify-center gap-6 transition-shadow duration-300 hover:shadow-xl sm:h-full">
-                        <Plus className="h-8 w-8 text-primary" />
-                        <p className="text-sm text-primary">Add Store</p>
-                    </Card>
-                </button>
+                <CreateStoreButton />
                 {stores.map(({ name, description, logo, thumbnail }, index) => (
                     <Link key={index} href={`/dashboard/stores/${name}`}>
                         <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-xl">
                             <Image
                                 alt={`${name} thumbnail`}
-                                src={thumbnail}
+                                src={thumbnail || "placeholder"}
                                 width={48}
                                 height={48}
                                 className="h-32 w-full object-cover"
                             />
                             <CardContent className="py-0">
                                 <StoreLogo
-                                    logo={logo}
+                                    logo={logo || "placeholder"}
                                     name={name}
                                     className="h-12 w-12 -translate-y-1/2 shadow-md"
                                 />
@@ -93,12 +79,6 @@ const Page: FC<pageProps> = async ({ searchParams }) => {
                     </Link>
                 ))}
             </div>
-            {/* <DataTable
-                columns={Columns}
-                data={userBooks}
-                url="/profile"
-                currentPage={currentPage}
-            /> */}
         </>
     )
 }

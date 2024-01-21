@@ -2,9 +2,9 @@ import { type FC, type HTMLAttributes } from "react"
 import { CircularProgress } from "@nextui-org/react"
 import { Trash } from "lucide-react"
 
-import Book from "./ui/BookCover"
-import BookWrapper from "./ui/BookWrapper"
-import { Button } from "./ui/Button"
+import Book from "../ui/BookCover"
+import BookWrapper from "../ui/BookWrapper"
+import { Button } from "../ui/Button"
 
 interface DropdownZonePreviewProps extends HTMLAttributes<HTMLDivElement> {
     cover: string | ArrayBuffer | null

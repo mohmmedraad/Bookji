@@ -1,8 +1,8 @@
 import { useState, type ChangeEvent, type FC, type HTMLAttributes } from "react"
 import { Upload } from "lucide-react"
 
+import { Label } from "../ui/Label"
 import DropdownZonePreview from "./DropdownZonePreview"
-import { Label } from "./ui/Label"
 
 interface DropdownZoneProps extends HTMLAttributes<HTMLDivElement> {
     uploadProgress: number
@@ -48,7 +48,7 @@ const DropdownZone: FC<DropdownZoneProps> = ({
                     cover={cover}
                     uploadProgress={uploadProgress}
                     handleRemoveFile={handleRemoveCover}
-                    className="w-[176px] "
+                    className="w-[176px]"
                 />
             ) : (
                 <div className={className} {...props}>

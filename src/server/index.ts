@@ -28,6 +28,7 @@ import {
 
 import { cartRouter } from "./routers/cart"
 import { privateProcedure, publicProcedure, router } from "./trpc"
+import { storeRouter } from "./routers/store"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamic = "force-dynamic"
@@ -376,6 +377,7 @@ export const appRouter = router({
             return ratings
         }),
     cart: cartRouter,
+    store: storeRouter,
 })
 
 export type AppRouter = typeof appRouter

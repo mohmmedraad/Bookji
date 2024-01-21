@@ -1,5 +1,5 @@
 import { type Book } from "@/db/schema"
-import { TRPCError } from "@trpc/server"
+import { type TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
 
 import { type Cost } from "@/lib/validations/book"
@@ -7,6 +7,7 @@ import {
     type cartItemSchema,
     type checkoutItemSchema,
 } from "@/lib/validations/cart"
+import { type OurFileRouter } from "@/app/api/uploadthing/core"
 
 export type CartItem = Input<typeof cartItemSchema>
 
@@ -50,3 +51,5 @@ export type Customer = {
     place: string
     totalSpend: number
 }
+
+export type Endpoint = keyof OurFileRouter

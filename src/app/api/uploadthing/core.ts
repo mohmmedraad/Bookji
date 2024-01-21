@@ -19,6 +19,36 @@ export const ourFileRouter = {
             return
             // return { uploadedBy: metadata.userId };
         }),
+    storeLogoUploader: f({ image: { maxFileSize: "1MB", maxFileCount: 1 } })
+        .middleware(({ req }) => {
+            const user = auth(req)
+
+            if (!user) throw new Error("Unauthorized")
+
+            return { userId: user.id }
+        })
+        .onUploadComplete(({ metadata, file }) => {
+            console.log("Uploaded file", file)
+            console.log("Uploaded file", metadata)
+            return
+            // return { uploadedBy: metadata.userId };
+        }),
+    storeThumbnailUploader: f({
+        image: { maxFileSize: "512KB", maxFileCount: 1 },
+    })
+        .middleware(({ req }) => {
+            const user = auth(req)
+
+            if (!user) throw new Error("Unauthorized")
+
+            return { userId: user.id }
+        })
+        .onUploadComplete(({ metadata, file }) => {
+            console.log("Uploaded file", file)
+            console.log("Uploaded file", metadata)
+            return
+            // return { uploadedBy: metadata.userId };
+        }),
 } satisfies FileRouter
 
 export type OurFileRouter = typeof ourFileRouter
