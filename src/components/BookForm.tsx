@@ -5,15 +5,19 @@ import { useRouter } from "next/navigation"
 import { type Category } from "@/types"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { TRPCError } from "@trpc/server"
+import { Upload } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
-import { bookFormSchema, type BookFormSchema } from "@/lib/validations/book"
+import {
+    bookCoverSchema,
+    bookFormSchema,
+    type BookFormSchema,
+} from "@/lib/validations/book"
 import { Input as FormInput } from "@/components/ui/Input"
 import { trpc } from "@/app/_trpc/client"
 
-import AddBookInput from "./AddBookInput"
 import { Button } from "./ui/Button"
 import {
     Form,
@@ -26,24 +30,12 @@ import {
 } from "./ui/Form"
 import { MultiSelect } from "./ui/MultiSelect"
 import { Textarea } from "./ui/Textarea"
+import UploadingZone from "./uploadFileDropZone copy/UploadingZone"
 
 interface BookFormProps extends Partial<BookFormSchema> {
     closeFun: () => void
     onSubmit: (data: BookFormSchema) => void
-    // title?: string
-    // description?: string
-    // categories?: Category[]
-    // price?: string
-    // inventory?: number
 }
-
-// const defaultValues: Partial<BookFormSchema> = {
-//     title: "",
-//     description: "",
-//     categories: [],
-//     price: "0",
-//     inventory: 1,
-// }
 
 const BookForm: FC<BookFormProps> = ({
     closeFun,
@@ -55,7 +47,6 @@ const BookForm: FC<BookFormProps> = ({
     cover = "",
     onSubmit,
 }) => {
-    console.log("cover:", cover)
     const form = useForm<BookFormSchema>({
         resolver: valibotResolver(bookFormSchema),
 
@@ -88,7 +79,27 @@ const BookForm: FC<BookFormProps> = ({
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <AddBookInput {...field} cover={cover} />
+                                {/* <AddBookInput {...field} cover={cover} /> */}
+                                <UploadingZone
+                                    {...field}
+                                    className="aspect-[2/3] max-w-[176px] rounded-md"
+                                    endpoint="bookCoverUploader"
+                                    schema={bookCoverSchema}
+                                    uploadContent={
+                                        <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                                            <div className="flex items-center justify-center rounded-full border-[1px] border-solid border-gray-100 bg-background p-3">
+                                                <Upload className="h-4 w-4 text-primary" />
+                                            </div>
+                                            <p className="text-center text-xs text-gray-800">
+                                                <span className="text-primary">
+                                                    Click to upload
+                                                </span>{" "}
+                                                or drag and drop PNG, JPG, and
+                                                max image size (1MB)
+                                            </p>
+                                        </div>
+                                    }
+                                />
                             </FormControl>
                         </FormItem>
                     )}

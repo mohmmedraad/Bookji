@@ -35,7 +35,6 @@ const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
 
     function onSubmit(data: BookFormSchema) {
         try {
-            console.log("data: ", data)
             addBook({ ...data })
         } catch (error) {
             if (error instanceof TRPCError) {
