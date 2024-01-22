@@ -8,27 +8,28 @@ import { trpc } from "@/app/_trpc/client"
 type SetOpen = Dispatch<SetStateAction<boolean>>
 type OnSuccess = () => void
 
-export const useCreateStore = (setOpen: SetOpen, onSuccess: OnSuccess) => {
+export const useCreateBook = (setOpen: SetOpen, onSuccess?: OnSuccess) => {
     const router = useRouter()
-    const { mutate: createStore, isLoading } = trpc.store.create.useMutation({
+    const { mutate: createBook, isLoading } = trpc.addBook.useMutation({
         onError: (error) => {
             if (error.data?.code === "UNAUTHORIZED") {
                 router.push("/login?origin=/dashboard/store/")
                 return toast.error("You must be logged in to create a store")
             }
 
-            if (error.data?.code  === "BAD_REQUEST")
-            return toast.error("Invalid data, please check your inputs")
+            if (error.data?.code === "BAD_REQUEST")
+                return toast.error("Invalid data, please check your inputs")
 
             return handleGenericError()
         },
         onSuccess: () => {
-            router.refresh()
             setOpen(false)
-            onSuccess()
+
+            if (onSuccess) onSuccess()
+
             return toast.success("Store created successfully")
         },
     })
 
-    return { createStore, isLoading }
+    return { createBook, isLoading }
 }

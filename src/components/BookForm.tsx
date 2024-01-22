@@ -1,22 +1,17 @@
 "use client"
 
 import { useState, type FC } from "react"
-import { useRouter } from "next/navigation"
 import { type Category } from "@/types"
 import { valibotResolver } from "@hookform/resolvers/valibot"
-import { TRPCError } from "@trpc/server"
 import { Upload } from "lucide-react"
 import { useForm } from "react-hook-form"
-import { toast } from "sonner"
 
-import { handleGenericError } from "@/lib/utils"
 import {
     bookCoverSchema,
     bookFormSchema,
     type BookFormSchema,
 } from "@/lib/validations/book"
 import { Input as FormInput } from "@/components/ui/Input"
-import { trpc } from "@/app/_trpc/client"
 
 import { Button } from "./ui/Button"
 import {
@@ -33,18 +28,18 @@ import { Textarea } from "./ui/Textarea"
 import UploadingZone from "./uploadFileDropZone copy/UploadingZone"
 
 interface BookFormProps extends Partial<BookFormSchema> {
-    closeFun: () => void
     onSubmit: (data: BookFormSchema) => void
+    isLoading?: boolean
 }
 
 const BookForm: FC<BookFormProps> = ({
-    closeFun,
     title = "",
     description = "",
     categories = [],
     price = "0",
     inventory = 1,
     cover = "",
+    isLoading = false,
     onSubmit,
 }) => {
     const form = useForm<BookFormSchema>({
@@ -79,7 +74,6 @@ const BookForm: FC<BookFormProps> = ({
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                {/* <AddBookInput {...field} cover={cover} /> */}
                                 <UploadingZone
                                     {...field}
                                     className="aspect-[2/3] max-w-[176px] rounded-md"
@@ -212,7 +206,7 @@ const BookForm: FC<BookFormProps> = ({
                     </div>
                     <Button
                         className="my-6 w-full"
-                        disabled={form.formState.isSubmitting}
+                        disabled={isLoading}
                         type="submit"
                     >
                         Add Book

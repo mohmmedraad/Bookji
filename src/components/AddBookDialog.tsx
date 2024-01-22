@@ -1,13 +1,11 @@
 "use client"
 
 import { useState, type FC } from "react"
-import { useRouter } from "next/navigation"
-import { TRPCError } from "@trpc/server"
-import { toast } from "sonner"
 
-import { handleGenericError } from "@/lib/utils"
 import { type BookFormSchema } from "@/lib/validations/book"
-import { trpc } from "@/app/_trpc/client"
+import { useCreateBook } from "@/hooks/useCreateBook"
+import { DropdownMenuItem } from "@/components/ui/DropdownMenu"
+import { Separator } from "@/components/ui/Separator"
 
 import BookForm from "./BookForm"
 import {
@@ -17,40 +15,15 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "./ui/Dialog"
-import { DropdownMenuItem } from "./ui/DropdownMenu"
-import { Separator } from "./ui/Separator"
 
 interface AddBookDialogProps {}
 
 const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
     const [open, setOpen] = useState(false)
-    const router = useRouter()
-
-    const { mutate: addBook } = trpc.addBook.useMutation({
-        onSuccess: () => {
-            toast.success("Book added successfully")
-            setOpen(false)
-        },
-    })
+    const { createBook, isLoading } = useCreateBook(setOpen)
 
     function onSubmit(data: BookFormSchema) {
-        try {
-            addBook({ ...data })
-        } catch (error) {
-            if (error instanceof TRPCError) {
-                return handleTRPCError(error)
-            }
-            return handleGenericError()
-        }
-    }
-
-    function handleTRPCError(error: TRPCError) {
-        if (error.code === "UNAUTHORIZED") {
-            return router.push("/sign-in")
-        }
-
-        if (error.code === "BAD_REQUEST")
-            return toast.error("Invalid data, please check your inputs")
+        createBook(data)
     }
 
     return (
@@ -69,7 +42,7 @@ const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
                 </DialogHeader>
                 <Separator />
 
-                <BookForm closeFun={() => setOpen(false)} onSubmit={onSubmit} />
+                <BookForm isLoading={isLoading} onSubmit={onSubmit} />
             </DialogContent>
         </Dialog>
     )
