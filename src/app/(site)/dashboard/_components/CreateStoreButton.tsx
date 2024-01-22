@@ -1,6 +1,6 @@
 "use client"
 
-import { type FC } from "react"
+import { useState, type FC } from "react"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { Plus, Upload } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -31,12 +31,12 @@ import {
     FormMessage,
 } from "@/components/ui/Form"
 import { Input } from "@/components/ui/Input"
-import FileUploadZone from "@/components/uploadFileDropZone/FileUploadZone"
+import UploadingZone from "@/components/uploadFileDropZone copy/UploadingZone"
 
 interface CreateStoreButtonProps {}
 
 const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
-    const createStore = useCreateStore()
+    const [open, setOpen] = useState(false)
     const form = useForm<NewStoreSchema>({
         resolver: valibotResolver(newStoreSchema),
         defaultValues: {
@@ -46,22 +46,27 @@ const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
             thumbnail: "",
         },
     })
+    const { createStore, isLoading } = useCreateStore(setOpen, () =>
+        form.reset()
+    )
 
     function onSubmit(data: NewStoreSchema) {
         createStore(data)
     }
 
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button>
                     <Card className="flex h-60 flex-col items-center justify-center gap-6 transition-shadow duration-300 hover:shadow-xl sm:h-full">
                         <Plus className="h-8 w-8 text-primary" />
-                        <p className="text-sm text-primary">Create Store</p>
+                        <span className="text-sm text-primary">
+                            Create Store
+                        </span>
                     </Card>
                 </button>
             </DialogTrigger>
-            <DialogContent>
+            <DialogContent className="max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
                     <DialogTitle>Create new store</DialogTitle>
                 </DialogHeader>
@@ -72,61 +77,62 @@ const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
                             void form.handleSubmit(onSubmit)()
                         }}
                     >
-                        <FormField
-                            control={form.control}
-                            name="thumbnail"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <FileUploadZone
-                                            className="mb-6 h-32 w-full rounded-md"
-                                            {...field}
-                                            endpoint="storeLogoUploader"
-                                            schema={storeLogoSchema}
-                                            uploadContent={
-                                                <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                                                    <div className="flex items-center justify-center rounded-full border-[1px] border-solid border-gray-100 bg-background p-3">
-                                                        <Upload className="h-4 w-4 text-primary" />
+                        <div className="mb-8 grid gap-6">
+                            <FormField
+                                control={form.control}
+                                name="thumbnail"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <UploadingZone
+                                                className="h-32 w-full rounded-md"
+                                                {...field}
+                                                endpoint="storeLogoUploader"
+                                                schema={storeLogoSchema}
+                                                uploadContent={
+                                                    <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                                                        <div className="flex items-center justify-center rounded-full border-[1px] border-solid border-gray-100 bg-background p-3">
+                                                            <Upload className="h-4 w-4 text-primary" />
+                                                        </div>
+                                                        <p className="text-center text-xs text-gray-800">
+                                                            <span className="text-primary">
+                                                                Click to upload
+                                                            </span>
+                                                            or drag and drop
+                                                            PNG, JPG, and max
+                                                            image size (1MB)
+                                                        </p>
                                                     </div>
-                                                    <p className="text-center text-xs text-gray-800">
-                                                        <span className="text-primary">
-                                                            Click to upload
-                                                        </span>
-                                                        or drag and drop PNG,
-                                                        JPG, and max image size
-                                                        (1MB)
-                                                    </p>
-                                                </div>
-                                            }
-                                        />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                        <FormField
-                            control={form.control}
-                            name="logo"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormControl>
-                                        <FileUploadZone
-                                            className="mb-8 h-16 w-16 rounded-full"
-                                            {...field}
-                                            endpoint="storeThumbnailUploader"
-                                            schema={storeThumbnailSchema}
-                                            uploadContent={
-                                                <div className="flex h-full w-full items-center justify-center">
-                                                    <div className="flex items-center justify-center rounded-full border-[1px] border-solid border-gray-100 bg-background p-3">
-                                                        <Upload className="h-3 w-3 text-primary" />
+                                                }
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="logo"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormControl>
+                                            <UploadingZone
+                                                className="h-16 w-16 rounded-full"
+                                                {...field}
+                                                endpoint="storeThumbnailUploader"
+                                                schema={storeThumbnailSchema}
+                                                uploadContent={
+                                                    <div className="flex h-full w-full items-center justify-center">
+                                                        <div className="flex items-center justify-center rounded-full border-[1px] border-solid border-gray-100 bg-background p-3">
+                                                            <Upload className="h-3 w-3 text-primary" />
+                                                        </div>
                                                     </div>
-                                                </div>
-                                            }
-                                        />
-                                    </FormControl>
-                                </FormItem>
-                            )}
-                        />
+                                                }
+                                            />
+                                        </FormControl>
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <FormField
                             control={form.control}
                             name="name"
@@ -169,7 +175,14 @@ const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
                                 </FormItem>
                             )}
                         />
-                        <Button type="submit">Create store</Button>
+
+                        <Button
+                            type="submit"
+                            className="mt-6 w-full"
+                            disabled={isLoading}
+                        >
+                            Create store
+                        </Button>
                     </form>
                 </Form>
             </DialogContent>

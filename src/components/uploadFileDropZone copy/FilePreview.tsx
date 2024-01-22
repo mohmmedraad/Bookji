@@ -4,15 +4,18 @@ import { useState, type FC, type HTMLAttributes } from "react"
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
-import { useFileUploadStore } from "@/hooks/useFileUploadStore"
+import { FileError } from "@/lib/utils/fileUploading"
 
-interface FilePreviewProps extends HTMLAttributes<HTMLImageElement> {}
+interface FilePreviewProps extends HTMLAttributes<HTMLImageElement> {
+    file: File | null
+}
 
-const FilePreview: FC<FilePreviewProps> = ({ className }) => {
-    const { file, fileUrl, isError } = useFileUploadStore()
+const FilePreview: FC<FilePreviewProps> = ({ file, className }) => {
     const [imgSrc, setImgSrc] = useState<string | ArrayBuffer | null>("")
 
-    if (isError || (!file && !fileUrl)) return null
+    if (!file) {
+        throw new FileError("No file to upload, please select a file")
+    }
 
     if (file && !imgSrc) {
         const reader = new FileReader()
@@ -25,7 +28,7 @@ const FilePreview: FC<FilePreviewProps> = ({ className }) => {
     return (
         <Image
             // @ts-expect-error cover is a string
-            src={imgSrc || fileUrl}
+            src={imgSrc}
             alt={""}
             fill
             className={cn("h-full w-full object-cover", className)}

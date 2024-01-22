@@ -3,15 +3,13 @@
 import { type FC } from "react"
 import { CircularProgress } from "@nextui-org/react"
 
-import { useFileUploadStore } from "@/hooks/useFileUploadStore"
+interface DropdownZoneOverlayProps {
+    uploadingProgress: number
+}
 
-interface DropdownZoneOverlayProps {}
-
-const DropdownZoneOverlay: FC<DropdownZoneOverlayProps> = ({}) => {
-    const { uploadingProgress, isFileUploading, isError } = useFileUploadStore()
-
-    if (isError || !isFileUploading || uploadingProgress >= 100) return null
-
+const DropdownZoneOverlay: FC<DropdownZoneOverlayProps> = ({
+    uploadingProgress,
+}) => {
     return (
         <div className="absolute inset-0 z-50 flex items-center justify-center bg-background/80 backdrop-blur-sm">
             <CircularProgress

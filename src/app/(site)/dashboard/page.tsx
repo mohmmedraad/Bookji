@@ -19,30 +19,15 @@ import { StoreLogo } from "./_components/StoreLogo"
 
 interface pageProps {}
 
-const stores = [
-    {
-        name: "Book Store",
-        description: "A store for books",
-        logo: "/img-1.webp",
-        thumbnail: "/default-thumbnail.png",
-    },
-    {
-        name: "Book Store 2",
-        description: "A store for books 2",
-        logo: "/img-1.webp",
-        thumbnail: "/default-thumbnail.png",
-    },
-]
-
 const Page: FC<pageProps> = async () => {
     const user = await currentUser()
     if (!user || !user.id) {
         return
     }
 
-    // const stores = await db.query.stores.findMany({
-    //     where: (store) => eq(store.ownerId, user.id),
-    // })
+    const stores = await db.query.stores.findMany({
+        where: (store) => eq(store.ownerId, user.id),
+    })
 
     return (
         <>
@@ -54,7 +39,7 @@ const Page: FC<pageProps> = async () => {
                 <CreateStoreButton />
                 {stores.map(({ name, description, logo, thumbnail }, index) => (
                     <Link key={index} href={`/dashboard/stores/${name}`}>
-                        <Card className="overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+                        <Card className="h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl">
                             <Image
                                 alt={`${name} thumbnail`}
                                 src={thumbnail || "placeholder"}
@@ -71,7 +56,7 @@ const Page: FC<pageProps> = async () => {
                             </CardContent>
                             <CardHeader className="pt-0">
                                 <CardTitle>{name}</CardTitle>
-                                <CardDescription className="line-clamp-3">
+                                <CardDescription className="line-clamp-2">
                                     {description}
                                 </CardDescription>
                             </CardHeader>
