@@ -102,7 +102,6 @@ const EditBookDialog: FC<EditBookDialogProps> = ({
                         inventory={inventory}
                         cover={cover!}
                         categories={categories}
-                        closeFun={() => setOpen(false)}
                         onSubmit={onSubmit}
                     />
                 )}
