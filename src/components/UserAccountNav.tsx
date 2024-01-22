@@ -14,8 +14,6 @@ import {
 } from "@/components/ui/DropdownMenu"
 import { UserAvatar } from "@/components/UserAvatar"
 
-import AddBookDialog from "./AddBookDialog"
-
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
     user: Pick<User, "firstName" | "lastName" | "imageUrl"> & {
         primaryEmailAddress?: string
@@ -60,9 +58,11 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
                     <Link href="/profile">Profile</Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                {/* <DropdownMenuItem asChild> */}
-                <AddBookDialog />
-                {/* </DropdownMenuItem> */}
+
+                <DropdownMenuItem asChild>
+                    <Link href="/dashboard">Dashboard</Link>
+                </DropdownMenuItem>
+
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
                     className="cursor-pointer"
