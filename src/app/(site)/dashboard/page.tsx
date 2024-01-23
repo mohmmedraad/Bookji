@@ -37,32 +37,34 @@ const Page: FC<pageProps> = async () => {
             <PageHeading>Stores</PageHeading>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 <CreateStoreButton />
-                {stores.map(({ name, description, logo, thumbnail }, index) => (
-                    <Link key={index} href={`/dashboard/stores/${name}`}>
-                        <Card className="h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl">
-                            <Image
-                                alt={`${name} thumbnail`}
-                                src={thumbnail || "placeholder"}
-                                width={48}
-                                height={48}
-                                className="h-32 w-full object-cover"
-                            />
-                            <CardContent className="py-0">
-                                <StoreLogo
-                                    logo={logo || "placeholder"}
-                                    name={name}
-                                    className="h-12 w-12 -translate-y-1/2 shadow-md"
+                {stores.map(
+                    ({ name, description, logo, thumbnail, id }, index) => (
+                        <Link key={index} href={`/dashboard/${id}`}>
+                            <Card className="h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl">
+                                <Image
+                                    alt={`${name} thumbnail`}
+                                    src={thumbnail || "placeholder"}
+                                    width={48}
+                                    height={48}
+                                    className="h-32 w-full object-cover"
                                 />
-                            </CardContent>
-                            <CardHeader className="pt-0">
-                                <CardTitle>{name}</CardTitle>
-                                <CardDescription className="line-clamp-2">
-                                    {description}
-                                </CardDescription>
-                            </CardHeader>
-                        </Card>
-                    </Link>
-                ))}
+                                <CardContent className="py-0">
+                                    <StoreLogo
+                                        logo={logo || "placeholder"}
+                                        name={name}
+                                        className="h-12 w-12 -translate-y-1/2 shadow-md"
+                                    />
+                                </CardContent>
+                                <CardHeader className="pt-0">
+                                    <CardTitle>{name}</CardTitle>
+                                    <CardDescription className="line-clamp-2">
+                                        {description}
+                                    </CardDescription>
+                                </CardHeader>
+                            </Card>
+                        </Link>
+                    )
+                )}
             </div>
         </>
     )
