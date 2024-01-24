@@ -108,6 +108,7 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
     description: text("description"),
     logo: varchar("logo", { length: 200 }),
     thumbnail: varchar("thumbnail", { length: 200 }),
+    slug: text("slug"),
     stripeAccountId: varchar("stripeAccountId", { length: 191 }),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
