@@ -34,7 +34,7 @@ export const ourFileRouter = {
             // return { uploadedBy: metadata.userId };
         }),
     storeThumbnailUploader: f({
-        image: { maxFileSize: "512KB", maxFileCount: 1 },
+        image: { maxFileSize: "2MB", maxFileCount: 1 },
     })
         .middleware(({ req }) => {
             const user = auth(req)
