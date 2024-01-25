@@ -26,7 +26,7 @@ const StoreInfo: FC<StoreInfoProps> = ({ logo, thumbnail }) => {
                     priority
                     src={storeThumbnail || thumbnail || "placeholder"}
                     alt={`thumbnail`}
-                    className="h-36 w-full rounded-[1.25rem] lg:h-60"
+                    className="h-36 w-full rounded-[1.25rem] object-cover lg:h-60"
                     width={1200}
                     height={240}
                 />
@@ -36,7 +36,7 @@ const StoreInfo: FC<StoreInfoProps> = ({ logo, thumbnail }) => {
                         loading="eager"
                         src={storeLogo || logo || "placeholder"}
                         alt={`logo`}
-                        className="aspect-square w-20 rounded-full border-2 border-white lg:w-40"
+                        className="aspect-square w-20 rounded-full border-2 border-white object-cover lg:w-40"
                         width={160}
                         height={160}
                     />
