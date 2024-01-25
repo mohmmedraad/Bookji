@@ -41,13 +41,15 @@ const Page: FC<pageProps> = async () => {
                     ({ name, description, logo, thumbnail, slug }, index) => (
                         <Link key={index} href={`/dashboard/${slug}`}>
                             <Card className="h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl">
-                                <Image
-                                    alt={`${name} thumbnail`}
-                                    src={thumbnail || "placeholder"}
-                                    width={48}
-                                    height={48}
-                                    className="h-32 w-full object-cover"
-                                />
+                                <div className="relative h-32 w-full">
+                                    <Image
+                                        alt={`${name} thumbnail`}
+                                        src={thumbnail || "placeholder"}
+                                        fill
+                                        loading="eager"
+                                        className="h-full w-full object-cover"
+                                    />
+                                </div>
                                 <CardContent className="py-0">
                                     <StoreLogo
                                         logo={logo || "placeholder"}
