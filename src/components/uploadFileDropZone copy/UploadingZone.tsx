@@ -43,7 +43,7 @@ const UploadingZone: FC<UploadingZoneProps> = ({
     }, [fileUrl, onChange])
 
     return (
-        <div>
+        <div className="flex w-full flex-col items-center justify-center">
             <div
                 className={cn("relative overflow-hidden", className)}
                 {...props}

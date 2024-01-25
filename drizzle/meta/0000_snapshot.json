@@ -1,8 +1,8 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "ce24f669-e676-4695-9f71-bedd74cdc114",
-  "prevId": "793822ac-fa75-4bae-a410-75ea9d730ac3",
+  "id": "5fa5f9fc-b124-4f17-a49c-a313ef89c7a0",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
       "name": "Bookji_addresses",
@@ -621,6 +621,13 @@
         "thumbnail": {
           "name": "thumbnail",
           "type": "varchar(200)",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false

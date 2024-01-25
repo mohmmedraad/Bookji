@@ -1,11 +1,19 @@
 "use client"
 
-import { type FC } from "react"
+import { use, type FC } from "react"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { partial, pick } from "valibot"
 
-import { storeInfoSchema, type StoreInfoSchema } from "@/lib/validations/store"
+import { handleGenericError } from "@/lib/utils"
+import {
+    newStoreSchema,
+    storeInfoSchema,
+    type StoreInfoSchema,
+} from "@/lib/validations/store"
+import { useStore } from "@/hooks/useStore"
+import { useUpdateStore } from "@/hooks/useUpdateStore"
 import { Button } from "@/components/ui/Button"
 import {
     Card,
@@ -26,19 +34,25 @@ import { Input } from "@/components/ui/Input"
 
 import DeleteStoreDialog from "./DeleteStoreDialog"
 
-interface UpdateStoreFormProps {}
+interface UpdateStoreFormProps {
+    name: string
+    description: string
+}
 
-const UpdateStoreForm: FC<UpdateStoreFormProps> = ({}) => {
+const UpdateStoreForm: FC<UpdateStoreFormProps> = ({ name, description }) => {
+    const { isLoading, updateStore } = useUpdateStore()
     const form = useForm<StoreInfoSchema>({
-        resolver: valibotResolver(storeInfoSchema),
+        resolver: valibotResolver(
+            pick(newStoreSchema, ["name", "description"])
+        ),
         defaultValues: {
-            name: "",
-            description: "",
+            name,
+            description,
         },
     })
 
     function onSubmit(data: StoreInfoSchema) {
-        toast.success(JSON.stringify(data))
+        updateStore(data)
     }
 
     return (
@@ -88,7 +102,9 @@ const UpdateStoreForm: FC<UpdateStoreFormProps> = ({}) => {
                             )}
                         />
                         <div className="mt-4 flex gap-4">
-                            <Button type="submit">Save</Button>
+                            <Button type="submit" disabled={isLoading}>
+                                Save
+                            </Button>
                             <DeleteStoreDialog />
                         </div>
                     </form>

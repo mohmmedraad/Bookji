@@ -1,43 +1,46 @@
+"use client"
+
 import { type FC } from "react"
 import Image from "next/image"
 import { Camera, Pencil, Share2 } from "lucide-react"
 
+import { useStore } from "@/hooks/useStore"
 import { Button } from "@/components/ui/Button"
 
-interface StoreInfoProps {}
+import UpdateLogoButton from "../_components/UpdateLogoButton"
+import UpdateThumbnailButton from "../_components/UpdateThumbnailButton"
 
-const StoreInfo: FC<StoreInfoProps> = ({}) => {
+interface StoreInfoProps {
+    logo: string | null
+    thumbnail: string | null
+}
+
+const StoreInfo: FC<StoreInfoProps> = ({ logo, thumbnail }) => {
+    const storeLogo = useStore((state) => state.logo)
+    const storeThumbnail = useStore((state) => state.thumbnail)
     return (
         <>
-            <div className="relative">
+            <div className="relative shadow-md">
                 <Image
                     loading="eager"
-                    src={"/default-thumbnail.png"}
+                    priority
+                    src={storeThumbnail || thumbnail || "placeholder"}
                     alt={`thumbnail`}
                     className="h-36 w-full rounded-[1.25rem] lg:h-60"
                     width={1200}
                     height={240}
                 />
-                <Button className="absolute  bottom-3 right-3  flex gap-2 bg-black/40 text-xs text-white hover:bg-black/20 md:bottom-6 md:right-6 md:text-sm">
-                    <Camera className="text-base" width={16} height={16} />
-                    Edit
-                </Button>
+                <UpdateThumbnailButton />
                 <div className=" absolute bottom-0 left-3 translate-y-[50%]">
                     <Image
                         loading="eager"
-                        src={"/person-1.webp"}
-                        alt={`avatar`}
+                        src={storeLogo || logo || "placeholder"}
+                        alt={`logo`}
                         className="aspect-square w-20 rounded-full border-2 border-white lg:w-40"
                         width={160}
                         height={160}
                     />
-                    <Button className="absolute bottom-[15%] right-1/4 h-fit translate-x-1/2 translate-y-1/2 rounded-full p-3">
-                        <Pencil
-                            className="aspect-square text-white"
-                            width={16}
-                            height={16}
-                        />
-                    </Button>
+                    <UpdateLogoButton />
                 </div>
             </div>
             <div

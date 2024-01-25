@@ -6,50 +6,51 @@ import { Separator } from "@/components/ui/Separator"
 
 import DashboardNav from "../_components/DashboardNav"
 import PageHeading from "../_components/PageHeading"
+import StoreProvider from "./_components/StoreProvider"
 
 const storeLinks = [
     {
-        href: "/dashboard/(storeId)",
+        href: "/dashboard/(storeSlug)",
         label: "Store",
     },
     {
-        href: "/dashboard/(storeId)/books",
+        href: "/dashboard/(storeSlug)/books",
         label: "Books",
     },
     {
-        href: "/dashboard/(storeId)/orders",
+        href: "/dashboard/(storeSlug)/orders",
         label: "Orders",
     },
     {
-        href: "/dashboard/(storeId)/customers",
+        href: "/dashboard/(storeSlug)/customers",
         label: "Customers",
     },
     {
-        href: "/dashboard/(storeId)/analytics",
+        href: "/dashboard/(storeSlug)/analytics",
         label: "Analytics",
     },
 ]
 type pageParams = {
     params: {
-        storeId: string
+        storeSlug: string
     }
 }
 
-const Layout = ({
-    params: { storeId },
+const Layout = async ({
+    params: { storeSlug },
     children,
 }: { children: React.ReactNode } & pageParams) => {
-    // if (isNaN(+storeId)) return notFound()
-    // const store = await db.query.stores.findFirst({
-    //     where: (store, { eq }) => eq(store.id, parseInt(storeId)),
-    // })
+    const store = await db.query.stores.findFirst({
+        where: (store, { eq }) => eq(store.slug, storeSlug),
+    })
 
-    // if (!store) {
-    //     return notFound()
-    // }
+    if (!store) {
+        return notFound()
+    }
 
     return (
         <>
+            <StoreProvider {...store} />
             <PageHeading>Book Store</PageHeading>
             {/* <nav className="py-8">
                 <ul className="flex gap-1">
@@ -67,7 +68,7 @@ const Layout = ({
             </nav> */}
             <DashboardNav
                 links={storeLinks}
-                hrefFunction={(href) => href.replace("(storeId)", storeId)}
+                hrefFunction={(href) => href.replace("(storeSlug)", storeSlug)}
                 className="pt-6"
             />
             <Separator className="mb-8" />

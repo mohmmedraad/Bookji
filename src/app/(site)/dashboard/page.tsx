@@ -38,8 +38,8 @@ const Page: FC<pageProps> = async () => {
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
                 <CreateStoreButton />
                 {stores.map(
-                    ({ name, description, logo, thumbnail, id }, index) => (
-                        <Link key={index} href={`/dashboard/${id}`}>
+                    ({ name, description, logo, thumbnail, slug }, index) => (
+                        <Link key={index} href={`/dashboard/${slug}`}>
                             <Card className="h-full overflow-hidden transition-shadow duration-300 hover:shadow-xl">
                                 <Image
                                     alt={`${name} thumbnail`}

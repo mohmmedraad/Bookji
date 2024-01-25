@@ -1,5 +1,7 @@
 import { type FC } from "react"
 import Link from "next/link"
+import { notFound } from "next/navigation"
+import { db } from "@/db"
 
 import { buttonVariants } from "@/components/ui/Button"
 import {
@@ -13,13 +15,25 @@ import {
 import UpdateStoreForm from "./_components/UpdateStoreForm"
 import StoreInfo from "./_sections/StoreInfo"
 
-interface pageProps {}
+interface pageProps {
+    params: {
+        storeSlug: string
+    }
+}
 
-const page: FC<pageProps> = ({}) => {
+const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
+    const store = await db.query.stores.findFirst({
+        where: (store, { eq }) => eq(store.slug, storeSlug),
+    })
+
+    if (!store) {
+        return notFound()
+    }
+
     return (
         <>
-            <StoreInfo />
-            <div className="md:grid-cols-updateStore grid items-start gap-8 pt-[52px]">
+            <StoreInfo logo={store.logo} thumbnail={store.thumbnail} />
+            <div className="grid items-start gap-8 pt-[52px] md:grid-cols-updateStore">
                 <Card>
                     <CardHeader>
                         <CardTitle>Connect to stripe</CardTitle>
@@ -34,7 +48,10 @@ const page: FC<pageProps> = ({}) => {
                         </Link>
                     </CardContent>
                 </Card>
-                <UpdateStoreForm />
+                <UpdateStoreForm
+                    name={store.name}
+                    description={store.description!}
+                />
             </div>
         </>
     )

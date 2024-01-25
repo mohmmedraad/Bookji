@@ -8,6 +8,7 @@ import {
     type SignUpStatus,
 } from "@clerk/types"
 import { clsx, type ClassValue } from "clsx"
+import slugifyStr from "slugify"
 import { toast } from "sonner"
 import { twMerge } from "tailwind-merge"
 
@@ -89,4 +90,8 @@ export function absoluteUrl(path: string) {
 export function getRandomNumber(min: number, max: number) {
     // Generate a random number within the specified range
     return Math.floor(Math.random() * (max - min + 1)) + min
+}
+
+export function slugify(str: string) {
+    return slugifyStr(str, { lower: true })
 }

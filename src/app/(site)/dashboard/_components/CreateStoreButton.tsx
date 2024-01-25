@@ -46,9 +46,7 @@ const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
             thumbnail: "",
         },
     })
-    const { createStore, isLoading } = useCreateStore(setOpen, () =>
-        form.reset()
-    )
+    const { createStore, isLoading } = useCreateStore(setOpen, form)
 
     function onSubmit(data: NewStoreSchema) {
         createStore(data)
@@ -58,7 +56,7 @@ const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <button>
-                    <Card className="flex h-60 flex-col items-center justify-center gap-6 transition-shadow duration-300 hover:shadow-xl sm:h-full">
+                    <Card className="flex h-full min-h-[230px] flex-col items-center justify-center gap-6 transition-shadow duration-300 hover:shadow-xl">
                         <Plus className="h-8 w-8 text-primary" />
                         <span className="text-sm text-primary">
                             Create Store
