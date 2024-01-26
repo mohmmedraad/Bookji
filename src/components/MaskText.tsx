@@ -1,7 +1,7 @@
 "use client"
 
 import { type FC } from "react"
-import { motion } from "framer-motion"
+import { domAnimation, LazyMotion, m } from "framer-motion"
 
 interface MaskTextProps {
     isActive: boolean
@@ -23,17 +23,17 @@ const MaskText: FC<MaskTextProps> = ({ isActive, text, delay = 0 }) => {
     }
 
     return (
-        <>
-            <motion.div className="overflow-hidden">
-                <motion.div
+        <LazyMotion features={domAnimation}>
+            <m.div className="overflow-hidden">
+                <m.div
                     variants={animation}
                     initial="initial"
                     animate={isActive ? "enter" : ""}
                 >
                     {text}
-                </motion.div>
-            </motion.div>
-        </>
+                </m.div>
+            </m.div>
+        </LazyMotion>
     )
 }
 
