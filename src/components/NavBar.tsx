@@ -63,20 +63,21 @@ const NavBar: FC = async ({}) => {
                         </nav>
                     </div>
                     <div className="flex items-center justify-center gap-3 ">
-                        <Cart />
-
                         {user != null ? (
                             /**
                              * TODO: Add suspense
                              */
-                            <UserAccountNav
-                                user={{
-                                    firstName: user.firstName,
-                                    lastName: user.lastName,
-                                    imageUrl: user.imageUrl,
-                                    primaryEmailAddress,
-                                }}
-                            />
+                            <>
+                                <Cart />
+                                <UserAccountNav
+                                    user={{
+                                        firstName: user.firstName,
+                                        lastName: user.lastName,
+                                        imageUrl: user.imageUrl,
+                                        primaryEmailAddress,
+                                    }}
+                                />
+                            </>
                         ) : (
                             <AuthLink
                                 className={buttonVariants({})}
