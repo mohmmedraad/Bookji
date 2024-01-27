@@ -18,9 +18,7 @@ const APP_NAME = "Bookji"
 export const books = mysqlTable(`${APP_NAME}_books`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    storeId: serial("storeId")
-        .references(() => stores.id, { onDelete: "cascade" })
-        .notNull(),
+    storeId: int("storeId").notNull(),
     title: varchar("title", { length: 191 }).notNull(),
     description: text("description"),
     cover: varchar("cover", { length: 200 }),
@@ -45,9 +43,7 @@ export const booksRelations = relations(books, ({ many, one }) => ({
 export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    bookId: varchar("bookId", { length: 191 })
-        .references(() => books.id, { onDelete: "cascade" })
-        .notNull(),
+    bookId: varchar("bookId", { length: 191 }).notNull(),
     rating: int("rating").notNull(),
     comment: text("comment"),
     createdAt: timestamp("createdAt").defaultNow(),
@@ -76,9 +72,7 @@ export const categoriesRelations = relations(categories, ({ many }) => ({
 export const booksToCategories = mysqlTable(
     `${APP_NAME}_booksToCategories`,
     {
-        bookId: int("bookId")
-            .references(() => books.id, { onDelete: "cascade" })
-            .notNull(),
+        bookId: int("bookId").notNull(),
         categoryId: int("categoryId").notNull(),
     },
     (t) => ({
