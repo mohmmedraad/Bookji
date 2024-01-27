@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, type FC } from "react"
+import { BookUp } from "lucide-react"
 
 import { type BookFormSchema } from "@/lib/validations/book"
 import { useCreateBook } from "@/hooks/useCreateBook"
@@ -8,6 +9,7 @@ import { DropdownMenuItem } from "@/components/ui/DropdownMenu"
 import { Separator } from "@/components/ui/Separator"
 
 import BookForm from "./BookForm"
+import { Button } from "./ui/Button"
 import {
     Dialog,
     DialogContent,
@@ -29,9 +31,9 @@ const AddBookDialog: FC<AddBookDialogProps> = ({}) => {
     return (
         <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
-                <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
-                    Add Book
-                </DropdownMenuItem>
+                <Button variant={"outline"}>
+                    <BookUp className="h-4 w-4" />
+                </Button>
             </DialogTrigger>
             {/**
              * TODO: Change the viewport units to be dynamic

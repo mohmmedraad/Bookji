@@ -3,18 +3,21 @@ import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
+import { type BookFormSchema } from "@/lib/validations/book"
 import { trpc } from "@/app/_trpc/client"
 
-type SetOpen = Dispatch<SetStateAction<boolean>>
-type OnSuccess = () => void
+import { useStore } from "./useStore"
 
-export const useCreateBook = (setOpen: SetOpen, onSuccess?: OnSuccess) => {
+type SetOpen = Dispatch<SetStateAction<boolean>>
+
+export const useCreateBook = (setOpen: SetOpen) => {
     const router = useRouter()
-    const { mutate: createBook, isLoading } = trpc.addBook.useMutation({
+    const storeId = useStore((store) => store.id)
+    const { mutate, isLoading } = trpc.addBook.useMutation({
         onError: (error) => {
             if (error.data?.code === "UNAUTHORIZED") {
                 router.push("/login?origin=/dashboard/store/")
-                return toast.error("You must be logged in to create a store")
+                return toast.error("You must be logged in to add a book")
             }
 
             if (error.data?.code === "BAD_REQUEST")
@@ -25,11 +28,15 @@ export const useCreateBook = (setOpen: SetOpen, onSuccess?: OnSuccess) => {
         onSuccess: () => {
             setOpen(false)
 
-            if (onSuccess) onSuccess()
+            router.refresh()
 
-            return toast.success("Store created successfully")
+            return toast.success("Book added successfully")
         },
     })
+
+    function createBook(data: BookFormSchema) {
+        mutate({ storeId, ...data })
+    }
 
     return { createBook, isLoading }
 }

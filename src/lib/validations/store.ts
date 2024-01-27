@@ -58,6 +58,10 @@ export const storeThumbnailSchema = blob([
     maxSize(2_097_152, "File size must be less than 2MB"),
 ])
 
+export const deleteStoreSchema = object({
+    storeId: number(),
+})
+
 export type StoreInfoSchema = Input<typeof storeInfoSchema>
 export type NewStoreSchema = Input<typeof newStoreSchema>
 export type UpdateStoreSchema = Input<typeof updateStoreSchema>

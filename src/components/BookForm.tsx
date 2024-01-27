@@ -76,7 +76,7 @@ const BookForm: FC<BookFormProps> = ({
                             <FormControl>
                                 <UploadingZone
                                     {...field}
-                                    className="aspect-[2/3] max-w-[176px] rounded-md"
+                                    className="aspect-[2/3] w-full max-w-[176px] rounded-md"
                                     endpoint="bookCoverUploader"
                                     schema={bookCoverSchema}
                                     uploadContent={

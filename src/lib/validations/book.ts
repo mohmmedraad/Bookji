@@ -64,6 +64,7 @@ export const extendedBookSchema = merge([
     bookFormSchema,
     object({
         cover: string("The cover key is required"),
+        storeId: number("The storeId key is required"),
     }),
 ])
 

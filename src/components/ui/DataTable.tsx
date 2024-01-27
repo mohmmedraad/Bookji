@@ -33,6 +33,7 @@ interface DataTableProps<TData, TValue> {
     url?: string
     currentPage?: number
     withPagination?: boolean
+    CustomDataTableToolbar?: typeof DataTableToolbar
 }
 
 export function DataTable<TData, TValue>({
@@ -41,6 +42,7 @@ export function DataTable<TData, TValue>({
     url,
     currentPage,
     withPagination = true,
+    CustomDataTableToolbar,
 }: DataTableProps<TData, TValue>) {
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
@@ -73,7 +75,12 @@ export function DataTable<TData, TValue>({
 
     return (
         <div className="mb-4 w-full space-y-4">
-            <DataTableToolbar table={table} />
+            {CustomDataTableToolbar ? (
+                <CustomDataTableToolbar table={table} />
+            ) : (
+                <DataTableToolbar table={table} />
+            )}
+
             <div className="rounded-md border">
                 <Table className="relative">
                     <TableHeader className="bg-gray-100">
