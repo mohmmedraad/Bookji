@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "5fa5f9fc-b124-4f17-a49c-a313ef89c7a0",
+  "id": "e5f4211e-d239-45d0-9ce5-0ee1dd2faaac",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -89,6 +89,13 @@
         },
         "userId": {
           "name": "userId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "storeId": {
+          "name": "storeId",
           "type": "varchar(191)",
           "primaryKey": false,
           "notNull": true,

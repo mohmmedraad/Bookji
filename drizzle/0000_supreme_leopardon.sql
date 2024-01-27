@@ -13,6 +13,7 @@ CREATE TABLE `Bookji_addresses` (
 CREATE TABLE `Bookji_books` (
 	`id` serial AUTO_INCREMENT NOT NULL,
 	`userId` varchar(191) NOT NULL,
+	`storeId` varchar(191) NOT NULL,
 	`title` varchar(191) NOT NULL,
 	`description` text,
 	`cover` varchar(200),
