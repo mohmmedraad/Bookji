@@ -18,6 +18,9 @@ const APP_NAME = "Bookji"
 export const books = mysqlTable(`${APP_NAME}_books`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
+    storeId: serial("storeId")
+        .references(() => stores.id, { onDelete: "cascade" })
+        .notNull(),
     title: varchar("title", { length: 191 }).notNull(),
     description: text("description"),
     cover: varchar("cover", { length: 200 }),
@@ -30,15 +33,21 @@ export const books = mysqlTable(`${APP_NAME}_books`, {
 export type Book = typeof books.$inferSelect
 export type NewBook = typeof books.$inferInsert
 
-export const booksRelations = relations(books, ({ many }) => ({
+export const booksRelations = relations(books, ({ many, one }) => ({
     ratings: many(ratings),
     categories: many(booksToCategories),
+    store: one(stores, {
+        fields: [books.storeId],
+        references: [stores.id],
+    }),
 }))
 
 export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    bookId: varchar("bookId", { length: 191 }).notNull(),
+    bookId: varchar("bookId", { length: 191 })
+        .references(() => books.id, { onDelete: "cascade" })
+        .notNull(),
     rating: int("rating").notNull(),
     comment: text("comment"),
     createdAt: timestamp("createdAt").defaultNow(),
@@ -67,7 +76,9 @@ export const categoriesRelations = relations(categories, ({ many }) => ({
 export const booksToCategories = mysqlTable(
     `${APP_NAME}_booksToCategories`,
     {
-        bookId: int("bookId").notNull(),
+        bookId: int("bookId")
+            .references(() => books.id, { onDelete: "cascade" })
+            .notNull(),
         categoryId: int("categoryId").notNull(),
     },
     (t) => ({
@@ -113,6 +124,10 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })
+
+export const storesRelations = relations(books, ({ many }) => ({
+    books: many(ratings),
+}))
 
 export type Store = typeof stores.$inferSelect
 export type NewStore = typeof stores.$inferInsert
