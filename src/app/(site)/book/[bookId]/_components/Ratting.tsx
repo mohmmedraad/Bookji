@@ -49,7 +49,7 @@ const Ratting: FC<RateProps> = ({}) => {
 
     function onSubmit(data: RateBookSchema) {
         console.log(data)
-        rateBook({ ...data, bookId: book?.id.toString() || "" })
+        rateBook({ ...data, bookId: book?.id || 0 })
         setOpen(false)
         toast.success("Rating added")
     }

@@ -49,7 +49,7 @@ const RatingDialog: FC<RatingDialogProps> = ({ open, setOpen, onSubmit }) => {
     const book = useBook((state) => state.book)
 
     const { data, isFetching } = trpc.getUserRating.useQuery({
-        bookId: book?.id.toString() || "",
+        bookId: book?.id || 0,
     })
 
     return (

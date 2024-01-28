@@ -28,7 +28,7 @@ const Reviews: FC<ReviewsProps> = () => {
     } = trpc.getRatings.useInfiniteQuery(
         {
             limit: 10,
-            bookId: book?.id.toString() || "",
+            bookId: book?.id || 0,
         },
         {
             getNextPageParam: (lastPage, pages) =>
