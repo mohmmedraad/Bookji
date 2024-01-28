@@ -1,5 +1,5 @@
 import type { CartItem, CheckoutItem } from "@/types"
-import { relations, type InferModel } from "drizzle-orm"
+import { relations } from "drizzle-orm"
 import {
     boolean,
     decimal,
@@ -43,7 +43,7 @@ export const booksRelations = relations(books, ({ many, one }) => ({
 export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    bookId: varchar("bookId", { length: 191 }).notNull(),
+    bookId: int("bookId").notNull(),
     rating: int("rating").notNull(),
     comment: text("comment"),
     createdAt: timestamp("createdAt").defaultNow(),
@@ -76,7 +76,7 @@ export const booksToCategories = mysqlTable(
         categoryId: int("categoryId").notNull(),
     },
     (t) => ({
-        pk: primaryKey(t.bookId, t.categoryId),
+        pk: primaryKey({ columns: [t.bookId, t.categoryId] }),
     })
 )
 

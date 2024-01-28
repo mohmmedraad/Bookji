@@ -87,7 +87,7 @@ CREATE TABLE `Bookji_payments` (
 CREATE TABLE `Bookji_ratings` (
 	`id` serial AUTO_INCREMENT NOT NULL,
 	`userId` varchar(191) NOT NULL,
-	`bookId` varchar(191) NOT NULL,
+	`bookId` int NOT NULL,
 	`rating` int NOT NULL,
 	`comment` text,
 	`createdAt` timestamp DEFAULT (now()),

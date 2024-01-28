@@ -1,6 +1,9 @@
 import { type FC } from "react"
+import { Spinner } from "@nextui-org/react"
 import { toast } from "sonner"
 
+import { useDeleteStore } from "@/hooks/useDeleteStore"
+import { useStore } from "@/hooks/useStore"
 import { Button } from "@/components/ui/Button"
 import {
     Dialog,
@@ -15,8 +18,10 @@ import {
 interface DeleteStoreDialogProps {}
 
 const DeleteStoreDialog: FC<DeleteStoreDialogProps> = ({}) => {
+    const { handleDeleteStore, isLoading } = useDeleteStore()
+    const storeName = useStore((store) => store.name)
     function handleClick() {
-        toast.success("your store has been deleted successfully")
+        handleDeleteStore()
     }
     return (
         <Dialog>
@@ -27,17 +32,24 @@ const DeleteStoreDialog: FC<DeleteStoreDialogProps> = ({}) => {
             </DialogTrigger>
             <DialogContent className="max-w-[400px]">
                 <DialogHeader>
-                    <DialogTitle>
-                        Delete {"{"}STORE NAME{"}"}{" "}
-                    </DialogTitle>
+                    <DialogTitle>Delete {storeName}</DialogTitle>
                     <DialogDescription>
-                        By clicking the delete button your store well be lost
-                        including it data
+                        {isLoading ? (
+                            <div className="flex items-center justify-center">
+                                <Spinner size="md" />
+                            </div>
+                        ) : (
+                            <span>
+                                By clicking the delete button your store well be
+                                lost including it data
+                            </span>
+                        )}
                     </DialogDescription>
                 </DialogHeader>
 
                 <DialogFooter>
                     <Button
+                        type="submit"
                         variant={"destructive"}
                         className="w-full"
                         onClick={handleClick}
