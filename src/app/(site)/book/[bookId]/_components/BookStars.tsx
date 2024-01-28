@@ -58,7 +58,7 @@ function calculateAverageRating(
 const BookStars: FC<BookStarsProps> = ({}) => {
     const book = useBook((state) => state.book)
     const { data, isFetching, isRefetching } = trpc.getBookRating.useQuery({
-        bookId: book?.id.toString() || "",
+        bookId: book?.id || 0,
     })
 
     const { averageRating, stars } = calculateAverageRating(data || [])
