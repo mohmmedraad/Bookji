@@ -4,18 +4,11 @@ import { useEffect, type FC } from "react"
 
 import useBook, { type BookType } from "@/hooks/useBook"
 
-const BookProvider: FC<BookType> = ({
-    id,
-    userId,
-    title,
-    description,
-    cover,
-    price,
-}) => {
+const BookProvider: FC<BookType> = (book) => {
     const setBook = useBook((state) => state.setBook)
 
     useEffect(() => {
-        setBook({ id, userId, title, description, cover, price })
+        setBook({ ...book })
     }, [])
 
     return null

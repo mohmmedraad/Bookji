@@ -25,6 +25,7 @@ const Page: FC<pageProps> = async ({ params: { bookId } }) => {
             description: true,
             title: true,
             price: true,
+            storeId: true,
         },
         where: (book, { eq }) => eq(book.id, +bookId),
     })

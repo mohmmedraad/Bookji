@@ -96,7 +96,7 @@ export const getBooksSchema = object({
 export type Cost = Input<typeof cost>
 
 export const rateBookSchema = object({
-    bookId: string(),
+    bookId: number(),
     rating: number([
         minValue(1, "The rating must be above 0"),
         maxValue(5, "The rating must be below 6"),
@@ -108,13 +108,13 @@ export const rateBookSchema = object({
 })
 
 export const userRatingSchema = object({
-    bookId: string(),
+    bookId: number(),
 })
 
 export const getRatingsSchema = object({
     limit: coerce(number([minValue(1)]), Number),
     cursor: union([nullType(), number()]),
-    bookId: string(),
+    bookId: number(),
 })
 
 export const getUserBooksSchema = object({
