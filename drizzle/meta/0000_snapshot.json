@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "e99dca11-6b44-4d13-9051-6dfcea0e63f5",
+  "id": "6012dfc0-53f0-47d5-9a5a-711e981759bf",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -137,6 +137,13 @@
           "notNull": true,
           "autoincrement": false,
           "default": 0
+        },
+        "slug": {
+          "name": "slug",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false
         },
         "createdAt": {
           "name": "createdAt",
