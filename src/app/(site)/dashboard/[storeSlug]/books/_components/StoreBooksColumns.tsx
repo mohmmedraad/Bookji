@@ -6,7 +6,7 @@ import { type ColumnDef } from "@tanstack/react-table"
 import BookCover from "@/components/ui/BookCover"
 import { Checkbox } from "@/components/ui/Checkbox"
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
-import Stars from "@/app/(site)/book/[bookId]/_components/Stars"
+import Stars from "@/app/(site)/book/[bookSlug]/_components/Stars"
 
 import { DataTableRowActions } from "./DataTableRowActions"
 

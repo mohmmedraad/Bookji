@@ -36,7 +36,10 @@ export interface FiltersType {
     cost: Cost
 }
 
-export type PartialBook = Pick<Book, "id" | "userId" | "cover" | "title">
+export type PartialBook = Pick<
+    Book,
+    "id" | "userId" | "cover" | "title" | "slug"
+>
 
 export type StarType = number
 

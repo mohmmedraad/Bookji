@@ -12,11 +12,11 @@ import UserBooks from "./_sections/UserBooks"
 
 interface pageProps {
     params: {
-        bookId: string
+        bookSlug: string
     }
 }
 
-const Page: FC<pageProps> = async ({ params: { bookId } }) => {
+const Page: FC<pageProps> = async ({ params: { bookSlug } }) => {
     const book = await db.query.books.findFirst({
         columns: {
             id: true,
@@ -26,8 +26,9 @@ const Page: FC<pageProps> = async ({ params: { bookId } }) => {
             title: true,
             price: true,
             storeId: true,
+            slug: true,
         },
-        where: (book, { eq }) => eq(book.id, +bookId),
+        where: (book, { eq }) => eq(book.slug, bookSlug),
     })
 
     if (!book) {

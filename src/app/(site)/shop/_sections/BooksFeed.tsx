@@ -63,15 +63,10 @@ const BooksFeed: FC<BooksFeedProps> = ({
 
     useEffect(() => {
         const isIntersecting = entry?.isIntersecting
-        console.log("isIntersecting: ", isIntersecting)
         if (isIntersecting) {
             void fetchNextPage()
         }
     }, [entry, fetchNextPage])
-
-    console.log("isFetching: ", isFetching)
-    console.log("isFetchingNextPage: ", isFetchingNextPage)
-    console.log("isFetchedAfterMount: ", isFetchedAfterMount)
 
     useEffect(() => {
         console.log(text)
@@ -115,7 +110,7 @@ const BooksFeed: FC<BooksFeedProps> = ({
                                     ref={ref}
                                     key={book?.id}
                                 >
-                                    <Link href={`/book/${book?.id}`}>
+                                    <Link href={`/book/${book?.slug}`}>
                                         <Book
                                             alt={`${book?.title}`}
                                             src={`${book?.cover}`}
@@ -135,7 +130,7 @@ const BooksFeed: FC<BooksFeedProps> = ({
                         } else {
                             return (
                                 <div key={book?.id} className="text-center">
-                                    <Link href={`/book/${book?.id}`}>
+                                    <Link href={`/book/${book?.slug}`}>
                                         <Book
                                             alt={`${book?.title}`}
                                             src={`${book?.cover}`}

@@ -15,8 +15,9 @@ import {
     like,
     notInArray,
 } from "drizzle-orm"
-import { number, object, string } from "valibot"
+import { number, object } from "valibot"
 
+import { slugify } from "@/lib/utils"
 import {
     extendedBookSchema,
     getBooksSchema,
@@ -27,8 +28,8 @@ import {
 } from "@/lib/validations/book"
 
 import { cartRouter } from "./routers/cart"
-import { privateProcedure, publicProcedure, router } from "./trpc"
 import { storeRouter } from "./routers/store"
+import { privateProcedure, publicProcedure, router } from "./trpc"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamic = "force-dynamic"
@@ -82,6 +83,7 @@ export const appRouter = router({
                     userId: true,
                     title: true,
                     cover: true,
+                    slug: true,
                 },
                 where: (book) =>
                     and(
@@ -127,27 +129,34 @@ export const appRouter = router({
     addBook: privateProcedure
         .input(wrap(extendedBookSchema))
         .mutation(async ({ input: { categories, ...input }, ctx }) => {
-            try {
-                const book = await db.insert(books).values({
-                    ...input,
-                    userId: ctx.userId,
+            const bookWithSameTitle = await db.query.books.findFirst({
+                where: eq(books.title, input.title),
+            })
+
+            if (bookWithSameTitle) {
+                throw new TRPCError({
+                    code: "CONFLICT",
+                    message: "Book with same title already exists",
                 })
+            }
+            const book = await db.insert(books).values({
+                ...input,
+                slug: slugify(input.title),
+                userId: ctx.userId,
+            })
 
-                await db.insert(booksToCategories).values(
-                    categories.map((category) => ({
-                        bookId: Number(book.insertId),
-                        categoryId: category.id,
-                    }))
-                )
+            await db.insert(booksToCategories).values(
+                categories.map((category) => ({
+                    bookId: Number(book.insertId),
+                    categoryId: category.id,
+                }))
+            )
 
-                return {
-                    message: "success",
-                    data: {
-                        bookId: book.insertId,
-                    },
-                }
-            } catch (error) {
-                throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
+            return {
+                message: "success",
+                data: {
+                    bookId: book.insertId,
+                },
             }
         }),
 

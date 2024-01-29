@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, type FC } from "react"
+import { useEffect, useState, type FC } from "react"
 import { type Category } from "@/types"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { Upload } from "lucide-react"
@@ -11,6 +11,7 @@ import {
     bookFormSchema,
     type BookFormSchema,
 } from "@/lib/validations/book"
+import { useBookForm } from "@/hooks/useBookForm"
 import { Input as FormInput } from "@/components/ui/Input"
 
 import { Button } from "./ui/Button"
@@ -28,8 +29,8 @@ import { Textarea } from "./ui/Textarea"
 import UploadingZone from "./uploadFileDropZone copy/UploadingZone"
 
 interface BookFormProps extends Partial<BookFormSchema> {
-    onSubmit: (data: BookFormSchema) => void
     isLoading?: boolean
+    onSubmit: (data: BookFormSchema) => void
 }
 
 const BookForm: FC<BookFormProps> = ({
@@ -39,6 +40,7 @@ const BookForm: FC<BookFormProps> = ({
     price = "0",
     inventory = 1,
     cover = "",
+
     isLoading = false,
     onSubmit,
 }) => {
@@ -54,6 +56,13 @@ const BookForm: FC<BookFormProps> = ({
             cover,
         },
     })
+
+    const setForm = useBookForm((store) => store.setForm)
+
+    useEffect(() => {
+        setForm(form)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(
         categories || null

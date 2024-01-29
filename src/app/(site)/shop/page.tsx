@@ -16,6 +16,7 @@ const Page: FC = async ({}) => {
             cover: true,
             id: true,
             title: true,
+            slug: true,
         },
         orderBy: (book) => [asc(book.createdAt)],
     })
