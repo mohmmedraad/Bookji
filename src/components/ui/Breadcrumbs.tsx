@@ -20,7 +20,9 @@ const BreadcrumbsItem: FC<BreadcrumbsItemProps> = ({
 }) => (
     <li className="flex items-center gap-2">
         <Link
-            href={pathNames.slice(0, pathNames.indexOf(path) + 1).join("/")}
+            href={`/${pathNames
+                .slice(0, pathNames.indexOf(path) + 1)
+                .join("/")}`}
             className={cn(
                 "flex items-center gap-2 underline-offset-4 hover:underline",
                 isLast && "text-gray-500"
@@ -34,7 +36,6 @@ const BreadcrumbsItem: FC<BreadcrumbsItemProps> = ({
 
 const Breadcrumbs: FC = () => {
     const pathNames = usePathname().split("/").slice(1)
-
     return (
         <nav>
             <ol className="flex flex-wrap items-center gap-2 text-xs font-medium text-gray-700">
