@@ -49,8 +49,8 @@ export const stripeRouter = router({
 
                 const accountLink = await stripe.accountLinks.create({
                     account: stripeAccountId,
-                    refresh_url: absoluteUrl(`/dashboard/${storeSlug}`),
-                    return_url: absoluteUrl(`/dashboard/${storeSlug}`),
+                    refresh_url: `https://bookji.vercel.app/dashboard/${storeSlug}`,
+                    return_url: `https://bookji.vercel.app/dashboard/${storeSlug}`,
                     type: "account_onboarding",
                 })
 
