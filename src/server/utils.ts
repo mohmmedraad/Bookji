@@ -91,6 +91,7 @@ export async function getStripeAccount(
             payment,
         }
     } catch (err) {
+        console.log("error:", err)
         err instanceof Error && console.error(err.message)
         return falsyReturn
     }
@@ -105,6 +106,7 @@ export async function createStripeAccount(
 ): Promise<string> {
     const account = await stripe.accounts.create({ type: "standard" })
 
+    console.log("account: ", account)
     if (!account) {
         console.log("error:", "Failed to create account")
         throw new Error("Error creating Stripe account.")

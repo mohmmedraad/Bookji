@@ -54,6 +54,7 @@ export const stripeRouter = router({
                     type: "account_onboarding",
                 })
 
+                console.log("accountLink: ", accountLink)
                 if (!accountLink?.url) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
