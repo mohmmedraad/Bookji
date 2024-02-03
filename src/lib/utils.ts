@@ -95,3 +95,16 @@ export function getRandomNumber(min: number, max: number) {
 export function slugify(str: string) {
     return slugifyStr(str, { lower: true })
 }
+
+export function formatDate(
+    date: Date | string | number,
+    options: Intl.DateTimeFormatOptions = {
+        month: "long",
+        day: "numeric",
+        year: "numeric",
+    }
+) {
+    return new Intl.DateTimeFormat("en-US", {
+        ...options,
+    }).format(new Date(date))
+}

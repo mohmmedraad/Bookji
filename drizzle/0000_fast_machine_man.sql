@@ -76,12 +76,13 @@ CREATE TABLE `Bookji_orders` (
 --> statement-breakpoint
 CREATE TABLE `Bookji_payments` (
 	`id` serial AUTO_INCREMENT NOT NULL,
-	`bookId` varchar(191),
-	`stripeAccountId` varchar(191) NOT NULL,
-	`stripeAccountCreatedAt` int NOT NULL,
-	`stripeAccountExpiresAt` int NOT NULL,
-	`detailsSubmitted` boolean NOT NULL DEFAULT false,
-	`createdAt` timestamp DEFAULT (now()),
+	`storeId` int NOT NULL,
+	`stripe_account_id` varchar(191) NOT NULL,
+	`stripe_account_created_at` int,
+	`stripe_account_expires_at` int,
+	`details_submitted` boolean NOT NULL DEFAULT false,
+	`created_at` timestamp NOT NULL DEFAULT (now()),
+	`updated_at` timestamp ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `Bookji_payments_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
@@ -104,6 +105,7 @@ CREATE TABLE `Bookji_stores` (
 	`thumbnail` varchar(200),
 	`slug` text,
 	`stripeAccountId` varchar(191),
+	`active` boolean NOT NULL DEFAULT false,
 	`createdAt` timestamp DEFAULT (now()),
 	`updatedAt` timestamp ON UPDATE CURRENT_TIMESTAMP,
 	CONSTRAINT `Bookji_stores_id` PRIMARY KEY(`id`)

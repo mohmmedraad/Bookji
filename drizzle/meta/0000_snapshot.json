@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "6012dfc0-53f0-47d5-9a5a-711e981759bf",
+  "id": "0434e164-79be-40cc-b4e3-89d4d627ba77",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -478,49 +478,57 @@
           "notNull": true,
           "autoincrement": true
         },
-        "bookId": {
-          "name": "bookId",
+        "storeId": {
+          "name": "storeId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "stripe_account_id": {
+          "name": "stripe_account_id",
           "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "stripe_account_created_at": {
+          "name": "stripe_account_created_at",
+          "type": "int",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
         },
-        "stripeAccountId": {
-          "name": "stripeAccountId",
-          "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "stripeAccountCreatedAt": {
-          "name": "stripeAccountCreatedAt",
+        "stripe_account_expires_at": {
+          "name": "stripe_account_expires_at",
           "type": "int",
           "primaryKey": false,
-          "notNull": true,
+          "notNull": false,
           "autoincrement": false
         },
-        "stripeAccountExpiresAt": {
-          "name": "stripeAccountExpiresAt",
-          "type": "int",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
-        },
-        "detailsSubmitted": {
-          "name": "detailsSubmitted",
+        "details_submitted": {
+          "name": "details_submitted",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
           "autoincrement": false,
           "default": false
         },
-        "createdAt": {
-          "name": "createdAt",
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": "(now())"
+        },
+        "updated_at": {
+          "name": "updated_at",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false,
-          "default": "(now())"
+          "onUpdate": true
         }
       },
       "indexes": {},
@@ -652,6 +660,14 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
+        },
+        "active": {
+          "name": "active",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": false
         },
         "createdAt": {
           "name": "createdAt",

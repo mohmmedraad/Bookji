@@ -29,6 +29,7 @@ import {
 
 import { cartRouter } from "./routers/cart"
 import { storeRouter } from "./routers/store"
+import { stripeRouter } from "./routers/stripe"
 import { privateProcedure, publicProcedure, router } from "./trpc"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -387,6 +388,7 @@ export const appRouter = router({
         }),
     cart: cartRouter,
     store: storeRouter,
+    stripe: stripeRouter,
 })
 
 export type AppRouter = typeof appRouter

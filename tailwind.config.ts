@@ -19,7 +19,7 @@ const config: Config = {
                 profile: "160px 1fr",
                 addBook: "176px 1fr",
                 bookPage: "1fr 1fr 170px",
-                updateStore: "300px 1fr",
+                updateStore: "auto 1fr",
                 analytics: "1fr auto",
             },
             gridTemplateRows: {

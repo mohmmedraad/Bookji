@@ -116,6 +116,7 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
     thumbnail: varchar("thumbnail", { length: 200 }),
     slug: text("slug"),
     stripeAccountId: varchar("stripeAccountId", { length: 191 }),
+    active: boolean("active").notNull().default(false),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })
@@ -143,12 +144,13 @@ export type NewEmailPreference = typeof emailPreferences.$inferInsert
 
 export const payments = mysqlTable(`${APP_NAME}_payments`, {
     id: serial("id").primaryKey(),
-    storeId: varchar("bookId", { length: 191 }),
-    stripeAccountId: varchar("stripeAccountId", { length: 191 }).notNull(),
-    stripeAccountCreatedAt: int("stripeAccountCreatedAt").notNull(),
-    stripeAccountExpiresAt: int("stripeAccountExpiresAt").notNull(),
-    detailsSubmitted: boolean("detailsSubmitted").notNull().default(false),
-    createdAt: timestamp("createdAt").defaultNow(),
+    storeId: int("storeId").notNull(),
+    stripeAccountId: varchar("stripe_account_id", { length: 191 }).notNull(),
+    stripeAccountCreatedAt: int("stripe_account_created_at"),
+    stripeAccountExpiresAt: int("stripe_account_expires_at"),
+    detailsSubmitted: boolean("details_submitted").notNull().default(false),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at").onUpdateNow(),
 })
 
 export type Payment = typeof payments.$inferSelect
