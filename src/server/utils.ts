@@ -91,7 +91,7 @@ export async function getStripeAccount(
             payment,
         }
     } catch (err) {
-        console.log("error:", err)
+        console.log("getStripeAccount error:", err)
         err instanceof Error && console.error(err.message)
         return falsyReturn
     }
