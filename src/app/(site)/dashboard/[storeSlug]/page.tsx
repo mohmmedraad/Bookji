@@ -2,7 +2,7 @@ import { type FC } from "react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import { db } from "@/db"
-import { getStripeAccountLink } from "@/server/utils"
+import { getStripeAccount } from "@/server/utils"
 
 import { cn, formatDate } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/Button"
@@ -36,7 +36,7 @@ const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
         return notFound()
     }
 
-    const { account: stripeAccount } = await getStripeAccountLink(store.id)
+    const { account: stripeAccount } = await getStripeAccount(store.id)
 
     console.log("stripeAccount: ", stripeAccount)
 
@@ -126,7 +126,7 @@ const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
                         </CardFooter>
                     </Card>
                 ) : (
-                    <Card className="">
+                    <Card>
                         <CardHeader>
                             <CardTitle>Connect to stripe</CardTitle>
                             <CardDescription>

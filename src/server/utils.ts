@@ -23,7 +23,10 @@ export async function deleteBookCategories(bookId: number) {
     return insertId
 }
 
-export async function getStripeAccountLink(storeId: number) {
+export async function getStripeAccount(
+    storeId: number,
+    retrieveAccount = true
+) {
     const falsyReturn = {
         isConnected: false,
         account: null,
@@ -31,8 +34,6 @@ export async function getStripeAccountLink(storeId: number) {
     }
 
     try {
-        const retrieveAccount = true
-
         const store = await db.query.stores.findFirst({
             columns: {
                 stripeAccountId: true,

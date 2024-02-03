@@ -6,7 +6,7 @@ import { stripe } from "@/lib/stripe"
 import { absoluteUrl } from "@/lib/utils"
 
 import { privateProcedure, router } from "../trpc"
-import { createStripeAccount, getStripeAccountLink } from "../utils"
+import { createStripeAccount, getStripeAccount } from "../utils"
 
 export const stripeRouter = router({
     createAccountLink: privateProcedure
@@ -21,7 +21,7 @@ export const stripeRouter = router({
         .mutation(async ({ input: { storeId, storeSlug } }) => {
             try {
                 const { isConnected, payment, account } =
-                    await getStripeAccountLink(storeId)
+                    await getStripeAccount(storeId)
 
                 if (isConnected) {
                     throw new TRPCError({
