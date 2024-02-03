@@ -8,11 +8,11 @@ import { useStore } from "@/hooks/useStore"
 type StoreProviderProps = Store
 
 const StoreProvider: FC<StoreProviderProps> = (store) => {
-    const { id, name, description, logo, thumbnail, slug } = store
+    const { id, name, description, logo, thumbnail, slug, active } = store
     const setStore = useStore((state) => state.setStore)
 
     useEffect(() => {
-        setStore({ id, name, description, logo, thumbnail, slug })
+        setStore({ id, name, description, logo, thumbnail, slug, active })
     }, [description, id, logo, name, setStore, slug, thumbnail])
 
     return null

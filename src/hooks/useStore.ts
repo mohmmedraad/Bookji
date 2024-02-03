@@ -23,15 +23,8 @@ export const useStore = create<StoreProps>((set) => ({
     id: 0,
     ownerId: "",
     slug: "",
-    setStore: (store) =>
-        set(() => ({
-            logo: store.logo,
-            thumbnail: store.thumbnail,
-            name: store.name,
-            description: store.description,
-            id: store.id,
-            slug: store.slug,
-        })),
+    active: false,
+    setStore: (store) => set(() => store),
     setLogo: (logo) => set(() => ({ logo })),
     setId: (id) => set(() => ({ id })),
     setName: (name) => set(() => ({ name })),
