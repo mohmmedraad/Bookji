@@ -31,7 +31,7 @@ const ConnectToStripeButton: FC<conectToStripeButtonProps> = ({}) => {
             return handleGenericError()
         },
         onSuccess: (data) => {
-            window.location.href = data
+            router.push(data)
         },
     })
 
