@@ -28,6 +28,8 @@ const ConnectToStripeButton: FC<conectToStripeButtonProps> = ({}) => {
                 return router.push(`/dashboard/${storeSlug}`)
             }
 
+            console.error(error)
+
             return handleGenericError()
         },
         onSuccess: (data) => {
