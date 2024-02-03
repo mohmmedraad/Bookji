@@ -40,6 +40,7 @@ export const stripeRouter = router({
                     (await createStripeAccount(payment, storeId))
 
                 if (!stripeAccountId) {
+                    console.log("error:", "Failed to create account")
                     throw new TRPCError({
                         code: "INTERNAL_SERVER_ERROR",
                         message: "Failed to create account",

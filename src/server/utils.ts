@@ -106,6 +106,7 @@ export async function createStripeAccount(
     const account = await stripe.accounts.create({ type: "standard" })
 
     if (!account) {
+        console.log("error:", "Failed to create account")
         throw new Error("Error creating Stripe account.")
     }
 
