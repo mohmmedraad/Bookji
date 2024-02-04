@@ -46,10 +46,13 @@ export const stripeRouter = router({
                     })
                 }
 
+                const url =
+                    process.env.NEXT_PUBLIC_VERCEL_URL ??
+                    "http://localhost:3000"
                 const accountLink = await stripe.accountLinks.create({
                     account: stripeAccountId,
-                    refresh_url: absoluteUrl(`/dashboard/${storeSlug}`),
-                    return_url: absoluteUrl(`/dashboard/${storeSlug}`),
+                    refresh_url: `${url}/dashboard/${storeSlug}`,
+                    return_url: `${url}/dashboard/${storeSlug}`,
                     type: "account_onboarding",
                 })
 

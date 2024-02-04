@@ -13,15 +13,12 @@ interface LayoutProps {
 }
 
 const Providers: FC<LayoutProps> = ({ children }) => {
-    const url =
-        typeof window !== "undefined" ? "/api/trpc" : absoluteUrl("/api/trpc")
-
     const [queryClient] = useState(() => new QueryClient())
     const [trpcClient] = useState(() =>
         trpc.createClient({
             links: [
                 httpBatchLink({
-                    url,
+                    url: absoluteUrl("/api/trpc"),
                 }),
             ],
         })
