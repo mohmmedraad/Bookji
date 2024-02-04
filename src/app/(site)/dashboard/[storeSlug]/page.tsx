@@ -38,8 +38,6 @@ const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
 
     const { account: stripeAccount } = await getStripeAccount(store.id)
 
-    console.log("stripeAccount: ", stripeAccount)
-
     return (
         <>
             <StoreInfo logo={store.logo} thumbnail={store.thumbnail} />

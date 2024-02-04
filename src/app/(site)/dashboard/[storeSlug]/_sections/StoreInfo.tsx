@@ -20,7 +20,7 @@ const StoreInfo: FC<StoreInfoProps> = ({ logo, thumbnail }) => {
     const storeThumbnail = useStore((state) => state.thumbnail)
     return (
         <>
-            <div className="relative shadow-md">
+            <div className="relative rounded-[1.25rem]  shadow-md">
                 <Image
                     loading="eager"
                     priority
