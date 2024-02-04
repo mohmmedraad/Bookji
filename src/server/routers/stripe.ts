@@ -19,19 +19,16 @@ export const stripeRouter = router({
             )
         )
         .mutation(async ({ input: { storeId, storeSlug } }) => {
-            console.log("1")
             try {
                 const { isConnected, payment, account } =
                     await getStripeAccount(storeId)
 
-                console.log("2")
                 if (isConnected) {
                     throw new TRPCError({
                         code: "CONFLICT",
                         message: "Account already connected",
                     })
                 }
-                console.log("3")
 
                 // Delete the existing account if details have not been submitted
                 if (account && !account.details_submitted) {
@@ -42,25 +39,20 @@ export const stripeRouter = router({
                     payment?.stripeAccountId ??
                     (await createStripeAccount(payment, storeId))
 
-                console.log("4")
-
                 if (!stripeAccountId) {
-                    console.log("error:", "Failed to create account")
                     throw new TRPCError({
                         code: "INTERNAL_SERVER_ERROR",
                         message: "Failed to create account",
                     })
                 }
-                console.log("5")
 
                 const accountLink = await stripe.accountLinks.create({
                     account: stripeAccountId,
-                    refresh_url: `https://bookji.vercel.app/dashboard/${storeSlug}`,
-                    return_url: `https://bookji.vercel.app/dashboard/${storeSlug}`,
+                    refresh_url: absoluteUrl(`/dashboard/${storeSlug}`),
+                    return_url: absoluteUrl(`/dashboard/${storeSlug}`),
                     type: "account_onboarding",
                 })
 
-                console.log("accountLink: ", accountLink)
                 if (!accountLink?.url) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
@@ -70,7 +62,6 @@ export const stripeRouter = router({
 
                 return accountLink.url
             } catch (error) {
-                console.log("error:", error)
                 throw new TRPCError({
                     code: "INTERNAL_SERVER_ERROR",
                     message: "Failed to create account link",
