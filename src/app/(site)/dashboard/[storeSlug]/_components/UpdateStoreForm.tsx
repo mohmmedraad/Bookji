@@ -31,6 +31,7 @@ import {
     FormMessage,
 } from "@/components/ui/Form"
 import { Input } from "@/components/ui/Input"
+import { Textarea } from "@/components/ui/Textarea"
 
 import DeleteStoreDialog from "./DeleteStoreDialog"
 
@@ -92,9 +93,10 @@ const UpdateStoreForm: FC<UpdateStoreFormProps> = ({ name, description }) => {
                                 <FormItem>
                                     <FormLabel>Description</FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <Textarea
                                             {...field}
                                             placeholder="Your store description"
+                                            rows={4}
                                         />
                                     </FormControl>
                                     <FormMessage />

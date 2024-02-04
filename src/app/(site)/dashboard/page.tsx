@@ -13,7 +13,7 @@ import {
     CardTitle,
 } from "@/components/ui/Card"
 
-import CreateStoreButton from "./_components/CreateStoreButton"
+import CreateStoreForm from "./_components/CreateStoreForm"
 import PageHeading from "./_components/PageHeading"
 import { StoreLogo } from "./_components/StoreLogo"
 
@@ -36,7 +36,7 @@ const Page: FC<pageProps> = async () => {
              */}
             <PageHeading>Stores</PageHeading>
             <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
-                <CreateStoreButton />
+                <CreateStoreForm />
                 {stores.map(
                     ({ name, description, logo, thumbnail, slug }, index) => (
                         <Link key={index} href={`/dashboard/${slug}`}>

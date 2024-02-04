@@ -31,11 +31,12 @@ import {
     FormMessage,
 } from "@/components/ui/Form"
 import { Input } from "@/components/ui/Input"
+import { Textarea } from "@/components/ui/Textarea"
 import UploadingZone from "@/components/uploadFileDropZone copy/UploadingZone"
 
 interface CreateStoreButtonProps {}
 
-const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
+const CreateStoreForm: FC<CreateStoreButtonProps> = ({}) => {
     const [open, setOpen] = useState(false)
     const form = useForm<NewStoreSchema>({
         resolver: valibotResolver(newStoreSchema),
@@ -159,10 +160,10 @@ const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
                                 <FormItem>
                                     <FormLabel>Description</FormLabel>
                                     <FormControl>
-                                        <Input
+                                        <Textarea
                                             placeholder="Store description"
                                             {...field}
-                                            type="text"
+                                            rows={4}
                                             className="w-full"
                                         />
                                     </FormControl>
@@ -188,4 +189,4 @@ const CreateStoreButton: FC<CreateStoreButtonProps> = ({}) => {
     )
 }
 
-export default CreateStoreButton
+export default CreateStoreForm
