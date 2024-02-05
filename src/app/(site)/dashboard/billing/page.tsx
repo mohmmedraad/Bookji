@@ -41,14 +41,12 @@ const Page: FC<pageProps> = async ({}) => {
                 {storeSubscriptionPlans.map((plan, index) => (
                     <Card key={index}>
                         <CardHeader>
-                            <CardTitle className="flex items-center justify-between">
-                                {plan.name}{" "}
-                                {plan.id === subscriptionPlan?.id ? (
-                                    <Badge className="max-w-max">
-                                        Current Plan
-                                    </Badge>
-                                ) : null}
-                            </CardTitle>
+                            {plan.id === subscriptionPlan?.id ? (
+                                <Badge className="max-w-max">
+                                    Current Plan
+                                </Badge>
+                            ) : null}
+                            <CardTitle>{plan.name}</CardTitle>
                             <CardDescription>
                                 {plan.description}
                             </CardDescription>
