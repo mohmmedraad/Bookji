@@ -1,6 +1,7 @@
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
 import { env } from "@/env.mjs"
 import type { ClerkAPIError, ClerkErrorCode } from "@/types"
+import { User } from "@clerk/nextjs/server"
 import {
     type SignInResource,
     type SignInStatus,
@@ -107,4 +108,12 @@ export function formatDate(
     return new Intl.DateTimeFormat("en-US", {
         ...options,
     }).format(new Date(date))
+}
+
+export function getUserEmail(user: User | null) {
+    const email =
+        user?.emailAddresses?.find((e) => e.id === user.primaryEmailAddressId)
+            ?.emailAddress ?? ""
+
+    return email
 }

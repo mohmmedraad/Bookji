@@ -56,3 +56,21 @@ export type Customer = {
 }
 
 export type Endpoint = keyof OurFileRouter
+
+export interface SubscriptionPlan {
+    id: "basic" | "standard" | "pro"
+    name: string
+    description: string
+    features: string[]
+    stripePriceId: string
+    price: number
+}
+
+export interface UserSubscriptionPlan extends SubscriptionPlan {
+    stripeSubscriptionId?: string | null
+    stripeCurrentPeriodEnd?: string | null
+    stripeCustomerId?: string | null
+    isSubscribed: boolean
+    isCanceled: boolean
+    isActive: boolean
+}

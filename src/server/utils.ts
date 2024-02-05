@@ -1,8 +1,14 @@
 import { db } from "@/db"
 import { books, booksToCategories, payments, stores } from "@/db/schema"
+import { UserSubscriptionPlan } from "@/types"
+import { clerkClient } from "@clerk/nextjs"
+import { addDays } from "date-fns"
 import { and, eq } from "drizzle-orm"
+import { parse } from "valibot"
 
+import { storeSubscriptionPlans } from "@/config/site"
 import { stripe } from "@/lib/stripe"
+import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 
 export async function deleteStore(id: number) {
     const { insertId } = await db.delete(books).where(eq(books.id, id))
@@ -122,4 +128,62 @@ export async function createStripeAccount(
     }
 
     return account.id
+}
+
+export async function getSubscriptionPlan(
+    userId: string
+): Promise<UserSubscriptionPlan | null> {
+    try {
+        const user = await clerkClient.users.getUser(userId)
+
+        if (!user) {
+            throw new Error("User not found.")
+        }
+
+        const userPrivateMetadata = parse(
+            userPrivateMetadataSchema,
+            user.privateMetadata
+        )
+
+        const isSubscribed =
+            !!userPrivateMetadata.stripePriceId &&
+            !!userPrivateMetadata.stripeCurrentPeriodEnd &&
+            addDays(
+                new Date(userPrivateMetadata.stripeCurrentPeriodEnd),
+                1
+            ).getTime() > Date.now()
+
+        const plan = isSubscribed
+            ? storeSubscriptionPlans.find(
+                  (plan) =>
+                      plan.stripePriceId === userPrivateMetadata.stripePriceId
+              )
+            : storeSubscriptionPlans[0]
+
+        if (!plan) {
+            throw new Error("Plan not found.")
+        }
+
+        // Check if user has canceled subscription
+        let isCanceled = false
+        if (isSubscribed && !!userPrivateMetadata.stripeSubscriptionId) {
+            const stripePlan = await stripe.subscriptions.retrieve(
+                userPrivateMetadata.stripeSubscriptionId
+            )
+            isCanceled = stripePlan.cancel_at_period_end
+        }
+
+        return {
+            ...plan,
+            stripeSubscriptionId: userPrivateMetadata.stripeSubscriptionId,
+            stripeCurrentPeriodEnd: userPrivateMetadata.stripeCurrentPeriodEnd,
+            stripeCustomerId: userPrivateMetadata.stripeCustomerId,
+            isSubscribed,
+            isCanceled,
+            isActive: isSubscribed && !isCanceled,
+        }
+    } catch (err) {
+        console.error(err)
+        return null
+    }
 }

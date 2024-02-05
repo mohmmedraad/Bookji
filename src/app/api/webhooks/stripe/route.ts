@@ -14,6 +14,10 @@ import { checkoutItemSchema } from "@/lib/validations/cart"
 export async function POST(req: Request) {
     const body = await req.text()
     const signature = headers().get("Stripe-Signature") ?? ""
+    console.log(
+        "process.env.STRIPE_WEBHOOK_SECRET: ",
+        process.env.STRIPE_WEBHOOK_SECRET
+    )
 
     let event: Stripe.Event
 
@@ -21,9 +25,10 @@ export async function POST(req: Request) {
         event = stripe.webhooks.constructEvent(
             body,
             signature,
-            env.STRIPE_WEBHOOK_SECRET as string
+            process.env.STRIPE_WEBHOOK_SECRET as string
         )
     } catch (err) {
+        console.log("webhooks error: ", err)
         return new Response(
             `Webhook Error: ${
                 err instanceof Error ? err.message : "Unknown error."
