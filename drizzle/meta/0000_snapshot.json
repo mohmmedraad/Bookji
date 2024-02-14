@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "f2460da9-8a0d-4b54-bd7d-347c126e630a",
+  "id": "743209c9-07f7-4efc-b203-3d4b72acc3d4",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -205,6 +205,59 @@
       },
       "uniqueConstraints": {}
     },
+    "Bookji_cartItems": {
+      "name": "Bookji_cartItems",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "cart_id": {
+          "name": "cart_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "book_id": {
+          "name": "book_id",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Bookji_cartItems_id": {
+          "name": "Bookji_cartItems_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "Bookji_carts": {
       "name": "Bookji_carts",
       "columns": {
@@ -235,14 +288,6 @@
           "primaryKey": false,
           "notNull": false,
           "autoincrement": false
-        },
-        "items": {
-          "name": "items",
-          "type": "json",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "('null')"
         },
         "createdAt": {
           "name": "createdAt",

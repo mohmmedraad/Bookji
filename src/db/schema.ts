@@ -130,12 +130,36 @@ export const carts = mysqlTable(`${APP_NAME}_carts`, {
     userId: varchar("userId", { length: 191 }),
     paymentIntentId: varchar("paymentIntentId", { length: 191 }),
     clientSecret: varchar("clientSecret", { length: 191 }),
-    items: json("items").$type<CartItem[] | null>().default(null),
+    // items: json("items").$type<CartItem[] | null>().default(null),
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
+export const cartsRelations = relations(carts, ({ many }) => ({
+    items: many(cartItems),
+}))
+
 export type Cart = typeof carts.$inferSelect
 export type NewCart = typeof carts.$inferInsert
+
+export const cartItems = mysqlTable(`${APP_NAME}_cartItems`, {
+    id: serial("id").primaryKey(),
+    cartId: int("cart_id").notNull(),
+    bookId: int("book_id").notNull(),
+    storeId: int("store_id").notNull(),
+    quantity: int("quantity").notNull().default(1),
+    createdAt: timestamp("created_at").defaultNow(),
+})
+
+export const cartItemsRelations = relations(cartItems, ({ one }) => ({
+    store: one(stores, {
+        fields: [cartItems.storeId],
+        references: [stores.id],
+    }),
+    cart: one(carts, {
+        fields: [cartItems.cartId],
+        references: [carts.id],
+    }),
+}))
 
 export const stores = mysqlTable(`${APP_NAME}_stores`, {
     id: serial("id").primaryKey(),
@@ -154,6 +178,7 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
 export const storesRelations = relations(stores, ({ many, one }) => ({
     books: many(books),
     orders: many(orders),
+    cartItems: many(cartItems),
 }))
 
 export type Store = typeof stores.$inferSelect

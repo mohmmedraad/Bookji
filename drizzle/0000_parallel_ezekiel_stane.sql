@@ -31,12 +31,20 @@ CREATE TABLE `Bookji_booksToCategories` (
 	CONSTRAINT `Bookji_booksToCategories_bookId_categoryId_pk` PRIMARY KEY(`bookId`,`categoryId`)
 );
 --> statement-breakpoint
+CREATE TABLE `Bookji_cartItems` (
+	`id` serial AUTO_INCREMENT NOT NULL,
+	`cart_id` int NOT NULL,
+	`book_id` int NOT NULL,
+	`quantity` int NOT NULL DEFAULT 1,
+	`created_at` timestamp DEFAULT (now()),
+	CONSTRAINT `Bookji_cartItems_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
 CREATE TABLE `Bookji_carts` (
 	`id` serial AUTO_INCREMENT NOT NULL,
 	`userId` varchar(191),
 	`paymentIntentId` varchar(191),
 	`clientSecret` varchar(191),
-	`items` json DEFAULT ('null'),
 	`createdAt` timestamp DEFAULT (now()),
 	CONSTRAINT `Bookji_carts_id` PRIMARY KEY(`id`)
 );
