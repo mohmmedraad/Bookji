@@ -1,6 +1,6 @@
-import { use, type FC } from "react"
-import { TRPCErrorType } from "@/types"
-import { AwardIcon, Trash } from "lucide-react"
+import { type FC } from "react"
+import { type TRPCErrorType } from "@/types"
+import { Trash } from "lucide-react"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
@@ -15,7 +15,7 @@ import { Button } from "./ui/Button"
 import { Separator } from "./ui/Separator"
 
 interface CartItemProps {
-    bookId: string
+    bookId: number
     title: string
     price: number
     quantity: number
@@ -35,7 +35,7 @@ const CartItem: FC<CartItemProps> = ({
         undoChanging: state.undoChanging,
     }))
 
-    const { data, mutate: deleteItem } = trpc.cart.update.useMutation({
+    const { mutate: deleteItem } = trpc.cart.update.useMutation({
         onError: (error) => {
             undoChanging()
             const code = error.data?.code
@@ -49,7 +49,6 @@ const CartItem: FC<CartItemProps> = ({
 
     function handleRemoveItem() {
         const newCartBooks = cartBooks.filter((book) => book.bookId !== bookId)
-        console.log("newCartBooks: ", newCartBooks)
         deleteItem(newCartBooks)
         setCartBooks(newCartBooks)
     }

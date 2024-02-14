@@ -41,6 +41,36 @@ export const booksRelations = relations(books, ({ many, one }) => ({
     }),
 }))
 
+export const orders = mysqlTable(`${APP_NAME}_orders`, {
+    id: serial("id").primaryKey(),
+    storeId: int("storeId").notNull(),
+    items: json("items").$type<CheckoutItem[] | null>().default(null),
+    total: decimal("total", { precision: 10, scale: 2 }).notNull().default("0"),
+    stripePaymentIntentId: varchar("stripePaymentIntentId", {
+        length: 191,
+    }).notNull(),
+    stripePaymentIntentStatus: varchar(
+        "${APP_NAME}_stripePaymentIntentStatus",
+        {
+            length: 191,
+        }
+    ).notNull(),
+    name: varchar("name", { length: 191 }),
+    email: varchar("email", { length: 191 }),
+    addressId: int("addressId"),
+    createdAt: timestamp("createdAt").defaultNow(),
+})
+
+export const ordersRelations = relations(orders, ({ one }) => ({
+    store: one(stores, {
+        fields: [orders.storeId],
+        references: [stores.id],
+    }),
+}))
+
+export type Order = typeof orders.$inferSelect
+export type NewOrder = typeof orders.$inferInsert
+
 export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
@@ -121,8 +151,9 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })
 
-export const storesRelations = relations(books, ({ many }) => ({
-    books: many(ratings),
+export const storesRelations = relations(stores, ({ many, one }) => ({
+    books: many(books),
+    orders: many(orders),
 }))
 
 export type Store = typeof stores.$inferSelect
@@ -155,29 +186,6 @@ export const payments = mysqlTable(`${APP_NAME}_payments`, {
 
 export type Payment = typeof payments.$inferSelect
 export type NewPayment = typeof payments.$inferInsert
-
-export const orders = mysqlTable(`${APP_NAME}_orders`, {
-    id: serial("id").primaryKey(),
-    userId: varchar("userId", { length: 191 }),
-    items: json("items").$type<CheckoutItem[] | null>().default(null),
-    total: decimal("total", { precision: 10, scale: 2 }).notNull().default("0"),
-    stripePaymentIntentId: varchar("stripePaymentIntentId", {
-        length: 191,
-    }).notNull(),
-    stripePaymentIntentStatus: varchar(
-        "${APP_NAME}_stripePaymentIntentStatus",
-        {
-            length: 191,
-        }
-    ).notNull(),
-    name: varchar("name", { length: 191 }),
-    email: varchar("email", { length: 191 }),
-    addressId: int("addressId"),
-    createdAt: timestamp("createdAt").defaultNow(),
-})
-
-export type Order = typeof orders.$inferSelect
-export type NewOrder = typeof orders.$inferInsert
 
 export const addresses = mysqlTable(`${APP_NAME}_addresses`, {
     id: serial("id").primaryKey(),

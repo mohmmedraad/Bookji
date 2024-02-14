@@ -1,13 +1,20 @@
+import { db } from "@/db"
+import { books } from "@/db/schema"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
+import { and, eq, inArray } from "drizzle-orm"
 import { number, object, string } from "valibot"
 
 import { stripe } from "@/lib/stripe"
 import { absoluteUrl, getUserEmail } from "@/lib/utils"
-import { manageSubscriptionSchema } from "@/lib/validations/stripe"
+import {
+    createPaymentIntentSchema,
+    manageSubscriptionSchema,
+} from "@/lib/validations/stripe"
 
 import { privateProcedure, router } from "../trpc"
 import { createStripeAccount, getStripeAccount } from "../utils"
+import { createCart, getCart } from "./cart"
 
 export const stripeRouter = router({
     createAccountLink: privateProcedure
@@ -119,6 +126,206 @@ export const stripeRouter = router({
 
             return {
                 url: stripeSession.url,
+            }
+        }),
+
+    createPaymentIntent: privateProcedure
+        .input(wrap(createPaymentIntentSchema))
+        .mutation(async ({ input }) => {
+            try {
+                const store = await db.query.stores.findFirst({
+                    columns: { stripeAccountId: true },
+                    where: (store) => eq(store.id, input.storeId),
+                })
+
+                if (!store) {
+                    throw new TRPCError({
+                        code: "NOT_FOUND",
+                        message: "Store not found",
+                    })
+                }
+
+                if (!store.stripeAccountId) {
+                    throw new TRPCError({
+                        code: "NOT_FOUND",
+                        message: "Store stripe connection not found",
+                    })
+                }
+
+                const { isConnected, payment } = await getStripeAccount(
+                    input.storeId
+                )
+
+                if (!isConnected || !payment) {
+                    throw new TRPCError({
+                        code: "NOT_FOUND",
+                        message: "Store is not connected to Stripe",
+                    })
+                }
+
+                const paymentIntent = await stripe.paymentIntents.create(
+                    {
+                        amount: input.amount,
+                        currency: "usd",
+                        payment_method_types: ["card"],
+
+                        automatic_payment_methods: {
+                            enabled: true,
+                        },
+                    },
+                    {
+                        stripeAccount: payment.stripeAccountId,
+                    }
+                )
+
+                if (!paymentIntent.client_secret) {
+                    throw new TRPCError({
+                        code: "INTERNAL_SERVER_ERROR",
+                        message: "Failed to create payment intent",
+                    })
+                }
+
+                return { clientSecret: paymentIntent.client_secret }
+            } catch (error) {
+                throw new TRPCError({
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: "Failed to create payment intent",
+                })
+            }
+        }),
+
+    createCheckoutSession: privateProcedure
+        .input(wrap(createPaymentIntentSchema))
+        .mutation(async ({ input, ctx }) => {
+            const store = await db.query.stores.findFirst({
+                columns: { stripeAccountId: true },
+                where: (store) => eq(store.id, input.storeId),
+            })
+
+            if (!store) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store not found",
+                })
+            }
+
+            if (!store.stripeAccountId) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store stripe connection not found",
+                })
+            }
+
+            const { isConnected, payment } = await getStripeAccount(
+                input.storeId
+            )
+
+            if (!isConnected || !payment) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store is not connected to Stripe",
+                })
+            }
+
+            const cart = await getCart(ctx.userId)
+
+            if (!cart) {
+                await createCart(ctx.userId)
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Cart not found, please try again",
+                })
+            }
+
+            if (cart.items === null || cart.items.length === 0) {
+                throw new TRPCError({
+                    code: "BAD_REQUEST",
+                    message: "Cart not found, please try again",
+                })
+            }
+
+            const booksIds = cart.items.map((item) => +item.bookId)
+
+            const cartItems = await db
+                .select({
+                    bookId: books.id,
+                    cover: books.cover,
+                    title: books.title,
+                    price: books.price,
+                    storeId: books.storeId,
+                })
+                .from(books)
+                .where(
+                    and(
+                        inArray(books.id, booksIds),
+                        eq(books.storeId, input.storeId)
+                    )
+                )
+
+            try {
+                const session = await stripe.checkout.sessions.create(
+                    {
+                        line_items: cartItems.map((item) => ({
+                            price_data: {
+                                currency: "usd",
+                                product_data: {
+                                    name: item.title,
+                                    images: [item.cover!],
+                                },
+                                unit_amount: +item.price * 100,
+                            },
+                            quantity: cart.items!.find(
+                                (i) => i.bookId === item.bookId
+                            )?.quantity,
+                        })),
+                        payment_intent_data: {
+                            metadata: {
+                                items: JSON.stringify(
+                                    cartItems.map((item) => ({
+                                        bookId: item.bookId,
+                                        quantity: cart.items!.find(
+                                            (i) => i.bookId === item.bookId
+                                        )?.quantity,
+                                        price: +item.price,
+                                    }))
+                                ),
+                                cartId: cart.id.toString(),
+                                connectAccountPayments: "true",
+                            },
+                            application_fee_amount: 3 * 100,
+                        },
+                        shipping_address_collection: {
+                            allowed_countries: ["US"],
+                        },
+                        billing_address_collection: "required",
+                        mode: "payment",
+                        success_url: `http://localhost:3000/checkout?success=true`,
+                        cancel_url: `http://localhost:3000/cart?canceled=true`,
+                        client_reference_id: cart.id.toString(),
+                    },
+                    {
+                        stripeAccount: payment.stripeAccountId,
+                    }
+                )
+
+                if (!session.url) {
+                    throw new TRPCError({
+                        code: "INTERNAL_SERVER_ERROR",
+                        message: "Failed to create checkout session",
+                    })
+                }
+
+                console.log("payment_intent: ", session.payment_intent)
+
+                return {
+                    url: session.url,
+                }
+            } catch (error) {
+                console.log("stripe error: ", error)
+                throw new TRPCError({
+                    code: "INTERNAL_SERVER_ERROR",
+                    message: "Failed to create checkout session",
+                })
             }
         }),
 })

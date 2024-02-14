@@ -3,8 +3,8 @@ import { books, carts, type Cart } from "@/db/schema"
 import { type CartItem } from "@/types"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { eq, inArray } from "drizzle-orm"
-import { array } from "valibot"
+import { and, eq, inArray } from "drizzle-orm"
+import { array, number, object } from "valibot"
 
 import {
     decreaseBookQuantity,
@@ -79,6 +79,7 @@ export const cartRouter = router({
                 cover: books.cover,
                 title: books.title,
                 price: books.price,
+                storeId: books.storeId,
             })
             .from(books)
             .where(inArray(books.id, booksIds))
@@ -158,5 +159,47 @@ export const cartRouter = router({
                 .where(eq(carts.userId, ctx.userId))
 
             return updatedCart.insertId
+        }),
+
+    getStoreBooks: privateProcedure
+        .input(
+            wrap(
+                object({
+                    storeId: number(),
+                })
+            )
+        )
+        .query(async ({ input: { storeId }, ctx: { userId } }) => {
+            const cart = await getCart(userId)
+
+            if (!cart) {
+                await createCart(userId)
+                return []
+            }
+
+            if (cart.items === null || cart.items.length === 0) {
+                return []
+            }
+
+            const booksIds = cart.items.map((item) => item.bookId)
+
+            const cartItems = await db
+                .select({
+                    bookId: books.id,
+                    cover: books.cover,
+                    title: books.title,
+                    price: books.price,
+                })
+                .from(books)
+                .where(
+                    and(eq(books.storeId, storeId), inArray(books.id, booksIds))
+                )
+
+            return cartItems.map((item) => ({
+                ...item,
+                quantity:
+                    cart.items?.find((book) => book.bookId === item.bookId)
+                        ?.quantity || 0,
+            }))
         }),
 })

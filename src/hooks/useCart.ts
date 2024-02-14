@@ -1,18 +1,19 @@
 import { type CartItem } from "@/types"
 import { create } from "zustand"
 
-import { decreaseBookQuantity, updateCartBook } from "@/lib/utils/cart"
-
 export interface ExtendedCartItem extends CartItem {
     cover?: string | null | undefined
     title?: string | undefined
     price?: string
+    storeId?: number
 }
 
 interface Store {
     cartBooks: ExtendedCartItem[]
     prevCartBooks: ExtendedCartItem[]
+    isLoading: boolean
 
+    setIsLoading: (isLoading: boolean) => void
     setCartBooks: (cartBooks: ExtendedCartItem[]) => void
     updateCart: (book: CartItem) => void
     addBook: (bookToUpdate: ExtendedCartItem) => void
@@ -41,6 +42,8 @@ function update(cartBooks: ExtendedCartItem[], book: CartItem) {
 const useCart = create<Store>((set, get) => ({
     cartBooks: [],
     prevCartBooks: [],
+    isLoading: true,
+    setIsLoading: (isLoading) => set({ isLoading }),
     setCartBooks: (cartBooks) => set({ cartBooks }),
     updateCart: (book) => {
         set({ prevCartBooks: get().cartBooks })

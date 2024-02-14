@@ -1,6 +1,7 @@
 import {
     boolean,
     nullType,
+    number,
     object,
     string,
     undefinedType,
@@ -13,4 +14,9 @@ export const manageSubscriptionSchema = object({
     stripeSubscriptionId: union([string(), nullType(), undefinedType()]),
     isSubscribed: boolean(),
     isCurrentPlan: boolean(),
+})
+
+export const createPaymentIntentSchema = object({
+    amount: number(),
+    storeId: number(),
 })

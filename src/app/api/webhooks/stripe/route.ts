@@ -14,11 +14,6 @@ import { checkoutItemSchema } from "@/lib/validations/cart"
 export async function POST(req: Request) {
     const body = await req.text()
     const signature = headers().get("Stripe-Signature") ?? ""
-    console.log(
-        "process.env.STRIPE_WEBHOOK_SECRET: ",
-        process.env.STRIPE_WEBHOOK_SECRET
-    )
-
     let event: Stripe.Event
 
     try {
@@ -107,7 +102,7 @@ export async function POST(req: Request) {
             break
         case "payment_intent.processing":
             const paymentIntentProcessing = event.data.object
-            console.log(`⏳ Payment processing: ${paymentIntentProcessing.id}`)
+            // console.log(`⏳ Payment processing: ${paymentIntentProcessing.id}`)
             break
         case "payment_intent.succeeded":
             const paymentIntentSucceeded = event.data.object
@@ -116,6 +111,11 @@ export async function POST(req: Request) {
             const orderAmount = paymentIntentSucceeded?.amount
             const checkoutItems = paymentIntentSucceeded?.metadata
                 ?.items as unknown as CheckoutItem[]
+            const cartId = paymentIntentSucceeded?.metadata?.cartId as
+                | string
+                | undefined
+
+            console.log("checkout metadata: ", paymentIntentSucceeded?.metadata)
 
             // If there are items in metadata, then create order
             if (checkoutItems) {
@@ -124,18 +124,14 @@ export async function POST(req: Request) {
 
                     // Parsing items from metadata
                     // Didn't parse before because can pass the unparsed data directly to the order table items json column in the db
+                    const items = JSON.parse(
+                        paymentIntentSucceeded?.metadata?.items ?? "[]"
+                    ) as typeof checkoutItemSchema | []
+
                     const safeParsedItems = safeParse(
                         array(checkoutItemSchema),
-                        JSON.parse(
-                            paymentIntentSucceeded?.metadata?.items ?? "[]"
-                        )
+                        items
                     )
-
-                    // .safeParse(
-                    //     JSON.parse(
-                    //         paymentIntentSucceeded?.metadata?.items ?? "[]"
-                    //     )
-                    // )
 
                     if (!safeParsedItems.success) {
                         throw new Error("Could not parse items.")
@@ -167,60 +163,82 @@ export async function POST(req: Request) {
 
                     if (!newAddress.insertId)
                         throw new Error("No address created.")
-
+                    paymentIntentSucceeded.receipt_email
                     // Create new order in db
-                    // await db.insert(orders).values({
-                    //     // storeId: payment.storeId,
-                    //     items: checkoutItems ?? [],
-                    //     quantity: safeParsedItems.data.reduce(
-                    //         (acc, item) => acc + item.quantity,
-                    //         0
-                    //     ),
-                    //     amount: String(Number(orderAmount) / 100),
-                    //     stripePaymentIntentId: paymentIntentId,
-                    //     stripePaymentIntentStatus:
-                    //         paymentIntentSucceeded?.status,
-                    //     name: paymentIntentSucceeded?.shipping?.name,
-                    //     email: paymentIntentSucceeded?.receipt_email,
-                    //     addressId: Number(newAddress.insertId),
-                    // })
+                    // @ts-expect-error error
+                    await db.insert(orders).values({
+                        storeId: payment.storeId,
+                        items: safeParsedItems.data ?? [],
+                        quantity: safeParsedItems.data.reduce(
+                            (acc, item) => acc + item.quantity,
+                            0
+                        ),
+                        total: Number(orderAmount) / 100,
+                        stripePaymentIntentId: paymentIntentId,
+                        stripePaymentIntentStatus:
+                            paymentIntentSucceeded?.status,
+                        name: paymentIntentSucceeded?.shipping?.name,
+                        email: paymentIntentSucceeded?.receipt_email,
+                        addressId: Number(newAddress.insertId),
+                    })
 
                     // Update product inventory in db
-                    // for (const item of safeParsedItems.data) {
-                    //     const product = await db.query.books.findFirst({
-                    //         columns: {
-                    //             id: true,
-                    //             inventory: true,
-                    //         },
-                    //         where: eq(books.id, item.productId),
-                    //     })
+                    for (const item of safeParsedItems.data) {
+                        const book = await db.query.books.findFirst({
+                            columns: {
+                                id: true,
+                                inventory: true,
+                            },
+                            where: eq(books.id, item.bookId),
+                        })
 
-                    //     if (!product) {
-                    //         throw new Error("Product not found.")
-                    //     }
+                        if (!book) {
+                            throw new Error("book not found.")
+                        }
 
-                    //     const inventory = product.inventory - item.quantity
+                        const inventory = book.inventory - item.quantity
 
-                    //     if (inventory < 0) {
-                    //         throw new Error("Product out of stock.")
-                    //     }
+                        if (inventory < 0) {
+                            throw new Error("book out of stock.")
+                        }
 
-                    //     await db
-                    //         .update(books)
-                    //         .set({
-                    //             inventory: product.inventory - item.quantity,
-                    //         })
-                    //         .where(eq(books.id, item.productId))
-                    // }
+                        await db
+                            .update(books)
+                            .set({
+                                inventory: book.inventory - item.quantity,
+                            })
+                            .where(eq(books.id, item.bookId))
+                    }
 
-                    // Close cart and clear items
-                    // await db
-                    //     .update(carts)
-                    //     .set({
-                    //         // closed: true,
-                    //         items: [],
-                    //     })
-                    //     .where(eq(carts.paymentIntentId, paymentIntentId))
+                    if (!cartId || isNaN(Number(cartId)))
+                        throw new Error(
+                            "cart id not provided in the payment_intent metadata"
+                        )
+
+                    const userCart = await db.query.carts.findFirst({
+                        columns: {
+                            id: true,
+                            items: true,
+                        },
+                        where: (cart) => eq(cart.id, Number(cartId)),
+                    })
+
+                    if (!userCart || !userCart.items)
+                        throw new Error("cart not found.")
+
+                    const cartUpdatedItems = userCart.items.filter(
+                        (item) =>
+                            !safeParsedItems.data.some(
+                                (orderItem) => orderItem.bookId === item.bookId
+                            )
+                    )
+
+                    await db
+                        .update(carts)
+                        .set({
+                            items: cartUpdatedItems || [],
+                        })
+                        .where(eq(carts.id, Number(cartId)))
                 } catch (err) {
                     console.log("Error creating order.", err)
                 }
@@ -228,14 +246,14 @@ export async function POST(req: Request) {
             break
         case "application_fee.created":
             const applicationFeeCreated = event.data.object
-            console.log(`Application fee id: ${applicationFeeCreated.id}`)
+            // console.log(`Application fee id: ${applicationFeeCreated.id}`)
             break
         case "charge.succeeded":
             const chargeSucceeded = event.data.object
-            console.log(`Charge id: ${chargeSucceeded.id}`)
+            // console.log(`Charge id: ${chargeSucceeded.id}`)
             break
         default:
-            console.warn(`Unhandled event type: ${event.type}`)
+        // console.warn(`Unhandled event type: ${event.type}`)
     }
 
     return new Response(null, { status: 200 })

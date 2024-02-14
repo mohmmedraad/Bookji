@@ -13,7 +13,7 @@ import { Button } from "./ui/Button"
 import { Input } from "./ui/Input"
 
 interface EditQuantityProps {
-    bookId: string
+    bookId: number
     bookQuantity: number
 }
 
@@ -26,6 +26,7 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
     const router = useRouter()
     const { mutate: addToCart } = trpc.cart.update.useMutation({
         onError: (error) => {
+            console.log("EditQuantity error: ", error)
             undoChanging()
             handleTRPCError(error.data?.code)
         },

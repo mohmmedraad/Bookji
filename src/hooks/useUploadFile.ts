@@ -40,6 +40,7 @@ export const useUploadFile = ({ endpoint, schema }: UseUploadFile) => {
 
             handleUploadSuccess(uploadedFile[0].url)
         } catch (error) {
+            console.log("upload error", error)
             handleUploadError(error)
         }
     }

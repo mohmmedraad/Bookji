@@ -1,7 +1,7 @@
 import { merge, minValue, number, object, string } from "valibot"
 
 export const cartItemSchema = object({
-    bookId: string(),
+    bookId: number(),
     quantity: number([minValue(0)]),
 })
 

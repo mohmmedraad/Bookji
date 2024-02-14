@@ -26,16 +26,16 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
         onMutate: () => {
             if (!book) return
             const isBookInCart = cartBooks.find(
-                (item) => item.bookId === book.id.toString()
+                (item) => item.bookId === book.id
             )
             if (isBookInCart) {
                 updateCart({
-                    bookId: book.id.toString(),
+                    bookId: book.id,
                     quantity: isBookInCart.quantity + 1,
                     ...book,
                 })
             } else {
-                updateCart({ bookId: book.id.toString(), quantity: 1, ...book })
+                updateCart({ bookId: book.id, quantity: 1, ...book })
             }
             toast.success("Added to cart")
         },
@@ -55,7 +55,7 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
 
     function handleClick() {
         if (!book) return
-        addToCart({ bookId: book.id.toString(), quantity: 1 })
+        addToCart({ bookId: book.id, quantity: 1 })
     }
     return <Button onClick={handleClick}>Add To Cart</Button>
 }

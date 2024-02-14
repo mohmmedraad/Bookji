@@ -1,11 +1,13 @@
 "use client"
 
 import { type FC } from "react"
+import Link from "next/link"
 
+import { cn } from "@/lib/utils"
 import { getCartTotal } from "@/lib/utils/cart"
 import useCart from "@/hooks/useCart"
 
-import { Button } from "./ui/Button"
+import { buttonVariants } from "./ui/Button"
 import { Separator } from "./ui/Separator"
 
 interface CheckOutProps {}
@@ -27,7 +29,9 @@ const Checkout: FC<CheckOutProps> = ({}) => {
             <div className="mb-2 flex items-center justify-between">
                 <p>Total</p> <p>{getCartTotal(cartBooks)}$</p>
             </div>
-            <Button className="w-full">Proceed to checkout</Button>
+            <Link className={cn(buttonVariants(), "w-full")} href="/cart">
+                Checkout
+            </Link>
         </div>
     )
 }

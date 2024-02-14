@@ -120,4 +120,31 @@ export const storeRouter = router({
                 })
             }
         }),
+
+    getStoreInfo: privateProcedure
+        .input(
+            wrap(
+                object({
+                    storeId: number(),
+                })
+            )
+        )
+        .query(async ({ input }) => {
+            const store = await db.query.stores.findFirst({
+                columns: {
+                    name: true,
+                    logo: true,
+                },
+                where: eq(stores.id, input.storeId),
+            })
+
+            if (!store) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store not found",
+                })
+            }
+
+            return store
+        }),
 })

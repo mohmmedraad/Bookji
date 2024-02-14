@@ -1,7 +1,6 @@
 "use client"
 
 import { type FC } from "react"
-import { ShoppingCart } from "lucide-react"
 
 import useCart from "@/hooks/useCart"
 import { trpc } from "@/app/_trpc/client"
@@ -21,16 +20,20 @@ import {
 
 const Cart: FC = () => {
     const setCartBooks = useCart((state) => state.setCartBooks)
+    const setIsLoading = useCart((state) => state.setIsLoading)
     const cartBooks = useCart((state) => state.cartBooks)
-    const { isSuccess } = trpc.cart.get.useQuery(
+    const { isLoading } = trpc.cart.get.useQuery(
         // @ts-expect-error error
         {},
         {
             onSuccess: (data) => {
+                setIsLoading(false)
                 setCartBooks(data || [])
             },
         }
     )
+
+    setIsLoading(isLoading)
 
     return (
         <Sheet>

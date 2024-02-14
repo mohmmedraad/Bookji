@@ -62,7 +62,7 @@ CREATE TABLE `Bookji_email_preferences` (
 --> statement-breakpoint
 CREATE TABLE `Bookji_orders` (
 	`id` serial AUTO_INCREMENT NOT NULL,
-	`userId` varchar(191),
+	`storeId` int NOT NULL,
 	`items` json DEFAULT ('null'),
 	`total` decimal(10,2) NOT NULL DEFAULT '0',
 	`stripePaymentIntentId` varchar(191) NOT NULL,
