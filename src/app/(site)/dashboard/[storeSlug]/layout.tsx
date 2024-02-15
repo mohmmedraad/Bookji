@@ -1,6 +1,8 @@
 import React from "react"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
+import { currentUser } from "@clerk/nextjs"
+import { and } from "drizzle-orm"
 
 import { Separator } from "@/components/ui/Separator"
 
@@ -40,8 +42,14 @@ const Layout = async ({
     params: { storeSlug },
     children,
 }: { children: React.ReactNode } & pageParams) => {
+    const user = await currentUser()
+
+    if (!user || !user.id) {
+        return redirect(`/sing-in?origin=/dashboard/${storeSlug}`)
+    }
     const store = await db.query.stores.findFirst({
-        where: (store, { eq }) => eq(store.slug, storeSlug),
+        where: (store, { eq }) =>
+            and(eq(store.slug, storeSlug), eq(store.ownerId, user.id)),
     })
 
     if (!store) {

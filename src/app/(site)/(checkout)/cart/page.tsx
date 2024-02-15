@@ -23,7 +23,13 @@ const Page: FC<PageProps> = async ({}) => {
     const userCart = await db.query.carts.findFirst({
         columns: {
             id: true,
-            items: true,
+        },
+        with: {
+            items: {
+                columns: {
+                    storeId: true,
+                },
+            },
         },
         where: (cart, { eq }) => eq(cart.userId, user.id),
     })
@@ -32,23 +38,27 @@ const Page: FC<PageProps> = async ({}) => {
         return notFound()
     }
 
-    const cartItemsStoresIds = await db
-        .selectDistinct({ storeId: books.storeId })
-        .from(carts)
-        .leftJoin(
-            books,
-            sql`JSON_CONTAINS(Bookji_carts.items, JSON_OBJECT('bookId', Bookji_books.id))`
-        )
-        .groupBy(books.storeId)
-        .where(eq(carts.id, Number(userCart.id)))
+    const cartItemsStoresIds = new Set(
+        userCart.items.map((item) => item.storeId)
+    )
 
-    const isCartEmpty =
-        cartItemsStoresIds.length === 1 &&
-        cartItemsStoresIds[0].storeId === null
+    // const cartItemsStoresIds = await db
+    //     .selectDistinct({ storeId: books.storeId })
+    //     .from(carts)
+    //     .leftJoin(
+    //         books,
+    //         sql`JSON_CONTAINS(Bookji_carts.items, JSON_OBJECT('bookId', Bookji_books.id))`
+    //     )
+    //     .groupBy(books.storeId)
+    //     .where(eq(carts.id, Number(userCart.id)))
+
+    // const isCartEmpty =
+    //     cartItemsStoresIds.length === 1 &&
+    //     cartItemsStoresIds[0].storeId === null
     return (
         <section>
             <Container className="grid min-h-screen gap-8 pb-20 pt-40">
-                {isCartEmpty ? (
+                {cartItemsStoresIds.size === 0 ? (
                     <div className="flex h-full flex-col items-center justify-center gap-4">
                         <p className="text-2xl font-semibold text-gray-500">
                             Your cart is empty
@@ -68,11 +78,8 @@ const Page: FC<PageProps> = async ({}) => {
                         </div>
                     </div>
                 ) : (
-                    cartItemsStoresIds.map((store) => (
-                        <StoreCheckoutCard
-                            key={store.storeId}
-                            storeId={store.storeId!}
-                        />
+                    [...cartItemsStoresIds].map((storeId) => (
+                        <StoreCheckoutCard key={storeId} storeId={storeId} />
                     ))
                 )}
             </Container>

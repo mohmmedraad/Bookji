@@ -1,9 +1,9 @@
 import type { Metadata } from "next"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
-import { redirect } from "next/navigation"
 
 export const metadata: Metadata = {
     // metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
@@ -13,16 +13,16 @@ export const metadata: Metadata = {
 
 interface CheckoutPageProps {
     params: {
-        success:string   
+        success: string
     }
 }
 
 export default function CheckoutPage({ params }: CheckoutPageProps) {
-    const {success} = params
+    const { success } = params
 
-    if (success !== "true") {
-        return redirect("/shop")
-    }
+    // if (success !== "true") {
+    //     return redirect("/shop")
+    // }
 
     return (
         <section className="pt-40">

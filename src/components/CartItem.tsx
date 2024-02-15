@@ -49,7 +49,10 @@ const CartItem: FC<CartItemProps> = ({
 
     function handleRemoveItem() {
         const newCartBooks = cartBooks.filter((book) => book.bookId !== bookId)
-        deleteItem(newCartBooks)
+        deleteItem({
+            bookId,
+            quantity: 0,
+        })
         setCartBooks(newCartBooks)
     }
 

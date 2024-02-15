@@ -1,10 +1,18 @@
 import { db } from "@/db"
-import { books, booksToCategories, ratings, stores } from "@/db/schema"
+import {
+    books,
+    booksToCategories,
+    cartItems,
+    carts,
+    ratings,
+    stores,
+} from "@/db/schema"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, eq, inArray } from "drizzle-orm"
 import { number, object, partial, string } from "valibot"
 
+import { stripe } from "@/lib/stripe"
 import { slugify } from "@/lib/utils"
 import {
     deleteStoreSchema,
@@ -77,6 +85,7 @@ export const storeRouter = router({
                 const store = await db.query.stores.findFirst({
                     columns: {
                         id: true,
+                        stripeAccountId: true,
                     },
                     where: and(
                         eq(stores.id, storeId),
@@ -105,13 +114,16 @@ export const storeRouter = router({
 
                 const booksIds = storeBooks.map((book) => book.id)
 
-                const deleteBooks = await Promise.all([
+                const deleteStore = await Promise.all([
                     db.delete(stores).where(eq(stores.id, store.id)),
                     db.delete(books).where(eq(books.storeId, storeId)),
                     db.delete(ratings).where(inArray(ratings.bookId, booksIds)),
                     db
                         .delete(booksToCategories)
                         .where(inArray(booksToCategories.bookId, booksIds)),
+                    db.delete(cartItems).where(eq(cartItems.storeId, store.id)),
+                    store.stripeAccountId &&
+                        stripe.accounts.del(store.stripeAccountId),
                 ])
             } catch (error) {
                 throw new TRPCError({
@@ -148,3 +160,7 @@ export const storeRouter = router({
             return store
         }),
 })
+
+// async function deleteStoreBooksFromCarts(storeId: number, booksIds: number[]) {
+//     const carts = await db.select({ id: true }).from(carts).where()
+// }

@@ -5,7 +5,6 @@ export interface ExtendedCartItem extends CartItem {
     cover?: string | null | undefined
     title?: string | undefined
     price?: string
-    storeId?: number
 }
 
 interface Store {
@@ -49,9 +48,14 @@ const useCart = create<Store>((set, get) => ({
         set({ prevCartBooks: get().cartBooks })
         set({ cartBooks: update(get().cartBooks, book) })
     },
-    addBook: (book) => {
+    addBook: (book: ExtendedCartItem) => {
         set({ prevCartBooks: get().cartBooks })
-        set({ cartBooks: update(get().cartBooks, book) })
+        set({
+            cartBooks: update(get().cartBooks, {
+                ...book,
+                storeId: book.storeId,
+            }),
+        })
     },
     undoChanging: () => set((state) => ({ cartBooks: state.prevCartBooks })),
 }))

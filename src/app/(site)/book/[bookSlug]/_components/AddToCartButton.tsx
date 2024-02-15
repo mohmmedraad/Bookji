@@ -24,20 +24,19 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
 
     const { data, mutate: addToCart } = trpc.cart.add.useMutation({
         onMutate: () => {
-            if (!book) return
-            const isBookInCart = cartBooks.find(
-                (item) => item.bookId === book.id
-            )
-            if (isBookInCart) {
-                updateCart({
-                    bookId: book.id,
-                    quantity: isBookInCart.quantity + 1,
-                    ...book,
-                })
-            } else {
-                updateCart({ bookId: book.id, quantity: 1, ...book })
-            }
-            toast.success("Added to cart")
+            // if (!book) return
+            // const isBookInCart = cartBooks.find(
+            //     (item) => item.bookId === book.id
+            // )
+            // if (isBookInCart) {
+            //     updateCart({
+            //         bookId: book.id,
+            //         quantity: isBookInCart.quantity + 1,
+            //         ...book,
+            //     })
+            // } else {
+            //     updateCart({ bookId: book.id, quantity: 1, ...book })
+            // }
         },
         onError: (error) => {
             undoChanging()
@@ -55,7 +54,18 @@ const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
 
     function handleClick() {
         if (!book) return
-        addToCart({ bookId: book.id, quantity: 1 })
+        toast.success("Added to cart")
+        const isBookInCart = cartBooks.find((item) => item.bookId === book.id)
+
+        if (isBookInCart) {
+            return updateCart({
+                bookId: book.id,
+                quantity: isBookInCart.quantity + 1,
+                ...book,
+            })
+        }
+        updateCart({ bookId: book.id, quantity: 1, ...book })
+        addToCart({ bookId: book.id, quantity: 1, storeId: book.storeId })
     }
     return <Button onClick={handleClick}>Add To Cart</Button>
 }

@@ -1,10 +1,17 @@
 import { headers } from "next/headers"
 import { db } from "@/db"
-import { addresses, books, carts, orders, payments } from "@/db/schema"
+import {
+    addresses,
+    books,
+    cartItems,
+    carts,
+    orders,
+    payments,
+} from "@/db/schema"
 import { env } from "@/env.mjs"
 import type { CheckoutItem } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import type Stripe from "stripe"
 import { array, safeParse } from "valibot"
 
@@ -114,6 +121,9 @@ export async function POST(req: Request) {
             const cartId = paymentIntentSucceeded?.metadata?.cartId as
                 | string
                 | undefined
+            const storeId = paymentIntentSucceeded?.metadata?.storeId as
+                | string
+                | undefined
 
             console.log("checkout metadata: ", paymentIntentSucceeded?.metadata)
 
@@ -218,27 +228,40 @@ export async function POST(req: Request) {
                     const userCart = await db.query.carts.findFirst({
                         columns: {
                             id: true,
-                            items: true,
                         },
                         where: (cart) => eq(cart.id, Number(cartId)),
                     })
 
-                    if (!userCart || !userCart.items)
-                        throw new Error("cart not found.")
+                    if (!userCart) throw new Error("cart not found.")
 
-                    const cartUpdatedItems = userCart.items.filter(
-                        (item) =>
-                            !safeParsedItems.data.some(
-                                (orderItem) => orderItem.bookId === item.bookId
-                            )
-                    )
+                    if (!storeId || isNaN(Number(storeId)))
+                        throw new Error(
+                            "store id not provided in the payment_intent metadata"
+                        )
 
+                    // Remove items from cart
                     await db
-                        .update(carts)
-                        .set({
-                            items: cartUpdatedItems || [],
-                        })
-                        .where(eq(carts.id, Number(cartId)))
+                        .delete(cartItems)
+                        .where(
+                            and(
+                                eq(cartItems.cartId, userCart.id),
+                                eq(cartItems.storeId, Number(storeId))
+                            )
+                        )
+
+                    // const cartUpdatedItems = userCart.items.filter(
+                    //     (item) =>
+                    //         !safeParsedItems.data.some(
+                    //             (orderItem) => orderItem.bookId === item.bookId
+                    //         )
+                    // )
+
+                    // await db
+                    //     .update(carts)
+                    //     .set({
+                    //         items: cartUpdatedItems || [],
+                    //     })
+                    //     .where(eq(carts.id, Number(cartId)))
                 } catch (err) {
                     console.log("Error creating order.", err)
                 }

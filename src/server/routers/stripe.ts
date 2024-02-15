@@ -227,7 +227,26 @@ export const stripeRouter = router({
                 })
             }
 
-            const cart = await getCart(ctx.userId)
+            const cart = await db.query.carts.findFirst({
+                columns: { id: true },
+                with: {
+                    items: {
+                        where: (item) => eq(item.storeId, input.storeId),
+                        columns: { bookId: true, quantity: true },
+                        with: {
+                            book: {
+                                columns: {
+                                    cover: true,
+                                    title: true,
+                                    price: true,
+                                    storeId: true,
+                                },
+                            },
+                        },
+                    },
+                },
+                where: (cart) => eq(cart.userId, ctx.userId),
+            })
 
             if (!cart) {
                 await createCart(ctx.userId)
@@ -244,23 +263,11 @@ export const stripeRouter = router({
                 })
             }
 
-            const booksIds = cart.items.map((item) => +item.bookId)
-
-            const cartItems = await db
-                .select({
-                    bookId: books.id,
-                    cover: books.cover,
-                    title: books.title,
-                    price: books.price,
-                    storeId: books.storeId,
-                })
-                .from(books)
-                .where(
-                    and(
-                        inArray(books.id, booksIds),
-                        eq(books.storeId, input.storeId)
-                    )
-                )
+            const cartItems = cart.items.map(({ book, bookId, quantity }) => ({
+                bookId,
+                quantity,
+                ...book,
+            }))
 
             try {
                 const session = await stripe.checkout.sessions.create(
@@ -283,12 +290,14 @@ export const stripeRouter = router({
                                 items: JSON.stringify(
                                     cartItems.map((item) => ({
                                         bookId: item.bookId,
+                                        storeId: item.storeId,
                                         quantity: cart.items!.find(
                                             (i) => i.bookId === item.bookId
                                         )?.quantity,
                                         price: +item.price,
                                     }))
                                 ),
+                                storeId: input.storeId.toString(),
                                 cartId: cart.id.toString(),
                                 connectAccountPayments: "true",
                             },

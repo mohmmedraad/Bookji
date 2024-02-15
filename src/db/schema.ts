@@ -1,4 +1,4 @@
-import type { CartItem, CheckoutItem } from "@/types"
+import type { CheckoutItem } from "@/types"
 import { relations } from "drizzle-orm"
 import {
     boolean,
@@ -35,6 +35,7 @@ export type NewBook = typeof books.$inferInsert
 export const booksRelations = relations(books, ({ many, one }) => ({
     ratings: many(ratings),
     categories: many(booksToCategories),
+    cartItems: many(cartItems),
     store: one(stores, {
         fields: [books.storeId],
         references: [stores.id],
@@ -150,6 +151,12 @@ export const cartItems = mysqlTable(`${APP_NAME}_cartItems`, {
     createdAt: timestamp("created_at").defaultNow(),
 })
 
+export type CartItem = typeof cartItems.$inferSelect
+export type NewCartItem = Omit<
+    typeof cartItems.$inferInsert,
+    "id" | "createdAt" | "cartId"
+>
+
 export const cartItemsRelations = relations(cartItems, ({ one }) => ({
     store: one(stores, {
         fields: [cartItems.storeId],
@@ -158,6 +165,10 @@ export const cartItemsRelations = relations(cartItems, ({ one }) => ({
     cart: one(carts, {
         fields: [cartItems.cartId],
         references: [carts.id],
+    }),
+    book: one(books, {
+        fields: [cartItems.bookId],
+        references: [books.id],
     }),
 }))
 

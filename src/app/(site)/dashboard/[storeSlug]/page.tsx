@@ -1,8 +1,10 @@
 import { type FC } from "react"
 import Link from "next/link"
-import { notFound } from "next/navigation"
+import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
 import { getStripeAccount } from "@/server/utils"
+import { currentUser } from "@clerk/nextjs"
+import { and } from "drizzle-orm"
 
 import { cn, formatDate } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/Button"
@@ -28,8 +30,14 @@ interface pageProps {
 }
 
 const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
+    const user = await currentUser()
+
+    if (!user || !user.id) {
+        return redirect(`/sing-in?origin=/dashboard/${storeSlug}`)
+    }
     const store = await db.query.stores.findFirst({
-        where: (store, { eq }) => eq(store.slug, storeSlug),
+        where: (store, { eq }) =>
+            and(eq(store.slug, storeSlug), eq(store.ownerId, user.id)),
     })
 
     if (!store) {

@@ -42,7 +42,11 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
 
     const handleIncrement = () => {
         if (quantity >= 100) return
-        updateCart({ bookId, quantity: quantity + 1 })
+        updateCart({
+            bookId,
+            quantity: quantity + 1,
+            storeId: cartBooks.find((book) => book.bookId === bookId)!.storeId,
+        })
         setQuantity(quantity + 1)
     }
     const handleDecrement = () => {
@@ -50,13 +54,17 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
         updateCart({
             bookId,
             quantity: quantity - 1,
+            storeId: cartBooks.find((book) => book.bookId === bookId)!.storeId,
         })
         setQuantity(quantity - 1)
     }
 
     useEffect(() => {
         if (!quantityValue) return
-        addToCart(cartBooks)
+        addToCart({
+            bookId,
+            quantity: quantityValue,
+        })
     }, [quantityValue])
 
     return (
@@ -75,6 +83,9 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
                     updateCart({
                         bookId,
                         quantity: +e.target.value,
+                        storeId: cartBooks.find(
+                            (book) => book.bookId === bookId
+                        )!.storeId,
                     })
                     setQuantity(+e.target.value)
                 }}

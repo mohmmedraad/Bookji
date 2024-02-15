@@ -35,6 +35,7 @@ CREATE TABLE `Bookji_cartItems` (
 	`id` serial AUTO_INCREMENT NOT NULL,
 	`cart_id` int NOT NULL,
 	`book_id` int NOT NULL,
+	`store_id` int NOT NULL,
 	`quantity` int NOT NULL DEFAULT 1,
 	`created_at` timestamp DEFAULT (now()),
 	CONSTRAINT `Bookji_cartItems_id` PRIMARY KEY(`id`)
