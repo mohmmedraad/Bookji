@@ -56,6 +56,7 @@ export const stripeRouter = router({
                 // const url =
                 //     process.env.NEXT_PUBLIC_VERCEL_URL ??
                 //     "http://localhost:3000"
+
                 const accountLink = await stripe.accountLinks.create({
                     account: stripeAccountId,
                     refresh_url: absoluteUrl(`/dashboard/${storeSlug}`),
@@ -307,8 +308,8 @@ export const stripeRouter = router({
                         },
                         billing_address_collection: "required",
                         mode: "payment",
-                        success_url: `http://localhost:3000/checkout?success=true`,
-                        cancel_url: `http://localhost:3000/cart?canceled=true`,
+                        success_url: absoluteUrl(`/checkout?success=true`),
+                        cancel_url: absoluteUrl(`/cart?canceled=true`),
                         client_reference_id: cart.id.toString(),
                     },
                     {

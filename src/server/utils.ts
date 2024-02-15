@@ -1,9 +1,9 @@
 import { db } from "@/db"
 import { books, booksToCategories, payments, stores } from "@/db/schema"
-import { UserSubscriptionPlan } from "@/types"
+import { type UserSubscriptionPlan } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 import { addDays } from "date-fns"
-import { and, eq } from "drizzle-orm"
+import { eq } from "drizzle-orm"
 import { parse } from "valibot"
 
 import { storeSubscriptionPlans } from "@/config/site"
@@ -109,25 +109,29 @@ export async function createStripeAccount(
     } | null,
     storeId: number
 ): Promise<string> {
-    const account = await stripe.accounts.create({ type: "standard" })
+    try {
+        const account = await stripe.accounts.create({ type: "standard" })
 
-    if (!account) {
+        if (!account) {
+            throw new Error("Error creating Stripe account.")
+        }
+
+        // If payment record exists, we update it with the new account id
+        if (payment) {
+            await db.update(payments).set({
+                stripeAccountId: account.id,
+            })
+        } else {
+            await db.insert(payments).values({
+                storeId,
+                stripeAccountId: account.id,
+            })
+        }
+
+        return account.id
+    } catch (error) {
         throw new Error("Error creating Stripe account.")
     }
-
-    // If payment record exists, we update it with the new account id
-    if (payment) {
-        await db.update(payments).set({
-            stripeAccountId: account.id,
-        })
-    } else {
-        await db.insert(payments).values({
-            storeId,
-            stripeAccountId: account.id,
-        })
-    }
-
-    return account.id
 }
 
 export async function getSubscriptionPlan(
