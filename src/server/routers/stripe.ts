@@ -1,8 +1,7 @@
 import { db } from "@/db"
-import { books } from "@/db/schema"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, eq, inArray } from "drizzle-orm"
+import { eq } from "drizzle-orm"
 import { number, object, string } from "valibot"
 
 import { stripe } from "@/lib/stripe"
@@ -14,7 +13,7 @@ import {
 
 import { privateProcedure, router } from "../trpc"
 import { createStripeAccount, getStripeAccount } from "../utils"
-import { createCart, getCart } from "./cart"
+import { createCart } from "./cart"
 
 export const stripeRouter = router({
     createAccountLink: privateProcedure
@@ -54,13 +53,13 @@ export const stripeRouter = router({
                     })
                 }
 
-                const url =
-                    process.env.NEXT_PUBLIC_VERCEL_URL ??
-                    "http://localhost:3000"
+                // const url =
+                //     process.env.NEXT_PUBLIC_VERCEL_URL ??
+                //     "http://localhost:3000"
                 const accountLink = await stripe.accountLinks.create({
                     account: stripeAccountId,
-                    refresh_url: `${url}/dashboard/${storeSlug}`,
-                    return_url: `${url}/dashboard/${storeSlug}`,
+                    refresh_url: absoluteUrl(`/dashboard/${storeSlug}`),
+                    return_url: absoluteUrl(`/dashboard/${storeSlug}`),
                     type: "account_onboarding",
                 })
 

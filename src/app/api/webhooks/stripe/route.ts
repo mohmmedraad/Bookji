@@ -1,14 +1,6 @@
 import { headers } from "next/headers"
 import { db } from "@/db"
-import {
-    addresses,
-    books,
-    cartItems,
-    carts,
-    orders,
-    payments,
-} from "@/db/schema"
-import { env } from "@/env.mjs"
+import { addresses, books, cartItems, orders, payments } from "@/db/schema"
 import type { CheckoutItem } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"
@@ -38,6 +30,7 @@ export async function POST(req: Request) {
             { status: 400 }
         )
     }
+    console.log("event: ", event)
 
     switch (event.type) {
         // Handling subscription events
@@ -109,7 +102,7 @@ export async function POST(req: Request) {
             break
         case "payment_intent.processing":
             const paymentIntentProcessing = event.data.object
-            // console.log(`⏳ Payment processing: ${paymentIntentProcessing.id}`)
+            console.log(`⏳ Payment processing: ${paymentIntentProcessing.id}`)
             break
         case "payment_intent.succeeded":
             const paymentIntentSucceeded = event.data.object
@@ -269,11 +262,11 @@ export async function POST(req: Request) {
             break
         case "application_fee.created":
             const applicationFeeCreated = event.data.object
-            // console.log(`Application fee id: ${applicationFeeCreated.id}`)
+            console.log(`Application fee id: ${applicationFeeCreated.id}`)
             break
         case "charge.succeeded":
             const chargeSucceeded = event.data.object
-            // console.log(`Charge id: ${chargeSucceeded.id}`)
+            console.log(`Charge id: ${chargeSucceeded.id}`)
             break
         default:
         // console.warn(`Unhandled event type: ${event.type}`)

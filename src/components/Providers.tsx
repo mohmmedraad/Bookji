@@ -18,7 +18,10 @@ const Providers: FC<LayoutProps> = ({ children }) => {
         trpc.createClient({
             links: [
                 httpBatchLink({
-                    url: absoluteUrl("/api/trpc"),
+                    url:
+                        typeof window !== "undefined"
+                            ? "/api/trpc"
+                            : absoluteUrl("/api/trpc"),
                 }),
             ],
         })

@@ -1,7 +1,6 @@
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import { env } from "@/env.mjs"
 import type { ClerkAPIError, ClerkErrorCode } from "@/types"
-import { User } from "@clerk/nextjs/server"
+import { type User } from "@clerk/nextjs/server"
 import {
     type SignInResource,
     type SignInStatus,
@@ -82,7 +81,7 @@ export function getCurrentPageNumber(page: string | undefined) {
 }
 
 export function absoluteUrl(path: string) {
-    if (typeof window !== "undefined") return path
+    // if (typeof window !== "undefined") return path
     if (process.env.NEXT_PUBLIC_VERCEL_URL)
         return `https://${process.env.NEXT_PUBLIC_VERCEL_URL}${path}`
     return `http://localhost:${process.env.PORT ?? 3000}${path}`
