@@ -30,7 +30,7 @@ export async function POST(req: Request) {
             { status: 400 }
         )
     }
-    console.log("event: ", event)
+    console.log("event: ", event.type)
 
     switch (event.type) {
         // Handling subscription events
@@ -269,7 +269,7 @@ export async function POST(req: Request) {
             console.log(`Charge id: ${chargeSucceeded.id}`)
             break
         default:
-        // console.warn(`Unhandled event type: ${event.type}`)
+        console.warn(`Unhandled event type: ${event.type}`)
     }
 
     return new Response(null, { status: 200 })
