@@ -1,5 +1,6 @@
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 import { type ExtendedCartItem } from "@/hooks/useCart"
 import { Button } from "@/components/ui/Button"
@@ -48,8 +49,21 @@ const StoreCheckoutButton: FC<StoreCheckoutButtonProps> = ({
                 router.push(session.url)
             },
             onError: (error) => {
+                const errorCode = error.data?.code
+                if (errorCode === "UNAUTHORIZED") {
+                    router.push("/sign-in?origin=/cart")
+                    return toast.error("You need to be logged in to checkout")
+                }
+
+                if (errorCode === "NOT_FOUND") {
+                    return toast.error(error.message)
+                }
+
                 console.log("error: ", error)
                 console.log("error code: ", error.data?.code)
+                return toast.error(
+                    "An error occurred while creating checkout session. Please try again later."
+                )
             },
         }
     )

@@ -73,9 +73,10 @@ export const stripeRouter = router({
 
                 return accountLink.url
             } catch (error) {
+                console.log("stripe create account link error: ", error)
                 throw new TRPCError({
                     code: "INTERNAL_SERVER_ERROR",
-                    message: "Failed to create account link",
+                    message: "some error occurred while creating account link",
                 })
             }
         }),
@@ -251,14 +252,14 @@ export const stripeRouter = router({
             if (!cart) {
                 await createCart(ctx.userId)
                 throw new TRPCError({
-                    code: "BAD_REQUEST",
+                    code: "NOT_FOUND",
                     message: "Cart not found, please try again",
                 })
             }
 
             if (cart.items === null || cart.items.length === 0) {
                 throw new TRPCError({
-                    code: "BAD_REQUEST",
+                    code: "NOT_FOUND",
                     message: "Cart not found, please try again",
                 })
             }
