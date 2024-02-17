@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "1078f53e-1856-436f-8682-b7f393992d83",
+  "id": "0ef9cbf2-43d5-451b-9f49-7f7fc4a606bc",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -142,7 +142,7 @@
           "name": "slug",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
+          "notNull": true,
           "autoincrement": false
         },
         "createdAt": {
@@ -172,7 +172,14 @@
           ]
         }
       },
-      "uniqueConstraints": {}
+      "uniqueConstraints": {
+        "Bookji_books_title_unique": {
+          "name": "Bookji_books_title_unique",
+          "columns": [
+            "title"
+          ]
+        }
+      }
     },
     "Bookji_booksToCategories": {
       "name": "Bookji_booksToCategories",

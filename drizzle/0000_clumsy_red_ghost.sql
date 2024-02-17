@@ -19,10 +19,11 @@ CREATE TABLE `Bookji_books` (
 	`cover` varchar(200),
 	`price` decimal(10,2) NOT NULL DEFAULT '0',
 	`inventory` int NOT NULL DEFAULT 0,
-	`slug` text,
+	`slug` text NOT NULL,
 	`createdAt` timestamp DEFAULT (now()),
 	`updatedAt` timestamp ON UPDATE CURRENT_TIMESTAMP,
-	CONSTRAINT `Bookji_books_id` PRIMARY KEY(`id`)
+	CONSTRAINT `Bookji_books_id` PRIMARY KEY(`id`),
+	CONSTRAINT `Bookji_books_title_unique` UNIQUE(`title`)
 );
 --> statement-breakpoint
 CREATE TABLE `Bookji_booksToCategories` (
