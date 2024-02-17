@@ -13,6 +13,7 @@ import {
     number,
     object,
     string,
+    toTrimmed,
     union,
     url,
     type Input,
@@ -32,7 +33,10 @@ export const bookSchema = object({
 export type BookType = Input<typeof bookSchema>
 
 export const bookFormSchema = object({
-    title: string([minLength(5, "The title must be above the 5 characters")]),
+    title: string([
+        minLength(5, "The title must be above the 5 characters"),
+        toTrimmed(),
+    ]),
     description: string([
         minLength(10, "The description length must be above 10 characters"),
         maxLength(250, "The description length must be below 250 characters"),
