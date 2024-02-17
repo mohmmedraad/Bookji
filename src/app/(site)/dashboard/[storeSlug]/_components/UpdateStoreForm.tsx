@@ -1,18 +1,8 @@
 "use client"
 
-import { use, type FC } from "react"
-import { valibotResolver } from "@hookform/resolvers/valibot"
-import { useForm } from "react-hook-form"
-import { toast } from "sonner"
-import { partial, pick } from "valibot"
+import { type FC } from "react"
 
-import { handleGenericError } from "@/lib/utils"
-import {
-    newStoreSchema,
-    storeInfoSchema,
-    type StoreInfoSchema,
-} from "@/lib/validations/store"
-import { useStore } from "@/hooks/useStore"
+import { type StoreInfoSchema } from "@/lib/validations/store"
 import { useUpdateStore } from "@/hooks/useUpdateStore"
 import { Button } from "@/components/ui/Button"
 import {
@@ -40,17 +30,8 @@ interface UpdateStoreFormProps {
     description: string
 }
 
-const UpdateStoreForm: FC<UpdateStoreFormProps> = ({ name, description }) => {
-    const { isLoading, updateStore } = useUpdateStore()
-    const form = useForm<StoreInfoSchema>({
-        resolver: valibotResolver(
-            pick(newStoreSchema, ["name", "description"])
-        ),
-        defaultValues: {
-            name,
-            description,
-        },
-    })
+const UpdateStoreForm: FC<UpdateStoreFormProps> = (defaultInfo) => {
+    const { isLoading, updateStore, form } = useUpdateStore({ ...defaultInfo })
 
     function onSubmit(data: StoreInfoSchema) {
         updateStore(data)

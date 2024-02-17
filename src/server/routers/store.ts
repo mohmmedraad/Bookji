@@ -3,14 +3,13 @@ import {
     books,
     booksToCategories,
     cartItems,
-    carts,
     ratings,
     stores,
 } from "@/db/schema"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, eq, inArray } from "drizzle-orm"
-import { number, object, partial, string } from "valibot"
+import { number, object } from "valibot"
 
 import { stripe } from "@/lib/stripe"
 import { slugify } from "@/lib/utils"
@@ -21,7 +20,6 @@ import {
 } from "@/lib/validations/store"
 
 import { privateProcedure, router } from "../trpc"
-import { deleteStoreBooks } from "../utils"
 
 export const storeRouter = router({
     create: privateProcedure
@@ -65,6 +63,19 @@ export const storeRouter = router({
                     code: "NOT_FOUND",
                     message: "Store not found",
                 })
+            }
+
+            if (input.name) {
+                const storeWithSameName = await db.query.stores.findFirst({
+                    where: eq(stores.name, input.name),
+                })
+
+                if (storeWithSameName) {
+                    throw new TRPCError({
+                        code: "CONFLICT",
+                        message: "A store with same name already exists",
+                    })
+                }
             }
             let slug: string = ""
 
@@ -160,7 +171,3 @@ export const storeRouter = router({
             return store
         }),
 })
-
-// async function deleteStoreBooksFromCarts(storeId: number, booksIds: number[]) {
-//     const carts = await db.select({ id: true }).from(carts).where()
-// }

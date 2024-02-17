@@ -1,8 +1,11 @@
 import { useRouter } from "next/navigation"
+import { valibotResolver } from "@hookform/resolvers/valibot"
+import { useForm } from "react-hook-form"
 import { toast } from "sonner"
+import { pick } from "valibot"
 
 import { handleGenericError } from "@/lib/utils"
-import { type StoreInfoSchema } from "@/lib/validations/store"
+import { newStoreSchema, type StoreInfoSchema } from "@/lib/validations/store"
 import { trpc } from "@/app/_trpc/client"
 
 import { useStore } from "./useStore"
@@ -23,7 +26,15 @@ export function getValues(data: StoreInfoSchema, store: StoreInfoSchema) {
     return Object.fromEntries(values)
 }
 
-export const useUpdateStore = () => {
+type DefaultValues = StoreInfoSchema
+
+export const useUpdateStore = (defaultValues: DefaultValues) => {
+    const form = useForm<StoreInfoSchema>({
+        resolver: valibotResolver(
+            pick(newStoreSchema, ["name", "description"])
+        ),
+        defaultValues,
+    })
     const router = useRouter()
     const store = useStore((store) => ({
         name: store.name,
@@ -53,6 +64,11 @@ export const useUpdateStore = () => {
                 return handleGenericError()
             }
 
+            if (error.data?.code === "CONFLICT") {
+                form.setError("name", {})
+                return toast.error("A Store with same name already exists")
+            }
+
             return handleGenericError()
         },
     })
@@ -66,5 +82,5 @@ export const useUpdateStore = () => {
         mutate({ storeId, ...values })
     }
 
-    return { updateStore, isLoading }
+    return { updateStore, isLoading, form }
 }
