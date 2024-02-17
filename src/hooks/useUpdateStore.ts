@@ -65,7 +65,9 @@ export const useUpdateStore = (defaultValues: DefaultValues) => {
             }
 
             if (error.data?.code === "CONFLICT") {
-                form.setError("name", {})
+                form.setError("name", {
+                    message: "A Store with same name already exists",
+                })
                 return toast.error("A Store with same name already exists")
             }
 
