@@ -53,30 +53,29 @@ export const Columns: ColumnDef<BookType>[] = [
                 </div>
             )
         },
-        filterFn: (row, id, value: string) => {
-            return row.original.title
-                .toLowerCase()
-                .includes(value.toLowerCase())
-        },
+        // filterFn: (row, id, value: string) => {
+        //     return row.original.title
+        //         .toLowerCase()
+        //         .includes(value.toLowerCase())
+        // },
         enableSorting: false,
         enableHiding: false,
     },
-    {
-        accessorKey: "sold",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Sold" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex w-[100px] items-center">
-                    <span className="text-gray-800">
-                        {/* {row.getValue("sold")} */}
-                        10
-                    </span>
-                </div>
-            )
-        },
-    },
+    // {
+    //     accessorKey: "orders",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title="orders" />
+    //     ),
+    //     cell: ({ row }) => {
+    //         return (
+    //             <div className="flex w-[100px] items-center">
+    //                 <span className="text-gray-800">
+    //                     {row.getValue("orders")}
+    //                 </span>
+    //             </div>
+    //         )
+    //     },
+    // },
     {
         accessorKey: "inventory",
         header: ({ column }) => (
@@ -95,7 +94,7 @@ export const Columns: ColumnDef<BookType>[] = [
     {
         accessorKey: "rating",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="rating" />
+            <DataTableColumnHeader column={column} title="Rating" />
         ),
         cell: ({ row }) => {
             return (
@@ -113,7 +112,7 @@ export const Columns: ColumnDef<BookType>[] = [
     {
         accessorKey: "price",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="price" />
+            <DataTableColumnHeader column={column} title="Price" />
         ),
         cell: ({ row }) => {
             return (

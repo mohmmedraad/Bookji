@@ -74,3 +74,8 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
     isCanceled: boolean
     isActive: boolean
 }
+
+
+export interface SearchParams {
+    [key: string]: string | string[] | undefined
+  }

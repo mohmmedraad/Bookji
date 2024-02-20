@@ -4,9 +4,9 @@ import { Cross2Icon } from "@radix-ui/react-icons"
 import { type Table } from "@tanstack/react-table"
 
 import { Button } from "@/components/ui/Button"
+import DataTableToolbarSearchInput from "@/components/ui/DataTableToolbarSearchInput"
 // import { DataTableFacetedFilter } from "@/components/ui/DataTableFacetedFilter"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
-import { Input } from "@/components/ui/Input"
 import AddBookDialog from "@/components/AddBookDialog"
 
 interface DataTableToolbarProps<TData> {
@@ -21,20 +21,7 @@ export function DataTableToolbar<TData>({
     return (
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">
-                <Input
-                    placeholder="Filter books..."
-                    value={
-                        (table
-                            .getColumn("title")
-                            ?.getFilterValue() as string) ?? ""
-                    }
-                    onChange={(event) =>
-                        table
-                            .getColumn("title")
-                            ?.setFilterValue(event.target.value)
-                    }
-                    className="h-8 w-[150px] lg:w-[250px]"
-                />
+                <DataTableToolbarSearchInput defaultValue="" />
                 {/* {table.getColumn("rating") && (
                     <DataTableFacetedFilter
                         column={table.getColumn("rating")}
