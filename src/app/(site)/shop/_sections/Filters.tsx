@@ -1,15 +1,10 @@
-import {
-    useEffect,
-    useState,
-    type Dispatch,
-    type FC,
-    type SetStateAction,
-} from "react"
-import { type Category, type FiltersType } from "@/types"
+import { useEffect, useState, type FC } from "react"
+import { type Category } from "@/types"
 import { Slider } from "@nextui-org/react"
 import { Filter } from "lucide-react"
+import { useQueryState } from "nuqs"
 
-import { type Cost } from "@/lib/validations/book"
+import { useBooksSearchParam } from "@/hooks/useBooksSearchParams"
 import { Button } from "@/components/ui/Button"
 import { Input } from "@/components/ui/Input"
 import { MultiSelect } from "@/components/ui/MultiSelect"
@@ -22,26 +17,48 @@ import {
 } from "@/components/ui/Sheet"
 
 interface FiltersProps {
-    onFiltersChange: Dispatch<SetStateAction<FiltersType>>
+    // onFiltersChange?: Dispatch<SetStateAction<FiltersType>>
 }
 
-const Filters: FC<FiltersProps> = ({ onFiltersChange }) => {
+function getSliderValue(index: number, price: string | null) {
+    if (price && !isNaN(+price.split("-")[index]))
+        return +price.split("-")[index]
+}
+
+const Filters: FC<FiltersProps> = ({}) => {
+    const [categoriesParam, setCategoriesParam] = useQueryState("categories")
+    const [, setPriceParam] = useQueryState("price")
+    const [, setRatingParam] = useQueryState("rating")
+    const searchParams = useBooksSearchParam()
+
     const [categories, setCategories] = useState<Category[] | null>(null)
-    // const categoriesValue = useDebounce(categories, 500)
-    const [cost, setCost] = useState<Cost>({ min: 0, max: 500 })
-    const [minCost, setMinCost] = useState(0)
-    const [maxCost, setMaxCost] = useState(500)
+    const minPrice = getSliderValue(0, searchParams.price) || 0
+    const maxPrice = getSliderValue(1, searchParams.price) || 500
+    const minRating = getSliderValue(0, searchParams.rating) || 0
+    const maxRating = getSliderValue(1, searchParams.rating) || 5
 
     function handleClearFilters() {
-        setCategories(null)
-        setCost({ min: 0, max: 500 })
+        void setCategoriesParam("")
+        void setPriceParam("0-500")
+        void setRatingParam("0-5")
     }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     useEffect(
-        () => onFiltersChange({ categories, cost }),
+        () => {
+            if (!categories) return
+
+            const newCategories =
+                categories.length !== 0
+                    ? categories.map((category) => category.name).join(".")
+                    : ""
+
+            void setCategoriesParam(newCategories)
+        },
         // eslint-disable-next-line react-hooks/exhaustive-deps
-        [categories, cost]
+        [categories]
     )
+
     return (
         <Sheet>
             <SheetTrigger asChild>
@@ -64,33 +81,32 @@ const Filters: FC<FiltersProps> = ({ onFiltersChange }) => {
                             minValue={0}
                             maxValue={500}
                             defaultValue={[0, 500]}
-                            value={[minCost, maxCost]}
+                            value={[minPrice, maxPrice]}
                             onChange={(value) => {
                                 if (typeof value !== "number") {
-                                    setMinCost(value[0])
-                                    setMaxCost(value[1])
+                                    void setPriceParam(
+                                        `${value[0]}-${value[1]}`
+                                    )
                                 }
                             }}
-                            onChangeEnd={(value) =>
-                                setCost(
-                                    typeof value !== "number"
-                                        ? {
-                                              min: value[0],
-                                              max: value[1],
-                                          }
-                                        : { min: 0, max: 500 }
-                                )
-                            }
                             className="max-w-md"
                         />
+
                         <div className="flex items-center gap-4">
                             <Input
                                 aria-label="min price"
                                 type="number"
                                 min={0}
                                 max={500}
-                                value={minCost}
-                                onChange={(e) => setMinCost(+e.target.value)}
+                                value={minPrice}
+                                onChange={(e) => {
+                                    void setPriceParam(
+                                        (prev) =>
+                                            `${e.target.value}-${
+                                                prev?.split("-")[1] || 0
+                                            }`
+                                    )
+                                }}
                             />
                             <span className="text-muted-foreground">-</span>
                             <Input
@@ -98,19 +114,85 @@ const Filters: FC<FiltersProps> = ({ onFiltersChange }) => {
                                 type="number"
                                 min={0}
                                 max={500}
-                                value={maxCost}
-                                onChange={(e) => setMaxCost(+e.target.value)}
+                                value={maxPrice}
+                                onChange={(e) => {
+                                    void setPriceParam(
+                                        (prev) =>
+                                            `${prev?.split("-")[0] || 500}-${
+                                                e.target.value
+                                            }`
+                                    )
+                                }}
                             />
                         </div>
                     </div>
-
+                    <div className="space-y-4">
+                        <label className="text-sm font-medium tracking-wide text-foreground">
+                            Rating range
+                        </label>
+                        <Slider
+                            aria-label="rating range"
+                            step={0.5}
+                            minValue={0}
+                            maxValue={5}
+                            defaultValue={[0, 5]}
+                            value={[minRating, maxRating]}
+                            onChange={(value) => {
+                                if (typeof value !== "number") {
+                                    void setRatingParam(
+                                        `${value[0]}-${value[1]}`
+                                    )
+                                }
+                            }}
+                            className="max-w-md"
+                        />
+                        <div className="flex items-center gap-4">
+                            <Input
+                                aria-label="min rating"
+                                type="number"
+                                min={0}
+                                max={500}
+                                value={minRating}
+                                onChange={(e) => {
+                                    void setRatingParam(
+                                        (prev) =>
+                                            `${e.target.value}-${
+                                                prev?.split("-")[1] || 0
+                                            }`
+                                    )
+                                }}
+                            />
+                            <span className="text-muted-foreground">-</span>
+                            <Input
+                                aria-label="max rating"
+                                type="number"
+                                min={0}
+                                max={500}
+                                value={maxRating}
+                                onChange={(e) => {
+                                    void setRatingParam(
+                                        (prev) =>
+                                            `${prev?.split("-")[0] || 500}-${
+                                                e.target.value
+                                            }`
+                                    )
+                                }}
+                            />
+                        </div>
+                    </div>
                     <div className="space-y-4">
                         <label className="text-sm font-medium tracking-wide text-foreground">
                             Categories
                         </label>
                         <MultiSelect
                             selected={categories}
+                            // eslint-disable-next-line @typescript-eslint/no-misused-promises
                             setSelected={setCategories}
+                            defaultSelected={
+                                categoriesParam
+                                    ? categoriesParam.split(".")
+                                    : []
+                            }
                         />
                     </div>
                     <div className="py-4">

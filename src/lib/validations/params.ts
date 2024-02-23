@@ -25,14 +25,37 @@ export const searchParamsSchema = object({
     ),
 })
 
-export const booksSearchParamsSchema = merge([
-    searchParamsSchema,
-    object({
-        text: fallback(string(), ""),
-        categories: fallback(array(number()), []),
-        cost: object({
-            min: fallback(number(), 0),
-            max: fallback(number(), 500),
-        }),
-    }),
-])
+export const booksSearchParamsSchema = object({
+    page: fallback(coerce(number([minValue(1)]), Number), 1),
+    from: optional(string()),
+    to: optional(string()),
+    sortBy: transform(
+        fallback(
+            string([custom((value) => value.split(".").length === 2)]),
+            "createdAt.desc"
+        ),
+        (input) => input.split(".")
+    ),
+    text: fallback(string(), ""),
+    categories: transform(fallback(string(), ""), (input) =>
+        input ? input.split(".") : []
+    ),
+    price: validateRangeSchema("0-500"),
+    rating: validateRangeSchema("0-5"),
+})
+
+function customRangeValidation(value: string) {
+    const isValueValid =
+        value.split("-").length === 2 &&
+        value.split("-").every((v) => !isNaN(Number(v)))
+    return isValueValid
+}
+
+function validateRangeSchema(defaultValue: string) {
+    const schema = transform(
+        fallback(string([custom(customRangeValidation)]), defaultValue),
+        (input) => input.split("-").map(Number)
+    )
+
+    return schema
+}

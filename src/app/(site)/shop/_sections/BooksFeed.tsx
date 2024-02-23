@@ -1,14 +1,14 @@
 "use client"
 
-import { useEffect, useRef, useState, type FC } from "react"
+import { useEffect, useRef, type FC } from "react"
 import Link from "next/link"
-import { type Book as BookType } from "@/db/schema"
 import { type PartialBook } from "@/types"
-import { useIntersection, usePrevious } from "@mantine/hooks"
+import { useIntersection } from "@mantine/hooks"
 import { Skeleton } from "@nextui-org/react"
 import { useQueryClient } from "@tanstack/react-query"
 
-import { type SearchParams } from "@/lib/validations/book"
+import { useBooksSearchParam } from "@/hooks/useBooksSearchParams"
+import { useIsMount } from "@/hooks/useIsMount"
 import Book from "@/components/ui/BookCover"
 import BooksWrapper from "@/components/ui/BooksWrapper"
 import BookWrapper from "@/components/ui/BookWrapper"
@@ -20,46 +20,32 @@ interface ExtendedBooksType extends PartialBook {
 
 interface BooksFeedProps {
     initialBooks: ExtendedBooksType[]
-    searchParams: SearchParams
 }
 
-const BooksFeed: FC<BooksFeedProps> = ({
-    initialBooks,
-    searchParams: { userId = "", categories, cost, text },
-}) => {
-    const previousValue = usePrevious(text)
-    const previousCategories = usePrevious(categories)
-    const [isFetchingWithSearch, setIsFetchingWithSearch] = useState(false)
+const BooksFeed: FC<BooksFeedProps> = ({ initialBooks }) => {
+    const searchParams = useBooksSearchParam()
+    const isMount = useIsMount()
     const queryClient = useQueryClient()
 
-    const lastPostRef = useRef<HTMLElement>(null)
+    const lastBookRef = useRef<HTMLElement>(null)
     const { ref, entry } = useIntersection({
-        root: lastPostRef.current,
+        root: lastBookRef.current,
         threshold: 1,
     })
 
-    const {
-        data,
-        isFetchingNextPage,
-        fetchNextPage,
-        isFetchedAfterMount,
-        isFetching,
-    } = trpc.getBooks.useInfiniteQuery(
-        {
-            limit: 10,
-            searchParams: {
-                categories,
-                cost,
-                text,
-                userId,
+    const { data, isFetchingNextPage, fetchNextPage, isFetching } =
+        trpc.getBooks.useInfiniteQuery(
+            {
+                ...searchParams,
+                page: searchParams.page !== null ? +searchParams.page || 0 : 0,
             },
-        },
-        {
-            getNextPageParam: (lastPage, pages) =>
-                lastPage?.length !== 0 ? pages.length : undefined,
-            initialData: { pages: [initialBooks], pageParams: [0] },
-        }
-    )
+            {
+                getNextPageParam: (lastPage, pages) =>
+                    lastPage?.length !== 0 ? pages.length : undefined,
+                // @ts-expect-error incorrect type
+                initialData: { pages: [initialBooks], pageParams: [0] },
+            }
+        )
 
     useEffect(() => {
         const isIntersecting = entry?.isIntersecting
@@ -69,26 +55,21 @@ const BooksFeed: FC<BooksFeedProps> = ({
     }, [entry, fetchNextPage])
 
     useEffect(() => {
-        console.log(text)
+        if (!isMount) return
+
         void queryClient.resetQueries(["getBooks"])
-        setIsFetchingWithSearch(
-            !!text ||
-                !!previousValue ||
-                !!categories.length ||
-                !!previousCategories?.length
-        )
 
         return () => {
-            setIsFetchingWithSearch(true)
             void queryClient.invalidateQueries(["getBooks"])
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [categories, cost, text, queryClient])
+    }, [searchParams, queryClient])
 
     const books = data?.pages?.flatMap((page) => page)
+
     return (
         <BooksWrapper>
-            {isFetching && !isFetchedAfterMount && isFetchingWithSearch ? (
+            {!isMount && !isFetching ? (
                 new Array(10).fill(0).map((_, index) => (
                     <div className="text-center" key={index}>
                         <BookWrapper className="text-center">

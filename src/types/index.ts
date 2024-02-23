@@ -2,7 +2,7 @@ import { type Book } from "@/db/schema"
 import { type TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
 
-import { type Cost } from "@/lib/validations/book"
+import { type Price } from "@/lib/validations/book"
 import {
     type cartItemSchema,
     type checkoutItemSchema,
@@ -32,8 +32,11 @@ export interface Category {
 }
 
 export interface FiltersType {
-    categories: Category[] | null
-    cost: Cost
+    categories: string[] | null
+    minPrice: number
+    maxPrice: number
+    minRating: number
+    maxRating: number
 }
 
 export type PartialBook = Pick<
@@ -75,7 +78,6 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
     isActive: boolean
 }
 
-
 export interface SearchParams {
     [key: string]: string | string[] | undefined
-  }
+}

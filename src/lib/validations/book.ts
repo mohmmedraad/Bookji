@@ -23,6 +23,8 @@ import {
     type Input,
 } from "valibot"
 
+import { booksSearchParamsSchema } from "./params"
+
 export const bookSchema = object({
     id: number(),
     title: string(),
@@ -95,13 +97,22 @@ export const searchParams = object({
 
 export type SearchParams = Input<typeof searchParams>
 
-export const getBooksSchema = object({
-    limit: coerce(number([minValue(1)]), Number),
-    cursor: union([nullType(), number()]),
-    searchParams,
-})
+// export const getBooksSchema = object({
+//     limit: coerce(number([minValue(1)]), Number),
+//     cursor: union([nullType(), number()]),
+//     searchParams,
+// })
 
-export type Cost = Input<typeof cost>
+export const getBooksSchema = merge([
+    booksSearchParamsSchema,
+    object({
+        stores: transform(fallback(string(), ""), input => input ? input.split(".") : []),
+        limit: optional(fallback(coerce(number([minValue(1)]), Number), 10), 10),
+        cursor: optional(fallback(number(), 0), 0),
+    }),
+])
+
+export type Price = Input<typeof cost>
 
 export const rateBookSchema = object({
     bookId: number(),

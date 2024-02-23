@@ -13,6 +13,7 @@ import { trpc } from "@/app/_trpc/client"
 
 interface MultiSelectProps {
     selected: Category[] | null
+    defaultSelected?: string[]
     setSelected: React.Dispatch<React.SetStateAction<Category[] | null>>
     onChange?: (value: Category[] | null) => void
     placeholder?: string
@@ -22,6 +23,7 @@ export function MultiSelect({
     selected,
     setSelected,
     onChange,
+    defaultSelected = [],
     placeholder = "Select options",
 }: MultiSelectProps) {
     const inputRef = React.useRef<HTMLInputElement>(null)
@@ -32,6 +34,19 @@ export function MultiSelect({
         cacheTime: Infinity,
         staleTime: Infinity,
     })
+
+    console.log("MultiSelect")
+    React.useEffect(() => {
+        console.log("data")
+        if (defaultSelected && data) {
+            const selected = data?.filter((option) =>
+                defaultSelected.includes(option.name)
+            )
+            console.log("selected: ", selected)
+            setSelected(selected ?? null)
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data])
 
     // Register as input field to be used in react-hook-form
     React.useEffect(() => {
@@ -49,7 +64,9 @@ export function MultiSelect({
 
     const handleRemove = React.useCallback(
         (option: Category) => {
-            setSelected((prev) => prev?.filter((item) => item !== option) ?? [])
+            setSelected(
+                (prev) => prev?.filter((item) => item.id !== option.id) ?? []
+            )
         },
         [setSelected]
     )
@@ -136,7 +153,7 @@ export function MultiSelect({
             </div>
             <div className="relative z-50 mt-2">
                 {open ? (
-                    <div className="animate-in absolute top-0 max-h-[200px] w-full overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
+                    <div className="absolute top-0 max-h-[200px] w-full overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                         {isLoading ? (
                             <div className="flex h-32 items-center justify-center">
                                 <Spinner />

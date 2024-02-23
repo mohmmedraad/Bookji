@@ -1,15 +1,14 @@
 "use client"
 
-import { useEffect, useState, type FC, type HTMLAttributes } from "react"
+import { type FC, type HTMLAttributes } from "react"
 import { motion } from "framer-motion"
 import { Search } from "lucide-react"
+import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
-import useDebounce from "@/hooks/useDebounce"
 
 interface MobileSearchBarProps extends HTMLAttributes<HTMLDivElement> {
     isClosed: boolean
-    onValueChange: (value: string) => void
     isFocused: () => void
     isBlurred: () => void
 }
@@ -17,17 +16,10 @@ interface MobileSearchBarProps extends HTMLAttributes<HTMLDivElement> {
 const MobileSearchBar: FC<MobileSearchBarProps> = ({
     isClosed,
     className,
-    onValueChange,
     isFocused,
     isBlurred,
 }) => {
-    const [inputValue, setInputValue] = useState("")
-    const searchValue = useDebounce<string>(inputValue)
-
-    useEffect(() => {
-        onValueChange(searchValue)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchValue])
+    const [textParam, setTextParam] = useQueryState("text")
 
     return (
         <motion.div
@@ -56,9 +48,9 @@ const MobileSearchBar: FC<MobileSearchBarProps> = ({
                 <input
                     className="outline-none placeholder:text-muted-foreground"
                     placeholder={"Type here to search..."}
-                    value={inputValue}
-                    onChange={(e) => setInputValue(e.target.value)}
-                    // onFocus={isFocused}
+                    defaultValue={textParam || ""}
+                    onChange={(e) => void setTextParam(e.target.value)}
+                    onFocus={isFocused}
                     onBlur={() => isBlurred()}
                     autoFocus
                 />

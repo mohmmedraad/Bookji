@@ -1,6 +1,12 @@
 import { revalidatePath } from "next/cache"
 import { db } from "@/db"
-import { books, booksToCategories, categories, ratings } from "@/db/schema"
+import {
+    books,
+    booksToCategories,
+    categories as categoriesTable,
+    ratings as ratingsTable,
+    stores as storesTable,
+} from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
@@ -14,6 +20,7 @@ import {
     inArray,
     like,
     notInArray,
+    sql,
 } from "drizzle-orm"
 import { number, object } from "valibot"
 
@@ -26,6 +33,7 @@ import {
     rateBookSchema,
     userRatingSchema,
 } from "@/lib/validations/book"
+import { booksSearchParamsSchema } from "@/lib/validations/params"
 
 import { cartRouter } from "./routers/cart"
 import { storeRouter } from "./routers/store"
@@ -73,58 +81,164 @@ export const appRouter = router({
     getBooks: publicProcedure
         .input(wrap(getBooksSchema))
         .query(async ({ input }) => {
-            const { limit, cursor, searchParams } = input
-            const offset = (cursor || 0) * limit
-
-            const foundBooks = await db.query.books.findMany({
+            const {
+                stores,
                 limit,
-                offset,
-                columns: {
-                    id: true,
-                    userId: true,
-                    title: true,
-                    cover: true,
-                    slug: true,
-                },
-                where: (book) =>
+                cursor,
+                page,
+                text,
+                categories,
+                price: [minPrice, maxPrice],
+                rating: [minRating, maxRating],
+                sortBy: [column, order],
+            } = input
+
+            const offset = cursor * limit
+
+            const foundBooks = await db
+                .select({
+                    id: books.id,
+                    title: books.title,
+                    slug: books.slug,
+                    rating: sql<number>` cast(AVG(${ratingsTable.rating}) AS DECIMAL(10,2)) `.mapWith(
+                        Number
+                    ),
+                    storeSlug: storesTable.slug,
+                    userId: books.userId,
+                    storeId: books.storeId,
+                    price: books.price,
+                    description: books.description,
+                    cover: books.cover,
+                    inventory: books.inventory,
+                    createdAt: books.createdAt,
+                    updatedAt: books.updatedAt,
+                })
+                .from(books)
+                .where((book) =>
                     and(
-                        like(book.title, `%${searchParams.text}%`),
-                        searchParams.userId
-                            ? eq(book.userId, searchParams.userId)
-                            : undefined,
+                        text ? like(book.title, `%${text}%`) : undefined,
                         between(
                             book.price,
-                            searchParams.cost.min.toString(),
-                            searchParams.cost.max.toString()
+                            minPrice.toString(),
+                            maxPrice.toString()
                         ),
-                        searchParams.categories.length === 0
+                        stores.length === 0
+                            ? undefined
+                            : inArray(book.storeSlug, stores),
+                        categories.length === 0
                             ? undefined
                             : exists(
                                   db
-                                      .select({ id: booksToCategories.bookId })
+                                      .select({
+                                          bookId: booksToCategories.bookId,
+                                          categoryId:
+                                              booksToCategories.categoryId,
+                                      })
                                       .from(booksToCategories)
-                                      .where(
+                                      .where((category) =>
                                           and(
-                                              eq(
-                                                  booksToCategories.bookId,
-                                                  book.id
-                                              ),
-                                              inArray(
-                                                  booksToCategories.categoryId,
-                                                  searchParams.categories
+                                              eq(category.bookId, book.id),
+                                              exists(
+                                                  db
+                                                      .select({
+                                                          name: categoriesTable.name,
+                                                          id: categoriesTable.id,
+                                                      })
+                                                      .from(categoriesTable)
+                                                      .where((categoryT) =>
+                                                          and(
+                                                              eq(
+                                                                  categoryT.id,
+                                                                  category.categoryId
+                                                              ),
+                                                              inArray(
+                                                                  categoryT.name,
+                                                                  categories
+                                                              )
+                                                          )
+                                                      )
                                               )
                                           )
                                       )
                               )
-                    ),
-                orderBy: (book) => [asc(book.createdAt)],
-            })
+                    )
+                )
+                .innerJoin(ratingsTable, eq(books.id, ratingsTable.bookId))
+                .innerJoin(storesTable, eq(books.storeId, storesTable.id))
+                .groupBy(books.id, books.title)
+                .having(
+                    between(
+                        sql`AVG(${ratingsTable.rating})`,
+                        minRating,
+                        maxRating
+                    )
+                )
+                .orderBy((book) => {
+                    console.log(column in books)
+                    return column in book
+                        ? order === "asc"
+                            ? //@ts-expect-error error
+                              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                              asc(book[column])
+                            : //@ts-expect-error error
+                              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                              desc(book[column])
+                        : desc(book.createdAt)
+                })
+                .limit(limit)
+                .offset(offset)
+
+            // const foundBooks = await db.query.books.findMany({
+            //     limit,
+            //     offset,
+            //     columns: {
+            //         id: true,
+            //         userId: true,
+            //         title: true,
+            //         cover: true,
+            //         slug: true,
+            //     },
+            //     where: (book) =>
+            //         and(
+            //             like(book.title, `%${text}%`),
+            //             // userId
+            //             //     ? eq(book.userId, userId)
+            //             //     : undefined,
+            //             between(
+            //                 book.price,
+            //                 minPrice.toString(),
+            //                 maxPrice.toString()
+            //             ),
+            //             categories.length === 0
+            //                 ? undefined
+            //                 : exists(
+            //                       db
+            //                           .select({ id: booksToCategories.bookId })
+            //                           .from(booksToCategories)
+            //                           .where(
+            //                               and(
+            //                                   eq(
+            //                                       booksToCategories.bookId,
+            //                                       book.id
+            //                                   ),
+            //                                   inArray(
+            //                                       booksToCategories.categoryId,
+            //                                       categories.map(
+            //                                           (category) => 1
+            //                                       )
+            //                                   )
+            //                               )
+            //                           )
+            //                   )
+            //         ),
+            //     orderBy: (book) => [asc(book.createdAt)],
+            // })
 
             if (!foundBooks) {
                 return null
             }
-            const books = await withUsers(foundBooks)
-            return books
+            return await withUsers(foundBooks)
+            // return books
         }),
 
     addBook: privateProcedure
@@ -196,10 +310,10 @@ export const appRouter = router({
             try {
                 const foundCategories = await db
                     .select({
-                        id: categories.id,
-                        name: categories.name,
+                        id: categoriesTable.id,
+                        name: categoriesTable.name,
                     })
-                    .from(categories)
+                    .from(categoriesTable)
                     .where(
                         exists(
                             db
@@ -213,7 +327,7 @@ export const appRouter = router({
                                         ),
                                         eq(
                                             booksToCategories.categoryId,
-                                            categories.id
+                                            categoriesTable.id
                                         )
                                     )
                                 )
@@ -228,10 +342,10 @@ export const appRouter = router({
         try {
             const foundCategories = await db
                 .select({
-                    id: categories.id,
-                    name: categories.name,
+                    id: categoriesTable.id,
+                    name: categoriesTable.name,
                 })
-                .from(categories)
+                .from(categoriesTable)
             return foundCategories
         } catch (error) {
             throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
@@ -271,7 +385,7 @@ export const appRouter = router({
                 })
             }
 
-            const rate = await db.insert(ratings).values({
+            const rate = await db.insert(ratingsTable).values({
                 bookId,
                 userId: ctx.userId,
                 rating,

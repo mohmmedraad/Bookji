@@ -102,7 +102,7 @@ export const Columns: ColumnDef<BookType>[] = [
                     <Stars
                         className="mt-0 gap-0"
                         isStatic
-                        stars={5}
+                        stars={row.getValue("rating")}
                         starsClassName="h-4 w-4"
                     />
                 </div>
