@@ -137,7 +137,7 @@ const Page: FC<PageProps> = async ({ searchParams }) => {
 
     const initialBooks = await withUsers(foundBooks)
     return (
-        <main className="pb-8 pt-32">
+        <main className="min-h-screen pb-8 pt-32">
             <Container>
                 <FilterBar />
                 <BooksFeed initialBooks={initialBooks} />
