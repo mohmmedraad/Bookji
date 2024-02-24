@@ -1,13 +1,9 @@
-import { useEffect, useState, type FC } from "react"
-import { type Category } from "@/types"
-import { Slider } from "@nextui-org/react"
+import { type FC } from "react"
 import { Filter } from "lucide-react"
 import { useQueryState } from "nuqs"
 
-import { useBooksSearchParam } from "@/hooks/useBooksSearchParams"
 import { Button } from "@/components/ui/Button"
-import { Input } from "@/components/ui/Input"
-import { MultiSelect } from "@/components/ui/MultiSelect"
+import { Label } from "@/components/ui/Label"
 import {
     Sheet,
     SheetContent,
@@ -15,51 +11,24 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/Sheet"
+import CategoriesFilter from "@/components/CategoriesFilter"
+import RangeFilter from "@/components/RangeFilter"
+import StoresFilter from "@/components/StoresFilter"
 
-interface FiltersProps {
-    // onFiltersChange?: Dispatch<SetStateAction<FiltersType>>
-}
-
-function getSliderValue(index: number, price: string | null) {
-    if (price && !isNaN(+price.split("-")[index]))
-        return +price.split("-")[index]
-}
+interface FiltersProps {}
 
 const Filters: FC<FiltersProps> = ({}) => {
-    const [categoriesParam, setCategoriesParam] = useQueryState("categories")
+    const [, setCategoriesParam] = useQueryState("categories")
     const [, setPriceParam] = useQueryState("price")
     const [, setRatingParam] = useQueryState("rating")
-    const searchParams = useBooksSearchParam()
-
-    const [categories, setCategories] = useState<Category[] | null>(null)
-    const minPrice = getSliderValue(0, searchParams.price) || 0
-    const maxPrice = getSliderValue(1, searchParams.price) || 500
-    const minRating = getSliderValue(0, searchParams.rating) || 0
-    const maxRating = getSliderValue(1, searchParams.rating) || 5
+    const [, setStoresParam] = useQueryState("stores")
 
     function handleClearFilters() {
+        void setStoresParam("")
         void setCategoriesParam("")
         void setPriceParam("0-500")
         void setRatingParam("0-5")
     }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    useEffect(
-        () => {
-            if (!categories) return
-
-            const newCategories =
-                categories.length !== 0
-                    ? categories.map((category) => category.name).join(".")
-                    : ""
-
-            if (newCategories === (categoriesParam || "")) return
-
-            void setCategoriesParam(newCategories)
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [categories]
-    )
 
     return (
         <Sheet>
@@ -75,130 +44,37 @@ const Filters: FC<FiltersProps> = ({}) => {
                 <div className="flex h-full flex-col gap-5">
                     <div className="flex h-full flex-col gap-5">
                         <div className="space-y-4">
-                            <label className="text-sm font-medium tracking-wide text-foreground">
-                                Price range ($)
-                            </label>
-                            <Slider
-                                aria-label="price range"
-                                step={1}
-                                minValue={0}
-                                maxValue={500}
-                                defaultValue={[0, 500]}
-                                value={[minPrice, maxPrice]}
-                                onChange={(value) => {
-                                    if (typeof value !== "number") {
-                                        void setPriceParam(
-                                            `${value[0]}-${value[1]}`
-                                        )
-                                    }
-                                }}
-                                className="max-w-md"
+                            <Label className="text-sm font-medium tracking-wide text-foreground">
+                                Price range
+                            </Label>
+                            <RangeFilter
+                                param="price"
+                                minRangeValue={0}
+                                maxRangeValue={500}
                             />
-
-                            <div className="flex items-center gap-4">
-                                <Input
-                                    aria-label="min price"
-                                    type="number"
-                                    min={0}
-                                    max={500}
-                                    value={minPrice}
-                                    onChange={(e) => {
-                                        void setPriceParam(
-                                            (prev) =>
-                                                `${e.target.value}-${
-                                                    prev?.split("-")[1] || 0
-                                                }`
-                                        )
-                                    }}
-                                />
-                                <span className="text-muted-foreground">-</span>
-                                <Input
-                                    aria-label="max price"
-                                    type="number"
-                                    min={0}
-                                    max={500}
-                                    value={maxPrice}
-                                    onChange={(e) => {
-                                        void setPriceParam(
-                                            (prev) =>
-                                                `${
-                                                    prev?.split("-")[0] || 500
-                                                }-${e.target.value}`
-                                        )
-                                    }}
-                                />
-                            </div>
                         </div>
                         <div className="space-y-4">
-                            <label className="text-sm font-medium tracking-wide text-foreground">
+                            <Label className="text-sm font-medium tracking-wide text-foreground">
                                 Rating range
-                            </label>
-                            <Slider
-                                aria-label="rating range"
+                            </Label>
+                            <RangeFilter
+                                param="rating"
+                                minRangeValue={0}
+                                maxRangeValue={5}
                                 step={0.5}
-                                minValue={0}
-                                maxValue={5}
-                                defaultValue={[0, 5]}
-                                value={[minRating, maxRating]}
-                                onChange={(value) => {
-                                    if (typeof value !== "number") {
-                                        void setRatingParam(
-                                            `${value[0]}-${value[1]}`
-                                        )
-                                    }
-                                }}
-                                className="max-w-md"
                             />
-                            <div className="flex items-center gap-4">
-                                <Input
-                                    aria-label="min rating"
-                                    type="number"
-                                    min={0}
-                                    max={5}
-                                    step="0.5"
-                                    value={minRating}
-                                    onChange={(e) => {
-                                        void setRatingParam(
-                                            (prev) =>
-                                                `${e.target.value}-${
-                                                    prev?.split("-")[1] || 0
-                                                }`
-                                        )
-                                    }}
-                                />
-                                <span className="text-muted-foreground">-</span>
-                                <Input
-                                    aria-label="max rating"
-                                    type="number"
-                                    min={0}
-                                    max={5}
-                                    step="0.5"
-                                    value={maxRating}
-                                    onChange={(e) => {
-                                        void setRatingParam(
-                                            (prev) =>
-                                                `${
-                                                    prev?.split("-")[0] || 500
-                                                }-${e.target.value}`
-                                        )
-                                    }}
-                                />
-                            </div>
                         </div>
                         <div className="space-y-4">
-                            <label className="text-sm font-medium tracking-wide text-foreground">
+                            <Label className="text-sm font-medium tracking-wide text-foreground">
                                 Categories
-                            </label>
-                            <MultiSelect
-                                selected={categories}
-                                // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                                setSelected={setCategories}
-                                defaultSelected={
-                                    categoriesParam
-                                        ? categoriesParam.split(".")
-                                        : []
-                                }
-                            />
+                            </Label>
+                            <CategoriesFilter />
+                        </div>
+                        <div className="space-y-4">
+                            <Label className="text-sm font-medium tracking-wide text-foreground">
+                                Stores
+                            </Label>
+                            <StoresFilter />
                         </div>
                     </div>
                     <div className="shrink-0 py-4">

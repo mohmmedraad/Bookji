@@ -5,18 +5,25 @@ import { type Category } from "@/types"
 import { Spinner } from "@nextui-org/react"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Command as CommandPrimitive } from "cmdk"
-
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import { Command, CommandGroup, CommandItem } from "@/components/ui/Command"
-import { trpc } from "@/app/_trpc/client"
 
 interface MultiSelectProps {
     selected: Category[] | null
     defaultSelected?: string[]
+    placeholder?: string
+    data:
+        | {
+              id: number
+              name: string
+          }[]
+        | undefined
+
+    isLoading: boolean
     setSelected: React.Dispatch<React.SetStateAction<Category[] | null>>
     onChange?: (value: Category[] | null) => void
-    placeholder?: string
+    onInputChanged?: (value: string) => void
 }
 
 export function MultiSelect({
@@ -25,19 +32,20 @@ export function MultiSelect({
     onChange,
     defaultSelected = [],
     placeholder = "Select options",
+    data,
+    isLoading,
+    onInputChanged,
 }: MultiSelectProps) {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState("")
 
-    const { data, isLoading } = trpc.getAllCategories.useQuery(undefined, {
-        cacheTime: Infinity,
-        staleTime: Infinity,
-    })
+    // const { data, isLoading } = trpc.getAllCategories.useQuery(undefined, {
+    //     cacheTime: Infinity,
+    //     staleTime: Infinity,
+    // })
 
-    console.log("MultiSelect")
     React.useEffect(() => {
-        console.log("data")
         if (defaultSelected && data) {
             const selected = data?.filter((option) =>
                 defaultSelected.includes(option.name)
@@ -145,7 +153,10 @@ export function MultiSelect({
                         autoFocus={false}
                         className="flex-1 bg-transparent px-1 py-0.5 outline-none placeholder:text-muted-foreground"
                         value={query}
-                        onValueChange={setQuery}
+                        onValueChange={(value) => {
+                            setQuery(value)
+                            if (onInputChanged) onInputChanged(value)
+                        }}
                         onBlur={() => setOpen(false)}
                         onFocus={() => setOpen(true)}
                     />

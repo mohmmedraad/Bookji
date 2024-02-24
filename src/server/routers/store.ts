@@ -8,8 +8,8 @@ import {
 } from "@/db/schema"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, eq, inArray } from "drizzle-orm"
-import { number, object } from "valibot"
+import { and, eq, inArray, like } from "drizzle-orm"
+import { number, object, string } from "valibot"
 
 import { stripe } from "@/lib/stripe"
 import { slugify } from "@/lib/utils"
@@ -19,7 +19,7 @@ import {
     updateStoreSchema,
 } from "@/lib/validations/store"
 
-import { privateProcedure, router } from "../trpc"
+import { privateProcedure, publicProcedure, router } from "../trpc"
 
 export const storeRouter = router({
     create: privateProcedure
@@ -169,5 +169,27 @@ export const storeRouter = router({
             }
 
             return store
+        }),
+
+    getStores: publicProcedure
+        .input(
+            wrap(
+                object({
+                    searchValue: string(),
+                })
+            )
+        )
+        .query(async ({ input }) => {
+            const stores = await db.query.stores.findMany({
+                columns: {
+                    id: true,
+                    name: true,
+                    logo: true,
+                    slug: true,
+                },
+                where: (store) => like(store.name, `%${input.searchValue}%`),
+            })
+
+            return stores
         }),
 })
