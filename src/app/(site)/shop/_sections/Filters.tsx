@@ -53,9 +53,6 @@ const Filters: FC<FiltersProps> = ({}) => {
                     ? categories.map((category) => category.name).join(".")
                     : ""
 
-            console.log("newCategories: ", newCategories)
-            console.log("categoriesParam: ", categoriesParam)
-
             if (newCategories === (categoriesParam || "")) return
 
             void setCategoriesParam(newCategories)
@@ -75,132 +72,136 @@ const Filters: FC<FiltersProps> = ({}) => {
                 <SheetHeader>
                     <SheetTitle>Filters</SheetTitle>
                 </SheetHeader>
-                <div className="flex flex-col gap-5">
-                    <div className="space-y-4">
-                        <label className="text-sm font-medium tracking-wide text-foreground">
-                            Price range ($)
-                        </label>
-                        <Slider
-                            aria-label="price range"
-                            step={1}
-                            minValue={0}
-                            maxValue={500}
-                            defaultValue={[0, 500]}
-                            value={[minPrice, maxPrice]}
-                            onChange={(value) => {
-                                if (typeof value !== "number") {
-                                    void setPriceParam(
-                                        `${value[0]}-${value[1]}`
-                                    )
-                                }
-                            }}
-                            className="max-w-md"
-                        />
+                <div className="flex h-full flex-col gap-5">
+                    <div className="flex h-full flex-col gap-5">
+                        <div className="space-y-4">
+                            <label className="text-sm font-medium tracking-wide text-foreground">
+                                Price range ($)
+                            </label>
+                            <Slider
+                                aria-label="price range"
+                                step={1}
+                                minValue={0}
+                                maxValue={500}
+                                defaultValue={[0, 500]}
+                                value={[minPrice, maxPrice]}
+                                onChange={(value) => {
+                                    if (typeof value !== "number") {
+                                        void setPriceParam(
+                                            `${value[0]}-${value[1]}`
+                                        )
+                                    }
+                                }}
+                                className="max-w-md"
+                            />
 
-                        <div className="flex items-center gap-4">
-                            <Input
-                                aria-label="min price"
-                                type="number"
-                                min={0}
-                                max={500}
-                                value={minPrice}
-                                onChange={(e) => {
-                                    void setPriceParam(
-                                        (prev) =>
-                                            `${e.target.value}-${
-                                                prev?.split("-")[1] || 0
-                                            }`
-                                    )
-                                }}
-                            />
-                            <span className="text-muted-foreground">-</span>
-                            <Input
-                                aria-label="max price"
-                                type="number"
-                                min={0}
-                                max={500}
-                                value={maxPrice}
-                                onChange={(e) => {
-                                    void setPriceParam(
-                                        (prev) =>
-                                            `${prev?.split("-")[0] || 500}-${
-                                                e.target.value
-                                            }`
-                                    )
-                                }}
-                            />
+                            <div className="flex items-center gap-4">
+                                <Input
+                                    aria-label="min price"
+                                    type="number"
+                                    min={0}
+                                    max={500}
+                                    value={minPrice}
+                                    onChange={(e) => {
+                                        void setPriceParam(
+                                            (prev) =>
+                                                `${e.target.value}-${
+                                                    prev?.split("-")[1] || 0
+                                                }`
+                                        )
+                                    }}
+                                />
+                                <span className="text-muted-foreground">-</span>
+                                <Input
+                                    aria-label="max price"
+                                    type="number"
+                                    min={0}
+                                    max={500}
+                                    value={maxPrice}
+                                    onChange={(e) => {
+                                        void setPriceParam(
+                                            (prev) =>
+                                                `${
+                                                    prev?.split("-")[0] || 500
+                                                }-${e.target.value}`
+                                        )
+                                    }}
+                                />
+                            </div>
                         </div>
-                    </div>
-                    <div className="space-y-4">
-                        <label className="text-sm font-medium tracking-wide text-foreground">
-                            Rating range
-                        </label>
-                        <Slider
-                            aria-label="rating range"
-                            step={0.5}
-                            minValue={0}
-                            maxValue={5}
-                            defaultValue={[0, 5]}
-                            value={[minRating, maxRating]}
-                            onChange={(value) => {
-                                if (typeof value !== "number") {
-                                    void setRatingParam(
-                                        `${value[0]}-${value[1]}`
-                                    )
+                        <div className="space-y-4">
+                            <label className="text-sm font-medium tracking-wide text-foreground">
+                                Rating range
+                            </label>
+                            <Slider
+                                aria-label="rating range"
+                                step={0.5}
+                                minValue={0}
+                                maxValue={5}
+                                defaultValue={[0, 5]}
+                                value={[minRating, maxRating]}
+                                onChange={(value) => {
+                                    if (typeof value !== "number") {
+                                        void setRatingParam(
+                                            `${value[0]}-${value[1]}`
+                                        )
+                                    }
+                                }}
+                                className="max-w-md"
+                            />
+                            <div className="flex items-center gap-4">
+                                <Input
+                                    aria-label="min rating"
+                                    type="number"
+                                    min={0}
+                                    max={5}
+                                    step="0.5"
+                                    value={minRating}
+                                    onChange={(e) => {
+                                        void setRatingParam(
+                                            (prev) =>
+                                                `${e.target.value}-${
+                                                    prev?.split("-")[1] || 0
+                                                }`
+                                        )
+                                    }}
+                                />
+                                <span className="text-muted-foreground">-</span>
+                                <Input
+                                    aria-label="max rating"
+                                    type="number"
+                                    min={0}
+                                    max={5}
+                                    step="0.5"
+                                    value={maxRating}
+                                    onChange={(e) => {
+                                        void setRatingParam(
+                                            (prev) =>
+                                                `${
+                                                    prev?.split("-")[0] || 500
+                                                }-${e.target.value}`
+                                        )
+                                    }}
+                                />
+                            </div>
+                        </div>
+                        <div className="space-y-4">
+                            <label className="text-sm font-medium tracking-wide text-foreground">
+                                Categories
+                            </label>
+                            <MultiSelect
+                                selected={categories}
+                                // eslint-disable-next-line @typescript-eslint/no-misused-promises
+                                setSelected={setCategories}
+                                defaultSelected={
+                                    categoriesParam
+                                        ? categoriesParam.split(".")
+                                        : []
                                 }
-                            }}
-                            className="max-w-md"
-                        />
-                        <div className="flex items-center gap-4">
-                            <Input
-                                aria-label="min rating"
-                                type="number"
-                                min={0}
-                                max={500}
-                                value={minRating}
-                                onChange={(e) => {
-                                    void setRatingParam(
-                                        (prev) =>
-                                            `${e.target.value}-${
-                                                prev?.split("-")[1] || 0
-                                            }`
-                                    )
-                                }}
-                            />
-                            <span className="text-muted-foreground">-</span>
-                            <Input
-                                aria-label="max rating"
-                                type="number"
-                                min={0}
-                                max={500}
-                                value={maxRating}
-                                onChange={(e) => {
-                                    void setRatingParam(
-                                        (prev) =>
-                                            `${prev?.split("-")[0] || 500}-${
-                                                e.target.value
-                                            }`
-                                    )
-                                }}
                             />
                         </div>
                     </div>
-                    <div className="space-y-4">
-                        <label className="text-sm font-medium tracking-wide text-foreground">
-                            Categories
-                        </label>
-                        <MultiSelect
-                            selected={categories}
-                            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-                            setSelected={setCategories}
-                            defaultSelected={
-                                categoriesParam
-                                    ? categoriesParam.split(".")
-                                    : []
-                            }
-                        />
-                    </div>
-                    <div className="py-4">
+                    <div className="shrink-0 py-4">
                         <Button className="w-full" onClick={handleClearFilters}>
                             Clear filters
                         </Button>
