@@ -25,7 +25,8 @@ import { parse } from "valibot"
 import { getBooksSchema } from "@/lib/validations/book"
 import Container from "@/components/ui/Container"
 
-import BookExplorer from "./_sections/BookExplorer"
+import BooksFeed from "./_sections/BooksFeed"
+import FilterBar from "./_sections/FilterBar"
 
 interface PageProps {
     searchParams: SearchParams
@@ -135,16 +136,11 @@ const Page: FC<PageProps> = async ({ searchParams }) => {
         .offset(offset)
 
     const initialBooks = await withUsers(foundBooks)
-    console.log("intialBooks", initialBooks)
     return (
         <main className="pb-8 pt-32">
             <Container>
-                <BookExplorer initialBooks={initialBooks} />
-
-                {/**
-                 * TODO: Add suspense
-                 */}
-                {/* <BooksFeed initialBooks={initialBooks} /> */}
+                <FilterBar />
+                <BooksFeed initialBooks={initialBooks} />
             </Container>
         </main>
     )

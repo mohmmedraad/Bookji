@@ -13,7 +13,17 @@ interface LayoutProps {
 }
 
 const Providers: FC<LayoutProps> = ({ children }) => {
-    const [queryClient] = useState(() => new QueryClient())
+    const [queryClient] = useState(
+        () =>
+            new QueryClient({
+                defaultOptions: {
+                    queries: {
+                        refetchOnWindowFocus: false,
+                        refetchOnMount: false,
+                    },
+                },
+            })
+    )
     const [trpcClient] = useState(() =>
         trpc.createClient({
             links: [

@@ -53,6 +53,11 @@ const Filters: FC<FiltersProps> = ({}) => {
                     ? categories.map((category) => category.name).join(".")
                     : ""
 
+            console.log("newCategories: ", newCategories)
+            console.log("categoriesParam: ", categoriesParam)
+
+            if (newCategories === (categoriesParam || "")) return
+
             void setCategoriesParam(newCategories)
         },
         // eslint-disable-next-line react-hooks/exhaustive-deps

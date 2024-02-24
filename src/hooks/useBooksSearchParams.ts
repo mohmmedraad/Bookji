@@ -12,13 +12,21 @@ export const useBooksSearchParam = () => {
     const [sortByParam] = useQueryState("sortBy")
     const [storesParam] = useQueryState("stores")
 
-    const text = useDebounce(textParam!, 500)
-    const price = useDebounce(priceParam!, 300)
-    const categories = useDebounce(categoriesParam!, 300)
-    const rating = useDebounce(ratingParam!, 300)
-    const page = useDebounce(pageParam!, 300)
-    const sortBy = useDebounce(sortByParam!, 300)
-    const stores = useDebounce(storesParam!, 300)
+    const text = useDebounce(textParam!)
+    const price = useDebounce(priceParam!)
+    const categories = useDebounce(categoriesParam!)
+    const rating = useDebounce(ratingParam!)
+    const page = useDebounce(pageParam!)
+    const sortBy = useDebounce(sortByParam!)
+    const stores = useDebounce(storesParam!)
 
-    return { text, price, categories, rating, page, sortBy, stores }
+    return {
+        text,
+        page,
+        price,
+        categories,
+        rating,
+        sortBy,
+        stores,
+    }
 }

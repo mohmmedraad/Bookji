@@ -20,7 +20,9 @@ const SearchBar: FC<SearchBarProps> = ({ className, ...props }) => {
                 className="pl-10"
                 defaultValue={textParam || ""}
                 placeholder="Type here to search..."
-                onChange={(e) => void setTextParam(e.target.value)}
+                onChange={(e) => {
+                    void setTextParam(e.target.value)
+                }}
             />
         </div>
     )
