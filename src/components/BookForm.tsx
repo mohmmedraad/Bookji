@@ -13,6 +13,7 @@ import {
 } from "@/lib/validations/book"
 import { useBookForm } from "@/hooks/useBookForm"
 import { Input as FormInput } from "@/components/ui/Input"
+import { trpc } from "@/app/_trpc/client"
 
 import { Button } from "./ui/Button"
 import {
@@ -67,6 +68,12 @@ const BookForm: FC<BookFormProps> = ({
     const [selectedCategory, setSelectedCategory] = useState<Category[] | null>(
         categories || null
     )
+
+    const { data, isLoading: isCategoriesLoading } =
+        trpc.getAllCategories.useQuery(undefined, {
+            cacheTime: Infinity,
+            staleTime: Infinity,
+        })
 
     return (
         <Form {...form}>
@@ -164,6 +171,8 @@ const BookForm: FC<BookFormProps> = ({
                                         selected={selectedCategory}
                                         setSelected={setSelectedCategory}
                                         placeholder="Select a category"
+                                        data={data}
+                                        isLoading={isCategoriesLoading}
                                         {...field}
                                     />
                                 </FormControl>
