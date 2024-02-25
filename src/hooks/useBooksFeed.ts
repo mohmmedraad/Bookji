@@ -4,7 +4,7 @@ import { useIntersection } from "@mantine/hooks"
 
 import { trpc } from "@/app/_trpc/client"
 
-import { useBooksSearchParam } from "./useBooksSearchParams"
+import { useBooksSearchParams } from "./useBooksSearchParams"
 import { useIsMount } from "./useIsMount"
 
 interface ExtendedBooksType extends PartialBook {
@@ -12,7 +12,7 @@ interface ExtendedBooksType extends PartialBook {
 }
 
 export const useBooksFeed = (initialBooks: ExtendedBooksType[]) => {
-    const searchParams = useBooksSearchParam()
+    const searchParams = useBooksSearchParams()
     const isMount = useIsMount()
 
     const lastBookRef = useRef<HTMLElement>(null)

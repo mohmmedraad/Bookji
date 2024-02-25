@@ -1,16 +1,20 @@
-import { useEffect, useState } from "react"
+import { useCallback } from "react"
 import { useQueryState } from "nuqs"
 
 import useDebounce from "./useDebounce"
 
-export const useBooksSearchParam = () => {
-    const [textParam] = useQueryState("text")
-    const [priceParam] = useQueryState("price")
-    const [categoriesParam] = useQueryState("categories")
-    const [ratingParam] = useQueryState("rating")
-    const [pageParam] = useQueryState("page")
-    const [sortByParam] = useQueryState("sortBy")
-    const [storesParam] = useQueryState("stores")
+function isNotNull(value: string | null) {
+    return value !== null
+}
+
+export const useBooksSearchParams = () => {
+    const [textParam, setTextParam] = useQueryState("text")
+    const [priceParam, setPriceParam] = useQueryState("price")
+    const [categoriesParam, setCategoriesParam] = useQueryState("categories")
+    const [ratingParam, setRatingParam] = useQueryState("rating")
+    const [pageParam, setPageParam] = useQueryState("page")
+    const [sortByParam, setSortByParam] = useQueryState("sortBy")
+    const [storesParam, setStoresParam] = useQueryState("stores")
 
     const text = useDebounce(textParam!)
     const price = useDebounce(priceParam!)
@@ -20,6 +24,31 @@ export const useBooksSearchParam = () => {
     const sortBy = useDebounce(sortByParam!)
     const stores = useDebounce(storesParam!)
 
+    const handleClearSearch = useCallback(() => {
+        isNotNull(textParam) && void setTextParam("")
+        isNotNull(pageParam) && void setPageParam("")
+        isNotNull(priceParam) && void setPriceParam("0-500")
+        isNotNull(ratingParam) && void setRatingParam("0-5")
+        isNotNull(sortByParam) && void setSortByParam("")
+        isNotNull(categoriesParam) && void setCategoriesParam("")
+        isNotNull(storesParam) && void setStoresParam("")
+    }, [
+        categoriesParam,
+        pageParam,
+        priceParam,
+        ratingParam,
+        sortByParam,
+        storesParam,
+        textParam,
+        setCategoriesParam,
+        setPageParam,
+        setPriceParam,
+        setRatingParam,
+        setSortByParam,
+        setStoresParam,
+        setTextParam,
+    ])
+
     return {
         text,
         page,
@@ -28,5 +57,6 @@ export const useBooksSearchParam = () => {
         rating,
         sortBy,
         stores,
+        handleClearSearch,
     }
 }

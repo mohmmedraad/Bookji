@@ -2,14 +2,17 @@ import { type FC } from "react"
 import { Slider } from "@nextui-org/react"
 import { useQueryState } from "nuqs"
 
-import { useBooksSearchParam } from "@/hooks/useBooksSearchParams"
+import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
 
-import { Input } from "./ui/Input"
+import { Input } from "./Input"
 
-interface RangeFilterProps {
+interface RangeFilterOptionProps {
     minRangeValue: number
     maxRangeValue: number
-    param: keyof ReturnType<typeof useBooksSearchParam>
+    param: keyof Omit<
+        ReturnType<typeof useBooksSearchParams>,
+        "handleClearSearch"
+    >
     step?: number
 }
 
@@ -18,17 +21,17 @@ function getSliderValue(index: number, price: string | null) {
         return +price.split("-")[index]
 }
 
-const RangeFilter: FC<RangeFilterProps> = ({
+const RangeFilterOption: FC<RangeFilterOptionProps> = ({
     maxRangeValue,
     minRangeValue,
     param,
     step = 1,
 }) => {
     const [, setRangeParam] = useQueryState(param)
-    const searchParams = useBooksSearchParam()
+    const searchParams = useBooksSearchParams()
 
-    const minRange = getSliderValue(0, searchParams[param]) || 0
-    const maxRange = getSliderValue(1, searchParams[param]) || 5
+    const minRange = getSliderValue(0, searchParams[param]) || minRangeValue
+    const maxRange = getSliderValue(1, searchParams[param]) || maxRangeValue
 
     return (
         <>
@@ -88,4 +91,4 @@ const RangeFilter: FC<RangeFilterProps> = ({
     )
 }
 
-export default RangeFilter
+export default RangeFilterOption

@@ -5,45 +5,43 @@ import { type Category } from "@/types"
 import { Spinner } from "@nextui-org/react"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Command as CommandPrimitive } from "cmdk"
+
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import { Command, CommandGroup, CommandItem } from "@/components/ui/Command"
 
-interface MultiSelectProps {
-    selected: Category[] | null
+type Option = {
+    id: number
+    name: string
+}
+
+interface MultiSelectProps<T extends Option> {
+    selected: T[] | null
     defaultSelected?: string[]
     placeholder?: string
-    data:
-        | {
-              id: number
-              name: string
-          }[]
-        | undefined
-
+    data: T[] | undefined
     isLoading: boolean
-    setSelected: React.Dispatch<React.SetStateAction<Category[] | null>>
-    onChange?: (value: Category[] | null) => void
+    renderOption?: React.FC<T>
+
+    setSelected: React.Dispatch<React.SetStateAction<T[] | null>>
+    onChange?: (value: T[] | null) => void
     onInputChanged?: (value: string) => void
 }
 
-export function MultiSelect({
+export const MultiSelect = <T extends Option>({
     selected,
-    setSelected,
-    onChange,
     defaultSelected = [],
     placeholder = "Select options",
     data,
     isLoading,
+    renderOption,
+    setSelected,
+    onChange,
     onInputChanged,
-}: MultiSelectProps) {
+}: MultiSelectProps<T>) => {
     const inputRef = React.useRef<HTMLInputElement>(null)
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState("")
-
-    // const { data, isLoading } = trpc.getAllCategories.useQuery(undefined, {
-    //     cacheTime: Infinity,
-    //     staleTime: Infinity,
-    // })
 
     React.useEffect(() => {
         if (defaultSelected && data) {
@@ -64,7 +62,7 @@ export function MultiSelect({
     }, [onChange, selected])
 
     const handleSelect = React.useCallback(
-        (option: Category) => {
+        (option: Option & T) => {
             setSelected((prev) => [...(prev ?? []), option])
         },
         [setSelected]
@@ -121,7 +119,9 @@ export function MultiSelect({
                                 variant="secondary"
                                 className="rounded hover:bg-secondary"
                             >
-                                {option.name}
+                                {renderOption
+                                    ? renderOption(option)
+                                    : option.name}
                                 <Button
                                     aria-label="Remove option"
                                     size="sm"
@@ -185,7 +185,9 @@ export function MultiSelect({
                                                 setQuery("")
                                             }}
                                         >
-                                            {option.name}
+                                            {renderOption
+                                                ? renderOption(option)
+                                                : option.name}
                                         </CommandItem>
                                     )
                                 })}

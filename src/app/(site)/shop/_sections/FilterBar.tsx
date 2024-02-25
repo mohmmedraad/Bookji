@@ -5,11 +5,9 @@ import { useState, type FC } from "react"
 import SearchBar from "@/components/ui/SearchBar"
 import MobileSearchBar from "@/components/MobileSearchBar"
 
-import Filters from "./Filters"
+import ShopFilter from "./ShopFilter"
 
-interface FilterBarProps {
-    // onSearchParamsChange: (params: Omit<SearchParams, "userId">) => void
-}
+interface FilterBarProps {}
 
 const FilterBar: FC<FilterBarProps> = ({}) => {
     const [isClosed, setIsClosed] = useState(true)
@@ -22,7 +20,7 @@ const FilterBar: FC<FilterBarProps> = ({}) => {
                 isFocused={() => setIsClosed(false)}
                 isBlurred={() => setIsClosed(true)}
             />
-            {!isClosed ? null : <Filters />}
+            {!isClosed ? null : <ShopFilter />}
         </div>
     )
 }

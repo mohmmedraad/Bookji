@@ -4,11 +4,11 @@ import { useQueryState } from "nuqs"
 
 import { trpc } from "@/app/_trpc/client"
 
-import { MultiSelect } from "./ui/MultiSelect"
+import { MultiSelect } from "./MultiSelect"
 
-interface CategoriesFilterProps {}
+interface CategoriesFilterOptionProps {}
 
-const CategoriesFilter: FC<CategoriesFilterProps> = ({}) => {
+const CategoriesFilterOption: FC<CategoriesFilterOptionProps> = ({}) => {
     const [categoriesParam, setCategoriesParam] = useQueryState("categories")
     const [categories, setCategories] = useState<Category[] | null>(null)
 
@@ -46,4 +46,4 @@ const CategoriesFilter: FC<CategoriesFilterProps> = ({}) => {
     )
 }
 
-export default CategoriesFilter
+export default CategoriesFilterOption

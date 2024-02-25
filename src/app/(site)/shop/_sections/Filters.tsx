@@ -4,6 +4,7 @@ import { useQueryState } from "nuqs"
 
 import { Button } from "@/components/ui/Button"
 import { Label } from "@/components/ui/Label"
+import RangeFilter from "@/components/ui/RangeFilterOption"
 import {
     Sheet,
     SheetContent,
@@ -11,9 +12,8 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/Sheet"
-import CategoriesFilter from "@/components/CategoriesFilter"
-import RangeFilter from "@/components/RangeFilter"
-import StoresFilter from "@/components/StoresFilter"
+import CategoriesFilter from "@/components/ui/CategoriesFilterOption"
+import StoresFilter from "@/components/ui/StoresFilterOption"
 
 interface FiltersProps {}
 
