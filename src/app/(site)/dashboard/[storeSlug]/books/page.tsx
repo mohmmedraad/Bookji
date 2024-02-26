@@ -64,7 +64,7 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
             id: books.id,
             title: books.title,
             slug: books.slug,
-            rating: sql<number>` cast(AVG(${ratingsTable.rating}) AS DECIMAL(10,2)) `.mapWith(
+            rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
                 Number
             ),
             userId: books.userId,
@@ -121,9 +121,15 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
                       )
             )
         )
-        .innerJoin(ratingsTable, eq(books.id, ratingsTable.bookId))
+        .leftJoin(ratingsTable, eq(books.id, ratingsTable.bookId))
         .groupBy(books.id, books.title)
-        .having(between(sql`AVG(${ratingsTable.rating})`, minRating, maxRating))
+        .having(
+            between(
+                sql` AVG(COALESCE(${ratingsTable.rating}, 0)) `,
+                minRating,
+                maxRating
+            )
+        )
         .orderBy((book) => {
             console.log(column in books)
             return column in book

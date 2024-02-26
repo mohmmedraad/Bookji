@@ -100,7 +100,7 @@ export const appRouter = router({
                     id: books.id,
                     title: books.title,
                     slug: books.slug,
-                    rating: sql<number>` cast(AVG(${ratingsTable.rating}) AS DECIMAL(10,2)) `.mapWith(
+                    rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
                         Number
                     ),
                     storeName: storesTable.name,
@@ -163,12 +163,12 @@ export const appRouter = router({
                               )
                     )
                 )
-                .innerJoin(ratingsTable, eq(books.id, ratingsTable.bookId))
+                .leftJoin(ratingsTable, eq(books.id, ratingsTable.bookId))
                 .innerJoin(storesTable, eq(books.storeId, storesTable.id))
                 .groupBy(books.id, books.title)
                 .having(
                     between(
-                        sql`AVG(${ratingsTable.rating})`,
+                        sql` AVG(COALESCE(${ratingsTable.rating}, 0)) `,
                         minRating,
                         maxRating
                     )
