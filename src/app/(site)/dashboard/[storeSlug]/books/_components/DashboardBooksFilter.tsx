@@ -46,7 +46,7 @@ const DashboardBooksFilter: FC<DashboardBooksFilterProps> = ({}) => {
                 />
             </FilterOption>
             <FilterOption className="mt-5">
-                <FilterLabel>Rating range</FilterLabel>
+                <FilterLabel>Inventory range</FilterLabel>
                 <RangeFilterOption
                     param="inventory"
                     minRangeValue={0}
