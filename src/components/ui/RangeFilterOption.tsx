@@ -1,8 +1,10 @@
-import { type FC } from "react"
+import { useEffect, useState, type FC } from "react"
 import { Slider } from "@nextui-org/react"
 import { useQueryState } from "nuqs"
 
 import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
+import useDebounce from "@/hooks/useDebounce"
+import { useIsMount } from "@/hooks/useIsMount"
 
 import { Input } from "./Input"
 
@@ -29,24 +31,38 @@ const RangeFilterOption: FC<RangeFilterOptionProps> = ({
 }) => {
     const [, setRangeParam] = useQueryState(param)
     const searchParams = useBooksSearchParams()
+    const isMount = useIsMount()
 
-    const minRange = getSliderValue(0, searchParams[param]) || minRangeValue
-    const maxRange = getSliderValue(1, searchParams[param]) || maxRangeValue
+    const [range, setRange] = useState({
+        min: getSliderValue(0, searchParams[param]) || minRangeValue,
+        max: getSliderValue(1, searchParams[param]) || maxRangeValue,
+    })
+
+    const rangeValue = useDebounce(range, 500)
+
+    useEffect(() => {
+        // preventing the initial render from setting the query param
+        if (rangeValue === null || !isMount) return
+
+        void setRangeParam(`${rangeValue.min}-${rangeValue.max}`)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [rangeValue])
 
     return (
         <>
             <Slider
-                aria-label="price range"
+                aria-label={`${param} range`}
                 step={step}
                 minValue={minRangeValue}
                 maxValue={maxRangeValue}
                 defaultValue={[minRangeValue, maxRangeValue]}
-                value={[minRange, maxRange]}
+                value={[range.min, range.max]}
                 onChange={(value) => {
                     if (typeof value !== "number") {
-                        void setRangeParam(
-                            `${value[minRangeValue]}-${value[1]}`
-                        )
+                        setRange({
+                            min: value[0],
+                            max: value[1],
+                        })
                     }
                 }}
                 className="max-w-md"
@@ -54,37 +70,33 @@ const RangeFilterOption: FC<RangeFilterOptionProps> = ({
 
             <div className="flex items-center gap-4">
                 <Input
-                    aria-label="min price"
+                    aria-label={`min ${param}`}
                     type="number"
                     min={minRangeValue}
                     max={maxRangeValue}
-                    value={minRange}
+                    value={range.min}
                     step={step}
-                    onChange={(e) => {
-                        void setRangeParam(
-                            (prev) =>
-                                `${e.target.value}-${
-                                    prev?.split("-")[1] || maxRangeValue
-                                }`
-                        )
-                    }}
+                    onChange={(e) =>
+                        setRange((prev) => ({
+                            ...prev,
+                            min: +e.target.value,
+                        }))
+                    }
                 />
                 <span className="text-muted-foreground">-</span>
                 <Input
-                    aria-label="max price"
+                    aria-label={`max ${param}`}
                     type="number"
                     min={minRangeValue}
                     max={maxRangeValue}
-                    value={maxRange}
+                    value={range.max}
                     step={step}
-                    onChange={(e) => {
-                        void setRangeParam(
-                            (prev) =>
-                                `${prev?.split("-")[0] || minRangeValue}-${
-                                    e.target.value
-                                }`
-                        )
-                    }}
+                    onChange={(e) =>
+                        setRange((prev) => ({
+                            ...prev,
+                            max: +e.target.value,
+                        }))
+                    }
                 />
             </div>
         </>
