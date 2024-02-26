@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { type Table } from "@tanstack/react-table"
 
-import { useBooksSearchParam } from "@/hooks/useBooksSearchParams"
+import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
 import { useIsMount } from "@/hooks/useIsMount"
 import { Button } from "@/components/ui/Button"
 import DataTableToolbarSearchInput from "@/components/ui/DataTableToolbarSearchInput"
@@ -22,7 +22,7 @@ export function DataTableToolbar<TData>({
     table,
 }: DataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-    const searchParams = useBooksSearchParam()
+    const searchParams = useBooksSearchParams()
     const router = useRouter()
     const isMount = useIsMount()
 
