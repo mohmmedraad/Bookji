@@ -1,9 +1,7 @@
 import {
-    array,
     coerce,
     custom,
     fallback,
-    merge,
     minValue,
     number,
     object,
@@ -41,6 +39,7 @@ export const booksSearchParamsSchema = object({
         input ? input.split(".") : []
     ),
     price: validateRangeSchema("0-500"),
+    inventory: validateRangeSchema("0-100"),
     rating: validateRangeSchema("0-5"),
 })
 

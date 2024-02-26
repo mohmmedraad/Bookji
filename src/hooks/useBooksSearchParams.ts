@@ -10,14 +10,16 @@ function isNotNull(value: string | null) {
 export const useBooksSearchParams = () => {
     const [textParam, setTextParam] = useQueryState("text")
     const [priceParam, setPriceParam] = useQueryState("price")
-    const [categoriesParam, setCategoriesParam] = useQueryState("categories")
     const [ratingParam, setRatingParam] = useQueryState("rating")
+    const [inventoryParam, setInventoryParam] = useQueryState("inventory")
+    const [categoriesParam, setCategoriesParam] = useQueryState("categories")
     const [pageParam, setPageParam] = useQueryState("page")
     const [sortByParam, setSortByParam] = useQueryState("sortBy")
     const [storesParam, setStoresParam] = useQueryState("stores")
 
     const text = useDebounce(textParam!)
     const price = useDebounce(priceParam!)
+    const inventory = useDebounce(inventoryParam!)
     const categories = useDebounce(categoriesParam!)
     const rating = useDebounce(ratingParam!)
     const page = useDebounce(pageParam!)
@@ -29,6 +31,7 @@ export const useBooksSearchParams = () => {
         isNotNull(pageParam) && void setPageParam("")
         isNotNull(priceParam) && void setPriceParam("0-500")
         isNotNull(ratingParam) && void setRatingParam("0-5")
+        isNotNull(inventoryParam) && void setInventoryParam("0-100")
         isNotNull(sortByParam) && void setSortByParam("")
         isNotNull(categoriesParam) && void setCategoriesParam("")
         isNotNull(storesParam) && void setStoresParam("")
@@ -40,6 +43,8 @@ export const useBooksSearchParams = () => {
         sortByParam,
         storesParam,
         textParam,
+        inventoryParam,
+        setInventoryParam,
         setCategoriesParam,
         setPageParam,
         setPriceParam,
@@ -57,6 +62,7 @@ export const useBooksSearchParams = () => {
         rating,
         sortBy,
         stores,
+        inventory,
         handleClearSearch,
     }
 }

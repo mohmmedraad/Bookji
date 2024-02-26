@@ -9,10 +9,9 @@ import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
 import { useIsMount } from "@/hooks/useIsMount"
 import { Button } from "@/components/ui/Button"
 import DataTableToolbarSearchInput from "@/components/ui/DataTableToolbarSearchInput"
-// import { DataTableFacetedFilter } from "@/components/ui/DataTableFacetedFilter"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
 import AddBookDialog from "@/components/AddBookDialog"
-import Filters from "@/app/(site)/shop/_sections/Filters"
+import DashboardBooksFilter from "./DashboardBooksFilter"
 
 interface DataTableToolbarProps<TData> {
     table: Table<TData>
@@ -39,13 +38,6 @@ export function DataTableToolbar<TData>({
         <div className="flex items-center justify-between">
             <div className="flex flex-1 items-center space-x-2">
                 <DataTableToolbarSearchInput defaultValue="" />
-                {/* {table.getColumn("rating") && (
-                    <DataTableFacetedFilter
-                        column={table.getColumn("rating")}
-                        title="rating"
-                        options={statuses}
-                    />
-                )} */}
                 {isFiltered && (
                     <Button
                         variant="ghost"
@@ -60,7 +52,7 @@ export function DataTableToolbar<TData>({
             <div className="flex items-center gap-4">
                 <DataTableViewOptions table={table} />
                 <AddBookDialog />
-                <Filters />
+                <DashboardBooksFilter />
             </div>
         </div>
     )

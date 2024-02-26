@@ -12,16 +12,12 @@ import { currentUser } from "@clerk/nextjs"
 import {
     and,
     asc,
-    avg,
     between,
-    count,
     desc,
     eq,
     exists,
-    gte,
     inArray,
     like,
-    lte,
     sql,
 } from "drizzle-orm"
 import { parse } from "valibot"
@@ -47,12 +43,9 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
         categories,
         price: [minPrice, maxPrice],
         rating: [minRating, maxRating],
+        inventory: [minInventory, maxInventory],
     } = parse(booksSearchParamsSchema, searchParams)
 
-    console.log("minPrice", minPrice)
-    console.log("maxPrice", maxPrice)
-    console.log("minRating", minRating)
-    console.log("maxRating", maxRating)
     const user = await currentUser()
 
     const store = await db.query.stores.findFirst({
@@ -90,6 +83,7 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
                 eq(book.storeId, store.id),
                 text ? like(book.title, `%${text}%`) : undefined,
                 between(book.price, minPrice.toString(), maxPrice.toString()),
+                between(book.inventory, minInventory, maxInventory),
                 categories.length === 0
                     ? undefined
                     : exists(
