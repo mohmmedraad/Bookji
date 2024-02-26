@@ -103,7 +103,7 @@ export const appRouter = router({
                     rating: sql<number>` cast(AVG(${ratingsTable.rating}) AS DECIMAL(10,2)) `.mapWith(
                         Number
                     ),
-                    storeSlug: storesTable.slug,
+                    storeName: storesTable.name,
                     userId: books.userId,
                     storeId: books.storeId,
                     price: books.price,
@@ -124,7 +124,7 @@ export const appRouter = router({
                         ),
                         stores.length === 0
                             ? undefined
-                            : inArray(book.storeSlug, stores),
+                            : inArray(book.storeName, stores),
                         categories.length === 0
                             ? undefined
                             : exists(
@@ -174,7 +174,6 @@ export const appRouter = router({
                     )
                 )
                 .orderBy((book) => {
-                    console.log(column in books)
                     return column in book
                         ? order === "asc"
                             ? //@ts-expect-error error

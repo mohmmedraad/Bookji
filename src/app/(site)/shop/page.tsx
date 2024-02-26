@@ -65,7 +65,7 @@ const Page: FC<PageProps> = async ({ searchParams }) => {
             rating: sql<number>` cast(AVG(${ratingsTable.rating}) AS DECIMAL(10,2)) `.mapWith(
                 Number
             ),
-            storeSlug: storesTable.slug,
+            storeName: storesTable.name,
             userId: books.userId,
             storeId: books.storeId,
             price: books.price,
@@ -79,7 +79,7 @@ const Page: FC<PageProps> = async ({ searchParams }) => {
                 between(book.price, minPrice.toString(), maxPrice.toString()),
                 stores.length === 0
                     ? undefined
-                    : inArray(book.storeSlug, stores),
+                    : inArray(book.storeName, stores),
                 categories.length === 0
                     ? undefined
                     : exists(
