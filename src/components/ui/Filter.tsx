@@ -39,9 +39,11 @@ const Filter: React.FC<FilterProps> = ({
                     ) : null}
                 </SheetHeader>
                 <div className="flex h-full flex-col gap-5">
-                    <div className="flex h-full flex-col gap-5">
-                        <ScrollArea className="h-full">{children}</ScrollArea>
-                    </div>
+                    <ScrollArea className="h-full">
+                        {/* <div className="flex h-full flex-col gap-5"> */}
+                        {children}
+                        {/* </div> */}
+                    </ScrollArea>
                     <div className="shrink-0 py-4">
                         <Button className="w-full" onClick={onClearFilters}>
                             Clear filters

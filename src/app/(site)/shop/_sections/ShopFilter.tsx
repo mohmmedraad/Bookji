@@ -37,7 +37,7 @@ const ShopFilter: FC<ShopFilterProps> = ({}) => {
                     maxRangeValue={500}
                 />
             </FilterOption>
-            <FilterOption>
+            <FilterOption className="mt-5">
                 <FilterLabel>Rating range</FilterLabel>
                 <RangeFilterOption
                     param="rating"
@@ -46,11 +46,11 @@ const ShopFilter: FC<ShopFilterProps> = ({}) => {
                     step={0.5}
                 />
             </FilterOption>
-            <FilterOption>
+            <FilterOption className="mt-5">
                 <FilterLabel>Categories</FilterLabel>
                 <CategoriesFilterOption />
             </FilterOption>
-            <FilterOption>
+            <FilterOption className="mt-3">
                 <FilterLabel>Stores</FilterLabel>
                 <StoresFilterOption />
             </FilterOption>
