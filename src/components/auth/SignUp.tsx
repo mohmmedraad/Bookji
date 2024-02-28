@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, type FC } from "react"
+import Link from "next/link"
 
 import useSignUpForm from "@/hooks/useSignUpForm"
 
@@ -45,12 +46,12 @@ const SignUp: FC<SignUpProps> = ({ origin }) => {
                     </p>
                     <p className="mt-4 text-sm text-gray-400">
                         Already have an account?{" "}
-                        <a
+                        <Link
                             className="font-medium text-primary  hover:underline"
                             href={`/sign-in?_origin=${origin || "/"}`}
                         >
                             Sign In
-                        </a>
+                        </Link>
                     </p>
                 </>
             ) : (
