@@ -1,17 +1,13 @@
 import { useEffect, useState } from "react"
 import { useQueryState } from "nuqs"
 
-import { useBooksSearchParams } from "./useBooksSearchParams"
 import useDebounce from "./useDebounce"
 import { useIsMount } from "./useIsMount"
 
 export interface UseRangeFilterOptionProps {
     maxRangeValue: number
     minRangeValue: number
-    param: keyof Omit<
-        ReturnType<typeof useBooksSearchParams>,
-        "handleClearSearch"
-    >
+    param: string
 }
 
 function getSliderValue(index: number, price: string | null) {
@@ -25,7 +21,6 @@ export const useRangeFilterOption = ({
     param,
 }: UseRangeFilterOptionProps) => {
     const [rangeParam, setRangeParam] = useQueryState(param)
-    const searchParams = useBooksSearchParams()
     const isMount = useIsMount()
 
     const [range, setRange] = useState<{
@@ -35,8 +30,8 @@ export const useRangeFilterOption = ({
         rangeParam === null
             ? null
             : {
-                  min: getSliderValue(0, searchParams[param]) || minRangeValue,
-                  max: getSliderValue(1, searchParams[param]) || maxRangeValue,
+                  min: getSliderValue(0, rangeParam) || minRangeValue,
+                  max: getSliderValue(1, rangeParam) || maxRangeValue,
               }
     )
 
