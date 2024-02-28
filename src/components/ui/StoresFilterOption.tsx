@@ -20,7 +20,7 @@ const StoresFilterOption: FC<StoresFilterOptionProps> = ({}) => {
 
     return (
         <MultiSelectFilterOption
-            param="categories"
+            param="stores"
             data={data}
             isLoading={isLoading}
             renderOption={(option) => (
