@@ -1,73 +1,20 @@
 "use client"
 
 import { type FC } from "react"
-import { useRouter } from "next/navigation"
-import { type TRPCError } from "@trpc/server"
-import { toast } from "sonner"
 
-import { handleGenericError } from "@/lib/utils"
-import useBook from "@/hooks/useBook"
-import useCart from "@/hooks/useCart"
+import { useAddToCartButton } from "@/hooks/useAddToCartButton"
 import { Button } from "@/components/ui/Button"
-import { trpc } from "@/app/_trpc/client"
 
 interface AddToCartButtonProps {}
 
 const AddToCartButton: FC<AddToCartButtonProps> = ({}) => {
-    const { updateCart, undoChanging, cartBooks } = useCart((store) => ({
-        updateCart: store.updateCart,
-        undoChanging: store.undoChanging,
-        cartBooks: store.cartBooks,
-    }))
-    const book = useBook((state) => state.book)
-    const router = useRouter()
+    const { addToCart, isLoading } = useAddToCartButton()
 
-    const { data, mutate: addToCart } = trpc.cart.add.useMutation({
-        onMutate: () => {
-            // if (!book) return
-            // const isBookInCart = cartBooks.find(
-            //     (item) => item.bookId === book.id
-            // )
-            // if (isBookInCart) {
-            //     updateCart({
-            //         bookId: book.id,
-            //         quantity: isBookInCart.quantity + 1,
-            //         ...book,
-            //     })
-            // } else {
-            //     updateCart({ bookId: book.id, quantity: 1, ...book })
-            // }
-        },
-        onError: (error) => {
-            undoChanging()
-            handleTRPCError(error.data?.code)
-        },
-    })
-
-    function handleTRPCError(errorCode: TRPCError["code"] | undefined) {
-        if (errorCode === "UNAUTHORIZED") {
-            toast.error("Please login first")
-            router.push("/sign-in")
-        }
-        return handleGenericError()
-    }
-
-    function handleClick() {
-        if (!book) return
-        toast.success("Added to cart")
-        const isBookInCart = cartBooks.find((item) => item.bookId === book.id)
-
-        if (isBookInCart) {
-            return updateCart({
-                bookId: book.id,
-                quantity: isBookInCart.quantity + 1,
-                ...book,
-            })
-        }
-        updateCart({ bookId: book.id, quantity: 1, ...book })
-        addToCart({ bookId: book.id, quantity: 1, storeId: book.storeId })
-    }
-    return <Button onClick={handleClick}>Add To Cart</Button>
+    return (
+        <Button onClick={addToCart} disabled={isLoading}>
+            Add To Cart
+        </Button>
+    )
 }
 
 export default AddToCartButton
