@@ -15,12 +15,13 @@ export const useCreateBook = (setOpen: SetOpen) => {
     const router = useRouter()
     const form = useBookForm((store) => store.form)
     const storeId = useStore((store) => store.id)
+    const storeSlug = useStore((store) => store.slug)
 
     const { mutate, isLoading } = trpc.addBook.useMutation({
         onError: (error) => {
             const errorCode = error.data?.code
             if (errorCode === "UNAUTHORIZED") {
-                router.push("/login?origin=/dashboard/store/")
+                router.push(`/sign-in?_origin=/dashboard/${storeSlug}`)
                 return toast.error("You must be logged in to add a book")
             }
 

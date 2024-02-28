@@ -8,6 +8,7 @@ import { useStore } from "./useStore"
 
 export const useDeleteStore = () => {
     const storeId = useStore((store) => store.id)
+    const storeSlug = useStore((store) => store.slug)
     const router = useRouter()
     const { mutate, isLoading } = trpc.store.delete.useMutation({
         onSuccess: () => {
@@ -19,7 +20,7 @@ export const useDeleteStore = () => {
             const errorCode = error?.data?.code
             if (errorCode === "UNAUTHORIZED") {
                 toast.error("You must be logged in to delete a store")
-                router.push(`sign-in?origin=/dashboard/${storeId}`)
+                router.push(`sign-in?_origin=/dashboard/${storeSlug}`)
                 return
             }
 

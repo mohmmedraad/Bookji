@@ -34,7 +34,7 @@ const SignUp = () => {
                         Already have an account?{" "}
                         <a
                             className="font-medium text-primary  hover:underline"
-                            href="sign-in"
+                            href={`sign-in?_origin=${origin}`}
                         >
                             Sign In
                         </a>

@@ -25,7 +25,7 @@ export const useUpdateLogo = (setOpen: Dispatch<SetStateAction<boolean>>) => {
         onError(error) {
             setLogo(prevLogo!)
             if (error.data?.code === "UNAUTHORIZED") {
-                router.push(`/sign-in?origin=/dashboard/${storeSlug}/`)
+                router.push(`/sign-in?_origin=/dashboard/${storeSlug}/`)
                 return toast.error("You must be logged in to update a store")
             }
             if (error.data?.code === "NOT_FOUND") {

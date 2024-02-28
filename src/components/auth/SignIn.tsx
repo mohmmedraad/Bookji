@@ -38,7 +38,7 @@ const SignIn: FC<SignInProps> = ({ origin }) => {
                         Dos&apos;t have an account?{" "}
                         <Link
                             className="font-medium text-primary hover:underline"
-                            href="sign-up"
+                            href={`sign-up?_origin=${origin}`}
                         >
                             Sign Up
                         </Link>

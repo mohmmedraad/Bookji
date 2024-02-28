@@ -38,7 +38,7 @@ const ManageSubscriptionButton: FC<ManageSubscriptionButtonProps> = ({
                     toast.error(
                         "You must be signed in to manage your subscription."
                     )
-                    return router.push("/sign-in?origin=/dashboard/billing")
+                    return router.push("/sign-in?_origin=/dashboard/billing")
                 }
 
                 return handleGenericError()

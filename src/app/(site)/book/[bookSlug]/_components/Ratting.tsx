@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, type FC } from "react"
+import { useRouter } from "next/navigation"
 import { type TRPCErrorType } from "@/types"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
 import { type RateBookSchema } from "@/lib/validations/book"
 import useBook from "@/hooks/useBook"
-import { useSignIn } from "@/hooks/useSignIn"
 import { trpc } from "@/app/_trpc/client"
 
 import RatingDialog from "./RatingDialog"
@@ -17,12 +17,10 @@ interface RateProps {}
 const Ratting: FC<RateProps> = ({}) => {
     const [open, setOpen] = useState(false)
     const book = useBook((state) => state.book)
-
-    const { signIn } = useSignIn()
+    const router = useRouter()
 
     const { mutate: rateBook } = trpc.rateBook.useMutation({
         onError: (error) => {
-            console.log("error: ", error)
             const code = error.data?.code
             const message = error.message
             handleTRPCError({ code, message })
@@ -36,7 +34,7 @@ const Ratting: FC<RateProps> = ({}) => {
     function handleTRPCError(error: TRPCErrorType) {
         if (error.code === "UNAUTHORIZED") {
             toast.error("You need to be logged in to rate a book")
-            return signIn()
+            return router.push(`/sign-in?_origin=/book/${book?.slug}`)
         }
         if (error.code === "BAD_REQUEST") {
             setOpen(true)

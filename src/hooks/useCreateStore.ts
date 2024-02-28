@@ -23,7 +23,7 @@ export const useCreateStore = (setOpen: SetOpen, form: Form) => {
     const { mutate: createStore, isLoading } = trpc.store.create.useMutation({
         onError: (error) => {
             if (error.data?.code === "UNAUTHORIZED") {
-                router.push("/sign-in?origin=/dashboard/")
+                router.push("/sign-in?_origin=/dashboard/")
                 return toast.error("You must be logged in to create a store")
             }
 

@@ -20,7 +20,7 @@ const ConnectToStripeButton: FC<conectToStripeButtonProps> = ({}) => {
 
             if (errorCode === "UNAUTHORIZED") {
                 toast.error("You need to be signed in to connect to Stripe")
-                return router.push(`/sign-in?origin=dashboard/${storeSlug}`)
+                return router.push(`/sign-in?_origin=dashboard/${storeSlug}`)
             }
 
             if (errorCode === "CONFLICT") {
@@ -31,7 +31,6 @@ const ConnectToStripeButton: FC<conectToStripeButtonProps> = ({}) => {
             return handleGenericError()
         },
         onSuccess: (data) => {
-
             router.push(data)
         },
     })

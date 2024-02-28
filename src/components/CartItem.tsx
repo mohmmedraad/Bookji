@@ -1,11 +1,11 @@
 import { type FC } from "react"
+import { useRouter } from "next/navigation"
 import { type TRPCErrorType } from "@/types"
 import { Trash } from "lucide-react"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
 import useCart from "@/hooks/useCart"
-import { useSignIn } from "@/hooks/useSignIn"
 import { trpc } from "@/app/_trpc/client"
 
 import EditQuantity from "./EditQuantity"
@@ -45,7 +45,7 @@ const CartItem: FC<CartItemProps> = ({
         },
     })
 
-    const { signIn } = useSignIn()
+    const router = useRouter()
 
     function handleRemoveItem() {
         const newCartBooks = cartBooks.filter((book) => book.bookId !== bookId)
@@ -59,7 +59,7 @@ const CartItem: FC<CartItemProps> = ({
     function handleTRPCError(error: TRPCErrorType) {
         if (error.code === "UNAUTHORIZED") {
             toast.error("You need to be logged in")
-            return signIn()
+            return router.push("/signin")
         }
 
         if (error.code === "NOT_FOUND") {

@@ -17,27 +17,6 @@ const StoreCheckoutButton: FC<StoreCheckoutButtonProps> = ({
 }) => {
     const router = useRouter()
 
-    // const { isLoading, mutate } = trpc.stripe.createPaymentIntent.useMutation({
-    //     onSuccess: ({ clientSecret }) => {
-    //         try {
-    //         } catch (error) {
-    //             console.log(error)
-    //         }
-    //     },
-    //     onError: (error) => {
-    //         const errorCode = error.data?.code
-    //         if (errorCode === "UNAUTHORIZED") {
-    //             router.push("/sign-in?origin=/cart")
-    //             return toast.error("You need to be logged in to checkout")
-    //         }
-
-    //         if (errorCode === "NOT_FOUND") {
-    //             return toast.error(error.message)
-    //         }
-    //         return handleGenericError()
-    //     },
-    // })
-
     const amount = items.reduce(
         (total, item) => total + item.quantity * Number(item.price),
         0
@@ -51,7 +30,7 @@ const StoreCheckoutButton: FC<StoreCheckoutButtonProps> = ({
             onError: (error) => {
                 const errorCode = error.data?.code
                 if (errorCode === "UNAUTHORIZED") {
-                    router.push("/sign-in?origin=/cart")
+                    router.push("/sign-in?_origin=/cart")
                     return toast.error("You need to be logged in to checkout")
                 }
 

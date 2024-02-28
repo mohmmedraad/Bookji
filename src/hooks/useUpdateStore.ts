@@ -55,7 +55,7 @@ export const useUpdateStore = (defaultValues: DefaultValues) => {
         },
         onError(error) {
             if (error.data?.code === "UNAUTHORIZED") {
-                router.push(`/sign-in?origin=/dashboard/${storeSlug}/`)
+                router.push(`/sign-in?_origin=/dashboard/${storeSlug}/`)
                 return toast.error("You must be logged in to update a store")
             }
 
