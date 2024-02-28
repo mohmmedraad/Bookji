@@ -1,14 +1,18 @@
-"use client"
-
-import React from "react"
+import { type FC } from "react"
 import Image from "next/image"
-
-// import { SignUp } from "@clerk/nextjs"
 
 import Container from "@/components/ui/Container"
 import SignUp from "@/components/auth/SignUp"
 
-const page = () => {
+interface pageProps {
+    searchParams: {
+        _origin: string | undefined
+    }
+}
+
+const page: FC<pageProps> = ({ searchParams }) => {
+    const origin = searchParams?._origin
+
     return (
         <Container className="grid min-h-screen items-center justify-center gap-32 py-10 lg:grid-cols-2 ">
             <Image
@@ -19,7 +23,7 @@ const page = () => {
                 loading="eager"
                 className="hidden h-[50.25rem] w-full rounded-3xl lg:block"
             />
-            <SignUp />
+            <SignUp origin={origin} />
         </Container>
     )
 }
