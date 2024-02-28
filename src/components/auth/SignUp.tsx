@@ -1,13 +1,26 @@
 "use client"
 
+import { useEffect, type FC } from "react"
+
 import useSignUpForm from "@/hooks/useSignUpForm"
 
 import SignUpForm from "../forms/SignUpForm"
 import OauthSignIn from "./OauthSignIn"
 import VerifySignUpForm from "./VerifySignUpForm"
 
-const SignUp = () => {
+interface SignUpProps {
+    origin: string | undefined
+}
+
+const SignUp: FC<SignUpProps> = ({ origin }) => {
     const formState = useSignUpForm((state) => state.formState)
+    const setOrigin = useSignUpForm((state) => state.setOrigin)
+
+    useEffect(() => {
+        if (!origin) return
+        setOrigin(origin)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
     return (
         <div className="max-w-[482px]">
             {formState === "signUp" ? (
@@ -34,7 +47,7 @@ const SignUp = () => {
                         Already have an account?{" "}
                         <a
                             className="font-medium text-primary  hover:underline"
-                            href={`sign-in?_origin=${origin}`}
+                            href={`/sign-in?_origin=${origin || "/"}`}
                         >
                             Sign In
                         </a>

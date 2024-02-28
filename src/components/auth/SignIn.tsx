@@ -20,6 +20,7 @@ const SignIn: FC<SignInProps> = ({ origin }) => {
     useEffect(() => {
         if (!origin) return
         setOrigin(origin)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -38,7 +39,7 @@ const SignIn: FC<SignInProps> = ({ origin }) => {
                         Dos&apos;t have an account?{" "}
                         <Link
                             className="font-medium text-primary hover:underline"
-                            href={`sign-up?_origin=${origin}`}
+                            href={`/sign-up?_origin=${origin || "/"}`}
                         >
                             Sign Up
                         </Link>

@@ -54,7 +54,7 @@ const defaultValues: Partial<SignUpFormSchema> = {
 
 const SignUpForm = () => {
     const { isLoaded, signUp, setSession } = useSignUp()
-    const { setFormState, setEmailAddress } = useSignUpForm()
+    const { setFormState, setEmailAddress, origin } = useSignUpForm()
     const form = useForm<SignUpFormSchema>({
         resolver: valibotResolver(signUpFormSchema),
         defaultValues,
@@ -94,7 +94,7 @@ const SignUpForm = () => {
 
     function handleSignUpComplete() {
         toast.success("You have successfully signed up!")
-        router.push("/")
+        router.push(origin)
         setFormState("signUp")
     }
 
