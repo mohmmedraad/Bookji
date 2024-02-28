@@ -1,26 +1,15 @@
-import { useEffect, useState, type FC } from "react"
-import { Slider } from "@nextui-org/react"
-import { useQueryState } from "nuqs"
+import { type FC } from "react"
 
-import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
-import useDebounce from "@/hooks/useDebounce"
-import { useIsMount } from "@/hooks/useIsMount"
+import {
+    useRangeFilterOption,
+    type UseRangeFilterOptionProps,
+} from "@/hooks/useRangeFilterOption"
 
 import { Input } from "./Input"
+import { Slider } from "./Slider"
 
-interface RangeFilterOptionProps {
-    minRangeValue: number
-    maxRangeValue: number
-    param: keyof Omit<
-        ReturnType<typeof useBooksSearchParams>,
-        "handleClearSearch"
-    >
+interface RangeFilterOptionProps extends UseRangeFilterOptionProps {
     step?: number
-}
-
-function getSliderValue(index: number, price: string | null) {
-    if (price && !isNaN(+price.split("-")[index]))
-        return +price.split("-")[index]
 }
 
 const RangeFilterOption: FC<RangeFilterOptionProps> = ({
@@ -29,71 +18,54 @@ const RangeFilterOption: FC<RangeFilterOptionProps> = ({
     param,
     step = 1,
 }) => {
-    const [, setRangeParam] = useQueryState(param)
-    const searchParams = useBooksSearchParams()
-    const isMount = useIsMount()
-
-    const [range, setRange] = useState({
-        min: getSliderValue(0, searchParams[param]) || minRangeValue,
-        max: getSliderValue(1, searchParams[param]) || maxRangeValue,
+    const { maxRange, minRange, setRange } = useRangeFilterOption({
+        maxRangeValue,
+        minRangeValue,
+        param,
     })
-
-    const rangeValue = useDebounce(range, 500)
-
-    useEffect(() => {
-        // preventing the initial render from setting the query param
-        if (rangeValue === null || !isMount) return
-
-        void setRangeParam(`${rangeValue.min}-${rangeValue.max}`)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [rangeValue])
 
     return (
         <>
             <Slider
                 aria-label={`${param} range`}
                 step={step}
-                minValue={minRangeValue}
-                maxValue={maxRangeValue}
+                min={minRangeValue}
+                max={maxRangeValue}
+                value={[minRange, maxRange]}
                 defaultValue={[minRangeValue, maxRangeValue]}
-                value={[range.min, range.max]}
-                onChange={(value) => {
-                    if (typeof value !== "number") {
-                        setRange({
-                            min: value[0],
-                            max: value[1],
-                        })
-                    }
+                onValueChange={(value) => {
+                    setRange({
+                        min: value[0],
+                        max: value[1],
+                    })
                 }}
-                className="max-w-md"
             />
-
             <div className="flex items-center gap-4">
                 <Input
-                    aria-label={`min ${param}`}
+                    aria-label={`min ${param} range`}
                     type="number"
                     min={minRangeValue}
                     max={maxRangeValue}
-                    value={range.min}
+                    value={minRange}
                     step={step}
                     onChange={(e) =>
                         setRange((prev) => ({
-                            ...prev,
+                            max: prev?.max || maxRangeValue,
                             min: +e.target.value,
                         }))
                     }
                 />
                 <span className="text-muted-foreground">-</span>
                 <Input
-                    aria-label={`max ${param}`}
+                    aria-label={`max ${param} range`}
                     type="number"
                     min={minRangeValue}
                     max={maxRangeValue}
-                    value={range.max}
+                    value={maxRange}
                     step={step}
                     onChange={(e) =>
                         setRange((prev) => ({
-                            ...prev,
+                            min: prev?.min || minRangeValue,
                             max: +e.target.value,
                         }))
                     }

@@ -24,7 +24,13 @@ export const useBooksFeed = (initialBooks: ExtendedBooksType[]) => {
     const { data, isFetchingNextPage, fetchNextPage, isFetching } =
         trpc.getBooks.useInfiniteQuery(
             {
-                ...searchParams,
+                text: searchParams.text || "",
+                price: searchParams.price || "",
+                rating: searchParams.rating || "",
+                categories: searchParams.categories || "",
+                stores: searchParams.stores || "",
+                sortBy: searchParams.sortBy || "",
+                inventory: searchParams.inventory || "",
                 page: searchParams.page !== null ? +searchParams.page || 0 : 0,
             },
             {
