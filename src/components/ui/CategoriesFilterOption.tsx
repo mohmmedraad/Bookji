@@ -1,47 +1,23 @@
-import { useEffect, useState, type FC } from "react"
-import { type Category } from "@/types"
-import { useQueryState } from "nuqs"
+import { type FC } from "react"
 
 import { trpc } from "@/app/_trpc/client"
 
-import { MultiSelect } from "./MultiSelect"
+import MultiSelectFilterOption from "./MultiSelectFilterOption"
 
 interface CategoriesFilterOptionProps {}
 
 const CategoriesFilterOption: FC<CategoriesFilterOptionProps> = ({}) => {
-    const [categoriesParam, setCategoriesParam] = useQueryState("categories")
-    const [categories, setCategories] = useState<Category[] | null>(null)
-
     const { data, isLoading } = trpc.getAllCategories.useQuery(undefined, {
         cacheTime: Infinity,
         staleTime: Infinity,
     })
 
-    useEffect(
-        () => {
-            if (!categories) return
-
-            const newCategories =
-                categories.length !== 0
-                    ? categories.map((category) => category.name).join(".")
-                    : ""
-
-            if (newCategories === (categoriesParam || "")) return
-
-            void setCategoriesParam(newCategories)
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [categories]
-    )
-
     return (
-        <MultiSelect
-            selected={categories}
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            setSelected={setCategories}
-            defaultSelected={categoriesParam ? categoriesParam.split(".") : []}
+        <MultiSelectFilterOption
+            param="categories"
             data={data}
             isLoading={isLoading}
+            // renderOption={({ name }) => <div>{name}</div>}
         />
     )
 }

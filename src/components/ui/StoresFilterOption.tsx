@@ -1,24 +1,13 @@
-import { useEffect, useState, type FC } from "react"
+import { type FC } from "react"
 import Image from "next/image"
-import { useQueryState } from "nuqs"
 
 import { trpc } from "@/app/_trpc/client"
 
-import { MultiSelect } from "./MultiSelect"
+import MultiSelectFilterOption from "./MultiSelectFilterOption"
 
 interface StoresFilterOptionProps {}
 
-type Store = {
-    id: number
-    name: string
-    slug: string | null
-    logo: string | null
-}
-
 const StoresFilterOption: FC<StoresFilterOptionProps> = ({}) => {
-    const [storesParam, setStoresParam] = useQueryState("stores")
-    const [stores, setStores] = useState<Store[] | null>(null)
-
     const { data, isLoading } = trpc.store.getStores.useQuery(
         {
             searchValue: "",
@@ -29,32 +18,11 @@ const StoresFilterOption: FC<StoresFilterOptionProps> = ({}) => {
         }
     )
 
-    useEffect(
-        () => {
-            if (!stores) return
-
-            const newStores =
-                stores.length !== 0
-                    ? stores.map((store) => store.name).join(".")
-                    : ""
-
-            if (newStores === (storesParam || "")) return
-
-            void setStoresParam(newStores)
-        },
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-        [stores]
-    )
-
     return (
-        <MultiSelect
-            selected={stores}
-            // eslint-disable-next-line @typescript-eslint/no-misused-promises
-            setSelected={setStores}
-            defaultSelected={storesParam ? storesParam.split(".") : []}
+        <MultiSelectFilterOption
+            param="categories"
             data={data}
             isLoading={isLoading}
-            placeholder="Select stores"
             renderOption={(option) => (
                 <div className="flex items-center justify-center gap-1">
                     <Image
