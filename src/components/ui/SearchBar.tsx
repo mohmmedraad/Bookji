@@ -8,11 +8,16 @@ import { cn } from "@/lib/utils"
 
 import { Input } from "./Input"
 
-interface SearchBarProps extends HTMLAttributes<HTMLDivElement> {}
+interface SearchBarProps extends HTMLAttributes<HTMLDivElement> {
+    param?: string
+}
 
-const SearchBar: FC<SearchBarProps> = ({ className, ...props }) => {
-    const [textParam, setTextParam] = useQueryState("text")
-
+const SearchBar: FC<SearchBarProps> = ({
+    className,
+    param = "text",
+    ...props
+}) => {
+    const [textParam, setTextParam] = useQueryState(param)
     return (
         <div className={cn("relative", className)} {...props}>
             <Search className="absolute left-4 top-3 h-4 w-4 text-slate-900" />
