@@ -38,7 +38,7 @@ export const useAddToCartButton = () => {
             const errorCode = error.data?.code
             if (errorCode === "UNAUTHORIZED") {
                 toast.error("You need to login first to add to cart.")
-                router.push(`/sign-in?origin=/book/${book?.slug}`)
+                router.push(`/sign-in?_origin=/book/${book?.slug}`)
                 return
             }
             return handleGenericError()
