@@ -2,6 +2,7 @@ import {
     coerce,
     custom,
     fallback,
+    merge,
     minValue,
     number,
     object,
@@ -21,6 +22,7 @@ export const searchParamsSchema = object({
         ),
         (input) => input.split(".")
     ),
+    text: optional(fallback(string(), "")),
 })
 
 export const booksSearchParamsSchema = object({
@@ -42,6 +44,17 @@ export const booksSearchParamsSchema = object({
     inventory: validateRangeSchema("0-100"),
     rating: validateRangeSchema("0-5"),
 })
+
+export const ordersSearchParamsSchema = merge([
+    searchParamsSchema,
+    object({
+        email: optional(fallback(string(), "")),
+        city: optional(fallback(string(), "")),
+        state: optional(fallback(string(), "")),
+        country: optional(fallback(string(), "")),
+        total: validateRangeSchema("0-500"),
+    }),
+])
 
 function customRangeValidation(value: string) {
     const isValueValid =

@@ -5,24 +5,23 @@ import { useRouter } from "next/navigation"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { type Table } from "@tanstack/react-table"
 
-import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
 import { useIsMount } from "@/hooks/useIsMount"
+import { useOrdersSearchParams } from "@/hooks/useOrdersSearchParams"
 import { Button } from "@/components/ui/Button"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
 import SearchInput from "@/components/ui/SearchInput"
-import AddBookDialog from "@/components/AddBookDialog"
 
-import DashboardBooksFilter from "./DashboardBooksFilter"
+import DashboardOrdersFilter from "./DashboardOrdersFilter"
 
-interface DataTableToolbarProps<TData> {
+interface OrdersDataTableToolbarProps<TData> {
     table: Table<TData>
 }
 
-export function DataTableToolbar<TData>({
+export function OrdersDataTableToolbar<TData>({
     table,
-}: DataTableToolbarProps<TData>) {
+}: OrdersDataTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-    const searchParams = useBooksSearchParams()
+    const searchParams = useOrdersSearchParams()
     const router = useRouter()
     const isMount = useIsMount()
 
@@ -55,8 +54,7 @@ export function DataTableToolbar<TData>({
             </div>
             <div className="flex items-center gap-4">
                 <DataTableViewOptions table={table} />
-                <AddBookDialog />
-                <DashboardBooksFilter />
+                <DashboardOrdersFilter />
             </div>
         </div>
     )

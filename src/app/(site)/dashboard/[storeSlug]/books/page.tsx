@@ -149,8 +149,6 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
         <DataTable
             columns={Columns}
             data={userBooks}
-            url="/profile"
-            currentPage={1}
             withPagination={false}
             CustomDataTableToolbar={DataTableToolbar}
         />

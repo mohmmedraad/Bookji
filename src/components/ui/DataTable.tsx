@@ -31,7 +31,6 @@ interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
     url?: string
-    currentPage?: number
     withPagination?: boolean
     CustomDataTableToolbar?: typeof DataTableToolbar
 }
@@ -39,8 +38,6 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
     columns,
     data,
-    url,
-    currentPage,
     withPagination = true,
     CustomDataTableToolbar,
 }: DataTableProps<TData, TValue>) {
@@ -135,13 +132,7 @@ export function DataTable<TData, TValue>({
                     </TableBody>
                 </Table>
             </div>
-            {withPagination ? (
-                <DataTablePagination
-                    table={table}
-                    url={url!}
-                    currentPage={currentPage!}
-                />
-            ) : null}
+            {withPagination ? <DataTablePagination table={table} /> : null}
         </div>
     )
 }

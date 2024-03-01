@@ -3,67 +3,37 @@
 import { type ColumnDef } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
-import { type OrderType } from "@/lib/validations/order"
 import { Badge } from "@/components/ui/Badge"
-import BookCover from "@/components/ui/BookCover"
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
 
-export const Columns: ColumnDef<OrderType>[] = [
+interface ColumnProps {
+    title: string | null
+    total: string
+    status: string
+    addressId: number | null
+    storeId: number
+    email: string | null
+    city: never
+    state: never
+    country: never
+    createdAt: Date | null
+}
+
+export const Columns: ColumnDef<ColumnProps, unknown>[] = [
     {
         accessorKey: "title",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Books" id="book" />
+            <DataTableColumnHeader column={column} title="Title" id="title" />
         ),
         cell: ({ row }) => {
             return (
-                <div className="flex w-[250px] items-center gap-3">
-                    <BookCover
-                        src={row.original.cover}
-                        alt={`The Secret Story cover`}
-                        width={40}
-                        height={56}
-                        className="h-14 w-10"
-                    />
-                    <p>{row.original.title}</p>
+                <div className="flex w-[120px] items-center">
+                    <span>{row.getValue("title")}</span>
                 </div>
             )
-        },
-        filterFn: (row, id, value: string) => {
-            return row.original.title
-                .toLowerCase()
-                .includes(value.toLowerCase())
         },
         enableSorting: false,
-        enableHiding: false,
-    },
-    {
-        accessorKey: "customer",
-        header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title="Customers"
-                id="customer"
-            />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex w-[150px] items-center gap-3">
-                    <p>{row.original.customerName}</p>
-                </div>
-            )
-        },
-        filterFn: (row, id, value: string) => {
-            return row.original.customerName
-                .toLowerCase()
-                .includes(value.toLowerCase())
-        },
-        sortingFn: (rowA, rowB) => {
-            return rowA.original.customerName.localeCompare(
-                rowB.original.customerName
-            )
-        },
-        enableSorting: true,
-        enableHiding: false,
+        enableHiding: true,
     },
     {
         accessorKey: "status",
@@ -89,21 +59,61 @@ export const Columns: ColumnDef<OrderType>[] = [
                 </div>
             )
         },
-        sortingFn: (rowA, rowB) => {
-            return rowA.original.status.localeCompare(rowB.original.status)
-        },
         enableSorting: true,
         enableHiding: true,
     },
     {
-        accessorKey: "price",
+        accessorKey: "total",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Price" />
+            <DataTableColumnHeader column={column} title="Total" id="total" />
         ),
         cell: ({ row }) => {
             return (
                 <div className="flex w-[50px] items-center">
-                    <span>{row.getValue("price")}$</span>
+                    <span>{row.getValue("total")}$</span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "country",
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title="Country"
+                id="country"
+            />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[70px] items-center">
+                    <span>{row.getValue("country")}</span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "state",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="State" id="state" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[70px] items-center">
+                    <span>{row.getValue("state")}</span>
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "city",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="City" id="city" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[70px] items-center">
+                    <span>{row.getValue("city")}</span>
                 </div>
             )
         },

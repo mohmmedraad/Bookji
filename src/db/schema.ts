@@ -67,6 +67,11 @@ export const ordersRelations = relations(orders, ({ one }) => ({
         fields: [orders.storeId],
         references: [stores.id],
     }),
+
+    address: one(addresses, {
+        fields: [orders.storeId],
+        references: [addresses.id],
+    }),
 }))
 
 export type Order = typeof orders.$inferSelect
