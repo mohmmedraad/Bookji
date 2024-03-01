@@ -27,15 +27,32 @@ export const useOrdersSearchParams = () => {
     const country = useDebounce(countryParam)
 
     const handleClearSearch = useCallback(() => {
-        void setTextParam(null)
-        void setPageParam(null)
-        void setTotalParam(null)
-        void setCityParam(null)
-        void setEmailParam(null)
-        void setSortByParam(null)
-        void setStateParam(null)
-        void setCountryParam(null)
-    }, [])
+        isNotNull(textParam) && void setTextParam(null)
+        isNotNull(totalParam) && void setTotalParam(null)
+        isNotNull(cityParam) && void setCityParam(null)
+        isNotNull(emailParam) && void setEmailParam(null)
+        isNotNull(stateParam) && void setStateParam(null)
+        isNotNull(countryParam) && void setCountryParam(null)
+        isNotNull(pageParam) && void setPageParam(null)
+        isNotNull(sortByParam) && void setSortByParam(null)
+    }, [
+        cityParam,
+        countryParam,
+        emailParam,
+        pageParam,
+        setCityParam,
+        setCountryParam,
+        setEmailParam,
+        setPageParam,
+        setSortByParam,
+        setStateParam,
+        setTextParam,
+        setTotalParam,
+        sortByParam,
+        stateParam,
+        textParam,
+        totalParam,
+    ])
 
     return {
         text,
