@@ -35,24 +35,7 @@ export const useOrdersSearchParams = () => {
         isNotNull(countryParam) && void setCountryParam(null)
         isNotNull(pageParam) && void setPageParam(null)
         isNotNull(sortByParam) && void setSortByParam(null)
-    }, [
-        cityParam,
-        countryParam,
-        emailParam,
-        pageParam,
-        setCityParam,
-        setCountryParam,
-        setEmailParam,
-        setPageParam,
-        setSortByParam,
-        setStateParam,
-        setTextParam,
-        setTotalParam,
-        sortByParam,
-        stateParam,
-        textParam,
-        totalParam,
-    ])
+    }, [])
 
     return {
         text,
