@@ -108,6 +108,7 @@ const page: FC<pageProps> = ({}) => {
                     <CardContent>
                         <DataTable
                             columns={Columns}
+                            // @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
                             data={orders}
                             withPagination={false}
                         />
