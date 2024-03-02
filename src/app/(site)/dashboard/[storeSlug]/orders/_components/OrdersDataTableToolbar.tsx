@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/Button"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
 import SearchInput from "@/components/ui/SearchInput"
 
-import DashboardOrdersFilter from "./DashboardOrdersFilter"
+import OrdersFilter from "./OrdersFilter"
 
 interface OrdersDataTableToolbarProps<TData> {
     table: Table<TData>
@@ -38,7 +38,7 @@ export function OrdersDataTableToolbar<TData>({
             </div>
             <div className="flex items-center gap-4">
                 <DataTableViewOptions table={table} />
-                <DashboardOrdersFilter />
+                <OrdersFilter />
             </div>
         </div>
     )
