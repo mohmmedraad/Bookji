@@ -1,9 +1,8 @@
 import { type Book } from "@/db/schema"
-import { getOrders } from "@/server/utils"
+import { type getOrders, type getStoreBooks } from "@/server/utils"
 import { type TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
 
-import { type Price } from "@/lib/validations/book"
 import {
     type cartItemSchema,
     type checkoutItemSchema,
@@ -82,4 +81,5 @@ export interface SearchParams {
     [key: string]: string | string[] | undefined
 }
 
-export type OrderColumn = Awaited<ReturnType<typeof getOrders>>
+export type OrderColumns = Awaited<ReturnType<typeof getOrders>>
+export type BookColumns = Awaited<ReturnType<typeof getStoreBooks>>

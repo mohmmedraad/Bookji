@@ -1,13 +1,13 @@
 "use client"
 
-import { type OrderColumn } from "@/types"
+import { type OrderColumns } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/Badge"
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
 
-export const Columns: ColumnDef<OrderColumn>[] = [
+export const Columns: ColumnDef<OrderColumns>[] = [
     {
         accessorKey: "title",
         header: ({ column }) => (
