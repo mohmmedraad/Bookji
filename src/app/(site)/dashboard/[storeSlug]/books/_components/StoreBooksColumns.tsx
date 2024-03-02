@@ -43,7 +43,7 @@ export const Columns: ColumnDef<BookColumns>[] = [
             return (
                 <div className="flex w-[250px] items-center gap-3">
                     <BookCover
-                        src={row.getValue("cover") || "/placeholder.png"}
+                        src={row.getValue("cover")}
                         alt={`The Secret Story cover`}
                         width={40}
                         height={56}
