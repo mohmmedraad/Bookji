@@ -12,28 +12,16 @@ import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
 import SearchInput from "@/components/ui/SearchInput"
 import AddBookDialog from "@/components/AddBookDialog"
 
-import DashboardBooksFilter from "./DashboardBooksFilter"
+import DashboardBooksFilter from "./BooksFilter"
 
-interface DataTableToolbarProps<TData> {
+interface BooksTableToolbarProps<TData> {
     table: Table<TData>
 }
 
-export function DataTableToolbar<TData>({
+export function BooksTableToolbar<TData>({
     table,
-}: DataTableToolbarProps<TData>) {
+}: BooksTableToolbarProps<TData>) {
     const isFiltered = table.getState().columnFilters.length > 0
-    const searchParams = useBooksSearchParams()
-    const router = useRouter()
-    const isMount = useIsMount()
-
-    useEffect(() => {
-        // prevent the page from re-render on first load
-        if (!isMount) return
-
-        const url = new URL(window.location.href).toString()
-        router.push(url)
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchParams])
 
     return (
         <div className="flex items-center justify-between">

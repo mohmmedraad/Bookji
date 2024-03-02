@@ -1,6 +1,6 @@
 "use client"
 
-import { type Book as BookType } from "@/db/schema"
+import type { BookColumns } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import BookCover from "@/components/ui/BookCover"
@@ -8,9 +8,9 @@ import { Checkbox } from "@/components/ui/Checkbox"
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
 import Stars from "@/app/(site)/book/[bookSlug]/_components/Stars"
 
-import { DataTableRowActions } from "./DataTableRowActions"
+import { BooksTableRowActions } from "./BooksTableRowActions"
 
-export const Columns: ColumnDef<BookType>[] = [
+export const Columns: ColumnDef<BookColumns>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -43,21 +43,16 @@ export const Columns: ColumnDef<BookType>[] = [
             return (
                 <div className="flex w-[250px] items-center gap-3">
                     <BookCover
-                        src={row.original.cover!}
+                        src={row.getValue("cover") || "/placeholder.png"}
                         alt={`The Secret Story cover`}
                         width={40}
                         height={56}
                         className="h-14 w-10"
                     />
-                    <p>{row.original.title}</p>
+                    <p>{row.getValue("title")}</p>
                 </div>
             )
         },
-        // filterFn: (row, id, value: string) => {
-        //     return row.original.title
-        //         .toLowerCase()
-        //         .includes(value.toLowerCase())
-        // },
         enableSorting: false,
         enableHiding: false,
     },
@@ -125,7 +120,7 @@ export const Columns: ColumnDef<BookType>[] = [
     {
         id: "actions",
         cell: ({ row }) => (
-            <DataTableRowActions row={row} book={row.original} />
+            <BooksTableRowActions row={row} book={row.original} />
         ),
     },
 ]

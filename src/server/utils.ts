@@ -1,32 +1,49 @@
 import { db } from "@/db"
 import {
     addresses as addressesTable,
-    books,
+    books as booksTable,
     booksToCategories,
+    categories as categoriesTable,
     orders as ordersTable,
     payments,
+    ratings as ratingsTable,
     stores,
 } from "@/db/schema"
-import { SearchParams, type UserSubscriptionPlan } from "@/types"
+import type { SearchParams, UserSubscriptionPlan } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 import { addDays } from "date-fns"
-import { and, asc, between, desc, eq, like } from "drizzle-orm"
+import {
+    and,
+    asc,
+    between,
+    desc,
+    eq,
+    exists,
+    inArray,
+    like,
+    sql,
+} from "drizzle-orm"
 import { parse } from "valibot"
 
 import { storeSubscriptionPlans } from "@/config/site"
 import { stripe } from "@/lib/stripe"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
-import { ordersSearchParamsSchema } from "@/lib/validations/params"
+import {
+    booksSearchParamsSchema,
+    ordersSearchParamsSchema,
+} from "@/lib/validations/params"
 
 export async function deleteStore(id: number) {
-    const { insertId } = await db.delete(books).where(eq(books.id, id))
+    const { insertId } = await db
+        .delete(booksTable)
+        .where(eq(booksTable.id, id))
     return insertId
 }
 
 export async function deleteStoreBooks(storeId: number) {
     const { insertId } = await db
-        .delete(books)
-        .where(eq(books.storeId, storeId))
+        .delete(booksTable)
+        .where(eq(booksTable.storeId, storeId))
     return insertId
 }
 
@@ -265,4 +282,108 @@ export async function getOrders(
         .offset((page - 1) * limit)
 
     return orders
+}
+
+export async function getStoreBooks(
+    userId: string,
+    storeId: number,
+    searchParams: SearchParams,
+    limit = 10
+) {
+    const {
+        text,
+        page,
+        sortBy: [column, order],
+        categories,
+        price: [minPrice, maxPrice],
+        rating: [minRating, maxRating],
+        inventory: [minInventory, maxInventory],
+    } = parse(booksSearchParamsSchema, searchParams)
+
+    const books = await db
+        .select({
+            id: booksTable.id,
+            title: booksTable.title,
+            slug: booksTable.slug,
+            rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
+                Number
+            ),
+            userId: booksTable.userId,
+            storeId: booksTable.storeId,
+            price: booksTable.price,
+            description: booksTable.description,
+            cover: booksTable.cover,
+            inventory: booksTable.inventory,
+            createdAt: booksTable.createdAt,
+            updatedAt: booksTable.updatedAt,
+        })
+        .from(booksTable)
+        .where((book) =>
+            and(
+                eq(book.userId, userId),
+                eq(book.storeId, storeId),
+                text ? like(book.title, `%${text}%`) : undefined,
+                between(book.price, minPrice.toString(), maxPrice.toString()),
+                between(book.inventory, minInventory, maxInventory),
+                categories.length === 0
+                    ? undefined
+                    : exists(
+                          db
+                              .select({
+                                  bookId: booksToCategories.bookId,
+                                  categoryId: booksToCategories.categoryId,
+                              })
+                              .from(booksToCategories)
+                              .where((category) =>
+                                  and(
+                                      eq(category.bookId, book.id),
+                                      exists(
+                                          db
+                                              .select({
+                                                  name: categoriesTable.name,
+                                                  id: categoriesTable.id,
+                                              })
+                                              .from(categoriesTable)
+                                              .where((categoryT) =>
+                                                  and(
+                                                      eq(
+                                                          categoryT.id,
+                                                          category.categoryId
+                                                      ),
+                                                      inArray(
+                                                          categoryT.name,
+                                                          categories
+                                                      )
+                                                  )
+                                              )
+                                      )
+                                  )
+                              )
+                      )
+            )
+        )
+        .leftJoin(ratingsTable, eq(booksTable.id, ratingsTable.bookId))
+        .groupBy(booksTable.id, booksTable.title)
+        .having(
+            between(
+                sql` AVG(COALESCE(${ratingsTable.rating}, 0)) `,
+                minRating,
+                maxRating
+            )
+        )
+        .orderBy((book) => {
+            return column in book
+                ? order === "asc"
+                    ? //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      asc(book[column])
+                    : //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      desc(book[column])
+                : desc(book.createdAt)
+        })
+        .limit(limit)
+        .offset((page - 1) * limit)
+
+    return books
 }

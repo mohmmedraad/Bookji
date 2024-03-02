@@ -1,7 +1,7 @@
 "use client"
 
-import Link from "next/link"
-import { type Book } from "@/db/schema"
+// import EditBookDialog from "./EditBookDialog"
+import type { BookColumns } from "@/types"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type Row } from "@tanstack/react-table"
 
@@ -9,24 +9,21 @@ import { Button } from "@/components/ui/Button"
 import {
     DropdownMenu,
     DropdownMenuContent,
-    DropdownMenuItem,
     DropdownMenuSeparator,
-    DropdownMenuShortcut,
     DropdownMenuTrigger,
 } from "@/components/ui/DropdownMenu"
 
 import DeleteBookDialog from "./DeleteBookDialog"
-import EditBookDialog from "./EditBookDialog"
 
-interface DataTableRowActionsProps<TData> {
+interface BooksTableRowActionsProps<TData> {
     row: Row<TData>
-    book: Book
+    book: BookColumns
 }
 
-export function DataTableRowActions<TData>({
+export function BooksTableRowActions<TData>({
     row,
     book,
-}: DataTableRowActionsProps<TData>) {
+}: BooksTableRowActionsProps<TData>) {
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -39,7 +36,7 @@ export function DataTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                <EditBookDialog {...book} />
+                {/* <EditBookDialog {...book} /> */}
 
                 <DropdownMenuSeparator />
 

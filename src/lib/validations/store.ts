@@ -6,7 +6,6 @@ import {
     mimeType,
     minLength,
     nullable,
-    nullType,
     number,
     object,
     partial,
@@ -14,11 +13,8 @@ import {
     string,
     toTrimmed,
     url,
-    value,
     type Input,
 } from "valibot"
-
-import { ordersSearchParamsSchema } from "./params"
 
 export const storeInfoSchema = object({
     name: string([
@@ -70,7 +66,7 @@ export const deleteStoreSchema = object({
     storeId: number(),
 })
 
-export const storeOrdersSchema = object({
+export const storeResourcesSchema = object({
     storeId: number(),
     searchParams: record(string(), nullable(string(), "")),
 })

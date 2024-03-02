@@ -1,18 +1,14 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
-import { addresses as addressesTable, orders as ordersTable } from "@/db/schema"
 import { getOrders } from "@/server/utils"
 import { type SearchParams } from "@/types"
 import { currentUser } from "@clerk/nextjs"
-import { and, asc, between, desc, eq, like } from "drizzle-orm"
+import { and } from "drizzle-orm"
 import { parse } from "valibot"
 
 import { ordersSearchParamsSchema } from "@/lib/validations/params"
-import { DataTable } from "@/components/ui/DataTable"
 
-import { Columns } from "./_components/OrdersColumns"
-import { OrdersDataTableToolbar } from "./_components/OrdersDataTableToolbar"
 import OrdersTable from "./_components/OrdersTable"
 
 interface pageProps {

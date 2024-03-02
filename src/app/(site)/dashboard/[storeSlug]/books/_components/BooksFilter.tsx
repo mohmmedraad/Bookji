@@ -9,9 +9,9 @@ import FilterLabel from "@/components/ui/FilterLabel"
 import FilterOption from "@/components/ui/FilterOption"
 import RangeFilterOption from "@/components/ui/RangeFilterOption"
 
-interface DashboardBooksFilterProps {}
+interface BooksFilterProps {}
 
-const DashboardBooksFilter: FC<DashboardBooksFilterProps> = ({}) => {
+const BooksFilter: FC<BooksFilterProps> = ({}) => {
     const { handleClearSearch } = useBooksSearchParams()
 
     function handleClearFilters() {
@@ -61,4 +61,4 @@ const DashboardBooksFilter: FC<DashboardBooksFilterProps> = ({}) => {
     )
 }
 
-export default DashboardBooksFilter
+export default BooksFilter
