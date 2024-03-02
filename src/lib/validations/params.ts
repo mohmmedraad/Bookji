@@ -9,6 +9,7 @@ import {
     optional,
     string,
     transform,
+    type Input,
 } from "valibot"
 
 export const searchParamsSchema = object({
@@ -56,6 +57,8 @@ export const ordersSearchParamsSchema = merge([
     }),
 ])
 
+export type OrdersSearchParamsSchema = Input<typeof ordersSearchParamsSchema>
+
 function customRangeValidation(value: string) {
     const isValueValid =
         value.split("-").length === 2 &&
@@ -64,9 +67,12 @@ function customRangeValidation(value: string) {
 }
 
 function validateRangeSchema(defaultValue: string) {
-    const schema = transform(
-        fallback(string([custom(customRangeValidation)]), defaultValue),
-        (input) => input.split("-").map(Number)
+    const schema = optional(
+        transform(
+            fallback(string([custom(customRangeValidation)]), defaultValue),
+            (input) => input.split("-").map(Number)
+        ),
+        defaultValue
     )
 
     return schema

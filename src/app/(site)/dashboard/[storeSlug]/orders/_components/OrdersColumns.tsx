@@ -1,25 +1,13 @@
 "use client"
 
+import { type OrderColumn } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/Badge"
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
 
-interface ColumnProps {
-    title: string | null
-    total: string
-    status: string
-    addressId: number | null
-    storeId: number
-    email: string | null
-    city: never
-    state: never
-    country: never
-    createdAt: Date | null
-}
-
-export const Columns: ColumnDef<ColumnProps, unknown>[] = [
+export const Columns: ColumnDef<OrderColumn>[] = [
     {
         accessorKey: "title",
         header: ({ column }) => (
@@ -47,14 +35,14 @@ export const Columns: ColumnDef<ColumnProps, unknown>[] = [
                         // eslint-disable-next-line tailwindcss/migration-from-tailwind-2
                         className={cn("hover:bg-opacity-50", {
                             "bg-green-100 text-green-800":
-                                row.original.status === "delivered",
+                                row.getValue("status") === "delivered",
                             "bg-yellow-100 text-yellow-800":
-                                row.original.status === "on way",
+                                row.getValue("status") === "on way",
                             "bg-red-100 text-red-800":
-                                row.original.status === "canceled",
+                                row.getValue("status") === "canceled",
                         })}
                     >
-                        {row.original.status}
+                        {row.getValue("status")}
                     </Badge>
                 </div>
             )
@@ -69,7 +57,7 @@ export const Columns: ColumnDef<ColumnProps, unknown>[] = [
         ),
         cell: ({ row }) => {
             return (
-                <div className="flex w-[50px] items-center">
+                <div className="flex w-[100px] items-center">
                     <span>{row.getValue("total")}$</span>
                 </div>
             )

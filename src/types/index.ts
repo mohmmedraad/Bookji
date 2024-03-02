@@ -1,4 +1,5 @@
 import { type Book } from "@/db/schema"
+import { getOrders } from "@/server/utils"
 import { type TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
 
@@ -77,7 +78,8 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
     isCanceled: boolean
     isActive: boolean
 }
-
 export interface SearchParams {
     [key: string]: string | string[] | undefined
 }
+
+export type OrderColumn = Awaited<ReturnType<typeof getOrders>>

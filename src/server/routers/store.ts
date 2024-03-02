@@ -9,17 +9,19 @@ import {
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, eq, inArray, like } from "drizzle-orm"
-import { number, object, string } from "valibot"
+import { number, object, string, ValiError } from "valibot"
 
 import { stripe } from "@/lib/stripe"
 import { slugify } from "@/lib/utils"
 import {
     deleteStoreSchema,
     newStoreSchema,
+    storeOrdersSchema,
     updateStoreSchema,
 } from "@/lib/validations/store"
 
 import { privateProcedure, publicProcedure, router } from "../trpc"
+import { getOrders } from "../utils"
 
 export const storeRouter = router({
     create: privateProcedure
@@ -169,6 +171,41 @@ export const storeRouter = router({
             }
 
             return store
+        }),
+
+    orders: privateProcedure
+        .input(wrap(storeOrdersSchema))
+        .query(async ({ input, ctx }) => {
+            const store = await db.query.stores.findFirst({
+                columns: {
+                    id: true,
+                },
+                where: (store, { eq }) =>
+                    and(
+                        eq(store.ownerId, ctx.user.id),
+                        eq(store.id, input.storeId)
+                    ),
+            })
+
+            if (!store) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store not found",
+                })
+            }
+            try {
+                const orders = await getOrders(ctx.user.id, store.id, {
+                    ...input.searchParams,
+                })
+                return orders
+            } catch (error) {
+                if (error instanceof ValiError) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: "Invalid search parameters.",
+                    })
+                }
+            }
         }),
 
     getStores: publicProcedure

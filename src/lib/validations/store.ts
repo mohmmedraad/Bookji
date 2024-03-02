@@ -5,15 +5,20 @@ import {
     merge,
     mimeType,
     minLength,
+    nullable,
+    nullType,
     number,
     object,
     partial,
+    record,
     string,
     toTrimmed,
     url,
     value,
     type Input,
 } from "valibot"
+
+import { ordersSearchParamsSchema } from "./params"
 
 export const storeInfoSchema = object({
     name: string([
@@ -63,6 +68,11 @@ export const storeThumbnailSchema = blob([
 
 export const deleteStoreSchema = object({
     storeId: number(),
+})
+
+export const storeOrdersSchema = object({
+    storeId: number(),
+    searchParams: record(string(), nullable(string(), "")),
 })
 
 export type StoreInfoSchema = Input<typeof storeInfoSchema>

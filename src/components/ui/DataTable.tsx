@@ -27,10 +27,13 @@ import {
     TableRow,
 } from "@/components/ui/Table"
 
+import { Skeleton } from "./Skeleton"
+
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]
     data: TData[]
-    url?: string
+    isFetching?: boolean
+    isInitialLoading?: boolean
     withPagination?: boolean
     CustomDataTableToolbar?: typeof DataTableToolbar
 }
@@ -38,9 +41,12 @@ interface DataTableProps<TData, TValue> {
 export function DataTable<TData, TValue>({
     columns,
     data,
+    isFetching = false,
+    isInitialLoading = true,
     withPagination = true,
     CustomDataTableToolbar,
 }: DataTableProps<TData, TValue>) {
+    // const isMount = useIsMount()
     const [rowSelection, setRowSelection] = React.useState({})
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
@@ -100,7 +106,30 @@ export function DataTable<TData, TValue>({
                         ))}
                     </TableHeader>
                     <TableBody>
-                        {table.getRowModel().rows?.length ? (
+                        {table.getRowModel().rows?.length === 0 &&
+                        !isFetching ? (
+                            <TableRow>
+                                <TableCell
+                                    colSpan={columns.length}
+                                    className="h-24 text-center"
+                                >
+                                    No results.
+                                </TableCell>
+                            </TableRow>
+                        ) : isFetching && !isInitialLoading ? (
+                            table.getRowModel().rows.map((row) => (
+                                <TableRow key={row.id}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <TableCell key={cell.id}>
+                                            {flexRender(
+                                                <Skeleton className="h-4 w-full" />,
+                                                cell.getContext()
+                                            )}
+                                        </TableCell>
+                                    ))}
+                                </TableRow>
+                            ))
+                        ) : (
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
@@ -119,15 +148,6 @@ export function DataTable<TData, TValue>({
                                     ))}
                                 </TableRow>
                             ))
-                        ) : (
-                            <TableRow>
-                                <TableCell
-                                    colSpan={columns.length}
-                                    className="h-24 text-center"
-                                >
-                                    No results.
-                                </TableCell>
-                            </TableRow>
                         )}
                     </TableBody>
                 </Table>

@@ -1,14 +1,22 @@
 import { db } from "@/db"
-import { books, booksToCategories, payments, stores } from "@/db/schema"
-import { type UserSubscriptionPlan } from "@/types"
+import {
+    addresses as addressesTable,
+    books,
+    booksToCategories,
+    orders as ordersTable,
+    payments,
+    stores,
+} from "@/db/schema"
+import { SearchParams, type UserSubscriptionPlan } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 import { addDays } from "date-fns"
-import { eq } from "drizzle-orm"
+import { and, asc, between, desc, eq, like } from "drizzle-orm"
 import { parse } from "valibot"
 
 import { storeSubscriptionPlans } from "@/config/site"
 import { stripe } from "@/lib/stripe"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
+import { ordersSearchParamsSchema } from "@/lib/validations/params"
 
 export async function deleteStore(id: number) {
     const { insertId } = await db.delete(books).where(eq(books.id, id))
@@ -190,4 +198,71 @@ export async function getSubscriptionPlan(
         console.error(err)
         return null
     }
+}
+
+export async function getOrders(
+    userId: string,
+    storeId: number,
+    searchParams: SearchParams,
+    limit = 10
+) {
+    const {
+        text,
+        page,
+        city,
+        country,
+        email,
+        state,
+        sortBy: [column, orderBy],
+        total: [minTotal, maxTotal],
+    } = parse(ordersSearchParamsSchema, searchParams)
+
+    const orders = await db
+        .select({
+            title: ordersTable.name,
+            total: ordersTable.total,
+            status: ordersTable.stripePaymentIntentStatus,
+            addressId: ordersTable.addressId,
+            storeId: ordersTable.storeId,
+            email: ordersTable.email,
+            city: addressesTable.city,
+            state: addressesTable.state,
+            country: addressesTable.country,
+            createdAt: ordersTable.createdAt,
+        })
+        .from(ordersTable)
+        .where((order) =>
+            and(
+                eq(order.storeId, storeId),
+                between(order.total, minTotal.toString(), maxTotal.toString()),
+                text ? like(order.title, `%${text}%`) : undefined,
+                email ? like(order.email, `%${email}%`) : undefined
+            )
+        )
+        .innerJoin(addressesTable, eq(ordersTable.addressId, addressesTable.id))
+        .groupBy(ordersTable.id)
+        .having(
+            and(
+                city ? like(addressesTable.city, `%${city}%`) : undefined,
+                state ? like(addressesTable.state, `%${state}%`) : undefined,
+                country
+                    ? like(addressesTable.country, `%${country}%`)
+                    : undefined
+            )
+        )
+        .orderBy((order) => {
+            return column in order
+                ? orderBy === "asc"
+                    ? //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      asc(order[column])
+                    : //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      desc(order[column])
+                : desc(order.createdAt)
+        })
+        .limit(limit)
+        .offset((page - 1) * limit)
+
+    return orders
 }
