@@ -12,6 +12,7 @@ export const useBooksSearchParams = () => {
     const [pageParam, setPageParam] = useQueryState("page")
     const [sortByParam, setSortByParam] = useQueryState("sortBy")
     const [storesParam, setStoresParam] = useQueryState("stores")
+    const [ordersParam, setOrdersParam] = useQueryState("orders")
 
     const text = useDebounce(textParam)
     const price = useDebounce(priceParam)
@@ -21,6 +22,7 @@ export const useBooksSearchParams = () => {
     const page = useDebounce(pageParam)
     const sortBy = useDebounce(sortByParam)
     const stores = useDebounce(storesParam)
+    const orders = useDebounce(ordersParam)
 
     const handleClearSearch = useCallback(() => {
         void setTextParam(null)
@@ -31,6 +33,7 @@ export const useBooksSearchParams = () => {
         void setSortByParam(null)
         void setCategoriesParam(null)
         void setStoresParam(null)
+        void setOrdersParam(null)
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
@@ -43,6 +46,7 @@ export const useBooksSearchParams = () => {
         sortBy,
         stores,
         inventory,
+        orders,
         handleClearSearch,
     }
 }

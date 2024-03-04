@@ -21,7 +21,7 @@ import {
 } from "@/lib/validations/store"
 
 import { privateProcedure, publicProcedure, router } from "../trpc"
-import { getOrders, getStoreBooks } from "../utils"
+import { getStoreBooks, getStoreOrders } from "../utils"
 
 export const storeRouter = router({
     create: privateProcedure
@@ -194,7 +194,7 @@ export const storeRouter = router({
                 })
             }
             try {
-                const orders = await getOrders(ctx.user.id, store.id, {
+                const orders = await getStoreOrders(ctx.user.id, store.id, {
                     ...input.searchParams,
                 })
                 return orders

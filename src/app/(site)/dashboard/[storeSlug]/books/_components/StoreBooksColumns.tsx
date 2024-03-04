@@ -1,6 +1,6 @@
 "use client"
 
-import type { BookColumns } from "@/types"
+import type { BookColumn } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import BookCover from "@/components/ui/BookCover"
@@ -10,7 +10,7 @@ import Stars from "@/app/(site)/book/[bookSlug]/_components/Stars"
 
 import { BooksTableRowActions } from "./BooksTableRowActions"
 
-export const Columns: ColumnDef<BookColumns>[] = [
+export const Columns: ColumnDef<BookColumn>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -40,10 +40,11 @@ export const Columns: ColumnDef<BookColumns>[] = [
             <DataTableColumnHeader column={column} title="books" id="book" />
         ),
         cell: ({ row }) => {
+            console.log("cover: ", row.getValue("cover"))
             return (
                 <div className="flex w-[250px] items-center gap-3">
                     <BookCover
-                        src={row.getValue("cover")}
+                        src={row.original.cover || "/placeholder.png"}
                         alt={`The Secret Story cover`}
                         width={40}
                         height={56}
@@ -56,21 +57,21 @@ export const Columns: ColumnDef<BookColumns>[] = [
         enableSorting: false,
         enableHiding: false,
     },
-    // {
-    //     accessorKey: "orders",
-    //     header: ({ column }) => (
-    //         <DataTableColumnHeader column={column} title="orders" />
-    //     ),
-    //     cell: ({ row }) => {
-    //         return (
-    //             <div className="flex w-[100px] items-center">
-    //                 <span className="text-gray-800">
-    //                     {row.getValue("orders")}
-    //                 </span>
-    //             </div>
-    //         )
-    //     },
-    // },
+    {
+        accessorKey: "orders",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="orders" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[100px] items-center">
+                    <span className="text-gray-800">
+                        {row.getValue("orders")}
+                    </span>
+                </div>
+            )
+        },
+    },
     {
         accessorKey: "inventory",
         header: ({ column }) => (

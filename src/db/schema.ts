@@ -45,7 +45,7 @@ export const booksRelations = relations(books, ({ many, one }) => ({
 export const orders = mysqlTable(`${APP_NAME}_orders`, {
     id: serial("id").primaryKey(),
     storeId: int("storeId").notNull(),
-    items: json("items").$type<CheckoutItem[] | null>().default(null),
+    userId: varchar("userId", { length: 191 }).notNull(),
     total: decimal("total", { precision: 10, scale: 2 }).notNull().default("0"),
     stripePaymentIntentId: varchar("stripePaymentIntentId", {
         length: 191,
@@ -62,7 +62,7 @@ export const orders = mysqlTable(`${APP_NAME}_orders`, {
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
-export const ordersRelations = relations(orders, ({ one }) => ({
+export const ordersRelations = relations(orders, ({ one, many }) => ({
     store: one(stores, {
         fields: [orders.storeId],
         references: [stores.id],
@@ -72,10 +72,31 @@ export const ordersRelations = relations(orders, ({ one }) => ({
         fields: [orders.storeId],
         references: [addresses.id],
     }),
+
+    items: many(orderItems),
 }))
 
 export type Order = typeof orders.$inferSelect
 export type NewOrder = typeof orders.$inferInsert
+
+export const orderItems = mysqlTable(`${APP_NAME}_orderItems`, {
+    id: serial("id").primaryKey(),
+    orderId: int("orderId").notNull(),
+    bookId: int("bookId").notNull(),
+    quantity: int("quantity").notNull().default(1),
+    createdAt: timestamp("createdAt").defaultNow(),
+})
+
+export const orderItemsRelations = relations(orderItems, ({ one }) => ({
+    book: one(books, {
+        fields: [orderItems.bookId],
+        references: [books.id],
+    }),
+    order: one(orders, {
+        fields: [orderItems.orderId],
+        references: [orders.id],
+    }),
+}))
 
 export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
     id: serial("id").primaryKey(),

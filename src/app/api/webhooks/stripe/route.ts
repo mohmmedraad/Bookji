@@ -1,6 +1,13 @@
 import { headers } from "next/headers"
 import { db } from "@/db"
-import { addresses, books, cartItems, orders, payments } from "@/db/schema"
+import {
+    addresses,
+    books,
+    cartItems,
+    orderItems,
+    orders,
+    payments,
+} from "@/db/schema"
 import type { CheckoutItem } from "@/types"
 import { clerkClient } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"
@@ -124,6 +131,25 @@ export async function POST(req: Request) {
             if (checkoutItems) {
                 try {
                     if (!event.account) throw new Error("No account found.")
+                    if (!storeId || isNaN(Number(storeId)))
+                        throw new Error(
+                            "store id not provided in the payment_intent metadata"
+                        )
+
+                    if (!cartId || isNaN(Number(cartId)))
+                        throw new Error(
+                            "cart id not provided in the payment_intent metadata"
+                        )
+
+                    const userCart = await db.query.carts.findFirst({
+                        columns: {
+                            id: true,
+                            userId: true,
+                        },
+                        where: (cart) => eq(cart.id, Number(cartId)),
+                    })
+
+                    if (!userCart) throw new Error("cart not found.")
 
                     // Parsing items from metadata
                     // Didn't parse before because can pass the unparsed data directly to the order table items json column in the db
@@ -166,27 +192,38 @@ export async function POST(req: Request) {
 
                     if (!newAddress.insertId)
                         throw new Error("No address created.")
-                    paymentIntentSucceeded.receipt_email
                     // Create new order in db
-                    // @ts-expect-error error
-                    await db.insert(orders).values({
-                        storeId: payment.storeId,
-                        items: safeParsedItems.data ?? [],
-                        quantity: safeParsedItems.data.reduce(
-                            (acc, item) => acc + item.quantity,
-                            0
-                        ),
-                        total: Number(orderAmount) / 100,
-                        stripePaymentIntentId: paymentIntentId,
-                        stripePaymentIntentStatus:
-                            paymentIntentSucceeded?.status,
-                        name: paymentIntentSucceeded?.shipping?.name,
-                        email: paymentIntentSucceeded?.receipt_email,
-                        addressId: Number(newAddress.insertId),
-                    })
+                    const { insertId: insertedOrderId } = await db
+                        .insert(orders)
+                        .values({
+                            // @ts-expect-error - storeId is not in the insert type
+                            storeId: payment.storeId,
+                            userId: userCart.userId,
+                            quantity: safeParsedItems.output.reduce(
+                                (acc, item) => acc + item.quantity,
+                                0
+                            ),
+                            total: Number(orderAmount) / 100,
+                            stripePaymentIntentId: paymentIntentId,
+                            stripePaymentIntentStatus:
+                                paymentIntentSucceeded?.status,
+                            name: paymentIntentSucceeded?.shipping?.name,
+                            email: paymentIntentSucceeded?.receipt_email,
+                            addressId: Number(newAddress.insertId),
+                        })
 
-                    // Update product inventory in db
-                    for (const item of safeParsedItems.data) {
+                    const newOrderItems = safeParsedItems.output.map(
+                        ({ bookId, quantity }) => ({
+                            bookId,
+                            quantity,
+                            orderId: +insertedOrderId,
+                        })
+                    )
+                    // insert order items in db
+                    await db.insert(orderItems).values(newOrderItems)
+
+                    // Update books inventory in db
+                    for (const item of safeParsedItems.output) {
                         const book = await db.query.books.findFirst({
                             columns: {
                                 id: true,
@@ -213,25 +250,6 @@ export async function POST(req: Request) {
                             .where(eq(books.id, item.bookId))
                     }
 
-                    if (!cartId || isNaN(Number(cartId)))
-                        throw new Error(
-                            "cart id not provided in the payment_intent metadata"
-                        )
-
-                    const userCart = await db.query.carts.findFirst({
-                        columns: {
-                            id: true,
-                        },
-                        where: (cart) => eq(cart.id, Number(cartId)),
-                    })
-
-                    if (!userCart) throw new Error("cart not found.")
-
-                    if (!storeId || isNaN(Number(storeId)))
-                        throw new Error(
-                            "store id not provided in the payment_intent metadata"
-                        )
-
                     // Remove items from cart
                     await db
                         .delete(cartItems)
@@ -241,20 +259,6 @@ export async function POST(req: Request) {
                                 eq(cartItems.storeId, Number(storeId))
                             )
                         )
-
-                    // const cartUpdatedItems = userCart.items.filter(
-                    //     (item) =>
-                    //         !safeParsedItems.data.some(
-                    //             (orderItem) => orderItem.bookId === item.bookId
-                    //         )
-                    // )
-
-                    // await db
-                    //     .update(carts)
-                    //     .set({
-                    //         items: cartUpdatedItems || [],
-                    //     })
-                    //     .where(eq(carts.id, Number(cartId)))
                 } catch (err) {
                     console.log("Error creating order.", err)
                 }
@@ -269,7 +273,7 @@ export async function POST(req: Request) {
             console.log(`Charge id: ${chargeSucceeded.id}`)
             break
         default:
-        console.warn(`Unhandled event type: ${event.type}`)
+            console.warn(`Unhandled event type: ${event.type}`)
     }
 
     return new Response(null, { status: 200 })

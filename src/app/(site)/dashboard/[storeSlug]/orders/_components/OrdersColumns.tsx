@@ -1,13 +1,15 @@
 "use client"
 
-import { type OrderColumns } from "@/types"
+import { type OrderColumn } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/Badge"
+import Book from "@/components/ui/BookCover"
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
+import { UserAvatar } from "@/components/UserAvatar"
 
-export const Columns: ColumnDef<OrderColumns>[] = [
+export const Columns: ColumnDef<OrderColumn>[] = [
     {
         accessorKey: "title",
         header: ({ column }) => (
@@ -22,6 +24,67 @@ export const Columns: ColumnDef<OrderColumns>[] = [
         },
         enableSorting: false,
         enableHiding: true,
+    },
+    {
+        accessorKey: "customer",
+        header: ({ column }) => (
+            <DataTableColumnHeader
+                column={column}
+                title="Customer"
+                id="customer"
+            />
+        ),
+        cell: ({
+            row: {
+                original: { customer },
+            },
+        }) => {
+            return (
+                <div className="flex w-[120px] items-center gap-3">
+                    <UserAvatar user={customer!} />
+                    <span>
+                        {customer?.firstName} {customer?.lastName}
+                    </span>
+                </div>
+            )
+        },
+        enableSorting: false,
+        enableHiding: true,
+    },
+    {
+        accessorKey: "items",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Items" id="items" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="grid w-[150px] grid-cols-3 gap-2">
+                    {row.original?.items?.map((item) => (
+                        <Book
+                            alt={"order items"}
+                            key={item.cover}
+                            src={item.cover}
+                            width={50}
+                            height={67}
+                            className="aspect-[2/3]"
+                        />
+                    ))}
+                </div>
+            )
+        },
+    },
+    {
+        accessorKey: "total",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="Total" id="total" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[100px] items-center">
+                    <span>{row.getValue("total")}$</span>
+                </div>
+            )
+        },
     },
     {
         accessorKey: "status",
@@ -49,19 +112,6 @@ export const Columns: ColumnDef<OrderColumns>[] = [
         },
         enableSorting: true,
         enableHiding: true,
-    },
-    {
-        accessorKey: "total",
-        header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Total" id="total" />
-        ),
-        cell: ({ row }) => {
-            return (
-                <div className="flex w-[100px] items-center">
-                    <span>{row.getValue("total")}$</span>
-                </div>
-            )
-        },
     },
     {
         accessorKey: "country",

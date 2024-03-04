@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "0ef9cbf2-43d5-451b-9f49-7f7fc4a606bc",
+  "id": "3c28a844-059b-4fb7-83c9-a4e3079798c2",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -438,6 +438,59 @@
       },
       "uniqueConstraints": {}
     },
+    "Bookji_orderItems": {
+      "name": "Bookji_orderItems",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "serial",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": true
+        },
+        "orderId": {
+          "name": "orderId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "bookId": {
+          "name": "bookId",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "quantity": {
+          "name": "quantity",
+          "type": "int",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false,
+          "default": 1
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "autoincrement": false,
+          "default": "(now())"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {
+        "Bookji_orderItems_id": {
+          "name": "Bookji_orderItems_id",
+          "columns": [
+            "id"
+          ]
+        }
+      },
+      "uniqueConstraints": {}
+    },
     "Bookji_orders": {
       "name": "Bookji_orders",
       "columns": {
@@ -455,13 +508,12 @@
           "notNull": true,
           "autoincrement": false
         },
-        "items": {
-          "name": "items",
-          "type": "json",
+        "userId": {
+          "name": "userId",
+          "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false,
-          "default": "('null')"
+          "notNull": true,
+          "autoincrement": false
         },
         "total": {
           "name": "total",

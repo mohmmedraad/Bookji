@@ -43,6 +43,7 @@ export const booksSearchParamsSchema = object({
     ),
     price: validateRangeSchema("0-500"),
     inventory: validateRangeSchema("0-100"),
+    orders: validateRangeSchema("0-300"),
     rating: validateRangeSchema("0-5"),
 })
 

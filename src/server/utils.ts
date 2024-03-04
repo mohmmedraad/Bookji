@@ -4,13 +4,14 @@ import {
     books as booksTable,
     booksToCategories,
     categories as categoriesTable,
+    orderItems as orderItemsTable,
     orders as ordersTable,
     payments,
     ratings as ratingsTable,
     stores,
 } from "@/db/schema"
 import type { SearchParams, UserSubscriptionPlan } from "@/types"
-import { clerkClient } from "@clerk/nextjs"
+import { clerkClient } from "@clerk/nextjs/server"
 import { addDays } from "date-fns"
 import {
     and,
@@ -217,7 +218,7 @@ export async function getSubscriptionPlan(
     }
 }
 
-export async function getOrders(
+export async function getStoreOrders(
     userId: string,
     storeId: number,
     searchParams: SearchParams,
@@ -236,6 +237,7 @@ export async function getOrders(
 
     const orders = await db
         .select({
+            customer: ordersTable.userId,
             title: ordersTable.name,
             total: ordersTable.total,
             status: ordersTable.stripePaymentIntentStatus,
@@ -244,6 +246,14 @@ export async function getOrders(
             email: ordersTable.email,
             city: addressesTable.city,
             state: addressesTable.state,
+            items: sql<
+                {
+                    cover: string
+                }[]
+            >`JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'cover', ${booksTable.cover}
+            ))`,
             country: addressesTable.country,
             createdAt: ordersTable.createdAt,
         })
@@ -257,6 +267,8 @@ export async function getOrders(
             )
         )
         .innerJoin(addressesTable, eq(ordersTable.addressId, addressesTable.id))
+        .innerJoin(orderItemsTable, eq(ordersTable.id, orderItemsTable.orderId))
+        .leftJoin(booksTable, eq(orderItemsTable.bookId, booksTable.id))
         .groupBy(ordersTable.id)
         .having(
             and(
@@ -281,7 +293,35 @@ export async function getOrders(
         .limit(limit)
         .offset((page - 1) * limit)
 
-    return orders
+    const customersIds = [...new Set(orders.map((order) => order.customer))]
+
+    const customers = await clerkClient.users.getUserList({
+        userId: customersIds,
+    })
+
+    const customersDetails = new Map<
+        string,
+        {
+            firstName: string | null
+            lastName: string | null
+            imageUrl: string
+        }
+    >()
+
+    customers.forEach((customer) => {
+        customersDetails.set(customer.id, {
+            firstName: customer.firstName,
+            lastName: customer.lastName,
+            imageUrl: customer.imageUrl,
+        })
+    })
+
+    const ordersWithCustomersMap = orders.map((order) => ({
+        ...order,
+        customer: customersDetails.get(order.customer),
+    }))
+
+    return ordersWithCustomersMap
 }
 
 export async function getStoreBooks(
@@ -298,6 +338,7 @@ export async function getStoreBooks(
         price: [minPrice, maxPrice],
         rating: [minRating, maxRating],
         inventory: [minInventory, maxInventory],
+        orders: [minOrders, maxOrders],
     } = parse(booksSearchParamsSchema, searchParams)
 
     const books = await db
@@ -308,6 +349,7 @@ export async function getStoreBooks(
             rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
                 Number
             ),
+            orders: sql<number>`COALESCE(SUM(${orderItemsTable.quantity}), 0)`,
             userId: booksTable.userId,
             storeId: booksTable.storeId,
             price: booksTable.price,
@@ -324,6 +366,7 @@ export async function getStoreBooks(
                 eq(book.storeId, storeId),
                 text ? like(book.title, `%${text}%`) : undefined,
                 between(book.price, minPrice.toString(), maxPrice.toString()),
+                // between(book.orders, minOrders, maxOrders),
                 between(book.inventory, minInventory, maxInventory),
                 categories.length === 0
                     ? undefined
@@ -363,12 +406,12 @@ export async function getStoreBooks(
             )
         )
         .leftJoin(ratingsTable, eq(booksTable.id, ratingsTable.bookId))
+        .leftJoin(orderItemsTable, eq(booksTable.id, orderItemsTable.bookId))
         .groupBy(booksTable.id, booksTable.title)
-        .having(
-            between(
-                sql` AVG(COALESCE(${ratingsTable.rating}, 0)) `,
-                minRating,
-                maxRating
+        .having((book) =>
+            and(
+                between(book.rating, minRating, maxRating),
+                between(book.orders, minOrders, maxOrders)
             )
         )
         .orderBy((book) => {

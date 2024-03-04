@@ -70,10 +70,19 @@ CREATE TABLE `Bookji_email_preferences` (
 	CONSTRAINT `Bookji_email_preferences_id` PRIMARY KEY(`id`)
 );
 --> statement-breakpoint
+CREATE TABLE `Bookji_orderItems` (
+	`id` serial AUTO_INCREMENT NOT NULL,
+	`orderId` int NOT NULL,
+	`bookId` int NOT NULL,
+	`quantity` int NOT NULL DEFAULT 1,
+	`createdAt` timestamp DEFAULT (now()),
+	CONSTRAINT `Bookji_orderItems_id` PRIMARY KEY(`id`)
+);
+--> statement-breakpoint
 CREATE TABLE `Bookji_orders` (
 	`id` serial AUTO_INCREMENT NOT NULL,
 	`storeId` int NOT NULL,
-	`items` json DEFAULT ('null'),
+	`userId` varchar(191) NOT NULL,
 	`total` decimal(10,2) NOT NULL DEFAULT '0',
 	`stripePaymentIntentId` varchar(191) NOT NULL,
 	`${APP_NAME}_stripePaymentIntentStatus` varchar(191) NOT NULL,

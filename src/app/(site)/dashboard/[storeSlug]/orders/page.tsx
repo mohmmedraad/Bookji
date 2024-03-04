@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
-import { getOrders } from "@/server/utils"
+import { getStoreOrders } from "@/server/utils"
 import { type SearchParams } from "@/types"
 import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"
@@ -46,7 +46,9 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
 
     if (!store) return notFound()
     // @ts-expect-error unknown error
-    const orders = await getOrders(user.id, store.id, { ...ordersSearchParams })
+    const orders = await getStoreOrders(user.id, store.id, {
+        ...ordersSearchParams,
+    })
 
     return (
         <>

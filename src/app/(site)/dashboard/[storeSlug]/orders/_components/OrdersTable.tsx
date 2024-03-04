@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FC } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { type OrderColumns } from "@/types"
+import { type OrderColumn } from "@/types"
 import { toast } from "sonner"
 
 import { useOrdersSearchParams } from "@/hooks/useOrdersSearchParams"
@@ -14,7 +14,7 @@ import { Columns } from "./OrdersColumns"
 import { OrdersDataTableToolbar } from "./OrdersDataTableToolbar"
 
 interface OrdersTableProps {
-    initialOrders: OrderColumns
+    initialOrders: OrderColumn[]
 }
 
 const OrdersTable: FC<OrdersTableProps> = ({ initialOrders }) => {

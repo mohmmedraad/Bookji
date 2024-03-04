@@ -1,7 +1,7 @@
 "use client"
 
 // import EditBookDialog from "./EditBookDialog"
-import type { BookColumns } from "@/types"
+import type { BookColumn } from "@/types"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type Row } from "@tanstack/react-table"
 
@@ -17,7 +17,7 @@ import DeleteBookDialog from "./DeleteBookDialog"
 
 interface BooksTableRowActionsProps<TData> {
     row: Row<TData>
-    book: BookColumns
+    book: BookColumn
 }
 
 export function BooksTableRowActions<TData>({

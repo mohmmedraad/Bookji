@@ -2,10 +2,10 @@
 
 import { useEffect, useState, type FC } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { type BookColumns } from "@/types"
+import { type BookColumn } from "@/types"
 import { toast } from "sonner"
 
-import { useOrdersSearchParams } from "@/hooks/useOrdersSearchParams"
+import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
 import { useStore } from "@/hooks/useStore"
 import { DataTable } from "@/components/ui/DataTable"
 import { trpc } from "@/app/_trpc/client"
@@ -14,12 +14,12 @@ import { BooksTableToolbar } from "./BooksTableToolbar"
 import { Columns } from "./StoreBooksColumns"
 
 interface BooksTableProps {
-    initialBooks: BookColumns
+    initialBooks: BookColumn[]
 }
 
 const BooksTable: FC<BooksTableProps> = ({ initialBooks }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { handleClearSearch, ...searchParams } = useOrdersSearchParams()
+    const { handleClearSearch, ...searchParams } = useBooksSearchParams()
     const { id: storeId, slug: storeSlug } = useStore()
     const router = useRouter()
     const [isInitialLoading, setIsInitialLoading] = useState(true)

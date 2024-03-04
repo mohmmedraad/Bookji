@@ -54,6 +54,14 @@ const BooksFilter: FC<BooksFilterProps> = ({}) => {
                 />
             </FilterOption>
             <FilterOption className="mt-5">
+                <FilterLabel>Orders range</FilterLabel>
+                <RangeFilterOption
+                    param="orders"
+                    minRangeValue={0}
+                    maxRangeValue={300}
+                />
+            </FilterOption>
+            <FilterOption className="mt-5">
                 <FilterLabel>Categories</FilterLabel>
                 <CategoriesFilterOption />
             </FilterOption>
