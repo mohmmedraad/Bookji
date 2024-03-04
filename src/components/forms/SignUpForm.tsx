@@ -83,6 +83,7 @@ const SignUpForm = () => {
             emailAddress: data.email,
             firstName: data.firstName,
             lastName: data.lastName,
+            username: data.email.split("@")[0],
         })
     }
 

@@ -21,7 +21,8 @@
         "db:studio": "dotenv drizzle-kit studio --verbose",
         "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
         "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
-        "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe --latest"
+        "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe --latest",
+        "lt": "lt --port 8000"
     },
     "dependencies": {
         "@clerk/nextjs": "^4.23.2",
@@ -68,6 +69,7 @@
         "slugify": "^1.6.6",
         "sonner": "^1.0.3",
         "stripe": "^14.7.0",
+        "svix": "^1.20.0",
         "swiper": "^10.2.0",
         "tailwind-merge": "^1.14.0",
         "tailwindcss-animate": "^1.0.6",

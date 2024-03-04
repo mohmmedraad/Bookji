@@ -40,8 +40,11 @@ export const Columns: ColumnDef<OrderColumn>[] = [
             },
         }) => {
             return (
-                <div className="flex w-[120px] items-center gap-3">
-                    <UserAvatar user={customer!} />
+                <div className="flex w-[200px] items-center gap-3">
+                    <UserAvatar
+                        user={customer!}
+                        className="h-7 w-7 shadow-md"
+                    />
                     <span>
                         {customer?.firstName} {customer?.lastName}
                     </span>
