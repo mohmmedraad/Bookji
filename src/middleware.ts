@@ -26,6 +26,7 @@ export default authMiddleware({
         "/terms(.*)",
         "/privacy(.*)",
         "/api(.*)",
+        "/api/webhooks/clerk(.*)",
         "/book(.*)",
     ],
     afterAuth(auth, req) {
