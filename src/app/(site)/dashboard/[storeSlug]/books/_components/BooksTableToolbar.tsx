@@ -24,7 +24,7 @@ export function BooksTableToolbar<TData>({
             <div className="flex flex-1 items-center space-x-2">
                 <SearchInput
                     param="text"
-                    className="h-8 w-[150px] lg:w-[250px]"
+                    className="h-8 w-full xs:w-[150px] lg:w-[250px]"
                 />
                 {isFiltered && (
                     <Button
