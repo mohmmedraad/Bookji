@@ -1,45 +1,11 @@
-// export async function POST(req: Request) {
-//     const payload = (await req.json()) as WebhookEvent
-
-//     switch (payload.type) {
-//         case "user.created":
-//             const userId = payload.data.id
-//             const username = payload.data.username
-//             const email = payload.data.email_addresses[0].email_address
-//             try {
-//                 if (username !== null) return
-
-//                 if (email === null) {
-//                     throw new Error("Email is required")
-//                 }
-
-//                 if (userId === null) {
-//                     throw new Error("User Id is required")
-//                 }
-
-//                 const newUsername = email.split("@")[0]
-
-//                 const user = await clerkClient.users.updateUser(userId, {
-//                     username: newUsername,
-//                 })
-
-//                 console.log("clerk webhook user created: ", user.id)
-//             } catch (error) {
-//                 console.log("clerk webhook error: ", error)
-//             }
-//     }
-// }
 
 import { headers } from "next/headers"
 import { clerkClient, type WebhookEvent } from "@clerk/nextjs/server"
-// import { type WebhookEvent } from "@clerk/nextjs/server"
 import { Webhook } from "svix"
 
 export async function POST(req: Request) {
     // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
-
-    console.log("req has been made")
 
     if (!WEBHOOK_SECRET) {
         throw new Error(
@@ -93,7 +59,9 @@ export async function POST(req: Request) {
                     ? payload.data.email_addresses[0].email_address
                     : null
             try {
-                if (username !== null) return
+                if (username !== null) {
+                    throw new Response("✅ clerk webhook: User already has username", {status: 200})
+                }
 
                 if (email === null) {
                     throw new Error("Email is required")
@@ -111,10 +79,13 @@ export async function POST(req: Request) {
                 console.log(
                     `✅ clerk webhook: User with id (${user.id}) has been updated with username (${user.username})`
                 )
-                return new Response("✅ User updated", { status: 200 })
+                return new Response("✅ clerk webhook: User updated", { status: 200 })
             } catch (error) {
                 console.log("❌ clerk webhook: error: ", error)
                 return new Response("❌ clerk webhooks error", { status: 400 })
             }
+            default:
+                console.warn(`❌ clerk webhook: Unhandled event type: ${event.type}`)
     }
+    return new Response(null, { status: 200 })
 }
