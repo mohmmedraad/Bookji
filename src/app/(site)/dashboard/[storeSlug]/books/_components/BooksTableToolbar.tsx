@@ -1,12 +1,8 @@
 "use client"
 
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { type Table } from "@tanstack/react-table"
 
-import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
-import { useIsMount } from "@/hooks/useIsMount"
 import { Button } from "@/components/ui/Button"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
 import SearchInput from "@/components/ui/SearchInput"
@@ -24,7 +20,7 @@ export function BooksTableToolbar<TData>({
     const isFiltered = table.getState().columnFilters.length > 0
 
     return (
-        <div className="flex items-center justify-between">
+        <div className="items-center justify-between xs:flex">
             <div className="flex flex-1 items-center space-x-2">
                 <SearchInput
                     param="text"
@@ -41,7 +37,7 @@ export function BooksTableToolbar<TData>({
                     </Button>
                 )}
             </div>
-            <div className="flex items-center gap-4">
+            <div className="mt-4 flex items-center gap-4 xs:mt-0">
                 <DataTableViewOptions table={table} />
                 <AddBookDialog />
                 <DashboardBooksFilter />
