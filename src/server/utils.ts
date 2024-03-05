@@ -23,6 +23,7 @@ import {
     exists,
     inArray,
     like,
+    max,
     sql,
     sum,
 } from "drizzle-orm"
@@ -520,11 +521,11 @@ export async function getStoreCustomers(
 
     const customersOrders = await db
         .select({
-            totalOrders: count(),
+            totalOrders: sql<number>`COUNT(*)`.mapWith(Number),
             customerId: ordersTable.userId,
             totalSpend: sum(ordersTable.total),
             storeId: ordersTable.storeId,
-            createdAt: ordersTable.createdAt,
+            createdAt: max(ordersTable.createdAt),
         })
         .from(ordersTable)
         .where((customer) =>
@@ -549,7 +550,7 @@ export async function getStoreCustomers(
                 )
             )
         )
-        .groupBy(ordersTable.userId, ordersTable.createdAt, ordersTable.storeId)
+        .groupBy(ordersTable.userId)
         .orderBy((order) => {
             return column in order
                 ? orderBy === "asc"
