@@ -5,21 +5,21 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { type BookColumn } from "@/types"
 import { toast } from "sonner"
 
-import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
+import { useCustomersSearchParams } from "@/hooks/useCustomersSearchParams"
 import { useStore } from "@/hooks/useStore"
 import { DataTable } from "@/components/ui/DataTable"
 import { trpc } from "@/app/_trpc/client"
 
-import { BooksTableToolbar } from "../../books/_components/BooksTableToolbar"
-import { Columns } from "../../books/_components/StoreBooksColumns"
+import { Columns } from "./CustomersColumns"
+import { CustomersTableToolbar } from "./CustomersTableToolbar"
 
-interface BooksTableProps {
+interface CustomersTableProps {
     initialBooks: BookColumn[]
 }
 
-const BooksTable: FC<BooksTableProps> = ({ initialBooks }) => {
+const CustomersTable: FC<CustomersTableProps> = ({ initialBooks }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { handleClearSearch, ...searchParams } = useBooksSearchParams()
+    const { handleClearSearch, ...searchParams } = useCustomersSearchParams()
     const { id: storeId, slug: storeSlug } = useStore()
     const router = useRouter()
     const [isInitialLoading, setIsInitialLoading] = useState(true)
@@ -29,7 +29,7 @@ const BooksTable: FC<BooksTableProps> = ({ initialBooks }) => {
         data: books,
         isFetching,
         isFetchedAfterMount,
-    } = trpc.store.books.useQuery(
+    } = trpc.store.customers.useQuery(
         {
             storeId,
             searchParams,
@@ -42,7 +42,7 @@ const BooksTable: FC<BooksTableProps> = ({ initialBooks }) => {
                 const errorCode = error?.data?.code
                 if (errorCode === "UNAUTHORIZED") {
                     toast.error(
-                        "You are not authorized to view this store's books"
+                        "You are not authorized to view this store's customers"
                     )
                     return router.push(
                         `/sign-in?_origin=/dashboard/${storeSlug}?${redirectSearchParams.toString()}`
@@ -68,9 +68,9 @@ const BooksTable: FC<BooksTableProps> = ({ initialBooks }) => {
             data={books}
             isFetching={isFetching}
             isInitialLoading={isInitialLoading}
-            CustomDataTableToolbar={BooksTableToolbar}
+            CustomDataTableToolbar={CustomersTableToolbar}
         />
     )
 }
 
-export default BooksTable
+export default CustomersTable

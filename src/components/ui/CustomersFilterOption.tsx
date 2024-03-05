@@ -18,7 +18,7 @@ const CustomersFilterOption: FC<CustomersFilterOptionProps> = ({}) => {
         data: customers,
         isLoading,
         isError,
-    } = trpc.store.customers.useQuery(
+    } = trpc.store.customersInfo.useQuery(
         { storeId },
         {
             onError: (error) => {

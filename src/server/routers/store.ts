@@ -22,7 +22,7 @@ import {
 } from "@/lib/validations/store"
 
 import { privateProcedure, publicProcedure, router } from "../trpc"
-import { getStoreBooks, getStoreOrders } from "../utils"
+import { getStoreBooks, getStoreCustomers, getStoreOrders } from "../utils"
 
 export const storeRouter = router({
     create: privateProcedure
@@ -245,6 +245,45 @@ export const storeRouter = router({
         }),
 
     customers: privateProcedure
+        .input(wrap(storeResourcesSchema))
+        .query(async ({ input, ctx }) => {
+            const store = await db.query.stores.findFirst({
+                columns: {
+                    id: true,
+                },
+                where: (store, { eq }) =>
+                    and(
+                        eq(store.ownerId, ctx.user.id),
+                        eq(store.id, input.storeId)
+                    ),
+            })
+
+            if (!store) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store not found",
+                })
+            }
+            try {
+                const customers = await getStoreCustomers(
+                    ctx.user.id,
+                    store.id,
+                    {
+                        ...input.searchParams,
+                    }
+                )
+                return customers
+            } catch (error) {
+                if (error instanceof ValiError) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: "Invalid search parameters.",
+                    })
+                }
+            }
+        }),
+
+    customersInfo: privateProcedure
         .input(
             wrap(
                 object({

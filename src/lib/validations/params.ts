@@ -59,6 +59,16 @@ export const ordersSearchParamsSchema = merge([
     }),
 ])
 
+export const customersSearchParamsSchema = merge([
+    searchParamsSchema,
+    object({
+        place: optional(fallback(string(), "")),
+        total_spend: validateRangeSchema("0-500"),
+        total_orders: validateRangeSchema("0-500"),
+        customers: validateOptionsSchema(),
+    }),
+])
+
 export type OrdersSearchParamsSchema = Input<typeof ordersSearchParamsSchema>
 
 function customRangeValidation(value: string) {

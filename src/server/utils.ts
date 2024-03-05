@@ -17,12 +17,14 @@ import {
     and,
     asc,
     between,
+    count,
     desc,
     eq,
     exists,
     inArray,
     like,
     sql,
+    sum,
 } from "drizzle-orm"
 import { parse } from "valibot"
 
@@ -31,6 +33,7 @@ import { stripe } from "@/lib/stripe"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import {
     booksSearchParamsSchema,
+    customersSearchParamsSchema,
     ordersSearchParamsSchema,
 } from "@/lib/validations/params"
 
@@ -468,4 +471,139 @@ export async function getStoreBooks(
         .offset((page - 1) * limit)
 
     return books
+}
+
+export async function getStoreCustomers(
+    userId: string,
+    storeId: number,
+    searchParams: SearchParams,
+    limit = 10
+) {
+    const {
+        place,
+        total_orders: [minOrders, maxOrders],
+        total_spend: [minSpend, maxSpend],
+        customers: customersUsernames,
+        page,
+        sortBy: [column, orderBy],
+    } = parse(customersSearchParamsSchema, searchParams)
+
+    const customers = new Map<
+        string,
+        { id: string; email: string } & Customer
+    >()
+
+    if (customersUsernames.length !== 0) {
+        const customersAccounts = await clerkClient.users.getUserList({
+            username: customersUsernames,
+        })
+        customersAccounts.forEach(
+            ({
+                username,
+                firstName,
+                lastName,
+                imageUrl,
+                id,
+                emailAddresses,
+            }) => {
+                customers.set(id, {
+                    username,
+                    firstName,
+                    lastName,
+                    imageUrl,
+                    id,
+                    email: emailAddresses[0].emailAddress,
+                })
+            }
+        )
+    }
+
+    const customersOrders = await db
+        .select({
+            totalOrders: count(ordersTable.id),
+            customerId: ordersTable.userId,
+            totalSpend: sum(ordersTable.total),
+            storeId: ordersTable.storeId,
+            createdAt: ordersTable.createdAt,
+        })
+        .from(ordersTable)
+        .where((customer) =>
+            and(
+                eq(customer.storeId, storeId),
+                customers.size !== 0
+                    ? inArray(customer.customerId, Array.from(customers.keys()))
+                    : undefined,
+                between(
+                    customer.totalSpend,
+                    minSpend.toString(),
+                    maxSpend.toString()
+                ),
+                between(
+                    customer.totalOrders,
+                    minOrders.toString(),
+                    maxOrders.toString()
+                )
+            )
+        )
+        .orderBy((order) => {
+            return column in order
+                ? orderBy === "asc"
+                    ? //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      asc(order[column])
+                    : //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      desc(order[column])
+                : desc(order.createdAt)
+        })
+        .limit(limit)
+        .offset((page - 1) * limit)
+
+    if (customers.size === 0) {
+        const customersIds = [
+            ...new Set(customersOrders.map((order) => order.customerId)),
+        ]
+
+        const customers = await clerkClient.users.getUserList({
+            userId: customersIds,
+        })
+
+        const customersDetails = new Map<string, Customer>()
+
+        customers.forEach((customer) => {
+            customersDetails.set(customer.id, {
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                imageUrl: customer.imageUrl,
+                username: customer.username,
+            })
+        })
+
+        const customersWithOrders = customersOrders.map((customer) => ({
+            ...customer,
+            customer: customersDetails.get(customer.customerId),
+        }))
+
+        return customersWithOrders
+    }
+
+    const customersWithOrders = customersOrders.map((order) => {
+        const customer = customers.get(order.customerId)
+
+        return {
+            ...order,
+            customer: customer
+                ? {
+                      firstName: customer.firstName,
+                      lastName: customer.lastName,
+                      imageUrl: customer.imageUrl,
+                      username: customer.username,
+                      email: customer.email,
+                  }
+                : undefined,
+        }
+    })
+
+    return customersWithOrders
+
 }

@@ -4,21 +4,33 @@ import { type CustomerColumn } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
+import { UserAvatar } from "@/components/UserAvatar"
 
 export const Columns: ColumnDef<CustomerColumn>[] = [
     {
-        accessorKey: "id",
+        accessorKey: "name",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="id" id="book" />
+            <DataTableColumnHeader column={column} title="Name" id="book" />
         ),
-        cell: ({ row }) => {
+        cell: ({
+            row: {
+                original: { customer },
+            },
+        }) => {
             return (
-                <div className="flex w-[50px] items-center">
-                    <span className="text-gray-800">{row.getValue("id")}</span>
+                <div className="flex w-[200px] items-center gap-3">
+                    <div className="flex w-[200px] items-center gap-3">
+                        <UserAvatar
+                            user={customer!}
+                            className="h-7 w-7 shadow-md"
+                        />
+                        <span>
+                            {customer?.firstName} {customer?.lastName}
+                        </span>
+                    </div>
                 </div>
             )
         },
-
         enableSorting: false,
         enableHiding: false,
     },
@@ -36,21 +48,32 @@ export const Columns: ColumnDef<CustomerColumn>[] = [
                 </div>
             )
         },
-        filterFn: (row, id, value: string) => {
-            return row.original.email
-                .toLowerCase()
-                .includes(value.toLowerCase())
-        },
+        enableSorting: false,
     },
+    // {
+    //     accessorKey: "place",
+    //     header: ({ column }) => (
+    //         <DataTableColumnHeader column={column} title="Order Placed" />
+    //     ),
+    //     cell: ({ row }) => {
+    //         return (
+    //             <div className="flex w-[100px] items-center">
+    //                 <span>{row.getValue("place")}</span>
+    //             </div>
+    //         )
+    //     },
+    // },
     {
-        accessorKey: "place",
+        accessorKey: "orders",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Order Placed" />
+            <DataTableColumnHeader column={column} title="Total Orders" />
         ),
         cell: ({ row }) => {
             return (
                 <div className="flex w-[100px] items-center">
-                    <span>{row.getValue("place")}</span>
+                    <span className="text-gray-800">
+                        {row.getValue("orders")}
+                    </span>
                 </div>
             )
         },
@@ -64,8 +87,7 @@ export const Columns: ColumnDef<CustomerColumn>[] = [
             return (
                 <div className="flex w-[100px] items-center">
                     <span className="text-gray-800">
-                        100$
-                        {/* {row.getValue("totalSpend")} */}
+                        {row.getValue("totalSpend")}
                     </span>
                 </div>
             )

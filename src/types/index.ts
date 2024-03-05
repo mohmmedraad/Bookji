@@ -1,5 +1,5 @@
 import { type Book } from "@/db/schema"
-import { type getStoreBooks, type getStoreOrders } from "@/server/utils"
+import { getStoreCustomers, type getStoreBooks, type getStoreOrders } from "@/server/utils"
 import type { User } from "@clerk/nextjs/server"
 import { type TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
@@ -52,13 +52,6 @@ export interface TRPCErrorType {
     message: TRPCError["message"]
 }
 
-export type CustomerColumn = {
-    id: number
-    email: string
-    place: string
-    totalSpend: number
-}
-
 export type Endpoint = keyof OurFileRouter
 
 export interface SubscriptionPlan {
@@ -88,4 +81,5 @@ export type Customer = Pick<
 >
 
 export type OrderColumn = Awaited<ReturnType<typeof getStoreOrders>>[number]
+export type CustomerColumn = Awaited<ReturnType<typeof getStoreCustomers>>[number]
 export type BookColumn = Awaited<ReturnType<typeof getStoreBooks>>[number]
