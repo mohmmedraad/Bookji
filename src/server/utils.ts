@@ -520,7 +520,7 @@ export async function getStoreCustomers(
 
     const customersOrders = await db
         .select({
-            totalOrders: count(ordersTable.id),
+            totalOrders: count(),
             customerId: ordersTable.userId,
             totalSpend: sum(ordersTable.total),
             storeId: ordersTable.storeId,
@@ -549,7 +549,7 @@ export async function getStoreCustomers(
                 )
             )
         )
-        .groupBy(ordersTable.userId)
+        .groupBy(ordersTable.userId, ordersTable.createdAt, ordersTable.storeId)
         .orderBy((order) => {
             return column in order
                 ? orderBy === "asc"
