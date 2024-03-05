@@ -1,5 +1,3 @@
-// import { clerkClient, type WebhookEvent } from "@clerk/nextjs/server"
-
 // export async function POST(req: Request) {
 //     const payload = (await req.json()) as WebhookEvent
 
@@ -33,12 +31,15 @@
 // }
 
 import { headers } from "next/headers"
-import { type WebhookEvent } from "@clerk/nextjs/server"
+import { clerkClient, type WebhookEvent } from "@clerk/nextjs/server"
+// import { type WebhookEvent } from "@clerk/nextjs/server"
 import { Webhook } from "svix"
 
 export async function POST(req: Request) {
     // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhook
     const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET
+
+    console.log("req has been made")
 
     if (!WEBHOOK_SECRET) {
         throw new Error(
@@ -84,36 +85,36 @@ export async function POST(req: Request) {
 
     switch (event.type) {
         case "user.created":
-            // const userId = payload.data.id
-            // const username = payload.data.username
-            // const email = payload.data.email_addresses[0].email_address
+            const userId = payload.data.id
+            const username =
+                "username" in payload.data ? payload.data.username : null
+            const email =
+                "email_addresses" in payload.data
+                    ? payload.data.email_addresses[0].email_address
+                    : null
             try {
-                // if (username !== null) return
+                if (username !== null) return
 
-                // if (email === null) {
-                //     throw new Error("Email is required")
-                // }
+                if (email === null) {
+                    throw new Error("Email is required")
+                }
 
-                // if (userId === null) {
-                //     throw new Error("User Id is required")
-                // }
+                if (userId === null || userId === undefined) {
+                    throw new Error("User Id is required")
+                }
 
-                // const newUsername = email.split("@")[0]
+                const newUsername = email.split("@")[0]
 
-                // const user = await clerkClient.users.updateUser(userId, {
-                //     username: newUsername,
-                // })
-                // Get the ID and type
-                const eventData = event.data
-                const eventType = event.type
-
-                console.log(`Webhook data: ${JSON.stringify(eventData)}`)
-                console.log(`event type: ${eventType}`)
-                console.log("Webhook body:", body)
+                const user = await clerkClient.users.updateUser(userId, {
+                    username: newUsername,
+                })
+                console.log(
+                    `✅ clerk webhook: User with id (${user.id}) has been updated with username (${user.username})`
+                )
+                return new Response("✅ User updated", { status: 200 })
             } catch (error) {
-                console.log("clerk webhook error: ", error)
+                console.log("❌ clerk webhook: error: ", error)
+                return new Response("❌ clerk webhooks error", { status: 400 })
             }
     }
-
-    return new Response("", { status: 200 })
 }

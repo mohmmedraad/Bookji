@@ -22,7 +22,7 @@
         "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
         "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
         "stripe:listen": "stripe listen --forward-to localhost:3000/api/webhooks/stripe --latest",
-        "lt": "lt --port 8000"
+        "lt": "lt --port 3000"
     },
     "dependencies": {
         "@clerk/nextjs": "^4.23.2",

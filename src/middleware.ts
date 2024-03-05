@@ -26,7 +26,6 @@ export default authMiddleware({
         "/terms(.*)",
         "/privacy(.*)",
         "/api(.*)",
-        "/api/webhooks/clerk(.*)",
         "/book(.*)",
     ],
     afterAuth(auth, req) {
@@ -38,7 +37,6 @@ export default authMiddleware({
         const url = new URL(req.nextUrl.origin)
 
         if (!auth.userId) {
-            console.log("redirecting to sign in")
             //  If user tries to access a private route without being authenticated,
             //  redirect them to the sign in page
             url.searchParams.set("_origin", req.nextUrl.pathname)
