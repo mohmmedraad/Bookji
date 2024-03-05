@@ -532,7 +532,11 @@ export async function getStoreCustomers(
                 eq(customer.storeId, storeId),
                 customers.size !== 0
                     ? inArray(customer.customerId, Array.from(customers.keys()))
-                    : undefined,
+                    : undefined
+            )
+        )
+        .having((customer) =>
+            and(
                 between(
                     customer.totalSpend,
                     minSpend.toString(),
@@ -545,6 +549,7 @@ export async function getStoreCustomers(
                 )
             )
         )
+        .groupBy(ordersTable.userId)
         .orderBy((order) => {
             return column in order
                 ? orderBy === "asc"
@@ -605,5 +610,4 @@ export async function getStoreCustomers(
     })
 
     return customersWithOrders
-
 }
