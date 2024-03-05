@@ -45,7 +45,7 @@ const BooksTable: FC<BooksTableProps> = ({ initialBooks }) => {
                         "You are not authorized to view this store's books"
                     )
                     return router.push(
-                        `/sign-in?_origin=/dashboard/${storeSlug}?${redirectSearchParams.toString()}`
+                        `/sign-in?_origin=/dashboard/${storeSlug}/books?${redirectSearchParams.toString()}`
                     )
                 }
                 if (errorCode === "NOT_FOUND") {

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FC } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { type BookColumn } from "@/types"
+import type { CustomerColumn } from "@/types"
 import { toast } from "sonner"
 
 import { useCustomersSearchParams } from "@/hooks/useCustomersSearchParams"
@@ -14,10 +14,10 @@ import { Columns } from "./CustomersColumns"
 import { CustomersTableToolbar } from "./CustomersTableToolbar"
 
 interface CustomersTableProps {
-    initialBooks: BookColumn[]
+    initialCustomers: CustomerColumn[]
 }
 
-const CustomersTable: FC<CustomersTableProps> = ({ initialBooks }) => {
+const CustomersTable: FC<CustomersTableProps> = ({ initialCustomers }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { handleClearSearch, ...searchParams } = useCustomersSearchParams()
     const { id: storeId, slug: storeSlug } = useStore()
@@ -26,7 +26,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ initialBooks }) => {
     const redirectSearchParams = useSearchParams()
 
     const {
-        data: books,
+        data: customers,
         isFetching,
         isFetchedAfterMount,
     } = trpc.store.customers.useQuery(
@@ -37,7 +37,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ initialBooks }) => {
         {
             skip: true,
             // @ts-expect-error unknown error
-            initialData: initialBooks,
+            initialData: initialCustomers,
             onError: (error) => {
                 const errorCode = error?.data?.code
                 if (errorCode === "UNAUTHORIZED") {
@@ -45,7 +45,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ initialBooks }) => {
                         "You are not authorized to view this store's customers"
                     )
                     return router.push(
-                        `/sign-in?_origin=/dashboard/${storeSlug}?${redirectSearchParams.toString()}`
+                        `/sign-in?_origin=/dashboard/${storeSlug}/customers?${redirectSearchParams.toString()}`
                     )
                 }
                 if (errorCode === "NOT_FOUND") {
@@ -65,7 +65,7 @@ const CustomersTable: FC<CustomersTableProps> = ({ initialBooks }) => {
         <DataTable
             columns={Columns}
             // @ts-expect-error unknown error
-            data={books}
+            data={customers}
             isFetching={isFetching}
             isInitialLoading={isInitialLoading}
             CustomDataTableToolbar={CustomersTableToolbar}

@@ -45,7 +45,7 @@ const OrdersTable: FC<OrdersTableProps> = ({ initialOrders }) => {
                         "You are not authorized to view this store's orders"
                     )
                     return router.push(
-                        `/sign-in?_origin=/dashboard/${storeSlug}?${redirectSearchParams.toString()}`
+                        `/sign-in?_origin=/dashboard/${storeSlug}/orders?${redirectSearchParams.toString()}`
                     )
                 }
                 if (errorCode === "NOT_FOUND") {
