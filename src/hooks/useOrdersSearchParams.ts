@@ -3,10 +3,6 @@ import { useQueryState } from "nuqs"
 
 import useDebounce from "./useDebounce"
 
-function isNotNull(value: string | null) {
-    return value !== null
-}
-
 export const useOrdersSearchParams = () => {
     const [textParam, setTextParam] = useQueryState("text")
     const [totalParam, setTotalParam] = useQueryState("total")
@@ -16,6 +12,7 @@ export const useOrdersSearchParams = () => {
     const [countryParam, setCountryParam] = useQueryState("country")
     const [pageParam, setPageParam] = useQueryState("page")
     const [sortByParam, setSortByParam] = useQueryState("sortBy")
+    const [customersParam, setCustomersParam] = useQueryState("customers")
 
     const text = useDebounce(textParam)
     const total = useDebounce(totalParam)
@@ -25,6 +22,7 @@ export const useOrdersSearchParams = () => {
     const page = useDebounce(pageParam)
     const sortBy = useDebounce(sortByParam)
     const country = useDebounce(countryParam)
+    const customers = useDebounce(customersParam)
 
     const handleClearSearch = useCallback(() => {
         void setTextParam(null)
@@ -35,6 +33,8 @@ export const useOrdersSearchParams = () => {
         void setCountryParam(null)
         void setPageParam(null)
         void setSortByParam(null)
+        void setCustomersParam(null)
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return {
@@ -44,8 +44,9 @@ export const useOrdersSearchParams = () => {
         state,
         city,
         sortBy,
-        country,
         email,
+        country,
+        customers,
         handleClearSearch,
     }
 }

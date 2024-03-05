@@ -10,7 +10,7 @@ import {
     ratings as ratingsTable,
     stores,
 } from "@/db/schema"
-import type { SearchParams, UserSubscriptionPlan } from "@/types"
+import type { Customer, SearchParams, UserSubscriptionPlan } from "@/types"
 import { clerkClient } from "@clerk/nextjs/server"
 import { addDays } from "date-fns"
 import {
@@ -233,11 +233,31 @@ export async function getStoreOrders(
         state,
         sortBy: [column, orderBy],
         total: [minTotal, maxTotal],
+        customers: customersUsernames,
     } = parse(ordersSearchParamsSchema, searchParams)
+
+    const customers = new Map<string, { id: string } & Customer>()
+
+    if (customersUsernames.length !== 0) {
+        const customersAccounts = await clerkClient.users.getUserList({
+            username: customersUsernames,
+        })
+        customersAccounts.forEach(
+            ({ username, firstName, lastName, imageUrl, id }) => {
+                customers.set(id, {
+                    username,
+                    firstName,
+                    lastName,
+                    imageUrl,
+                    id,
+                })
+            }
+        )
+    }
 
     const orders = await db
         .select({
-            customer: ordersTable.userId,
+            customerId: ordersTable.userId,
             title: ordersTable.name,
             total: ordersTable.total,
             status: ordersTable.stripePaymentIntentStatus,
@@ -261,6 +281,9 @@ export async function getStoreOrders(
         .where((order) =>
             and(
                 eq(order.storeId, storeId),
+                customers.size !== 0
+                    ? inArray(order.customerId, Array.from(customers.keys()))
+                    : undefined,
                 between(order.total, minTotal.toString(), maxTotal.toString()),
                 text ? like(order.title, `%${text}%`) : undefined,
                 email ? like(order.email, `%${email}%`) : undefined
@@ -293,33 +316,49 @@ export async function getStoreOrders(
         .limit(limit)
         .offset((page - 1) * limit)
 
-    const customersIds = [...new Set(orders.map((order) => order.customer))]
+    if (customers.size === 0) {
+        const customersIds = [
+            ...new Set(orders.map((order) => order.customerId)),
+        ]
 
-    const customers = await clerkClient.users.getUserList({
-        userId: customersIds,
-    })
-
-    const customersDetails = new Map<
-        string,
-        {
-            firstName: string | null
-            lastName: string | null
-            imageUrl: string
-        }
-    >()
-
-    customers.forEach((customer) => {
-        customersDetails.set(customer.id, {
-            firstName: customer.firstName,
-            lastName: customer.lastName,
-            imageUrl: customer.imageUrl,
+        const customers = await clerkClient.users.getUserList({
+            userId: customersIds,
         })
-    })
 
-    const ordersWithCustomersMap = orders.map((order) => ({
-        ...order,
-        customer: customersDetails.get(order.customer),
-    }))
+        const customersDetails = new Map<string, Customer>()
+
+        customers.forEach((customer) => {
+            customersDetails.set(customer.id, {
+                firstName: customer.firstName,
+                lastName: customer.lastName,
+                imageUrl: customer.imageUrl,
+                username: customer.username,
+            })
+        })
+
+        const ordersWithCustomersMap = orders.map((order) => ({
+            ...order,
+            customer: customersDetails.get(order.customerId),
+        }))
+
+        return ordersWithCustomersMap
+    }
+
+    const ordersWithCustomersMap = orders.map((order) => {
+        const customer = customers.get(order.customerId)
+
+        return {
+            ...order,
+            customer: customer
+                ? {
+                      firstName: customer.firstName,
+                      lastName: customer.lastName,
+                      imageUrl: customer.imageUrl,
+                      username: customer.username,
+                  }
+                : undefined,
+        }
+    })
 
     return ordersWithCustomersMap
 }

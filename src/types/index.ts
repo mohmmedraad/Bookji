@@ -1,5 +1,6 @@
 import { type Book } from "@/db/schema"
 import { type getStoreBooks, type getStoreOrders } from "@/server/utils"
+import type { User } from "@clerk/nextjs/server"
 import { type TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
 
@@ -51,7 +52,7 @@ export interface TRPCErrorType {
     message: TRPCError["message"]
 }
 
-export type Customer = {
+export type CustomerColumn = {
     id: number
     email: string
     place: string
@@ -80,6 +81,11 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
 export interface SearchParams {
     [key: string]: string | string[] | undefined
 }
+
+export type Customer = Pick<
+    User,
+    "firstName" | "lastName" | "username" | "imageUrl"
+>
 
 export type OrderColumn = Awaited<ReturnType<typeof getStoreOrders>>[number]
 export type BookColumn = Awaited<ReturnType<typeof getStoreBooks>>[number]

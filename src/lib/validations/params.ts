@@ -55,6 +55,7 @@ export const ordersSearchParamsSchema = merge([
         state: optional(fallback(string(), "")),
         country: optional(fallback(string(), "")),
         total: validateRangeSchema("0-500"),
+        customers: validateOptionsSchema(),
     }),
 ])
 
@@ -77,4 +78,10 @@ function validateRangeSchema(defaultValue: string) {
     )
 
     return schema
+}
+
+function validateOptionsSchema() {
+    return transform(fallback(string(), ""), (input) =>
+        input ? [...new Set(input.split("."))] : []
+    )
 }

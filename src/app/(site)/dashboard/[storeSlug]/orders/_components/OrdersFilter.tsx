@@ -8,6 +8,7 @@ import FilterLabel from "@/components/ui/FilterLabel"
 import FilterOption from "@/components/ui/FilterOption"
 import RangeFilterOption from "@/components/ui/RangeFilterOption"
 import SearchInput from "@/components/ui/SearchInput"
+import CustomersFilterOption from "@/components/ui/CustomersFilterOption"
 
 interface DashboardOrdersFilterProps {}
 
@@ -47,6 +48,10 @@ const DashboardOrdersFilter: FC<DashboardOrdersFilterProps> = ({}) => {
             <FilterOption className="mt-5">
                 <FilterLabel>Country</FilterLabel>
                 <SearchInput param="country" />
+            </FilterOption>
+            <FilterOption className="mt-5">
+                <FilterLabel>Customers</FilterLabel>
+                <CustomersFilterOption />
             </FilterOption>
         </Filter>
     )

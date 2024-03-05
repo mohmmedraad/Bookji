@@ -6,6 +6,7 @@ import {
     ratings,
     stores,
 } from "@/db/schema"
+import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, eq, inArray, like } from "drizzle-orm"
@@ -241,6 +242,66 @@ export const storeRouter = router({
                     })
                 }
             }
+        }),
+
+    customers: privateProcedure
+        .input(
+            wrap(
+                object({
+                    storeId: number(),
+                })
+            )
+        )
+        .query(async ({ input, ctx }) => {
+            const store = await db.query.stores.findFirst({
+                columns: {
+                    id: true,
+                },
+                where: (store, { eq }) =>
+                    and(
+                        eq(store.ownerId, ctx.user.id),
+                        eq(store.id, input.storeId)
+                    ),
+            })
+
+            if (!store) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store not found",
+                })
+            }
+            const customersIds = await db.query.orders.findMany({
+                columns: {
+                    userId: true,
+                },
+                where: (order) => eq(order.storeId, store.id),
+            })
+
+            if (customersIds.length === 0) {
+                return []
+            }
+
+            const customersInfo = await clerkClient.users.getUserList({
+                // remove duplicates from userIds
+                userId: [
+                    ...new Set(customersIds.map((customer) => customer.userId)),
+                ],
+            })
+
+            if (customersInfo.length === 0) {
+                return []
+            }
+
+            const customers = customersInfo.map((customer) => {
+                return {
+                    username: customer.username,
+                    firstName: customer.firstName,
+                    lastName: customer.lastName,
+                    imageUrl: customer.imageUrl,
+                }
+            })
+
+            return customers
         }),
 
     getStores: publicProcedure

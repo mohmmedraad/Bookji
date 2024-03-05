@@ -1,17 +1,15 @@
 import { useEffect, useState } from "react"
 import { useQueryState } from "nuqs"
 
-import { type useBooksSearchParams } from "@/hooks/useBooksSearchParams"
-
 import { MultiSelect } from "./MultiSelect"
 
 type Option = {
-    id: number
+    id: number | string
     name: string
 }
 
 interface MultiSelectFilterOptionProps<T extends Option> {
-    param: keyof ReturnType<typeof useBooksSearchParams>
+    param: string
     data: T[] | undefined
     isLoading: boolean
     renderOption?: React.FC<T>

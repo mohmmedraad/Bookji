@@ -28,7 +28,7 @@ const StoresFilterOption: FC<StoresFilterOptionProps> = ({}) => {
                     <Image
                         src={option.logo || ""}
                         alt={option.name}
-                        className="h-3 w-3 rounded-full"
+                        className="h-6 w-6 rounded-full border-[1px] border-solid border-gray-400"
                         width={12}
                         height={12}
                     />

@@ -1,11 +1,11 @@
 "use client"
 
-import { type Customer } from "@/types"
+import { type CustomerColumn } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
 
-export const Columns: ColumnDef<Customer>[] = [
+export const Columns: ColumnDef<CustomerColumn>[] = [
     {
         accessorKey: "id",
         header: ({ column }) => (

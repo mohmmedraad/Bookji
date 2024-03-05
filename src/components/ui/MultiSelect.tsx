@@ -1,7 +1,6 @@
 "use client"
 
 import * as React from "react"
-import { type Category } from "@/types"
 import { Spinner } from "@nextui-org/react"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Command as CommandPrimitive } from "cmdk"
@@ -11,7 +10,7 @@ import { Button } from "@/components/ui/Button"
 import { Command, CommandGroup, CommandItem } from "@/components/ui/Command"
 
 type Option = {
-    id: number
+    id: number | string
     name: string
 }
 
@@ -69,7 +68,7 @@ export const MultiSelect = <T extends Option>({
     )
 
     const handleRemove = React.useCallback(
-        (option: Category) => {
+        (option: Option) => {
             setSelected(
                 (prev) => prev?.filter((item) => item.id !== option.id) ?? []
             )
