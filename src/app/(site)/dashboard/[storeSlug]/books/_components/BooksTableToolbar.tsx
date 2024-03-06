@@ -20,7 +20,7 @@ export function BooksTableToolbar<TData>({
     const isFiltered = table.getState().columnFilters.length > 0
 
     return (
-        <div className="items-center justify-between xs:flex">
+        <div className="flex flex-col-reverse flex-wrap items-center justify-between gap-4">
             <div className="flex flex-1 items-center space-x-2">
                 <SearchInput
                     param="text"
@@ -37,7 +37,7 @@ export function BooksTableToolbar<TData>({
                     </Button>
                 )}
             </div>
-            <div className="mt-4 flex items-center gap-4 xs:mt-0">
+            <div className="flex items-center gap-4">
                 <DataTableViewOptions table={table} />
                 <AddBookDialog />
                 <DashboardBooksFilter />

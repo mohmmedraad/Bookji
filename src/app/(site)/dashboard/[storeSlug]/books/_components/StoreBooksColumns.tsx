@@ -60,7 +60,11 @@ export const Columns: ColumnDef<BookColumn>[] = [
     {
         accessorKey: "orders",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="orders" />
+            <DataTableColumnHeader
+                column={column}
+                title="orders"
+                sortByKey="orders"
+            />
         ),
         cell: ({ row }) => {
             return (
@@ -75,7 +79,11 @@ export const Columns: ColumnDef<BookColumn>[] = [
     {
         accessorKey: "inventory",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Inventory" />
+            <DataTableColumnHeader
+                column={column}
+                title="Inventory"
+                sortByKey="inventory"
+            />
         ),
         cell: ({ row }) => {
             return (
@@ -90,7 +98,11 @@ export const Columns: ColumnDef<BookColumn>[] = [
     {
         accessorKey: "rating",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Rating" />
+            <DataTableColumnHeader
+                column={column}
+                title="Rating"
+                sortByKey="rating"
+            />
         ),
         cell: ({ row }) => {
             return (
@@ -108,7 +120,11 @@ export const Columns: ColumnDef<BookColumn>[] = [
     {
         accessorKey: "price",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Price" />
+            <DataTableColumnHeader
+                column={column}
+                title="Price"
+                sortByKey="price"
+            />
         ),
         cell: ({ row }) => {
             return (

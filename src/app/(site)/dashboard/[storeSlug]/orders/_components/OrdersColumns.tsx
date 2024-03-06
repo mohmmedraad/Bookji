@@ -75,11 +75,17 @@ export const Columns: ColumnDef<OrderColumn>[] = [
                 </div>
             )
         },
+        enableSorting: false,
     },
     {
         accessorKey: "total",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Total" id="total" />
+            <DataTableColumnHeader
+                column={column}
+                title="Total"
+                id="total"
+                sortByKey="total"
+            />
         ),
         cell: ({ row }) => {
             return (
@@ -113,7 +119,7 @@ export const Columns: ColumnDef<OrderColumn>[] = [
                 </div>
             )
         },
-        enableSorting: true,
+        enableSorting: false,
         enableHiding: true,
     },
     {
@@ -123,6 +129,7 @@ export const Columns: ColumnDef<OrderColumn>[] = [
                 column={column}
                 title="Country"
                 id="country"
+                sortByKey="country"
             />
         ),
         cell: ({ row }) => {
@@ -136,7 +143,12 @@ export const Columns: ColumnDef<OrderColumn>[] = [
     {
         accessorKey: "state",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="State" id="state" />
+            <DataTableColumnHeader
+                column={column}
+                title="State"
+                id="state"
+                sortByKey="state"
+            />
         ),
         cell: ({ row }) => {
             return (
@@ -149,7 +161,12 @@ export const Columns: ColumnDef<OrderColumn>[] = [
     {
         accessorKey: "city",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="City" id="city" />
+            <DataTableColumnHeader
+                column={column}
+                title="City"
+                id="city"
+                sortByKey="city"
+            />
         ),
         cell: ({ row }) => {
             return (

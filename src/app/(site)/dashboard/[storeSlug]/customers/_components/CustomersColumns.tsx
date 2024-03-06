@@ -41,9 +41,9 @@ export const Columns: ColumnDef<CustomerColumn>[] = [
         ),
         cell: ({ row }) => {
             return (
-                <div className="flex w-[100px] items-center">
-                    <span className="text-gray-800">
-                        {row.getValue("email")}
+                <div className="flex w-[150px] items-center ">
+                    <span className="w-ful overflow-x-hidden text-ellipsis text-gray-800">
+                        {row.original.customer?.email}
                     </span>
                 </div>
             )
@@ -64,15 +64,19 @@ export const Columns: ColumnDef<CustomerColumn>[] = [
     //     },
     // },
     {
-        accessorKey: "orders",
+        accessorKey: "totalOrders",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Total Orders" />
+            <DataTableColumnHeader
+                column={column}
+                title="Total Orders"
+                sortByKey="totalOrders"
+            />
         ),
         cell: ({ row }) => {
             return (
                 <div className="flex w-[100px] items-center">
                     <span className="text-gray-800">
-                        {row.getValue("orders")}
+                        {row.getValue("totalOrders")}
                     </span>
                 </div>
             )
@@ -81,7 +85,11 @@ export const Columns: ColumnDef<CustomerColumn>[] = [
     {
         accessorKey: "totalSpend",
         header: ({ column }) => (
-            <DataTableColumnHeader column={column} title="Total Spend" />
+            <DataTableColumnHeader
+                column={column}
+                title="Total Spend"
+                sortByKey="totalSpend"
+            />
         ),
         cell: ({ row }) => {
             return (

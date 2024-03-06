@@ -37,8 +37,8 @@ export function CustomersTableToolbar<TData>({
                 )}
             </div>
             <div className="flex items-center gap-4">
-                <DashboardCustomersFilter />
                 <DataTableViewOptions table={table} />
+                <DashboardCustomersFilter />
             </div>
         </div>
     )

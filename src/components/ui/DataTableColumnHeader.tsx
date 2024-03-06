@@ -1,5 +1,3 @@
-import { useEffect } from "react"
-import { useRouter } from "next/navigation"
 import {
     ArrowDownIcon,
     ArrowUpIcon,
@@ -23,37 +21,28 @@ interface DataTableColumnHeaderProps<TData, TValue>
     extends React.HTMLAttributes<HTMLDivElement> {
     column: Column<TData, TValue>
     title: string
+    sortByKey?: string
 }
 
 export function DataTableColumnHeader<TData, TValue>({
     column,
     title,
     className,
+    sortByKey,
 }: DataTableColumnHeaderProps<TData, TValue>) {
     const [searchQuery, setSearchQuery] = useQueryState("sortBy")
-    const router = useRouter()
-
-    useEffect(() => {
-        // prevent anther columns from being push to the url
-        if (searchQuery?.split(".")[0].toLowerCase() !== title.toLowerCase())
-            return
-        const url = new URL(window.location.href)
-        url.searchParams.set("sortBy", searchQuery)
-        router.push(url.toString())
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [searchQuery])
 
     if (!column.getCanSort()) {
         return <div className={cn(className)}>{title}</div>
     }
 
     function handleSorting(sortType: string) {
-        const sortBy = `${title.toLowerCase()}.${sortType}`
+        const sortBy = `${sortByKey}.${sortType}`
         void setSearchQuery(sortBy)
     }
 
     function getIsSorted(sortType: string) {
-        return searchQuery === `${title.toLowerCase()}.${sortType}`
+        return searchQuery === `${sortByKey}.${sortType}`
     }
 
     return (

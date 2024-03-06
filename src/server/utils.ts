@@ -325,27 +325,19 @@ export async function getStoreOrders(
             ...new Set(orders.map((order) => order.customerId)),
         ]
 
-        const customers = await clerkClient.users.getUserList({
+        const customersAccounts = await clerkClient.users.getUserList({
             userId: customersIds,
         })
 
-        const customersDetails = new Map<string, Customer>()
-
-        customers.forEach((customer) => {
-            customersDetails.set(customer.id, {
+        customersAccounts.forEach((customer) => {
+            customers.set(customer.id, {
+                id: customer.id,
                 firstName: customer.firstName,
                 lastName: customer.lastName,
                 imageUrl: customer.imageUrl,
                 username: customer.username,
             })
         })
-
-        const ordersWithCustomersMap = orders.map((order) => ({
-            ...order,
-            customer: customersDetails.get(order.customerId),
-        }))
-
-        return ordersWithCustomersMap
     }
 
     const ordersWithCustomersMap = orders.map((order) => {
@@ -570,31 +562,25 @@ export async function getStoreCustomers(
             ...new Set(customersOrders.map((order) => order.customerId)),
         ]
 
-        const customers = await clerkClient.users.getUserList({
+        const customersAccounts = await clerkClient.users.getUserList({
             userId: customersIds,
         })
 
-        const customersDetails = new Map<string, Customer>()
-
-        customers.forEach((customer) => {
-            customersDetails.set(customer.id, {
+        customersAccounts.forEach((customer) => {
+            customers.set(customer.id, {
+                id: customer.id,
+                email: customer.emailAddresses[0].emailAddress,
+                username: customer.username,
                 firstName: customer.firstName,
                 lastName: customer.lastName,
                 imageUrl: customer.imageUrl,
-                username: customer.username,
             })
         })
-
-        const customersWithOrders = customersOrders.map((customer) => ({
-            ...customer,
-            customer: customersDetails.get(customer.customerId),
-        }))
-
-        return customersWithOrders
     }
 
     const customersWithOrders = customersOrders.map((order) => {
         const customer = customers.get(order.customerId)
+        console.log("customer emails: ", customer?.email)
 
         return {
             ...order,
