@@ -38,6 +38,7 @@ import { booksSearchParamsSchema } from "@/lib/validations/params"
 import { cartRouter } from "./routers/cart"
 import { storeRouter } from "./routers/store"
 import { stripeRouter } from "./routers/stripe"
+import { usersRouter } from "./routers/users"
 import { privateProcedure, publicProcedure, router } from "./trpc"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -502,6 +503,7 @@ export const appRouter = router({
     cart: cartRouter,
     store: storeRouter,
     stripe: stripeRouter,
+    users: usersRouter,
 })
 
 export type AppRouter = typeof appRouter

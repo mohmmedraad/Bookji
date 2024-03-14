@@ -1,5 +1,6 @@
+import { OauthProvider, type SubscriptionPlan } from "@/types"
+
 import { Icons } from "@/components/Icons"
-import { SubscriptionPlan } from "@/types"
 
 export const navLinks = [
     {
@@ -541,4 +542,11 @@ export const storeSubscriptionPlans: SubscriptionPlan[] = [
         stripePriceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
         price: 25,
     },
+]
+
+export const oauthProviders: OauthProvider[] = [
+    { name: "Google", strategy: "oauth_google", icon: "Google" },
+    { name: "Facebook", strategy: "oauth_facebook", icon: "Facebook" },
+    { name: "Apple", strategy: "oauth_apple", icon: "Apple" },
+    { name: "Github", strategy: "oauth_github", icon: "Github" },
 ]

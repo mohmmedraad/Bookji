@@ -1,10 +1,11 @@
 "use client"
 
-import { FC, useState } from "react"
+import { useState, type FC } from "react"
 import { useRouter } from "next/navigation"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { type OAuthStrategy } from "@clerk/types"
 
+import { oauthProviders } from "@/config/site"
 import {
     clerkError,
     handleGenericError,
@@ -13,18 +14,6 @@ import {
 
 import { Icons } from "../Icons"
 import { Button } from "../ui/Button"
-
-type OauthProvider = {
-    name: string
-    icon: keyof typeof Icons
-    strategy: OAuthStrategy
-}[]
-
-const oauthProviders: OauthProvider = [
-    { name: "Google", strategy: "oauth_google", icon: "Google" },
-    { name: "Facebook", strategy: "oauth_facebook", icon: "Facebook" },
-    { name: "Apple", strategy: "oauth_apple", icon: "Apple" },
-]
 
 interface OauthSignInProps {
     redirectUrlComplete?: string

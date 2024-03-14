@@ -1,13 +1,25 @@
 import { type Book } from "@/db/schema"
-import { getStoreCustomers, type getStoreBooks, type getStoreOrders } from "@/server/utils"
+import {
+    type getStoreBooks,
+    type getStoreCustomers,
+    type getStoreOrders,
+} from "@/server/utils"
 import type { User } from "@clerk/nextjs/server"
+import { type OAuthStrategy } from "@clerk/types"
 import { type TRPCError } from "@trpc/server"
 import { type Input } from "valibot"
 
 import {
+    type cookiesSettingsSchema,
+    type emailSettingSchema,
+    type generalInformationSchema,
+    type updateUserSchema,
+} from "@/lib/validations/auth"
+import {
     type cartItemSchema,
     type checkoutItemSchema,
 } from "@/lib/validations/cart"
+import { type Icons } from "@/components/Icons"
 import { type OurFileRouter } from "@/app/api/uploadthing/core"
 
 export type CartItem = Input<typeof cartItemSchema>
@@ -81,5 +93,22 @@ export type Customer = Pick<
 >
 
 export type OrderColumn = Awaited<ReturnType<typeof getStoreOrders>>[number]
-export type CustomerColumn = Awaited<ReturnType<typeof getStoreCustomers>>[number]
+export type CustomerColumn = Awaited<
+    ReturnType<typeof getStoreCustomers>
+>[number]
 export type BookColumn = Awaited<ReturnType<typeof getStoreBooks>>[number]
+
+export type GeneralInformationSchema = Input<typeof generalInformationSchema>
+export type CookiesSettingsSchema = Input<typeof cookiesSettingsSchema>
+export type EmailSettingSchema = Input<typeof emailSettingSchema>
+
+export type OauthProvider = {
+    name: string
+    icon: keyof typeof Icons
+    strategy: OAuthStrategy
+}
+
+export type UserLinkedAccounts = (OauthProvider &
+    ({ isConnected: true; path: string } | { isConnected: false }))[]
+
+export type UpdateUserSchema = Required<Input<typeof updateUserSchema>>
