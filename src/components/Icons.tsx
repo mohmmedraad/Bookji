@@ -1,5 +1,5 @@
 import { type SVGProps } from "react"
-import { Github } from "lucide-react"
+import { Github, type LucideProps } from "lucide-react"
 
 export type Icon = (props: SVGProps<SVGSVGElement>) => JSX.Element
 
@@ -874,5 +874,5 @@ export const Icons = {
             </defs>
         </svg>
     ),
-    Github: (props: SVGProps<SVGSVGElement>) => <Github {...props} />,
+    Github: (props: LucideProps) => <Github {...props} />,
 }
