@@ -35,10 +35,11 @@ const page: FC<pageProps> = async ({}) => {
                     />
                     {/* <SocialAccounts /> */}
                 </div>
-                <GeneralInformation username={user.username}
-                firstName={user.firstName}
-                lastName={user.lastName}
-                birthday={new Date(user.birthday)} />
+                <GeneralInformation
+                    username={user.username}
+                    firstName={user.firstName}
+                    lastName={user.lastName}
+                />
             </div>
             <div className="mt-8 grid gap-8 md:grid-flow-col">
                 <CookiesSettings />

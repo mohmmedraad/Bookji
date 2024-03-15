@@ -14,14 +14,12 @@ interface UseGeneralInformationFormProps {
     firstName: string | null
     lastName: string | null
     username: string | null
-    birthday: Date
 }
 
 export const useGeneralInformationForm = ({
     firstName,
     lastName,
     username,
-    birthday,
 }: UseGeneralInformationFormProps) => {
     const user = useUserInfo()
     const router = useRouter()
@@ -29,7 +27,6 @@ export const useGeneralInformationForm = ({
     const form = useForm<GeneralInformationSchema>({
         resolver: valibotResolver(generalInformationSchema),
         defaultValues: {
-            birthday: user.birthday ?? birthday,
             firstName: user.firstName ?? firstName!,
             lastName: user.lastName ?? lastName!,
             username: user.username ?? username!,
@@ -84,16 +81,12 @@ export const useGeneralInformationForm = ({
                 firstName,
                 lastName,
                 username,
-                birthday,
             })
         ) {
-            return toast.success("Your info has been updated")
+            return toast.success("Profile updated successfully")
         }
 
-        updateUser({
-            ...data,
-            birthday: data.birthday.getTime(),
-        })
+        updateUser(data)
     }
 
     const handleSubmit = form.handleSubmit(updateProfile)

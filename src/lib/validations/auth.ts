@@ -32,7 +32,6 @@ export const generalInformationSchema = object({
         minLength(1, "The last name must be above the 1 characters"),
         maxLength(50, "The last name must be below the 50 characters"),
     ]),
-    birthday: date("Birthday is required"),
     username: string("Username is required"),
 })
 
@@ -50,17 +49,4 @@ export const emailSettingSchema = object({
     buyerReview: boolean(),
 })
 
-export const updateUserSchema = merge([
-    omit(generalInformationSchema, ["birthday"]),
-    object({
-        birthday: transform(
-            number([
-                custom(
-                    (value) => !isNaN(new Date(value).getTime()),
-                    "invalid date format. Please use a valid date format."
-                ),
-            ]),
-            (value) => new Date(value)
-        ),
-    }),
-])
+export const updateUserSchema = generalInformationSchema
