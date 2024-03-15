@@ -1,5 +1,6 @@
 import { type Book } from "@/db/schema"
 import {
+    getPurchases,
     type getStoreBooks,
     type getStoreCustomers,
     type getStoreOrders,
@@ -83,6 +84,7 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
     isCanceled: boolean
     isActive: boolean
 }
+
 export interface SearchParams {
     [key: string]: string | string[] | undefined
 }
@@ -93,13 +95,19 @@ export type Customer = Pick<
 >
 
 export type OrderColumn = Awaited<ReturnType<typeof getStoreOrders>>[number]
+
+export type PurchasesColumn = Awaited<ReturnType<typeof getPurchases>>[number]
+
 export type CustomerColumn = Awaited<
     ReturnType<typeof getStoreCustomers>
 >[number]
+
 export type BookColumn = Awaited<ReturnType<typeof getStoreBooks>>[number]
 
 export type GeneralInformationSchema = Input<typeof generalInformationSchema>
+
 export type CookiesSettingsSchema = Input<typeof cookiesSettingsSchema>
+
 export type EmailSettingSchema = Input<typeof emailSettingSchema>
 
 export type OauthProvider = {

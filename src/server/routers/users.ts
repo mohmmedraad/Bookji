@@ -2,10 +2,12 @@ import { clerkClient } from "@clerk/nextjs"
 import { type User } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
+import { nullable, object, record, string, ValiError } from "valibot"
 
 import { updateUserSchema } from "@/lib/validations/auth"
 
 import { privateProcedure, router } from "../trpc"
+import { getPurchases } from "../utils"
 
 export const usersRouter = router({
     updateUser: privateProcedure
@@ -32,6 +34,30 @@ export const usersRouter = router({
                     message: "An error occurred while updating the user",
                     cause: error,
                 })
+            }
+        }),
+
+    userOrders: privateProcedure
+        .input(
+            wrap(
+                object({
+                    searchParams: record(string(), nullable(string(), "")),
+                })
+            )
+        )
+        .query(async ({ input, ctx }) => {
+            try {
+                const orders = await getPurchases(ctx.user.id, {
+                    ...input.searchParams,
+                })
+                return orders
+            } catch (error) {
+                if (error instanceof ValiError) {
+                    throw new TRPCError({
+                        code: "BAD_REQUEST",
+                        message: "Invalid search parameters.",
+                    })
+                }
             }
         }),
 })

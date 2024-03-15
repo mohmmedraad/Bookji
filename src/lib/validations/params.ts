@@ -41,10 +41,10 @@ export const booksSearchParamsSchema = object({
     categories: transform(fallback(string(), ""), (input) =>
         input ? input.split(".") : []
     ),
-    price: validateRangeSchema("0-500"),
-    inventory: validateRangeSchema("0-100"),
-    orders: validateRangeSchema("0-300"),
-    rating: validateRangeSchema("0-5"),
+    price: createRangeSchema("0-500"),
+    inventory: createRangeSchema("0-100"),
+    orders: createRangeSchema("0-300"),
+    rating: createRangeSchema("0-5"),
 })
 
 export const ordersSearchParamsSchema = merge([
@@ -54,8 +54,16 @@ export const ordersSearchParamsSchema = merge([
         city: optional(fallback(string(), "")),
         state: optional(fallback(string(), "")),
         country: optional(fallback(string(), "")),
-        total: validateRangeSchema("0-500"),
-        customers: validateOptionsSchema(),
+        total: createRangeSchema("0-500"),
+        customers: createOptionsSchema(),
+    }),
+])
+
+export const purchasesSearchParamsSchema = merge([
+    searchParamsSchema,
+    object({
+        total: createRangeSchema("0-500"),
+        stores: createOptionsSchema(),
     }),
 ])
 
@@ -63,9 +71,9 @@ export const customersSearchParamsSchema = merge([
     searchParamsSchema,
     object({
         place: optional(fallback(string(), "")),
-        total_spend: validateRangeSchema("0-500"),
-        total_orders: validateRangeSchema("0-500"),
-        customers: validateOptionsSchema(),
+        total_spend: createRangeSchema("0-500"),
+        total_orders: createRangeSchema("0-500"),
+        customers: createOptionsSchema(),
     }),
 ])
 
@@ -78,7 +86,7 @@ function customRangeValidation(value: string) {
     return isValueValid
 }
 
-function validateRangeSchema(defaultValue: string) {
+function createRangeSchema(defaultValue: string) {
     const schema = optional(
         transform(
             fallback(string([custom(customRangeValidation)]), defaultValue),
@@ -90,7 +98,7 @@ function validateRangeSchema(defaultValue: string) {
     return schema
 }
 
-function validateOptionsSchema() {
+function createOptionsSchema() {
     return transform(fallback(string(), ""), (input) =>
         input ? [...new Set(input.split("."))] : []
     )

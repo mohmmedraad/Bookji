@@ -8,7 +8,7 @@ import {
     orders as ordersTable,
     payments,
     ratings as ratingsTable,
-    stores,
+    stores as storesTable,
 } from "@/db/schema"
 import type { Customer, SearchParams, UserSubscriptionPlan } from "@/types"
 import { clerkClient } from "@clerk/nextjs/server"
@@ -17,7 +17,6 @@ import {
     and,
     asc,
     between,
-    count,
     desc,
     eq,
     exists,
@@ -36,6 +35,7 @@ import {
     booksSearchParamsSchema,
     customersSearchParamsSchema,
     ordersSearchParamsSchema,
+    purchasesSearchParamsSchema,
 } from "@/lib/validations/params"
 
 export async function deleteStore(id: number) {
@@ -74,7 +74,7 @@ export async function getStripeAccount(
             columns: {
                 stripeAccountId: true,
             },
-            where: eq(stores.id, storeId),
+            where: eq(storesTable.id, storeId),
         })
 
         if (!store) return falsyReturn
@@ -112,12 +112,12 @@ export async function getStripeAccount(
                     .where(eq(payments.storeId, storeId))
 
                 await tx
-                    .update(stores)
+                    .update(storesTable)
                     .set({
                         stripeAccountId: account.id,
                         active: true,
                     })
-                    .where(eq(stores.id, storeId))
+                    .where(eq(storesTable.id, storeId))
             })
         }
 
@@ -597,4 +597,68 @@ export async function getStoreCustomers(
     })
 
     return customersWithOrders
+}
+
+export async function getPurchases(
+    userId: string,
+    searchParams: SearchParams,
+    limit = 10
+) {
+    const {
+        text,
+        page,
+        sortBy: [column, orderBy],
+        total: [minTotal, maxTotal],
+        stores,
+    } = parse(purchasesSearchParamsSchema, searchParams)
+
+    const orders = await db
+        .select({
+            userId: ordersTable.userId,
+        
+            storeName: storesTable.name,
+            storeLogo:  storesTable.logo,
+
+            title: ordersTable.name,
+            total: ordersTable.total,
+            status: ordersTable.stripePaymentIntentStatus,
+
+            items: sql<
+                {
+                    cover: string
+                }[]
+            >`JSON_ARRAYAGG(
+            JSON_OBJECT(
+                'cover', ${booksTable.cover}
+            ))`,
+            createdAt: ordersTable.createdAt,
+        })
+        .from(ordersTable)
+        .where((order) =>
+            and(
+                stores.length !== 0 ? inArray(order.storeName, stores) : undefined,
+                eq(order.userId, userId),
+                between(order.total, minTotal.toString(), maxTotal.toString()),
+                text ? like(order.title, `%${text}%`) : undefined
+            )
+        )
+        .innerJoin(orderItemsTable, eq(ordersTable.id, orderItemsTable.orderId))
+        .leftJoin(booksTable, eq(orderItemsTable.bookId, booksTable.id))
+        .innerJoin(storesTable, eq(storesTable.id, ordersTable.storeId))
+        .groupBy(ordersTable.id)
+        .orderBy((order) => {
+            return column in order
+                ? orderBy === "asc"
+                    ? //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      asc(order[column])
+                    : //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      desc(order[column])
+                : desc(order.createdAt)
+        })
+        .limit(limit)
+        .offset((page - 1) * limit)
+
+    return orders
 }
