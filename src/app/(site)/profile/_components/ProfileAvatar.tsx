@@ -31,7 +31,7 @@ const ProfileAvatar: FC<ProfileAvatarProps> = ({
                     }}
                     className="mt-6 h-20 w-20 rounded-md shadow-md"
                 />
-                <CardHeader>
+                <CardHeader className="p-0 pt-6">
                     <CardTitle>
                         {user.firstName ?? firstName}{" "}
                         {user.lastName ?? lastName}
