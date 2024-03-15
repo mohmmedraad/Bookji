@@ -1,18 +1,9 @@
 "use client"
 
 import { type FC } from "react"
-import { useRouter } from "next/navigation"
-import { useUser } from "@clerk/nextjs"
-import { toast } from "sonner"
 
 import { useUserInfo } from "@/hooks/useUserInfo"
-import {
-    Card,
-    CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
-} from "@/components/ui/Card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
 import { UserAvatar } from "@/components/UserAvatar"
 
 import ChangeAvatarButton from "./ChangeAvatarButton"
