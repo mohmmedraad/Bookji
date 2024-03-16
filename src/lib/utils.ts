@@ -1,5 +1,5 @@
 import { type AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime"
-import type { ClerkAPIError, ClerkErrorCode } from "@/types"
+import type { ClerkAPIError, ClerkErrorCode, SearchParams } from "@/types"
 import { type User } from "@clerk/nextjs/server"
 import {
     type SignInResource,
@@ -116,4 +116,9 @@ export function getUserEmail(user: User | null) {
             ?.emailAddress ?? ""
 
     return email
+}
+
+export function searchParamsString(searchParams: SearchParams) {
+    const searchParamsString = new URLSearchParams(searchParams).toString()
+    return searchParamsString ? `?${searchParamsString}` : ""
 }

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, type FC } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { type OrderColumn } from "@/types"
+import { type PurchasesColumn } from "@/types"
 import { toast } from "sonner"
 
 import { usePurchasesSearchParams } from "@/hooks/usePurchasesSearchParams"
@@ -13,7 +13,7 @@ import { Columns } from "./PurchasesColumns"
 import { PurchasesDataTableToolbar } from "./PurchasesDataTableToolbar"
 
 interface PurchasesTableProps {
-    initialOrders: OrderColumn[]
+    initialOrders: PurchasesColumn[]
 }
 
 const PurchasesTable: FC<PurchasesTableProps> = ({ initialOrders }) => {

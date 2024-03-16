@@ -85,9 +85,8 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
     isActive: boolean
 }
 
-export interface SearchParams {
-    [key: string]: string | string[] | undefined
-}
+export type SearchParams = Record<string , string>
+
 
 export type Customer = Pick<
     User,
