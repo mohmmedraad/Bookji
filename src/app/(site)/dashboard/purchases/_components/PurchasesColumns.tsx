@@ -29,11 +29,7 @@ export const Columns: ColumnDef<PurchasesColumn>[] = [
     {
         accessorKey: "store",
         header: ({ column }) => (
-            <DataTableColumnHeader
-                column={column}
-                title="Customer"
-                id="customer"
-            />
+            <DataTableColumnHeader column={column} title="Store" id="store" />
         ),
         cell: ({
             row: {
@@ -44,7 +40,7 @@ export const Columns: ColumnDef<PurchasesColumn>[] = [
                 <div className="flex w-[200px] items-center gap-3">
                     <Link
                         href={`/shop?stores=${storeName}`}
-                        className="w-full items-center gap-3"
+                        className="flex items-center gap-3"
                     >
                         <Image
                             src={storeLogo!}
@@ -53,7 +49,7 @@ export const Columns: ColumnDef<PurchasesColumn>[] = [
                             alt={storeName}
                             className="h-7 w-7 rounded-full shadow-md"
                         />
-                        <span className="&:hover:underline-offset-4 &:hover:underline">
+                        <span className="group-hover:underline group-hover:underline-offset-4">
                             {storeName}
                         </span>
                     </Link>
