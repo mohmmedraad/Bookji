@@ -39,7 +39,7 @@ export const Columns: ColumnDef<PurchasesColumn>[] = [
             return (
                 <div className="flex w-[200px] items-center gap-3">
                     <Link
-                        href={`/shop?stores=${storeName.replace(" ", "+")}`}
+                        href={`/shop?stores=${storeName.replaceAll(" ", "+")}`}
                         className="group flex items-center gap-3"
                     >
                         <Image
