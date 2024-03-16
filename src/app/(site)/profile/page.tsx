@@ -19,7 +19,7 @@ const page: FC<pageProps> = async ({}) => {
     if (!user) return
 
     return (
-        <Container className="min-h-screen pt-40">
+        <Container className="min-h-screen pb-8 pt-40">
             <UserInfoProvider
                 username={user.username}
                 firstName={user.firstName}
