@@ -12,9 +12,6 @@ import DashboardNav from "./_components/DashboardNav"
 import ProfileInfo from "./_sections/ProfileInfo"
 import ProfilePagesLinks from "./_sections/ProfilePages"
 
-const bio =
-    "Seraphina Nightshade, a mystic traveler of otherworldly realms, is a name whispered in hushed tones across enchanted taverns. Born beneath a rare cosmic alignment, her destiny intertwined with secrets of forgotten civilizations and hidden arcane arts. Guided by the moon's glow, Seraphina has deciphered the enigmatic runes of the Starfall Codex and unraveled the temporal paradoxes of the Chronos Labyrinth. Her prowess in"
-
 const dashboardLinks = [
     {
         href: "/dashboard",
@@ -26,7 +23,7 @@ const dashboardLinks = [
     },
     {
         href: "/dashboard/purchase",
-        label: "Purchase",
+        label: "Purchases",
     },
 ]
 
