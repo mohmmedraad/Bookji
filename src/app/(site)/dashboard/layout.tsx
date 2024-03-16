@@ -22,7 +22,7 @@ const dashboardLinks = [
         label: "Billing",
     },
     {
-        href: "/dashboard/purchase",
+        href: "/dashboard/purchases",
         label: "Purchases",
     },
 ]
