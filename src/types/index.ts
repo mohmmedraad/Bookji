@@ -1,6 +1,7 @@
 import { type Book } from "@/db/schema"
 import {
-    getPurchases,
+    getShopPageBooks,
+    type getPurchases,
     type getStoreBooks,
     type getStoreCustomers,
     type getStoreOrders,
@@ -85,8 +86,7 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
     isActive: boolean
 }
 
-export type SearchParams = Record<string , string>
-
+export type SearchParams = Record<string, string>
 
 export type Customer = Pick<
     User,
@@ -119,3 +119,22 @@ export type UserLinkedAccounts = (OauthProvider &
     ({ isConnected: true; path: string } | { isConnected: false }))[]
 
 export type UpdateUserSchema = Required<Input<typeof updateUserSchema>>
+
+export type GetBooksSchema = {
+    page: number
+    sortBy: string[]
+    text: string
+    author: string
+    categories: string[]
+    price: number[]
+    inventory: number[]
+    orders: number[]
+    rating: number[]
+    stores: string[]
+    limit: number
+    cursor: number
+    from?: string | undefined
+    to?: string | undefined
+}
+
+export type ShopPageBook = Awaited<ReturnType<typeof getShopPageBooks>>[number]

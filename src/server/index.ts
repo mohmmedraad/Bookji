@@ -5,23 +5,11 @@ import {
     booksToCategories,
     categories as categoriesTable,
     ratings as ratingsTable,
-    stores as storesTable,
 } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import {
-    and,
-    asc,
-    between,
-    desc,
-    eq,
-    exists,
-    inArray,
-    like,
-    notInArray,
-    sql,
-} from "drizzle-orm"
+import { and, asc, desc, eq, exists, notInArray } from "drizzle-orm"
 import { number, object } from "valibot"
 
 import { slugify } from "@/lib/utils"
@@ -33,13 +21,13 @@ import {
     rateBookSchema,
     userRatingSchema,
 } from "@/lib/validations/book"
-import { booksSearchParamsSchema } from "@/lib/validations/params"
 
 import { cartRouter } from "./routers/cart"
 import { storeRouter } from "./routers/store"
 import { stripeRouter } from "./routers/stripe"
 import { usersRouter } from "./routers/users"
 import { privateProcedure, publicProcedure, router } from "./trpc"
+import { getShopPageBooks } from "./utils"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamic = "force-dynamic"
@@ -82,163 +70,9 @@ export const appRouter = router({
     getBooks: publicProcedure
         .input(wrap(getBooksSchema))
         .query(async ({ input }) => {
-            const {
-                stores,
-                limit,
-                cursor,
-                page,
-                text,
-                categories,
-                price: [minPrice, maxPrice],
-                rating: [minRating, maxRating],
-                sortBy: [column, order],
-            } = input
+            const books = await getShopPageBooks({ ...input })
 
-            const offset = cursor * limit
-
-            const foundBooks = await db
-                .select({
-                    id: books.id,
-                    title: books.title,
-                    slug: books.slug,
-                    rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
-                        Number
-                    ),
-                    storeName: storesTable.name,
-                    userId: books.userId,
-                    storeId: books.storeId,
-                    price: books.price,
-                    description: books.description,
-                    cover: books.cover,
-                    inventory: books.inventory,
-                    createdAt: books.createdAt,
-                    updatedAt: books.updatedAt,
-                })
-                .from(books)
-                .where((book) =>
-                    and(
-                        text ? like(book.title, `%${text}%`) : undefined,
-                        between(
-                            book.price,
-                            minPrice.toString(),
-                            maxPrice.toString()
-                        ),
-                        stores.length === 0
-                            ? undefined
-                            : inArray(book.storeName, stores),
-                        categories.length === 0
-                            ? undefined
-                            : exists(
-                                  db
-                                      .select({
-                                          bookId: booksToCategories.bookId,
-                                          categoryId:
-                                              booksToCategories.categoryId,
-                                      })
-                                      .from(booksToCategories)
-                                      .where((category) =>
-                                          and(
-                                              eq(category.bookId, book.id),
-                                              exists(
-                                                  db
-                                                      .select({
-                                                          name: categoriesTable.name,
-                                                          id: categoriesTable.id,
-                                                      })
-                                                      .from(categoriesTable)
-                                                      .where((categoryT) =>
-                                                          and(
-                                                              eq(
-                                                                  categoryT.id,
-                                                                  category.categoryId
-                                                              ),
-                                                              inArray(
-                                                                  categoryT.name,
-                                                                  categories
-                                                              )
-                                                          )
-                                                      )
-                                              )
-                                          )
-                                      )
-                              )
-                    )
-                )
-                .leftJoin(ratingsTable, eq(books.id, ratingsTable.bookId))
-                .innerJoin(storesTable, eq(books.storeId, storesTable.id))
-                .groupBy(books.id, books.title)
-                .having(
-                    between(
-                        sql` AVG(COALESCE(${ratingsTable.rating}, 0)) `,
-                        minRating,
-                        maxRating
-                    )
-                )
-                .orderBy((book) => {
-                    return column in book
-                        ? order === "asc"
-                            ? //@ts-expect-error error
-                              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                              asc(book[column])
-                            : //@ts-expect-error error
-                              // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-                              desc(book[column])
-                        : desc(book.createdAt)
-                })
-                .limit(limit)
-                .offset(offset)
-
-            // const foundBooks = await db.query.books.findMany({
-            //     limit,
-            //     offset,
-            //     columns: {
-            //         id: true,
-            //         userId: true,
-            //         title: true,
-            //         cover: true,
-            //         slug: true,
-            //     },
-            //     where: (book) =>
-            //         and(
-            //             like(book.title, `%${text}%`),
-            //             // userId
-            //             //     ? eq(book.userId, userId)
-            //             //     : undefined,
-            //             between(
-            //                 book.price,
-            //                 minPrice.toString(),
-            //                 maxPrice.toString()
-            //             ),
-            //             categories.length === 0
-            //                 ? undefined
-            //                 : exists(
-            //                       db
-            //                           .select({ id: booksToCategories.bookId })
-            //                           .from(booksToCategories)
-            //                           .where(
-            //                               and(
-            //                                   eq(
-            //                                       booksToCategories.bookId,
-            //                                       book.id
-            //                                   ),
-            //                                   inArray(
-            //                                       booksToCategories.categoryId,
-            //                                       categories.map(
-            //                                           (category) => 1
-            //                                       )
-            //                                   )
-            //                               )
-            //                           )
-            //                   )
-            //         ),
-            //     orderBy: (book) => [asc(book.createdAt)],
-            // })
-
-            if (!foundBooks) {
-                return null
-            }
-            return await withUsers(foundBooks)
-            // return books
+            return books
         }),
 
     addBook: privateProcedure
@@ -338,6 +172,7 @@ export const appRouter = router({
                 throw new TRPCError({ code: "INTERNAL_SERVER_ERROR" })
             }
         }),
+
     getAllCategories: publicProcedure.query(async () => {
         try {
             const foundCategories = await db

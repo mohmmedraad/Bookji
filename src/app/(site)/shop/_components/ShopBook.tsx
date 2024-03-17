@@ -7,11 +7,11 @@ interface ShopBookProps {
     title: string
     slug: string
     cover: string
-    userFullName: string
+    author: string
 }
 
 const ShopBook: FC<ShopBookProps> = forwardRef<HTMLDivElement, ShopBookProps>(
-    ({ slug, cover, title, userFullName, ...props }, ref) => {
+    ({ slug, cover, title, author, ...props }, ref) => {
         return (
             <div className="text-center" ref={ref} {...props}>
                 <Link href={`/book/${slug}`}>
@@ -24,7 +24,7 @@ const ShopBook: FC<ShopBookProps> = forwardRef<HTMLDivElement, ShopBookProps>(
                     />
                 </Link>
                 <h3 className="mt-2 text-sm font-semibold">{title}</h3>
-                <h4 className="mt-2 text-xs text-gray-500">{userFullName}</h4>
+                <h4 className="mt-2 text-xs text-gray-500">{author}</h4>
             </div>
         )
     }

@@ -1,7 +1,7 @@
 "use client"
 
 import { type FC } from "react"
-import { type PartialBook } from "@/types"
+import type { ShopPageBook } from "@/types"
 
 import { useBooksFeed } from "@/hooks/useBooksFeed"
 import BooksWrapper from "@/components/ui/BooksWrapper"
@@ -9,16 +9,12 @@ import BooksWrapper from "@/components/ui/BooksWrapper"
 import ShopBook from "../_components/ShopBook"
 import ShopBookSkeleton from "../_components/ShopBookSkeleton"
 
-interface ExtendedBooksType extends PartialBook {
-    userFullName: string | undefined
-}
-
 interface BooksFeedProps {
-    initialBooks: ExtendedBooksType[]
+    initialBooks: ShopPageBook[]
 }
 
 const BooksFeed: FC<BooksFeedProps> = ({ initialBooks }) => {
-    const { books, ref, isFetching, isFetchingNextPage, isMount } =
+    const { books, ref, isFetching, isFetchingNextPage, isInitialLoading } =
         useBooksFeed(initialBooks)
     return (
         <>
@@ -33,7 +29,7 @@ const BooksFeed: FC<BooksFeedProps> = ({ initialBooks }) => {
                 </div>
             ) : (
                 <BooksWrapper>
-                    {isMount && isFetching && !isFetchingNextPage ? (
+                    {isFetching && !isInitialLoading && !isFetchingNextPage ? (
                         new Array(10)
                             .fill(0)
                             .map((_, index) => <ShopBookSkeleton key={index} />)
@@ -51,9 +47,7 @@ const BooksFeed: FC<BooksFeedProps> = ({ initialBooks }) => {
                                             title={book?.title || ""}
                                             slug={book?.slug || ""}
                                             cover={book?.cover || ""}
-                                            userFullName={
-                                                book?.userFullName || ""
-                                            }
+                                            author={book?.author || ""}
                                         />
                                     )
                                 } else {
@@ -63,9 +57,7 @@ const BooksFeed: FC<BooksFeedProps> = ({ initialBooks }) => {
                                             title={book?.title || ""}
                                             slug={book?.slug || ""}
                                             cover={book?.cover || ""}
-                                            userFullName={
-                                                book?.userFullName || ""
-                                            }
+                                            author={book?.author || ""}
                                         />
                                     )
                                 }

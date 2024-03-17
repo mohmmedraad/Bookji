@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "3c28a844-059b-4fb7-83c9-a4e3079798c2",
+  "id": "caa94781-7ace-4d94-a084-6b03cb502eb1",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {

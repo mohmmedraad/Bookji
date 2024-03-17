@@ -1,10 +1,8 @@
-import type { CheckoutItem } from "@/types"
 import { relations } from "drizzle-orm"
 import {
     boolean,
     decimal,
     int,
-    json,
     mysqlTable,
     primaryKey,
     serial,
@@ -20,6 +18,7 @@ export const books = mysqlTable(`${APP_NAME}_books`, {
     userId: varchar("userId", { length: 191 }).notNull(),
     storeId: int("storeId").notNull(),
     title: varchar("title", { length: 191 }).notNull().unique(),
+    author: varchar("title", { length: 191 }).notNull(),
     description: text("description"),
     cover: varchar("cover", { length: 200 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
@@ -212,7 +211,7 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })
 
-export const storesRelations = relations(stores, ({ many, one }) => ({
+export const storesRelations = relations(stores, ({ many }) => ({
     books: many(books),
     orders: many(orders),
     cartItems: many(cartItems),

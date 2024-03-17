@@ -5,6 +5,7 @@ import useDebounce from "./useDebounce"
 
 export const useBooksSearchParams = () => {
     const [textParam, setTextParam] = useQueryState("text")
+    const [authorParam, setAuthorParam] = useQueryState("author")
     const [priceParam, setPriceParam] = useQueryState("price")
     const [ratingParam, setRatingParam] = useQueryState("rating")
     const [inventoryParam, setInventoryParam] = useQueryState("inventory")
@@ -15,6 +16,7 @@ export const useBooksSearchParams = () => {
     const [ordersParam, setOrdersParam] = useQueryState("orders")
 
     const text = useDebounce(textParam)
+    const author = useDebounce(authorParam)
     const price = useDebounce(priceParam)
     const inventory = useDebounce(inventoryParam)
     const categories = useDebounce(categoriesParam)
@@ -26,6 +28,7 @@ export const useBooksSearchParams = () => {
 
     const handleClearSearch = useCallback(() => {
         void setTextParam(null)
+        void setAuthorParam(null)
         void setPageParam(null)
         void setPriceParam(null)
         void setRatingParam(null)
@@ -39,6 +42,7 @@ export const useBooksSearchParams = () => {
 
     return {
         text,
+        author,
         page,
         price,
         categories,

@@ -2,7 +2,6 @@ import {
     array,
     blob,
     coerce,
-    custom,
     fallback,
     maxLength,
     maxSize,
@@ -41,6 +40,11 @@ export type BookType = Input<typeof bookSchema>
 export const bookFormSchema = object({
     title: string([
         minLength(5, "The title must be above the 5 characters"),
+        toTrimmed(),
+    ]),
+    author: string([
+        minLength(5, "The author name must be above the 5 characters"),
+        maxLength(191, "The author name must be blew the 191 characters"),
         toTrimmed(),
     ]),
     description: string([
@@ -97,17 +101,16 @@ export const searchParams = object({
 
 export type SearchParams = Input<typeof searchParams>
 
-// export const getBooksSchema = object({
-//     limit: coerce(number([minValue(1)]), Number),
-//     cursor: union([nullType(), number()]),
-//     searchParams,
-// })
-
 export const getBooksSchema = merge([
     booksSearchParamsSchema,
     object({
-        stores: transform(fallback(string(), ""), input => input ? input.split(".") : []),
-        limit: optional(fallback(coerce(number([minValue(1)]), Number), 10), 10),
+        stores: transform(fallback(string(), ""), (input) =>
+            input ? input.split(".") : []
+        ),
+        limit: optional(
+            fallback(coerce(number([minValue(1)]), Number), 10),
+            10
+        ),
         cursor: optional(fallback(number(), 0), 0),
     }),
 ])

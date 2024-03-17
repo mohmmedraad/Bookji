@@ -10,7 +10,12 @@ import {
     ratings as ratingsTable,
     stores as storesTable,
 } from "@/db/schema"
-import type { Customer, SearchParams, UserSubscriptionPlan } from "@/types"
+import type {
+    Customer,
+    GetBooksSchema,
+    SearchParams,
+    UserSubscriptionPlan,
+} from "@/types"
 import { clerkClient } from "@clerk/nextjs/server"
 import { addDays } from "date-fns"
 import {
@@ -31,6 +36,7 @@ import { parse } from "valibot"
 import { storeSubscriptionPlans } from "@/config/site"
 import { stripe } from "@/lib/stripe"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
+import { getBooksSchema } from "@/lib/validations/book"
 import {
     booksSearchParamsSchema,
     customersSearchParamsSchema,
@@ -615,9 +621,9 @@ export async function getPurchases(
     const orders = await db
         .select({
             userId: ordersTable.userId,
-        
+
             storeName: storesTable.name,
-            storeLogo:  storesTable.logo,
+            storeLogo: storesTable.logo,
 
             title: ordersTable.name,
             total: ordersTable.total,
@@ -636,7 +642,9 @@ export async function getPurchases(
         .from(ordersTable)
         .where((order) =>
             and(
-                stores.length !== 0 ? inArray(order.storeName, stores) : undefined,
+                stores.length !== 0
+                    ? inArray(order.storeName, stores)
+                    : undefined,
                 eq(order.userId, userId),
                 between(order.total, minTotal.toString(), maxTotal.toString()),
                 text ? like(order.title, `%${text}%`) : undefined
@@ -661,4 +669,106 @@ export async function getPurchases(
         .offset((page - 1) * limit)
 
     return orders
+}
+
+export async function getShopPageBooks({
+    stores,
+    limit = 10,
+    author,
+    text,
+    categories,
+    cursor = 0,
+    price: [minPrice, maxPrice],
+    rating: [minRating, maxRating],
+    sortBy: [column, order],
+}: GetBooksSchema) {
+    const offset = cursor * limit
+
+    const books = await db
+        .select({
+            id: booksTable.id,
+            title: booksTable.title,
+            slug: booksTable.slug,
+            author: booksTable.author,
+            rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
+                Number
+            ),
+            storeName: storesTable.name,
+            storeId: booksTable.storeId,
+            price: booksTable.price,
+            cover: booksTable.cover,
+            inventory: booksTable.inventory,
+            createdAt: booksTable.createdAt,
+        })
+        .from(booksTable)
+        .where((book) =>
+            and(
+                text ? like(book.title, `%${text}%`) : undefined,
+                author ? like(book.title, `%${author}%`) : undefined,
+                between(book.price, minPrice.toString(), maxPrice.toString()),
+                stores.length === 0
+                    ? undefined
+                    : inArray(book.storeName, stores),
+                categories.length === 0
+                    ? undefined
+                    : exists(
+                          db
+                              .select({
+                                  bookId: booksToCategories.bookId,
+                                  categoryId: booksToCategories.categoryId,
+                              })
+                              .from(booksToCategories)
+                              .where((category) =>
+                                  and(
+                                      eq(category.bookId, book.id),
+                                      exists(
+                                          db
+                                              .select({
+                                                  name: categoriesTable.name,
+                                                  id: categoriesTable.id,
+                                              })
+                                              .from(categoriesTable)
+                                              .where((categoryT) =>
+                                                  and(
+                                                      eq(
+                                                          categoryT.id,
+                                                          category.categoryId
+                                                      ),
+                                                      inArray(
+                                                          categoryT.name,
+                                                          categories
+                                                      )
+                                                  )
+                                              )
+                                      )
+                                  )
+                              )
+                      )
+            )
+        )
+        .leftJoin(ratingsTable, eq(booksTable.id, ratingsTable.bookId))
+        .innerJoin(storesTable, eq(booksTable.storeId, storesTable.id))
+        .groupBy(booksTable.id, booksTable.title)
+        .having(
+            between(
+                sql` AVG(COALESCE(${ratingsTable.rating}, 0)) `,
+                minRating,
+                maxRating
+            )
+        )
+        .orderBy((book) => {
+            return column in book
+                ? order === "asc"
+                    ? //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      asc(book[column])
+                    : //@ts-expect-error error
+                      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+                      desc(book[column])
+                : desc(book.createdAt)
+        })
+        .limit(limit)
+        .offset(offset)
+
+    return books
 }

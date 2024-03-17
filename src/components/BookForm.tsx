@@ -36,6 +36,7 @@ interface BookFormProps extends Partial<BookFormSchema> {
 
 const BookForm: FC<BookFormProps> = ({
     title = "",
+    author="",
     description = "",
     categories = [],
     price = "0",
@@ -49,7 +50,7 @@ const BookForm: FC<BookFormProps> = ({
         resolver: valibotResolver(bookFormSchema),
 
         defaultValues: {
-            title,
+            title,author,
             description,
             categories,
             price,
@@ -131,7 +132,28 @@ const BookForm: FC<BookFormProps> = ({
                                     />
                                 </FormControl>
                                 <FormDescription>
-                                    Enter a title of the book
+                                    Enter the title  the book
+                                </FormDescription>
+                                <FormMessage />
+                            </FormItem>
+                        )}
+                    />
+
+<FormField
+                        control={form.control}
+                        name="author"
+                        render={({ field }) => (
+                            <FormItem className="mb-4">
+                                <FormLabel>author</FormLabel>
+                                <FormControl>
+                                    <FormInput
+                                        type="text"
+                                        placeholder="Author"
+                                        {...field}
+                                    />
+                                </FormControl>
+                                <FormDescription>
+                                    Enter the author of the book
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>

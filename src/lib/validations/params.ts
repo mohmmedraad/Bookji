@@ -4,15 +4,21 @@ import {
     fallback,
     merge,
     minValue,
+    nullable,
     number,
     object,
     optional,
+    record,
     string,
     transform,
     type Input,
 } from "valibot"
 
 export const searchParamsSchema = object({
+    searchParams: record(string(), nullable(string(), "")),
+})
+
+export const generalSearchParamsSchema = object({
     page: fallback(coerce(number([minValue(1)]), Number), 1),
     from: optional(string()),
     to: optional(string()),
@@ -38,6 +44,7 @@ export const booksSearchParamsSchema = object({
         (input) => input.split(".")
     ),
     text: fallback(string(), ""),
+    author: fallback(string(), ""),
     categories: transform(fallback(string(), ""), (input) =>
         input ? input.split(".") : []
     ),
@@ -48,7 +55,7 @@ export const booksSearchParamsSchema = object({
 })
 
 export const ordersSearchParamsSchema = merge([
-    searchParamsSchema,
+    generalSearchParamsSchema,
     object({
         email: optional(fallback(string(), "")),
         city: optional(fallback(string(), "")),
@@ -60,7 +67,7 @@ export const ordersSearchParamsSchema = merge([
 ])
 
 export const purchasesSearchParamsSchema = merge([
-    searchParamsSchema,
+    generalSearchParamsSchema,
     object({
         total: createRangeSchema("0-500"),
         stores: createOptionsSchema(),
@@ -68,7 +75,7 @@ export const purchasesSearchParamsSchema = merge([
 ])
 
 export const customersSearchParamsSchema = merge([
-    searchParamsSchema,
+    generalSearchParamsSchema,
     object({
         place: optional(fallback(string(), "")),
         total_spend: createRangeSchema("0-500"),
