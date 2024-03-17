@@ -18,6 +18,7 @@
         "db:generate": "drizzle-kit generate:mysql",
         "db:push": "dotenv drizzle-kit push:mysql",
         "db:drop": "drizzle-kit drop --config=drizzle.config.ts",
+        "db:seed": "tsx ./src/db/seed.ts",
         "db:studio": "dotenv drizzle-kit studio --verbose",
         "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
         "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
@@ -103,6 +104,7 @@
         "prettier": "^3.0.2",
         "prettier-plugin-tailwindcss": "^0.5.3",
         "tailwindcss": "^3.3.3",
+        "tsx": "^4.7.1",
         "typescript": "^5.1.6"
     }
 }

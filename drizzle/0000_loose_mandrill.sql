@@ -15,6 +15,7 @@ CREATE TABLE `Bookji_books` (
 	`userId` varchar(191) NOT NULL,
 	`storeId` int NOT NULL,
 	`title` varchar(191) NOT NULL,
+	`author` varchar(191) NOT NULL,
 	`description` text,
 	`cover` varchar(200),
 	`price` decimal(10,2) NOT NULL DEFAULT '0',

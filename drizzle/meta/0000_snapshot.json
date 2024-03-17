@@ -1,7 +1,7 @@
 {
   "version": "5",
   "dialect": "mysql",
-  "id": "caa94781-7ace-4d94-a084-6b03cb502eb1",
+  "id": "7a32e76a-77a6-4cfa-96b3-1da9ee13b714",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "Bookji_addresses": {
@@ -103,6 +103,13 @@
         },
         "title": {
           "name": "title",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true,
+          "autoincrement": false
+        },
+        "author": {
+          "name": "author",
           "type": "varchar(191)",
           "primaryKey": false,
           "notNull": true,
