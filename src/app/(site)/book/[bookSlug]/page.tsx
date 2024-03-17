@@ -19,6 +19,7 @@ interface pageProps {
 const Page: FC<pageProps> = async ({ params: { bookSlug } }) => {
     const book = await db.query.books.findFirst({
         columns: {
+            author: true,
             id: true,
             userId: true,
             cover: true,
