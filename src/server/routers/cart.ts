@@ -158,6 +158,21 @@ export const cartRouter = router({
                 return insertedCart.insertId
             }
 
+            const isItemAlreadyExist = await db.query.cartItems.findFirst({
+                where: (item) =>
+                    and(
+                        eq(item.cartId, cart.id),
+                        eq(item.bookId, input.bookId)
+                    ),
+            })
+
+            if (isItemAlreadyExist) {
+                const updatedItem = await db.update(cartItemsTable).set({
+                    quantity: isItemAlreadyExist.quantity + 1,
+                })
+                return updatedItem.insertId
+            }
+
             const updatedCart = await db.insert(cartItemsTable).values({
                 storeId: input.storeId,
                 bookId: input.bookId,
