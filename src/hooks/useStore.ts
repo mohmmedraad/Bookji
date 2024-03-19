@@ -3,7 +3,12 @@ import { create } from "zustand"
 
 type OmittedStore = Omit<
     Store,
-    "stripeAccountId" | "createdAt" | "updatedAt" | "ownerId" | "isDeleted"
+    | "stripeAccountId"
+    | "createdAt"
+    | "updatedAt"
+    | "ownerId"
+    | "isDeleted"
+    | "deletedAt"
 >
 
 interface StoreProps extends OmittedStore {
