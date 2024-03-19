@@ -8,7 +8,7 @@ import BookProvider from "@/components/BookProvider"
 import { Icons } from "@/components/Icons"
 
 import BookInfo from "./_sections/BookInfo"
-import UserBooks from "./_sections/StoresBooks"
+import StoresBooks from "./_sections/StoresBooks"
 
 interface pageProps {
     params: {
@@ -64,10 +64,10 @@ const Page: FC<pageProps> = async ({ params: { bookSlug } }) => {
 
                 <div className="hidden xl:block">
                     <h4 className="mb-8 text-sm font-bold text-gray-900">
-                        BOOKS BY THIS AUTHOR
+                        BOOKS BY THIS STORE
                     </h4>
                     <div className="sticky top-14 h-[calc(100vh-160px)] ">
-                        <UserBooks />
+                        <StoresBooks />
                     </div>
                 </div>
             </Container>

@@ -49,7 +49,11 @@ const Layout = async ({
     }
     const store = await db.query.stores.findFirst({
         where: (store, { eq }) =>
-            and(eq(store.slug, storeSlug), eq(store.ownerId, user.id)),
+            and(
+                eq(store.slug, storeSlug),
+                eq(store.ownerId, user.id),
+                eq(store.isDeleted, false)
+            ),
     })
 
     if (!store) {

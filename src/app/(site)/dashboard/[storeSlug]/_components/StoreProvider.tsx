@@ -5,7 +5,7 @@ import { type Store } from "@/db/schema"
 
 import { useStore } from "@/hooks/useStore"
 
-type StoreProviderProps = Store
+type StoreProviderProps = Omit<Store, "IsDeleted">
 
 const StoreProvider: FC<StoreProviderProps> = (store) => {
     const { id, name, description, logo, thumbnail, slug, active } = store
