@@ -97,7 +97,7 @@ export const storeRouter = router({
 
                 await db
                     .update(stores)
-                    .set({ isDeleted: true, deletedAt: Date.now() })
+                    .set({ isDeleted: true, deletedAt: new Date() })
                     .where(eq(stores.id, storeId))
             } catch (error) {
                 throw new TRPCError({
