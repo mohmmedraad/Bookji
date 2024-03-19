@@ -16,9 +16,9 @@ import useBook from "@/hooks/useBook"
 
 import UserBooksSkeleton from "../_components/UserBooksSkeleton"
 
-interface UserBooksProps {}
+interface StoresBooksProps {}
 
-const UserBooks: FC<UserBooksProps> = ({}) => {
+const StoresBooks: FC<StoresBooksProps> = ({}) => {
     const book = useBook((state) => state.book)
     const {
         data,
@@ -26,10 +26,10 @@ const UserBooks: FC<UserBooksProps> = ({}) => {
         isFetchingNextPage,
         isRefetching,
         fetchNextPage,
-    } = trpc.getUserBooks.useInfiniteQuery(
+    } = trpc.getStoreBooks.useInfiniteQuery(
         {
             limit: 5,
-            userId: book?.userId || "",
+            storeId: book?.storeId || 0,
             excludedBooks: [Number(book?.id)],
         },
         {
@@ -63,7 +63,7 @@ const UserBooks: FC<UserBooksProps> = ({}) => {
                     ))}
                 </div>
             ) : books?.length === 0 ? (
-                <p>this is only book for this user</p>
+                <p>this is only book for this store</p>
             ) : (
                 <Swiper
                     className="mt-36 h-full"
@@ -85,11 +85,11 @@ const UserBooks: FC<UserBooksProps> = ({}) => {
                     onSlideChange={({ realIndex }) => setActiveIndex(realIndex)}
                     wrapperClass="items-end"
                 >
-                    {books?.map(({ userFullName, cover, title, id }, index) => (
+                    {books?.map(({ author, cover, title, id }, index) => (
                         <SwiperSlide
                             id={id}
                             key={title}
-                            userFullName={userFullName}
+                            author={author}
                             title={title}
                             cover={cover!}
                             isActive={index === activeIndex}
@@ -101,4 +101,4 @@ const UserBooks: FC<UserBooksProps> = ({}) => {
     )
 }
 
-export default UserBooks
+export default StoresBooks

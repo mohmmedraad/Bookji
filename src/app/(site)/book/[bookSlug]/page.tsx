@@ -8,7 +8,7 @@ import BookProvider from "@/components/BookProvider"
 import { Icons } from "@/components/Icons"
 
 import BookInfo from "./_sections/BookInfo"
-import UserBooks from "./_sections/UserBooks"
+import UserBooks from "./_sections/StoresBooks"
 
 interface pageProps {
     params: {

@@ -207,6 +207,7 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
     slug: text("slug"),
     stripeAccountId: varchar("stripeAccountId", { length: 191 }),
     active: boolean("active").notNull().default(false),
+    isDeleted: boolean("is_deleted").notNull().default(false),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })

@@ -1,5 +1,12 @@
+import { and, eq, sql } from "drizzle-orm"
+
 import { db } from "./index.js"
-import { books as booksTable } from "./schema.js"
+import {
+    books as booksTable,
+    cartItems as cartItemsTable,
+    carts,
+    stores as storesTable,
+} from "./schema.js"
 
 const data = [
     {
@@ -55,7 +62,64 @@ const data = [
 const main = async () => {
     console.log("Seed start")
     // await db.delete(booksTable)
-    await db.insert(booksTable).values(data)
+
+    // await db.insert(cartItemsTable).values([
+    //     {
+    //         cartId: 32,
+    //         bookId: 3,
+    //         storeId: 25,
+    //         quantity: 2,
+    //     },
+    //     {
+    //         cartId: 32,
+    //         bookId: 5,
+    //         storeId: 24,
+    //         quantity: 2,
+    //     },
+    // ])
+
+    const cart = await db
+        .select({
+            id: carts.id,
+            items: sql<
+                {
+                    id: number
+                    storeId: number
+                    bookId: number
+                    quantity: number
+                    book: {
+                        title: string
+                        cover: string | null
+                        price: string
+                    }
+                }[]
+            >`JSON_ARRAYAGG(
+                JSON_OBJECT(
+                'id', ${cartItemsTable.id},
+                'bookId', ${cartItemsTable.bookId},
+                'storeId', ${cartItemsTable.storeId},
+                'quantity', ${cartItemsTable.quantity},
+                'book', JSON_OBJECT(
+                    'cover', ${booksTable.cover},
+                    'title', ${booksTable.title},
+                    'price', ${booksTable.price}
+                )
+            ))`,
+        })
+        .from(carts)
+        .where(eq(carts.userId, "user_2cUPWoTcIyoHmf844ktO7kPM112"))
+        .leftJoin(cartItemsTable, eq(carts.id, cartItemsTable.cartId))
+        .leftJoin(booksTable, eq(booksTable.id, cartItemsTable.bookId))
+        .innerJoin(
+            storesTable,
+            and(
+                eq(booksTable.storeId, storesTable.id),
+                eq(storesTable.isDeleted, false)
+            )
+        )
+        .groupBy(carts.id)
+
+    console.log("cart: ", cart[0])
     console.log("Seed done")
 }
 

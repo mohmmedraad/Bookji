@@ -25,6 +25,11 @@ export const useCreateBook = (setOpen: SetOpen) => {
                 return toast.error("You must be logged in to add a book")
             }
 
+            if (errorCode === "NOT_FOUND") {
+                router.push(`/sign-in?_origin=/dashboard`)
+                return toast.error("Store not found")
+            }
+
             if (errorCode === "CONFLICT") {
                 form?.setError("title", {
                     message: "Book with same title already exists",

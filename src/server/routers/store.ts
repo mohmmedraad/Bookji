@@ -1,18 +1,11 @@
 import { db } from "@/db"
-import {
-    books,
-    booksToCategories,
-    cartItems,
-    ratings,
-    stores,
-} from "@/db/schema"
+import { stores } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, eq, inArray, like } from "drizzle-orm"
+import { and, eq, like } from "drizzle-orm"
 import { number, object, string, ValiError } from "valibot"
 
-import { stripe } from "@/lib/stripe"
 import { slugify } from "@/lib/utils"
 import {
     deleteStoreSchema,
@@ -22,7 +15,12 @@ import {
 } from "@/lib/validations/store"
 
 import { privateProcedure, publicProcedure, router } from "../trpc"
-import { getStoreBooks, getStoreCustomers, getStoreOrders } from "../utils"
+import {
+    getStoreBooks,
+    getStoreCustomers,
+    getStoreOrders,
+    isStoreExists,
+} from "../utils"
 
 export const storeRouter = router({
     create: privateProcedure
@@ -55,13 +53,7 @@ export const storeRouter = router({
     update: privateProcedure
         .input(wrap(updateStoreSchema))
         .mutation(async ({ input: { storeId, ...input }, ctx }) => {
-            const isStoreNotExists = !(await db.query.stores.findFirst({
-                where: and(
-                    eq(stores.id, storeId),
-                    eq(stores.ownerId, ctx.user.id)
-                ),
-            }))
-            if (isStoreNotExists) {
+            if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
                     message: "Store not found",
@@ -96,49 +88,17 @@ export const storeRouter = router({
         .input(wrap(deleteStoreSchema))
         .mutation(async ({ input: { storeId }, ctx }) => {
             try {
-                const store = await db.query.stores.findFirst({
-                    columns: {
-                        id: true,
-                        stripeAccountId: true,
-                    },
-                    where: and(
-                        eq(stores.id, storeId),
-                        eq(stores.ownerId, ctx.user.id)
-                    ),
-                })
-
-                if (!store) {
+                if (!(await isStoreExists(storeId, ctx.user.id))) {
                     return new TRPCError({
                         code: "NOT_FOUND",
                         message: "Store not found",
                     })
                 }
 
-                const storeBooks = await db.query.books.findMany({
-                    columns: {
-                        id: true,
-                    },
-                    where: (book) => eq(book.storeId, storeId),
-                })
-
-                if (storeBooks.length === 0) {
-                    await db.delete(stores).where(eq(stores.id, store.id))
-                    return
-                }
-
-                const booksIds = storeBooks.map((book) => book.id)
-
-                const deleteStore = await Promise.all([
-                    db.delete(stores).where(eq(stores.id, store.id)),
-                    db.delete(books).where(eq(books.storeId, storeId)),
-                    db.delete(ratings).where(inArray(ratings.bookId, booksIds)),
-                    db
-                        .delete(booksToCategories)
-                        .where(inArray(booksToCategories.bookId, booksIds)),
-                    db.delete(cartItems).where(eq(cartItems.storeId, store.id)),
-                    store.stripeAccountId &&
-                        stripe.accounts.del(store.stripeAccountId),
-                ])
+                await db
+                    .update(stores)
+                    .set({ isDeleted: true })
+                    .where(eq(stores.id, storeId))
             } catch (error) {
                 throw new TRPCError({
                     code: "INTERNAL_SERVER_ERROR",
@@ -161,7 +121,10 @@ export const storeRouter = router({
                     name: true,
                     logo: true,
                 },
-                where: eq(stores.id, input.storeId),
+                where: and(
+                    eq(stores.id, input.storeId),
+                    eq(stores.isDeleted, false)
+                ),
             })
 
             if (!store) {
@@ -176,27 +139,16 @@ export const storeRouter = router({
 
     orders: privateProcedure
         .input(wrap(storeResourcesSchema))
-        .query(async ({ input, ctx }) => {
-            const store = await db.query.stores.findFirst({
-                columns: {
-                    id: true,
-                },
-                where: (store, { eq }) =>
-                    and(
-                        eq(store.ownerId, ctx.user.id),
-                        eq(store.id, input.storeId)
-                    ),
-            })
-
-            if (!store) {
+        .query(async ({ input: { storeId, searchParams }, ctx }) => {
+            if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
                     message: "Store not found",
                 })
             }
             try {
-                const orders = await getStoreOrders(ctx.user.id, store.id, {
-                    ...input.searchParams,
+                const orders = await getStoreOrders(ctx.user.id, storeId, {
+                    ...searchParams,
                 })
                 return orders
             } catch (error) {
@@ -211,27 +163,16 @@ export const storeRouter = router({
 
     books: privateProcedure
         .input(wrap(storeResourcesSchema))
-        .query(async ({ input, ctx }) => {
-            const store = await db.query.stores.findFirst({
-                columns: {
-                    id: true,
-                },
-                where: (store, { eq }) =>
-                    and(
-                        eq(store.ownerId, ctx.user.id),
-                        eq(store.id, input.storeId)
-                    ),
-            })
-
-            if (!store) {
+        .query(async ({ input: { storeId, searchParams }, ctx }) => {
+            if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
                     message: "Store not found",
                 })
             }
             try {
-                const books = await getStoreBooks(ctx.user.id, store.id, {
-                    ...input.searchParams,
+                const books = await getStoreBooks(ctx.user.id, storeId, {
+                    ...searchParams,
                 })
                 return books
             } catch (error) {
@@ -246,19 +187,8 @@ export const storeRouter = router({
 
     customers: privateProcedure
         .input(wrap(storeResourcesSchema))
-        .query(async ({ input, ctx }) => {
-            const store = await db.query.stores.findFirst({
-                columns: {
-                    id: true,
-                },
-                where: (store, { eq }) =>
-                    and(
-                        eq(store.ownerId, ctx.user.id),
-                        eq(store.id, input.storeId)
-                    ),
-            })
-
-            if (!store) {
+        .query(async ({ input: { storeId, searchParams }, ctx }) => {
+            if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
                     message: "Store not found",
@@ -267,9 +197,9 @@ export const storeRouter = router({
             try {
                 const customers = await getStoreCustomers(
                     ctx.user.id,
-                    store.id,
+                    storeId,
                     {
-                        ...input.searchParams,
+                        ...searchParams,
                     }
                 )
                 return customers
@@ -291,19 +221,8 @@ export const storeRouter = router({
                 })
             )
         )
-        .query(async ({ input, ctx }) => {
-            const store = await db.query.stores.findFirst({
-                columns: {
-                    id: true,
-                },
-                where: (store, { eq }) =>
-                    and(
-                        eq(store.ownerId, ctx.user.id),
-                        eq(store.id, input.storeId)
-                    ),
-            })
-
-            if (!store) {
+        .query(async ({ input: { storeId }, ctx }) => {
+            if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
                     message: "Store not found",
@@ -313,7 +232,7 @@ export const storeRouter = router({
                 columns: {
                     userId: true,
                 },
-                where: (order) => eq(order.storeId, store.id),
+                where: (order) => eq(order.storeId, storeId),
             })
 
             if (customersIds.length === 0) {
@@ -359,7 +278,11 @@ export const storeRouter = router({
                     logo: true,
                     slug: true,
                 },
-                where: (store) => like(store.name, `%${input.searchValue}%`),
+                where: (store) =>
+                    and(
+                        like(store.name, `%${input.searchValue}%`),
+                        eq(store.isDeleted, false)
+                    ),
             })
 
             return stores

@@ -747,7 +747,13 @@ export async function getShopPageBooks({
             )
         )
         .leftJoin(ratingsTable, eq(booksTable.id, ratingsTable.bookId))
-        .innerJoin(storesTable, eq(booksTable.storeId, storesTable.id))
+        .innerJoin(
+            storesTable,
+            and(
+                eq(booksTable.storeId, storesTable.id),
+                eq(storesTable.isDeleted, false)
+            )
+        )
         .groupBy(booksTable.id, booksTable.title)
         .having(
             between(
@@ -771,4 +777,37 @@ export async function getShopPageBooks({
         .offset(offset)
 
     return books
+}
+
+export async function isStoreExists(storeId: number, userId?: string) {
+    const store = await db.query.stores.findFirst({
+        columns: {
+            id: true,
+        },
+        where: and(
+            eq(storesTable.id, storeId),
+            userId ? eq(storesTable.ownerId, userId) : undefined,
+            eq(storesTable.isDeleted, false)
+        ),
+    })
+
+    return store !== undefined
+}
+
+export async function isBookExists(bookId: number) {
+    const book = await db
+        .select({
+            id: booksTable.id,
+        })
+        .from(booksTable)
+        .where(eq(booksTable.id, bookId))
+        .innerJoin(
+            storesTable,
+            and(
+                eq(booksTable.storeId, storesTable.id),
+                eq(storesTable.isDeleted, false)
+            )
+        )
+
+    return book.length > 0
 }

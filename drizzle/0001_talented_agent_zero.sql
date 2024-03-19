@@ -1,0 +1,1 @@
+ALTER TABLE `Bookji_stores` ADD `is_deleted` boolean DEFAULT false NOT NULL;

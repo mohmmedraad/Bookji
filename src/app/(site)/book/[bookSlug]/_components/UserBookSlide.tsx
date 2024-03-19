@@ -9,7 +9,7 @@ import MaskText from "@/components/MaskText"
 
 interface SlideProps {
     id: number
-    userFullName: string
+    author: string
     title: string
     cover: string
     isActive: boolean
@@ -17,7 +17,7 @@ interface SlideProps {
 
 const Slide: FC<SlideProps> = ({
     id,
-    userFullName,
+    author,
     title,
     cover,
     isActive,
@@ -42,7 +42,7 @@ const Slide: FC<SlideProps> = ({
             </h4>
             <p className="-mt-2 text-sm text-gray-500">
                 <MaskText
-                    text={userFullName}
+                    text={author}
                     isActive={isActive}
                     delay={0.25}
                 />

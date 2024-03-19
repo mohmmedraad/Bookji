@@ -142,7 +142,7 @@ export const getRatingsSchema = object({
 export const getUserBooksSchema = object({
     limit: coerce(number([minValue(1)]), Number),
     cursor: union([nullType(), number()]),
-    userId: string(),
+    storeId: number(),
     excludedBooks: array(number()),
 })
 

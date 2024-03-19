@@ -1,6 +1,5 @@
 import { type FC } from "react"
-import { useRouter } from "next/navigation"
-import { type TRPCErrorType } from "@/types"
+import { usePathname, useRouter } from "next/navigation"
 import { Trash } from "lucide-react"
 import { toast } from "sonner"
 
@@ -34,14 +33,19 @@ const CartItem: FC<CartItemProps> = ({
         setCartBooks: state.setCartBooks,
         undoChanging: state.undoChanging,
     }))
+    const pathName = usePathname()
 
-    const { mutate: deleteItem } = trpc.cart.update.useMutation({
+    const { mutate: updateCart } = trpc.cart.update.useMutation({
         onError: (error) => {
             undoChanging()
-            const code = error.data?.code
-            const message = error.message
+            const errorCode = error.data?.code
 
-            handleTRPCError({ code, message })
+            if (errorCode === "UNAUTHORIZED") {
+                toast.error("You need to be logged in")
+                return router.push(`/sign-in?_origin=${pathName}`)
+            }
+
+            return handleGenericError()
         },
     })
 
@@ -49,28 +53,11 @@ const CartItem: FC<CartItemProps> = ({
 
     function handleRemoveItem() {
         const newCartBooks = cartBooks.filter((book) => book.bookId !== bookId)
-        deleteItem({
+        updateCart({
             bookId,
             quantity: 0,
         })
         setCartBooks(newCartBooks)
-    }
-
-    function handleTRPCError(error: TRPCErrorType) {
-        if (error.code === "UNAUTHORIZED") {
-            toast.error("You need to be logged in")
-            return router.push("/signin")
-        }
-
-        if (error.code === "NOT_FOUND") {
-            return toast.error("Cart not found we will create a new one")
-        }
-
-        if (error.code === "BAD_REQUEST") {
-            return toast.error(error.message)
-        }
-
-        return handleGenericError()
     }
 
     return (

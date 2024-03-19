@@ -1,6 +1,5 @@
 import { useEffect, useState, type FC } from "react"
-import { useRouter } from "next/navigation"
-import { type TRPCError } from "@trpc/server"
+import { usePathname, useRouter } from "next/navigation"
 import { Minus, Plus } from "lucide-react"
 import { toast } from "sonner"
 
@@ -24,21 +23,19 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
     const cartBooks = useCart((state) => state.cartBooks)
     const quantityValue = useDebounce(quantity, 1000)
     const router = useRouter()
-    const { mutate: addToCart } = trpc.cart.update.useMutation({
+    const pathName = usePathname()
+
+    const { mutate: updateDbCart } = trpc.cart.update.useMutation({
         onError: (error) => {
-            console.log("EditQuantity error: ", error)
             undoChanging()
-            handleTRPCError(error.data?.code)
+            const errorCode = error.data?.code
+            if (errorCode === "UNAUTHORIZED") {
+                toast.error("Please login first")
+                return router.push(`/sign-in?_origin=${pathName}`)
+            }
+            return handleGenericError()
         },
     })
-
-    function handleTRPCError(errorCode: TRPCError["code"] | undefined) {
-        if (errorCode === "UNAUTHORIZED") {
-            toast.error("Please login first")
-            router.push("/sign-in")
-        }
-        return handleGenericError()
-    }
 
     const handleIncrement = () => {
         if (quantity >= 100) return
@@ -61,10 +58,11 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
 
     useEffect(() => {
         if (!quantityValue) return
-        addToCart({
+        updateDbCart({
             bookId,
             quantity: quantityValue,
         })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [quantityValue])
 
     return (

@@ -27,7 +27,7 @@ import { storeRouter } from "./routers/store"
 import { stripeRouter } from "./routers/stripe"
 import { usersRouter } from "./routers/users"
 import { privateProcedure, publicProcedure, router } from "./trpc"
-import { getShopPageBooks } from "./utils"
+import { getShopPageBooks, isBookExists, isStoreExists } from "./utils"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const dynamic = "force-dynamic"
@@ -78,6 +78,12 @@ export const appRouter = router({
     addBook: privateProcedure
         .input(wrap(extendedBookSchema))
         .mutation(async ({ input: { categories, ...input }, ctx }) => {
+            if (!(await isStoreExists(input.storeId, ctx.user.id))) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store not found",
+                })
+            }
             const bookWithSameTitle = await db.query.books.findFirst({
                 where: eq(books.title, input.title),
             })
@@ -141,6 +147,13 @@ export const appRouter = router({
             )
         )
         .query(async ({ input, ctx }) => {
+            if (!(await isBookExists(input.bookId))) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Book not found",
+                })
+            }
+
             try {
                 const foundCategories = await db
                     .select({
@@ -191,16 +204,9 @@ export const appRouter = router({
         .input(wrap(rateBookSchema))
         .mutation(async ({ input, ctx }) => {
             const { bookId, rating, comment } = input
-            const isBookExists = await db.query.books.findFirst({
-                columns: {
-                    id: true,
-                },
-                where: (book) => eq(book.id, +bookId),
-            })
-
-            if (!isBookExists) {
+            if (!(await isBookExists(bookId))) {
                 throw new TRPCError({
-                    code: "BAD_REQUEST",
+                    code: "NOT_FOUND",
                     message: "Book not found",
                 })
             }
@@ -240,6 +246,12 @@ export const appRouter = router({
     getUserRating: privateProcedure
         .input(wrap(userRatingSchema))
         .query(async ({ input, ctx }) => {
+            if (!(await isBookExists(input.bookId))) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Book not found",
+                })
+            }
             const userRating = await db.query.ratings.findFirst({
                 columns: {
                     rating: true,
@@ -260,6 +272,12 @@ export const appRouter = router({
     getBookRating: publicProcedure
         .input(wrap(userRatingSchema))
         .query(async ({ input }) => {
+            if (!(await isBookExists(input.bookId))) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Book not found",
+                })
+            }
             const bookRating = await db.query.ratings.findMany({
                 columns: {
                     rating: true,
@@ -278,6 +296,12 @@ export const appRouter = router({
         .query(async ({ input }) => {
             const { limit, cursor, bookId } = input
             const offset = (cursor || 0) * limit
+            if (!(await isBookExists(bookId))) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Book not found",
+                })
+            }
 
             const foundRatings = await db.query.ratings.findMany({
                 limit,
@@ -298,25 +322,31 @@ export const appRouter = router({
             return ratings
         }),
 
-    getUserBooks: publicProcedure
+    getStoreBooks: publicProcedure
         .input(wrap(getUserBooksSchema))
         .query(async ({ input }) => {
-            const { limit, cursor, userId, excludedBooks } = input
+            const { limit, cursor, storeId, excludedBooks } = input
             const offset = (cursor || 0) * limit
-            console.log("input: ", input)
+
+            if (!(await isStoreExists(storeId))) {
+                throw new TRPCError({
+                    code: "NOT_FOUND",
+                    message: "Store not found",
+                })
+            }
 
             const foundBooks = await db.query.books.findMany({
                 limit,
                 offset,
                 columns: {
                     id: true,
-                    userId: true,
                     title: true,
                     cover: true,
+                    author: true,
                 },
                 where: (book) =>
                     and(
-                        eq(book.userId, userId),
+                        eq(book.storeId, storeId),
                         excludedBooks.length === 0
                             ? undefined
                             : notInArray(book.id, excludedBooks)
@@ -324,16 +354,11 @@ export const appRouter = router({
                 orderBy: (book) => [asc(book.createdAt)],
             })
 
+            return foundBooks
+
             if (!foundBooks) {
                 return []
             }
-            const user = await getUser(userId)
-            const ratings = foundBooks.map((book) => ({
-                ...book,
-                userFullName: `${user.firstName} ${user.lastName}`,
-                userImg: user.imageUrl,
-            }))
-            return ratings
         }),
     cart: cartRouter,
     store: storeRouter,
