@@ -6,6 +6,7 @@ import { toast } from "sonner"
 import { handleGenericError } from "@/lib/utils"
 import useCart from "@/hooks/useCart"
 import useDebounce from "@/hooks/useDebounce"
+import { useIsMount } from "@/hooks/useIsMount"
 import { trpc } from "@/app/_trpc/client"
 
 import { Button } from "./ui/Button"
@@ -24,6 +25,7 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
     const quantityValue = useDebounce(quantity, 1000)
     const router = useRouter()
     const pathName = usePathname()
+    const isMount = useIsMount()
 
     const { mutate: updateDbCart } = trpc.cart.update.useMutation({
         onError: (error) => {
@@ -57,7 +59,7 @@ const EditQuantity: FC<EditQuantityProps> = ({ bookQuantity, bookId }) => {
     }
 
     useEffect(() => {
-        if (!quantityValue) return
+        if (!quantityValue || !isMount) return
         updateDbCart({
             bookId,
             quantity: quantityValue,

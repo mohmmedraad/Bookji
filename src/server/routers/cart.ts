@@ -94,32 +94,6 @@ export async function isCartExist(userId: string) {
 
 export const cartRouter = router({
     get: privateProcedure.query(async ({ ctx }) => {
-        // const cart = await db.query.carts.findFirst({
-        //     columns: {
-        //         id: true,
-        //     },
-        //     with: {
-        //         items: {
-        //             with: {
-        //                 book: {
-        //                     columns: {
-        //                         cover: true,
-        //                         title: true,
-        //                         price: true,
-        //                         storeId: true,
-        //                     },
-        //                 },
-        //             },
-        //             columns: {
-        //                 id: true,
-        //                 quantity: true,
-        //                 bookId: true,
-        //                 storeId: true,
-        //             },
-        //         },
-        //     },
-        //     where: (cart, { eq }) => eq(cart.userId, ctx.userId),
-        // })
 
         const cart = await getCart(ctx.userId)
 
