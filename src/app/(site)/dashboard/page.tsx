@@ -3,7 +3,7 @@ import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/db"
 import { currentUser } from "@clerk/nextjs"
-import { eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 
 import {
     Card,
@@ -26,7 +26,8 @@ const Page: FC<pageProps> = async () => {
     }
 
     const stores = await db.query.stores.findMany({
-        where: (store) => eq(store.ownerId, user.id),
+        where: (store) =>
+            and(eq(store.ownerId, user.id), eq(store.isDeleted, false)),
     })
 
     return (
