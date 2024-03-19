@@ -1,6 +1,6 @@
 import { type FC } from "react"
 import { redirect } from "next/navigation"
-import { getSubscriptionPlan } from "@/server/utils"
+import { getSubscriptionPlan } from "@/server/fetchers"
 import { currentUser } from "@clerk/nextjs"
 import { Check } from "lucide-react"
 

@@ -17,7 +17,7 @@ export const useCreateBook = (setOpen: SetOpen) => {
     const storeId = useStore((store) => store.id)
     const storeSlug = useStore((store) => store.slug)
 
-    const { mutate, isLoading } = trpc.addBook.useMutation({
+    const { mutate, isLoading } = trpc.books.add.useMutation({
         onError: (error) => {
             const errorCode = error.data?.code
             if (errorCode === "UNAUTHORIZED") {

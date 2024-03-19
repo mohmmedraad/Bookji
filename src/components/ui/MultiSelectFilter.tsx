@@ -33,7 +33,7 @@ export function MultiSelectFilter({
     const [open, setOpen] = React.useState(false)
     const [query, setQuery] = React.useState("")
 
-    const { data, isLoading } = trpc.getAllCategories.useQuery(undefined, {
+    const { data, isLoading } = trpc.books.categories.useQuery(undefined, {
         cacheTime: Infinity,
         staleTime: Infinity,
     })
@@ -141,7 +141,7 @@ export function MultiSelectFilter({
             <div className="relative z-50 mt-2">
                 {open ? (
                     // eslint-disable-next-line tailwindcss/no-custom-classname
-                    <div className="animate-in absolute top-0 max-h-[200px] w-full overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
+                    <div className="absolute top-0 max-h-[200px] w-full overflow-auto rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                         {isLoading ? (
                             <div className="flex h-32 items-center justify-center">
                                 <CircularProgress />

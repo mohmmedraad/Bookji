@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
-import { getStoreBooks } from "@/server/utils"
+import { getStoreBooks } from "@/server/fetchers"
 import { type SearchParams } from "@/types"
 import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"

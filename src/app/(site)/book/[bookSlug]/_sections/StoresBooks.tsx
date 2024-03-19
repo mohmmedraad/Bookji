@@ -26,7 +26,7 @@ const StoresBooks: FC<StoresBooksProps> = ({}) => {
         isFetchingNextPage,
         isRefetching,
         fetchNextPage,
-    } = trpc.getStoreBooks.useInfiniteQuery(
+    } = trpc.books.store.useInfiniteQuery(
         {
             limit: 5,
             storeId: book?.storeId || 0,
@@ -46,7 +46,6 @@ const StoresBooks: FC<StoresBooksProps> = ({}) => {
         if (!books) return
 
         if (activeIndex === books.length - 1) {
-            console.log("fetching next page")
             void fetchNextPage()
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -41,7 +41,7 @@ const EditBookDialog: FC<EditBookDialogProps> = ({
         isLoading: isCategoriesLoading,
     } = useBookCategories({ bookId: id })
 
-    const { mutate: addBook } = trpc.addBook.useMutation({
+    const { mutate: addBook } = trpc.books.add.useMutation({
         onSuccess: () => {
             toast.success("Book added successfully")
             setOpen(false)

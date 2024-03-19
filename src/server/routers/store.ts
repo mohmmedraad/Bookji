@@ -14,13 +14,9 @@ import {
     updateStoreSchema,
 } from "@/lib/validations/store"
 
+import { getStoreBooks, getStoreCustomers, getStoreOrders } from "../fetchers"
 import { privateProcedure, publicProcedure, router } from "../trpc"
-import {
-    getStoreBooks,
-    getStoreCustomers,
-    getStoreOrders,
-    isStoreExists,
-} from "../utils"
+import { isStoreExists } from "../utils"
 
 export const storeRouter = router({
     create: privateProcedure

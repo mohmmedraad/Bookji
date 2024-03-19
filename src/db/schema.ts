@@ -24,6 +24,8 @@ export const books = mysqlTable(`${APP_NAME}_books`, {
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
     inventory: int("inventory").notNull().default(0),
     slug: text("slug").notNull(),
+    isDeleted: boolean("is_deleted").notNull().default(false),
+    deletedAt: timestamp("deletedAt"),
     createdAt: timestamp("createdAt").defaultNow(),
     updatedAt: timestamp("updatedAt").onUpdateNow(),
 })

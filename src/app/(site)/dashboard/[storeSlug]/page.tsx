@@ -2,7 +2,7 @@ import { type FC } from "react"
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
-import { getStripeAccount } from "@/server/utils"
+import { getStripeAccount } from "@/server/fetchers"
 import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"
 

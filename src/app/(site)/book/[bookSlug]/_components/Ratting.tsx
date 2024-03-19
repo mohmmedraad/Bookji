@@ -19,7 +19,7 @@ const Ratting: FC<RateProps> = ({}) => {
     const book = useBook((state) => state.book)
     const router = useRouter()
 
-    const { mutate: rateBook } = trpc.rateBook.useMutation({
+    const { mutate: rateBook } = trpc.books.rate.useMutation({
         onError: (error) => {
             const code = error.data?.code
             const message = error.message

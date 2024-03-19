@@ -25,7 +25,7 @@ const Reviews: FC<ReviewsProps> = () => {
         fetchNextPage,
         isFetching,
         isRefetching,
-    } = trpc.getRatings.useInfiniteQuery(
+    } = trpc.books.reviews.useInfiniteQuery(
         {
             limit: 10,
             bookId: book?.id || 0,

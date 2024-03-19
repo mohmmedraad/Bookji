@@ -5,7 +5,6 @@ interface UseBookCategories {
 }
 
 export const useBookCategories = ({ bookId }: UseBookCategories) => {
-    const query = trpc.getBookCategories.useQuery({ bookId })
-    console.log("categories: ", query?.data)
+    const query = trpc.books.bookCategories.useQuery({ bookId })
     return query
 }

@@ -84,7 +84,7 @@ export const extendedBookSchema = merge([
 
 export const updateBookSchema = merge([
     bookFormSchema,
-    object({ id: number(), cover: string("The cover key is required") }),
+    object({ bookId: number(), cover: string("The cover key is required") }),
 ])
 
 const cost = object({
@@ -144,6 +144,10 @@ export const getUserBooksSchema = object({
     cursor: union([nullType(), number()]),
     storeId: number(),
     excludedBooks: array(number()),
+})
+
+export const deleteBookSchema = object({
+    booksIds: array(number()),
 })
 
 export type RateBookSchema = Input<typeof rateBookSchema>

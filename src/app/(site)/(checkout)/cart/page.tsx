@@ -10,6 +10,7 @@ import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 
 import StoreCheckoutCard from "./_components/StoreCheckoutCard"
+import { getCart } from "@/server/fetchers"
 
 interface PageProps {}
 
@@ -20,19 +21,7 @@ const Page: FC<PageProps> = async ({}) => {
         return redirect("sign-in")
     }
 
-    const userCart = await db.query.carts.findFirst({
-        columns: {
-            id: true,
-        },
-        with: {
-            items: {
-                columns: {
-                    storeId: true,
-                },
-            },
-        },
-        where: (cart, { eq }) => eq(cart.userId, user.id),
-    })
+    const userCart = await getCart(user.id)
 
     if (!userCart || !userCart.id) {
         return notFound()
@@ -41,20 +30,6 @@ const Page: FC<PageProps> = async ({}) => {
     const cartItemsStoresIds = new Set(
         userCart.items.map((item) => item.storeId)
     )
-
-    // const cartItemsStoresIds = await db
-    //     .selectDistinct({ storeId: books.storeId })
-    //     .from(carts)
-    //     .leftJoin(
-    //         books,
-    //         sql`JSON_CONTAINS(Bookji_carts.items, JSON_OBJECT('bookId', Bookji_books.id))`
-    //     )
-    //     .groupBy(books.storeId)
-    //     .where(eq(carts.id, Number(userCart.id)))
-
-    // const isCartEmpty =
-    //     cartItemsStoresIds.length === 1 &&
-    //     cartItemsStoresIds[0].storeId === null
     return (
         <section>
             <Container className="grid min-h-screen gap-8 pb-20 pt-40">

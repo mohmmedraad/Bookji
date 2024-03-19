@@ -11,8 +11,9 @@ import {
     manageSubscriptionSchema,
 } from "@/lib/validations/stripe"
 
+import { getStripeAccount } from "../fetchers"
 import { privateProcedure, router } from "../trpc"
-import { createStripeAccount, getStripeAccount } from "../utils"
+import { createStripeAccount } from "../utils"
 import { createCart } from "./cart"
 
 export const stripeRouter = router({

@@ -36,7 +36,7 @@ interface BookFormProps extends Partial<BookFormSchema> {
 
 const BookForm: FC<BookFormProps> = ({
     title = "",
-    author="",
+    author = "",
     description = "",
     categories = [],
     price = "0",
@@ -50,7 +50,8 @@ const BookForm: FC<BookFormProps> = ({
         resolver: valibotResolver(bookFormSchema),
 
         defaultValues: {
-            title,author,
+            title,
+            author,
             description,
             categories,
             price,
@@ -71,7 +72,7 @@ const BookForm: FC<BookFormProps> = ({
     )
 
     const { data, isLoading: isCategoriesLoading } =
-        trpc.getAllCategories.useQuery(undefined, {
+        trpc.books.categories.useQuery(undefined, {
             cacheTime: Infinity,
             staleTime: Infinity,
         })
@@ -132,14 +133,14 @@ const BookForm: FC<BookFormProps> = ({
                                     />
                                 </FormControl>
                                 <FormDescription>
-                                    Enter the title  the book
+                                    Enter the title the book
                                 </FormDescription>
                                 <FormMessage />
                             </FormItem>
                         )}
                     />
 
-<FormField
+                    <FormField
                         control={form.control}
                         name="author"
                         render={({ field }) => (

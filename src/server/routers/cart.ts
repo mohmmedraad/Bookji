@@ -1,100 +1,18 @@
 import { db } from "@/db"
-import {
-    books as booksTable,
-    cartItems as cartItemsTable,
-    carts,
-    stores as storesTable,
-    type NewCartItem,
-} from "@/db/schema"
+import { cartItems as cartItemsTable, carts as cartsTable } from "@/db/schema"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, eq, sql } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { number, object } from "valibot"
 
 import { cartItemSchema } from "@/lib/validations/cart"
 
+import { getCart } from "../fetchers"
 import { privateProcedure, router } from "../trpc"
-import { isBookExists } from "../utils"
-
-export async function createCart(userId: string, items: NewCartItem[] = []) {
-    const cart = await db.insert(carts).values({
-        userId,
-    })
-
-    if (items.length === 0) {
-        return cart
-    }
-
-    await db.insert(cartItemsTable).values(
-        items.map((item) => ({
-            storeId: item.storeId,
-            bookId: item.bookId,
-            cartId: Number(cart.insertId),
-        }))
-    )
-    return cart
-}
-
-export async function getCart(userId: string) {
-    const cart = await db
-        .select({
-            id: carts.id,
-            items: sql<
-                {
-                    id: number
-                    storeId: number
-                    bookId: number
-                    quantity: number
-                    book: {
-                        title: string
-                        cover: string | null
-                        price: string
-                    }
-                }[]
-            >`JSON_ARRAYAGG(
-        JSON_OBJECT(
-        'id', ${cartItemsTable.id},
-        'bookId', ${cartItemsTable.bookId},
-        'storeId', ${cartItemsTable.storeId},
-        'quantity', ${cartItemsTable.quantity},
-        'book', JSON_OBJECT(
-            'cover', ${booksTable.cover},
-            'title', ${booksTable.title},
-            'price', ${booksTable.price}
-        )
-    ))`,
-        })
-        .from(carts)
-        .where(eq(carts.userId, userId))
-        .leftJoin(cartItemsTable, eq(carts.id, cartItemsTable.cartId))
-        .leftJoin(booksTable, eq(booksTable.id, cartItemsTable.bookId))
-        .innerJoin(
-            storesTable,
-            and(
-                eq(booksTable.storeId, storesTable.id),
-                eq(storesTable.isDeleted, false)
-            )
-        )
-        .groupBy(carts.id)
-
-    if (cart.length === 0) return undefined
-
-    return cart[0]
-}
-
-export async function isCartExist(userId: string) {
-    const cart = await db.query.carts.findFirst({
-        columns: {
-            id: true,
-        },
-        where: (cart) => eq(cart.userId, userId),
-    })
-    return cart
-}
+import { createCart, isBookExists, isCartExist } from "../utils"
 
 export const cartRouter = router({
     get: privateProcedure.query(async ({ ctx }) => {
-
         const cart = await getCart(ctx.userId)
 
         if (cart === undefined) {
@@ -213,7 +131,7 @@ export const cartRouter = router({
                 })
                 .where(
                     and(
-                        eq(cartItemsTable.cartId, cart.id),
+                        eq(cartItemsTable.cartId, cartsTable.id),
                         eq(cartItemsTable.bookId, input.bookId)
                     )
                 )

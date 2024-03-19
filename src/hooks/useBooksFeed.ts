@@ -5,7 +5,6 @@ import { useIntersection } from "@mantine/hooks"
 import { trpc } from "@/app/_trpc/client"
 
 import { useBooksSearchParams } from "./useBooksSearchParams"
-import { useIsMount } from "./useIsMount"
 
 export const useBooksFeed = (initialBooks: ShopPageBook[]) => {
     const searchParams = useBooksSearchParams()
@@ -23,7 +22,7 @@ export const useBooksFeed = (initialBooks: ShopPageBook[]) => {
         fetchNextPage,
         isFetching,
         isFetchedAfterMount,
-    } = trpc.getBooks.useInfiniteQuery(
+    } = trpc.books.get.useInfiniteQuery(
         {
             text: searchParams.text || "",
             author: searchParams.author || "",

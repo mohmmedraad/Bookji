@@ -7,7 +7,7 @@ import MultiSelectFilterOption from "./MultiSelectFilterOption"
 interface CategoriesFilterOptionProps {}
 
 const CategoriesFilterOption: FC<CategoriesFilterOptionProps> = ({}) => {
-    const { data, isLoading } = trpc.getAllCategories.useQuery(undefined, {
+    const { data, isLoading } = trpc.books.categories.useQuery(undefined, {
         cacheTime: Infinity,
         staleTime: Infinity,
     })

@@ -1,5 +1,5 @@
 import { type FC } from "react"
-import { getShopPageBooks } from "@/server/utils"
+import { getShopPageBooks } from "@/server/fetchers"
 import type { SearchParams } from "@/types"
 import { parse } from "valibot"
 
