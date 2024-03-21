@@ -1,6 +1,6 @@
 "use client"
 
-// import EditBookDialog from "./EditBookDialog"
+import EditBookDialog from "./EditBookDialog"
 import type { BookColumn } from "@/types"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type Row } from "@tanstack/react-table"
@@ -36,7 +36,7 @@ export function BooksTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                {/* <EditBookDialog {...book} /> */}
+                <EditBookDialog {...book} />
 
                 <DropdownMenuSeparator />
 
