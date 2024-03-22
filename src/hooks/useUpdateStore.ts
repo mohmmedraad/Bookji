@@ -73,7 +73,7 @@ export const useUpdateStore = (defaultValues: DefaultValues) => {
         },
     })
 
-    function updateStore(data: StoreInfoSchFema) {
+    function updateStore(data: StoreInfoSchema) {
         const values = getValues(data, {
             name: storeName,
             description: storeDescription,
