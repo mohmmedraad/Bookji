@@ -64,7 +64,6 @@ const Reviews: FC<ReviewsProps> = () => {
                                   return (
                                       <div key={index} ref={ref}>
                                           <BookReview
-                                              userId={review?.userId}
                                               firstName={
                                                   review?.userFullName?.split(
                                                       " "
@@ -85,7 +84,6 @@ const Reviews: FC<ReviewsProps> = () => {
                                   return (
                                       <BookReview
                                           key={index}
-                                          userId={review?.userId}
                                           firstName={
                                               review.userFullName?.split(
                                                   " "

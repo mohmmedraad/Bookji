@@ -9,6 +9,7 @@ const BookProvider: FC<BookType> = (book) => {
 
     useEffect(() => {
         setBook({ ...book })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return null

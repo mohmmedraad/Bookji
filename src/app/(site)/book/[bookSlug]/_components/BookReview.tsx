@@ -6,7 +6,6 @@ import { UserAvatar } from "@/components/UserAvatar"
 import Stars from "./Stars"
 
 interface BookReviewProps {
-    userId: string
     firstName: string
     lastName: string
     userImage?: string
@@ -15,7 +14,6 @@ interface BookReviewProps {
 }
 
 const BookReview: FC<BookReviewProps> = ({
-    userId,
     userImage,
     firstName,
     lastName,

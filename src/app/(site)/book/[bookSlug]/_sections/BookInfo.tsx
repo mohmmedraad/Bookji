@@ -6,22 +6,18 @@ import AddToCartButton from "../_components/AddToCartButton"
 import BookStars from "../_components/BookStars"
 import Ratting from "../_components/Ratting"
 import Reviews from "../_components/Reviews"
-import UserInfo from "./UserInfo"
+import StoreInfo from "./StoreInfo"
 
 interface BookInfoProps {
-    userId: string
+    storeId: number
     title: string
     description: string | null
 }
 
-const BookInfo: FC<BookInfoProps> = ({
-    userId,
-    title,
-    description,
-}) => {
+const BookInfo: FC<BookInfoProps> = ({ storeId, title, description }) => {
     return (
         <div className="">
-            <UserInfo userId={userId} />
+            <StoreInfo storeId={storeId} />
             <h2 className="mt-7 text-4xl font-bold text-gray-900">{title}</h2>
             <p className="mt-4 text-xl text-gray-500">{description}</p>
             <BookStars />

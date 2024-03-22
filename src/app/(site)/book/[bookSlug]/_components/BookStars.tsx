@@ -62,7 +62,6 @@ const BookStars: FC<BookStarsProps> = ({}) => {
     })
 
     const { averageRating, stars } = calculateAverageRating(data || [])
-    console.log(averageRating)
     return (
         <div className="my-8 flex flex-wrap items-center gap-8">
             <div>
