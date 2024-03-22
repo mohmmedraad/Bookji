@@ -40,7 +40,6 @@ export const Columns: ColumnDef<BookColumn>[] = [
             <DataTableColumnHeader column={column} title="books" id="book" />
         ),
         cell: ({ row }) => {
-            console.log("cover: ", row.getValue("cover"))
             return (
                 <div className="flex w-[250px] items-center gap-3">
                     <BookCover
@@ -56,6 +55,23 @@ export const Columns: ColumnDef<BookColumn>[] = [
         },
         enableSorting: false,
         enableHiding: false,
+    },
+    {
+        accessorKey: "author",
+        header: ({ column }) => (
+            <DataTableColumnHeader column={column} title="author" id="author" />
+        ),
+        cell: ({ row }) => {
+            return (
+                <div className="flex w-[150px] items-center ">
+                    <span className="w-full overflow-x-hidden text-ellipsis text-gray-800">
+                        {row.original.author}
+                    </span>
+                </div>
+            )
+        },
+        enableSorting: true,
+        enableHiding: true,
     },
     {
         accessorKey: "orders",
@@ -136,8 +152,8 @@ export const Columns: ColumnDef<BookColumn>[] = [
     },
     {
         id: "actions",
-        cell: ({ row }) => (
-            <BooksTableRowActions row={row} book={row.original} />
+        cell: ({ row, table }) => (
+            <BooksTableRowActions row={row} table={table} />
         ),
     },
 ]

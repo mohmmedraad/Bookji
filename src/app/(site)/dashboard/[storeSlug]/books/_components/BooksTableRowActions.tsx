@@ -1,10 +1,10 @@
 "use client"
 
-// import EditBookDialog from "./EditBookDialog"
 import type { BookColumn } from "@/types"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
-import { type Row } from "@tanstack/react-table"
+import { type Row, type Table } from "@tanstack/react-table"
 
+import { useDeleteBooks } from "@/hooks/useDeleteBooks"
 import { Button } from "@/components/ui/Button"
 import {
     DropdownMenu,
@@ -14,16 +14,20 @@ import {
 } from "@/components/ui/DropdownMenu"
 
 import DeleteBookDialog from "./DeleteBookDialog"
+import EditBookDialog from "./EditBookDialog"
 
-interface BooksTableRowActionsProps<TData> {
-    row: Row<TData>
-    book: BookColumn
+interface BooksTableRowActionsProps {
+    row: Row<BookColumn>
+    table: Table<BookColumn>
 }
 
-export function BooksTableRowActions<TData>({
+export function BooksTableRowActions({
+    table,
     row,
-    book,
-}: BooksTableRowActionsProps<TData>) {
+}: BooksTableRowActionsProps) {
+    const { handleDeleteBooks, isLoading, open, setOpen } = useDeleteBooks()
+    const book = row.original
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -36,11 +40,27 @@ export function BooksTableRowActions<TData>({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-[160px]">
-                {/* <EditBookDialog {...book} /> */}
-
+                <EditBookDialog
+                    book={{
+                        id: book.id,
+                        title: book.title,
+                        author: book.author,
+                        cover: book.cover!,
+                        inventory: book.inventory,
+                        price: book.price,
+                        description: book.description!,
+                    }}
+                />
                 <DropdownMenuSeparator />
 
-                <DeleteBookDialog />
+                <DeleteBookDialog
+                    onClick={() =>
+                        handleDeleteBooks(table.getSelectedRowModel().rows, row)
+                    }
+                    isLoading={isLoading}
+                    open={open}
+                    setOpen={setOpen}
+                />
             </DropdownMenuContent>
         </DropdownMenu>
     )

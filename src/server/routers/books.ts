@@ -12,10 +12,10 @@ import {
     and,
     asc,
     desc,
-    DrizzleError,
     eq,
     exists,
     inArray,
+    ne,
     notInArray,
 } from "drizzle-orm"
 import { number, object } from "valibot"
@@ -34,7 +34,7 @@ import {
 
 import { getShopPageBooks } from "../fetchers"
 import { privateProcedure, publicProcedure, router } from "../trpc"
-import { isBookExists, isStoreExists, withUsers } from "../utils"
+import { isBookExists, isInputEmpty, isStoreExists, withUsers } from "../utils"
 
 export const booksRouter = router({
     get: publicProcedure
@@ -54,11 +54,15 @@ export const booksRouter = router({
                     message: "Store not found",
                 })
             }
+
             const bookWithSameTitle = await db.query.books.findFirst({
                 columns: {
                     id: true,
                 },
-                where: eq(booksTable.title, input.title),
+                where: and(
+                    eq(booksTable.title, input.title),
+                    eq(booksTable.isDeleted, false)
+                ),
             })
 
             if (bookWithSameTitle) {
@@ -67,6 +71,7 @@ export const booksRouter = router({
                     message: "Book with same title already exists",
                 })
             }
+
             const book = await db.insert(booksTable).values({
                 ...input,
                 slug: slugify(input.title),
@@ -79,13 +84,6 @@ export const booksRouter = router({
                     categoryId: category.id,
                 }))
             )
-
-            return {
-                message: "success",
-                data: {
-                    bookId: book.insertId,
-                },
-            }
         }),
 
     delete: privateProcedure
@@ -103,9 +101,9 @@ export const booksRouter = router({
                 )
         }),
 
-    updateBook: privateProcedure
+    update: privateProcedure
         .input(wrap(updateBookSchema))
-        .mutation(async ({ input: { bookId, ...values }, ctx }) => {
+        .mutation(async ({ input: { bookId, categories, ...input }, ctx }) => {
             if (!(await isBookExists(bookId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
@@ -113,17 +111,56 @@ export const booksRouter = router({
                 })
             }
 
-            const book = await db
-                .update(booksTable)
-                .set(values)
-                .where(eq(booksTable.id, bookId))
+            if (input.title) {
+                const bookWithSameTitle = await db.query.books.findFirst({
+                    columns: {
+                        id: true,
+                    },
+                    where: and(
+                        eq(booksTable.title, input.title),
+                        ne(booksTable.id, bookId),
+                        eq(booksTable.isDeleted, false)
+                    ),
+                })
 
-            return {
-                message: "success",
-                data: {
-                    bookId: book.insertId,
-                },
+                if (bookWithSameTitle) {
+                    throw new TRPCError({
+                        code: "CONFLICT",
+                        message: "Book with same title already exists",
+                    })
+                }
             }
+
+            let slug: string = ""
+
+            if (input.title) {
+                slug = slugify(input.title)
+                // @ts-expect-error slug dosnt exist in input
+                input.slug = slug
+            }
+            console.log("categories: ", categories)
+
+            if (categories) {
+                await db
+                    .delete(booksToCategories)
+                    .where(eq(booksToCategories.bookId, bookId))
+
+                await db.insert(booksToCategories).values(
+                    categories.map((category) => ({
+                        bookId,
+                        categoryId: category.id,
+                    }))
+                )
+
+            }
+            if (isInputEmpty(input)) {
+                return
+            }
+
+            await db
+                .update(booksTable)
+                .set({ ...input })
+                .where(eq(booksTable.id, bookId))
         }),
 
     bookCategories: privateProcedure

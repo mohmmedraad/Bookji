@@ -43,11 +43,11 @@ export const MultiSelect = <T extends Option>({
     const [query, setQuery] = React.useState("")
 
     React.useEffect(() => {
-        if (defaultSelected && data) {
+        if (defaultSelected.length !== 0 && data) {
             const selected = data?.filter((option) =>
                 defaultSelected.includes(option.name)
             )
-            console.log("selected: ", selected)
+
             setSelected(selected ?? null)
         }
         // eslint-disable-next-line react-hooks/exhaustive-deps

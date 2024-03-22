@@ -36,10 +36,8 @@ export const useUpdateStore = (defaultValues: DefaultValues) => {
         defaultValues,
     })
     const router = useRouter()
-    const store = useStore((store) => ({
-        name: store.name,
-        description: store.description || "",
-    }))
+    const storeName = useStore((store) => store.name)
+    const storeDescription = useStore((store) => store.description || "")
     const storeId = useStore((store) => store.id)
     const storeSlug = useStore((store) => store.slug)
 
@@ -75,8 +73,11 @@ export const useUpdateStore = (defaultValues: DefaultValues) => {
         },
     })
 
-    function updateStore(data: StoreInfoSchema) {
-        const values = getValues(data, store)
+    function updateStore(data: StoreInfoSchFema) {
+        const values = getValues(data, {
+            name: storeName,
+            description: storeDescription,
+        })
 
         if (!values) {
             return toast.success("Your store has been updated")

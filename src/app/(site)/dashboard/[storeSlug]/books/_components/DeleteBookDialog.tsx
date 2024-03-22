@@ -1,5 +1,9 @@
-import { type FC } from "react"
-import { toast } from "sonner"
+import {
+    type ButtonHTMLAttributes,
+    type Dispatch,
+    type FC,
+    type SetStateAction,
+} from "react"
 
 import { Button } from "@/components/ui/Button"
 import {
@@ -16,14 +20,21 @@ import {
     DropdownMenuShortcut,
 } from "@/components/ui/DropdownMenu"
 
-interface DeleteBookDialogProps {}
+interface DeleteBookDialogProps
+    extends ButtonHTMLAttributes<HTMLButtonElement> {
+    isLoading: boolean
+    open: boolean
+    setOpen: Dispatch<SetStateAction<boolean>>
+}
 
-const DeleteBookDialog: FC<DeleteBookDialogProps> = ({}) => {
-    function handleClick() {
-        toast.success("your book has been deleted successfully")
-    }
+const DeleteBookDialog: FC<DeleteBookDialogProps> = ({
+    isLoading,
+    open,
+    setOpen,
+    ...props
+}) => {
     return (
-        <Dialog>
+        <Dialog open={open} onOpenChange={setOpen}>
             <DialogTrigger asChild>
                 <DropdownMenuItem onSelect={(e) => e.preventDefault()}>
                     Delete
@@ -31,13 +42,10 @@ const DeleteBookDialog: FC<DeleteBookDialogProps> = ({}) => {
                 </DropdownMenuItem>
             </DialogTrigger>
             <DialogContent className="max-w-[400px]">
-                <DialogHeader>
-                    <DialogTitle>
-                        Delete {"{"}BOOK NAME{"}"}{" "}
-                    </DialogTitle>
+                <DialogHeader className="text-center">
+                    <DialogTitle>Delete books</DialogTitle>
                     <DialogDescription>
-                        By clicking the delete button your book well be lost
-                        including it data
+                        By clicking the delete button your data well be lost
                     </DialogDescription>
                 </DialogHeader>
 
@@ -45,7 +53,8 @@ const DeleteBookDialog: FC<DeleteBookDialogProps> = ({}) => {
                     <Button
                         variant={"destructive"}
                         className="w-full"
-                        onClick={handleClick}
+                        disabled={isLoading}
+                        {...props}
                     >
                         Delete
                     </Button>

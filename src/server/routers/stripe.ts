@@ -13,8 +13,7 @@ import {
 
 import { getStripeAccount } from "../fetchers"
 import { privateProcedure, router } from "../trpc"
-import { createStripeAccount } from "../utils"
-import { createCart } from "./cart"
+import { createCart, createStripeAccount } from "../utils"
 
 export const stripeRouter = router({
     createAccountLink: privateProcedure

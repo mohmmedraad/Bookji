@@ -94,6 +94,16 @@ export async function isBookExists<T extends number[] | number>(
     return (books.length > 0) as T extends number[] ? never : boolean
 }
 
+export function isInputEmpty(obj: Record<string, unknown>) {
+    for (const value of Object.values(obj)) {
+        if (value !== null && value !== undefined) {
+            return false
+        }
+    }
+
+    return true
+}
+
 const getUsers = async (userList: string[]) => {
     //@ts-expect-error clerk types are UserListParam but they are actually string[]
     const users = await clerkClient.users.getUserList(userList)

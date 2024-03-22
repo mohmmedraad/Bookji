@@ -16,8 +16,14 @@ export const useCreateBook = (setOpen: SetOpen) => {
     const form = useBookForm((store) => store.form)
     const storeId = useStore((store) => store.id)
     const storeSlug = useStore((store) => store.slug)
+    const trpcUtils = trpc.useUtils()
 
     const { mutate, isLoading } = trpc.books.add.useMutation({
+        onSuccess: async () => {
+            await trpcUtils.store.books.invalidate()
+            toast.success("Book added successfully")
+            return setOpen(false)
+        },
         onError: (error) => {
             const errorCode = error.data?.code
             if (errorCode === "UNAUTHORIZED") {
@@ -41,13 +47,6 @@ export const useCreateBook = (setOpen: SetOpen) => {
                 return toast.error("Invalid data, please check your inputs")
 
             return handleGenericError()
-        },
-        onSuccess: () => {
-            setOpen(false)
-
-            router.refresh()
-
-            return toast.success("Book added successfully")
         },
     })
 

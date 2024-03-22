@@ -17,7 +17,7 @@ export const books = mysqlTable(`${APP_NAME}_books`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
     storeId: int("storeId").notNull(),
-    title: varchar("title", { length: 191 }).notNull().unique(),
+    title: varchar("title", { length: 191 }).notNull(),
     author: varchar("author", { length: 191 }).notNull(),
     description: text("description"),
     cover: varchar("cover", { length: 200 }),

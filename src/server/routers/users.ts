@@ -6,8 +6,8 @@ import { nullable, object, record, string, ValiError } from "valibot"
 
 import { updateUserSchema } from "@/lib/validations/auth"
 
+import { getPurchases } from "../fetchers"
 import { privateProcedure, router } from "../trpc"
-import { getPurchases } from "../utils"
 
 export const usersRouter = router({
     updateUser: privateProcedure

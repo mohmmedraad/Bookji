@@ -1,15 +1,10 @@
 "use client"
 
 import { useState, type FC } from "react"
-import { useRouter } from "next/navigation"
-import { Book } from "@/db/schema"
 import { Spinner } from "@nextui-org/react"
-import { TRPCError } from "@trpc/server"
-import { toast } from "sonner"
 
-import { handleGenericError } from "@/lib/utils"
 import { type BookFormSchema } from "@/lib/validations/book"
-import { useBookCategories } from "@/hooks/useBookCategories"
+import { useUpdateBook } from "@/hooks/useUpdateBook"
 import {
     Dialog,
     DialogContent,
@@ -20,60 +15,15 @@ import {
 import { DropdownMenuItem } from "@/components/ui/DropdownMenu"
 import { Separator } from "@/components/ui/Separator"
 import BookForm from "@/components/BookForm"
-import { trpc } from "@/app/_trpc/client"
 
-interface EditBookDialogProps
-    extends Omit<Book, "createdAt" | "updatedAt" | "userId"> {}
+interface EditBookDialogProps {
+    book: Omit<BookFormSchema, "categories"> & { id: number }
+}
 
-const EditBookDialog: FC<EditBookDialogProps> = ({
-    cover,
-    id,
-    title,
-    price,
-    inventory,
-    description,
-}) => {
+const EditBookDialog: FC<EditBookDialogProps> = ({ book }) => {
     const [open, setOpen] = useState(false)
-    const router = useRouter()
-    const {
-        error,
-        data: categories,
-        isLoading: isCategoriesLoading,
-    } = useBookCategories({ bookId: id })
-
-    const { mutate: addBook } = trpc.books.add.useMutation({
-        onSuccess: () => {
-            toast.success("Book added successfully")
-            setOpen(false)
-        },
-    })
-
-    function onSubmit(data: BookFormSchema) {
-        try {
-            console.log("data: ", data)
-            // addBook({ ...data })
-        } catch (error) {
-            console.log("error: ", error)
-            // if (error instanceof TRPCError) {
-            //     return handleTRPCError(error)
-            // }
-            // return handleGenericError()
-        }
-    }
-
-    function handleTRPCError(error: TRPCError) {
-        if (error.code === "UNAUTHORIZED") {
-            return router.push("/sign-in")
-        }
-
-        if (error.code === "BAD_REQUEST")
-            return toast.error("Invalid data, please check your inputs")
-    }
-
-    if (error) {
-        handleGenericError()
-        return null
-    }
+    const { categories, isCategoriesLoading, isLoading, onSubmit } =
+        useUpdateBook({ ...book })
 
     return (
         <Dialog open={open} onOpenChange={setOpen}>
@@ -82,12 +32,9 @@ const EditBookDialog: FC<EditBookDialogProps> = ({
                     Edit Book
                 </DropdownMenuItem>
             </DialogTrigger>
-            {/**
-             * TODO: Change the viewport units to be dynamic
-             */}
             <DialogContent className="max-h-[90vh] max-w-[640px] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Add Book</DialogTitle>
+                    <DialogTitle>Edit Book</DialogTitle>
                 </DialogHeader>
                 <Separator />
                 {isCategoriesLoading ? (
@@ -96,12 +43,14 @@ const EditBookDialog: FC<EditBookDialogProps> = ({
                     </div>
                 ) : (
                     <BookForm
-                        title={title}
-                        description={description!}
-                        price={price}
-                        inventory={inventory}
-                        cover={cover!}
+                        title={book.title}
+                        description={book.description}
+                        price={book.price}
+                        inventory={book.inventory}
+                        cover={book.cover}
+                        author={book.author}
                         categories={categories}
+                        isLoading={isLoading}
                         onSubmit={onSubmit}
                     />
                 )}

@@ -3,7 +3,7 @@ import { stores } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
-import { and, eq, like } from "drizzle-orm"
+import { and, eq, like, ne } from "drizzle-orm"
 import { number, object, string, ValiError } from "valibot"
 
 import { slugify } from "@/lib/utils"
@@ -19,12 +19,37 @@ import { privateProcedure, publicProcedure, router } from "../trpc"
 import { isStoreExists } from "../utils"
 
 export const storeRouter = router({
+    getStores: publicProcedure
+        .input(
+            wrap(
+                object({
+                    searchValue: string(),
+                })
+            )
+        )
+        .query(async ({ input }) => {
+            const stores = await db.query.stores.findMany({
+                columns: {
+                    id: true,
+                    name: true,
+                    logo: true,
+                    slug: true,
+                },
+                where: (store) =>
+                    and(
+                        like(store.name, `%${input.searchValue}%`),
+                        eq(store.isDeleted, false)
+                    ),
+            })
+
+            return stores
+        }),
     create: privateProcedure
         .input(wrap(newStoreSchema))
         .mutation(async ({ ctx, input }) => {
             const { name, description, logo, thumbnail } = input
             const storeWithSameName = await db.query.stores.findFirst({
-                where: eq(stores.name, name),
+                where: and(eq(stores.name, name), eq(stores.isDeleted, false)),
             })
 
             if (storeWithSameName) {
@@ -58,7 +83,11 @@ export const storeRouter = router({
 
             if (input.name) {
                 const storeWithSameName = await db.query.stores.findFirst({
-                    where: eq(stores.name, input.name),
+                    where: and(
+                        eq(stores.name, input.name),
+                        ne(stores.id, storeId),
+                        eq(stores.isDeleted, false)
+                    ),
                 })
 
                 if (storeWithSameName) {
@@ -103,7 +132,7 @@ export const storeRouter = router({
             }
         }),
 
-    getStoreInfo: privateProcedure
+    storeInfo: privateProcedure
         .input(
             wrap(
                 object({
@@ -256,31 +285,5 @@ export const storeRouter = router({
             })
 
             return customers
-        }),
-
-    getStores: publicProcedure
-        .input(
-            wrap(
-                object({
-                    searchValue: string(),
-                })
-            )
-        )
-        .query(async ({ input }) => {
-            const stores = await db.query.stores.findMany({
-                columns: {
-                    id: true,
-                    name: true,
-                    logo: true,
-                    slug: true,
-                },
-                where: (store) =>
-                    and(
-                        like(store.name, `%${input.searchValue}%`),
-                        eq(store.isDeleted, false)
-                    ),
-            })
-
-            return stores
         }),
 })

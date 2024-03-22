@@ -27,7 +27,7 @@ const StoreCheckoutCard: FC<StoreCheckoutCardProps> = ({ storeId }) => {
     const cartBooks = useCart((state) => state.cartBooks)
     const isCartLoading = useCart((state) => state.isLoading)
 
-    const { data: storeInfo } = trpc.store.getStoreInfo.useQuery({
+    const { data: storeInfo } = trpc.store.storeInfo.useQuery({
         storeId,
     })
 

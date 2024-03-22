@@ -14,6 +14,7 @@ import {
     number,
     object,
     optional,
+    partial,
     string,
     toTrimmed,
     transform,
@@ -83,8 +84,11 @@ export const extendedBookSchema = merge([
 ])
 
 export const updateBookSchema = merge([
-    bookFormSchema,
-    object({ bookId: number(), cover: string("The cover key is required") }),
+    partial(bookFormSchema),
+    object({
+        bookId: number(),
+        cover: optional(string("The cover key is required")),
+    }),
 ])
 
 const cost = object({

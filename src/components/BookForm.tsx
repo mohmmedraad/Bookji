@@ -15,6 +15,7 @@ import { useBookForm } from "@/hooks/useBookForm"
 import { Input as FormInput } from "@/components/ui/Input"
 import { trpc } from "@/app/_trpc/client"
 
+import Book from "./ui/BookCover"
 import { Button } from "./ui/Button"
 import {
     Form,
@@ -92,26 +93,36 @@ const BookForm: FC<BookFormProps> = ({
                     render={({ field }) => (
                         <FormItem>
                             <FormControl>
-                                <UploadingZone
-                                    {...field}
-                                    className="aspect-[2/3] w-full max-w-[176px] rounded-md"
-                                    endpoint="bookCoverUploader"
-                                    schema={bookCoverSchema}
-                                    uploadContent={
-                                        <div className="flex h-full w-full flex-col items-center justify-center gap-4">
-                                            <div className="flex items-center justify-center rounded-full border-[1px] border-solid border-gray-100 bg-background p-3">
-                                                <Upload className="h-4 w-4 text-primary" />
+                                {cover !== "" ? (
+                                    <Book
+                                        className="w-full max-w-[176px]"
+                                        src={cover}
+                                        height={176}
+                                        width={120}
+                                        alt="Book cover"
+                                    />
+                                ) : (
+                                    <UploadingZone
+                                        {...field}
+                                        className="aspect-[2/3] w-full max-w-[176px] rounded-md"
+                                        endpoint="bookCoverUploader"
+                                        schema={bookCoverSchema}
+                                        uploadContent={
+                                            <div className="flex h-full w-full flex-col items-center justify-center gap-4">
+                                                <div className="flex items-center justify-center rounded-full border-[1px] border-solid border-gray-100 bg-background p-3">
+                                                    <Upload className="h-4 w-4 text-primary" />
+                                                </div>
+                                                <p className="text-center text-xs text-gray-800">
+                                                    <span className="text-primary">
+                                                        Click to upload
+                                                    </span>{" "}
+                                                    or drag and drop PNG, JPG,
+                                                    and max image size (1MB)
+                                                </p>
                                             </div>
-                                            <p className="text-center text-xs text-gray-800">
-                                                <span className="text-primary">
-                                                    Click to upload
-                                                </span>{" "}
-                                                or drag and drop PNG, JPG, and
-                                                max image size (1MB)
-                                            </p>
-                                        </div>
-                                    }
-                                />
+                                        }
+                                    />
+                                )}
                             </FormControl>
                         </FormItem>
                     )}
@@ -188,12 +199,13 @@ const BookForm: FC<BookFormProps> = ({
                         name="categories"
                         render={({ field }) => (
                             <FormItem className="mb-4">
-                                <FormLabel>Category</FormLabel>
+                                <FormLabel>Categories</FormLabel>
                                 <FormControl>
                                     <MultiSelect
                                         selected={selectedCategory}
                                         setSelected={setSelectedCategory}
                                         placeholder="Select a category"
+                                        // defaultSelected={categories}
                                         data={data}
                                         isLoading={isCategoriesLoading}
                                         {...field}
@@ -250,7 +262,7 @@ const BookForm: FC<BookFormProps> = ({
                         disabled={isLoading}
                         type="submit"
                     >
-                        Add Book
+                        {cover !== "" ? "update book" : "Add Book"}
                     </Button>
                 </div>
             </form>

@@ -42,7 +42,7 @@ export const Columns: ColumnDef<CustomerColumn>[] = [
         cell: ({ row }) => {
             return (
                 <div className="flex w-[150px] items-center ">
-                    <span className="w-ful overflow-x-hidden text-ellipsis text-gray-800">
+                    <span className="w-full overflow-x-hidden text-ellipsis text-gray-800">
                         {row.original.customer?.email}
                     </span>
                 </div>

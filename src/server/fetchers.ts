@@ -340,6 +340,7 @@ export async function getStoreBooks(
         .select({
             id: booksTable.id,
             title: booksTable.title,
+            author: booksTable.author,
             slug: booksTable.slug,
             rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
                 Number
