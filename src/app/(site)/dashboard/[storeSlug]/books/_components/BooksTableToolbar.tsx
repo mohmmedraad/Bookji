@@ -1,12 +1,12 @@
 "use client"
 
-import { Cross2Icon } from "@radix-ui/react-icons"
+import { useState } from "react"
 import { type Table } from "@tanstack/react-table"
 
-import { Button } from "@/components/ui/Button"
 import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
 import SearchInput from "@/components/ui/SearchInput"
 import AddBookDialog from "@/components/AddBookDialog"
+import MobileSearchBar from "@/components/MobileSearchBar"
 
 import DashboardBooksFilter from "./BooksFilter"
 
@@ -17,31 +17,30 @@ interface BooksTableToolbarProps<TData> {
 export function BooksTableToolbar<TData>({
     table,
 }: BooksTableToolbarProps<TData>) {
-    const isFiltered = table.getState().columnFilters.length > 0
+    const [isClosed, setIsClosed] = useState(true)
 
     return (
-        <div className="flex flex-col-reverse flex-wrap items-center justify-between gap-4">
+        <div className="flex items-center justify-between gap-4">
             <div className="flex flex-1 items-center space-x-2">
                 <SearchInput
                     param="text"
-                    className="h-8 w-full xs:w-[150px] lg:w-[250px]"
+                    className="hidden h-8 w-full xs:w-[150px] sm:block lg:w-[250px]"
                 />
-                {isFiltered && (
-                    <Button
-                        variant="ghost"
-                        onClick={() => table.resetColumnFilters()}
-                        className="h-8 px-2 lg:px-3"
-                    >
-                        Reset
-                        <Cross2Icon className="ml-2 h-4 w-4" />
-                    </Button>
-                )}
+                <MobileSearchBar
+                    className="flex sm:hidden"
+                    param="text"
+                    isClosed={isClosed}
+                    isFocused={() => setIsClosed(false)}
+                    isBlurred={() => setIsClosed(true)}
+                />
             </div>
-            <div className="flex items-center gap-4">
-                <DataTableViewOptions table={table} />
-                <AddBookDialog />
-                <DashboardBooksFilter />
-            </div>
+            {isClosed ? (
+                <div className="flex items-center gap-4">
+                    <DataTableViewOptions table={table} />
+                    <AddBookDialog />
+                    <DashboardBooksFilter />
+                </div>
+            ) : null}
         </div>
     )
 }

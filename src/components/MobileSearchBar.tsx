@@ -8,18 +8,20 @@ import { useQueryState } from "nuqs"
 import { cn } from "@/lib/utils"
 
 interface MobileSearchBarProps extends HTMLAttributes<HTMLDivElement> {
+    param?: string
     isClosed: boolean
     isFocused: () => void
     isBlurred: () => void
 }
 
 const MobileSearchBar: FC<MobileSearchBarProps> = ({
+    param = "text",
     isClosed,
     className,
     isFocused,
     isBlurred,
 }) => {
-    const [textParam, setTextParam] = useQueryState("text")
+    const [textParam, setTextParam] = useQueryState(param)
 
     return (
         <motion.div
