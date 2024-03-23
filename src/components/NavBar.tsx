@@ -1,6 +1,5 @@
 import { type FC } from "react"
 import Link from "next/link"
-import { currentUser } from "@clerk/nextjs"
 import type { EmailAddress } from "@clerk/nextjs/server"
 
 import { navLinks } from "@/config/site"
@@ -14,6 +13,7 @@ import Container from "./ui/Container"
 import NavLink from "./ui/NavLink"
 import { Separator } from "./ui/Separator"
 import { UserAccountNav } from "./UserAccountNav"
+import { getCachedUser } from "@/lib/utils/cachedResources"
 
 function getUserPrimaryEmailAddress(
     emailAddresses: EmailAddress[],
@@ -24,7 +24,8 @@ function getUserPrimaryEmailAddress(
 }
 
 const NavBar: FC = async ({}) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
+    
     let primaryEmailAddress: string | undefined
 
     if (user != null) {

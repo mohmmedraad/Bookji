@@ -1,6 +1,7 @@
 import { type FC } from "react"
-import { currentUser } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
 
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import Container from "@/components/ui/Container"
 
 import CookiesSettings from "./_components/CookiesSettings"
@@ -14,9 +15,11 @@ import UserInfoProvider from "./_components/UserInfoProvider"
 interface pageProps {}
 
 const page: FC<pageProps> = async ({}) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
 
-    if (!user) return
+    if (!user) {
+        return redirect("/sign-in?_origin=/profile")
+    }
 
     return (
         <Container className="min-h-screen pb-8 pt-40">

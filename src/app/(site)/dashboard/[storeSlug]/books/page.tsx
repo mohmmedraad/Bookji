@@ -7,6 +7,7 @@ import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"
 
 import { searchParamsString } from "@/lib/utils"
+import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 
 import BooksTable from "./_components/BooksTable"
 
@@ -18,7 +19,7 @@ interface pageProps {
 }
 
 const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
 
     if (!user?.id)
         return redirect(
@@ -27,13 +28,7 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
             )}`
         )
 
-    const store = await db.query.stores.findFirst({
-        columns: {
-            id: true,
-        },
-        where: (store, { eq }) =>
-            and(eq(store.ownerId, user.id), eq(store.slug, storeSlug)),
-    })
+    const store = await getCachedStore(storeSlug, user.id)
 
     if (!store) return notFound()
 

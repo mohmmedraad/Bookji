@@ -1,9 +1,7 @@
 import React from "react"
 import { notFound, redirect } from "next/navigation"
-import { db } from "@/db"
-import { currentUser } from "@clerk/nextjs"
-import { and } from "drizzle-orm"
 
+import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 import { Separator } from "@/components/ui/Separator"
 
 import DashboardNav from "../_components/DashboardNav"
@@ -42,19 +40,13 @@ const Layout = async ({
     params: { storeSlug },
     children,
 }: { children: React.ReactNode } & pageParams) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
 
     if (!user || !user.id) {
         return redirect(`/sing-in?origin=/dashboard/${storeSlug}`)
     }
-    const store = await db.query.stores.findFirst({
-        where: (store, { eq }) =>
-            and(
-                eq(store.slug, storeSlug),
-                eq(store.ownerId, user.id),
-                eq(store.isDeleted, false)
-            ),
-    })
+
+    const store = await getCachedStore(storeSlug, user.id)
 
     if (!store) {
         return notFound()
@@ -64,20 +56,6 @@ const Layout = async ({
         <>
             <StoreProvider {...store} />
             <PageHeading>Book Store</PageHeading>
-            {/* <nav className="py-8">
-                <ul className="flex gap-1">
-                    {storeLinks.map(({ href, label }, index) => (
-                        <NavLink
-                            key={index}
-                            href={href.replace("(storeId)", storeId)}
-                            className="rounded-md px-3 py-2 font-semibold text-[#182230]"
-                            activeClass="bg-gray-100"
-                        >
-                            {label}
-                        </NavLink>
-                    ))}
-                </ul>
-            </nav> */}
             <DashboardNav
                 links={storeLinks}
                 hrefFunction={(href) => href.replace("(storeSlug)", storeSlug)}

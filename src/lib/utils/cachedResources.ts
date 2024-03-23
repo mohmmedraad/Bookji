@@ -9,6 +9,13 @@ export const getCachedStore = cache(
         const store = await db.query.stores.findFirst({
             columns: {
                 id: true,
+                slug: true,
+                name: true,
+                ownerId: true,
+                logo: true,
+                thumbnail: true,
+                description: true,
+                active: true,
             },
             where: and(
                 eq(storesTable.ownerId, userId),

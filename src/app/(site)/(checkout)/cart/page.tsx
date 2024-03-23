@@ -1,24 +1,21 @@
 import { type FC } from "react"
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { db } from "@/db"
-import { books, carts } from "@/db/schema"
-import { currentUser } from "@clerk/nextjs"
-import { eq, sql } from "drizzle-orm"
+import { getCart } from "@/server/fetchers"
 
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 
 import StoreCheckoutCard from "./_components/StoreCheckoutCard"
-import { getCart } from "@/server/fetchers"
 
 interface PageProps {}
 
 const Page: FC<PageProps> = async ({}) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
 
     if (!user || !user.id) {
-        return redirect("sign-in")
+        return redirect("/sign-in?_origin=cart")
     }
 
     const userCart = await getCart(user.id)

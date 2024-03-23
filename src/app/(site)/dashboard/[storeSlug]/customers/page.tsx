@@ -8,6 +8,7 @@ import { and } from "drizzle-orm"
 import { parse } from "valibot"
 
 import { searchParamsString } from "@/lib/utils"
+import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 import { customersSearchParamsSchema } from "@/lib/validations/params"
 
 import CustomersTable from "./_components/CustomersTable"
@@ -22,7 +23,7 @@ interface pageProps {
 const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
     const ordersSearchParams = parse(customersSearchParamsSchema, searchParams)
 
-    const user = await currentUser()
+    const user = await getCachedUser()
     if (!user) {
         redirect(
             `/sign-in?_origin=/dashboard/${storeSlug}/customers?${searchParamsString(
@@ -31,13 +32,7 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
         )
     }
 
-    const store = await db.query.stores.findFirst({
-        columns: {
-            id: true,
-        },
-        where: (store, { eq }) =>
-            and(eq(store.ownerId, user.id), eq(store.slug, storeSlug)),
-    })
+    const store = await getCachedStore(storeSlug, user.id)
 
     if (!store) return notFound()
     // @ts-expect-error unknown error

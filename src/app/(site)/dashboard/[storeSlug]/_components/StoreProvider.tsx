@@ -5,7 +5,10 @@ import { type Store } from "@/db/schema"
 
 import { useStore } from "@/hooks/useStore"
 
-type StoreProviderProps = Omit<Store, "IsDeleted" | "deletedAt">
+type StoreProviderProps = Omit<
+    Store,
+    "isDeleted" | "deletedAt" | "createdAt" | "stripeAccountId" | "updatedAt"
+>
 
 const StoreProvider: FC<StoreProviderProps> = (store) => {
     const { id, name, description, logo, thumbnail, slug, active } = store
@@ -13,6 +16,7 @@ const StoreProvider: FC<StoreProviderProps> = (store) => {
 
     useEffect(() => {
         setStore({ id, name, description, logo, thumbnail, slug, active })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [description, id, logo, name, setStore, slug, thumbnail])
 
     return null

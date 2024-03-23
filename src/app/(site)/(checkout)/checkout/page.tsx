@@ -1,8 +1,8 @@
 import type { Metadata } from "next"
 import Link from "next/link"
-import { notFound, redirect } from "next/navigation"
-import { currentUser } from "@clerk/nextjs"
+import { redirect } from "next/navigation"
 
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 
@@ -19,16 +19,14 @@ interface CheckoutPageProps {
 }
 
 export default async function CheckoutPage({ params }: CheckoutPageProps) {
-    const user = await currentUser()
+    const user = await getCachedUser()
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { success } = params
 
     if (!user || !user?.id) {
-        return notFound()
+        return redirect("/sign-in?_origin=checkout")
     }
-
-    // if (success !== "true") {
-    //     return redirect("/shop")
-    // }
 
     return (
         <section>

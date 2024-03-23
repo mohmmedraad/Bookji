@@ -1,6 +1,8 @@
 import { type FC } from "react"
 import Image from "next/image"
+import { redirect } from "next/navigation"
 
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import Container from "@/components/ui/Container"
 import SignUp from "@/components/auth/SignUp"
 
@@ -10,8 +12,12 @@ interface pageProps {
     }
 }
 
-const page: FC<pageProps> = ({ searchParams }) => {
+const page: FC<pageProps> = async ({ searchParams }) => {
+    const user = await getCachedUser()
     const origin = searchParams?._origin
+    if (user) {
+        return redirect(`${origin || "/"}`)
+    }
 
     return (
         <Container className="grid min-h-screen items-center justify-center gap-32 py-10 lg:grid-cols-2 ">
