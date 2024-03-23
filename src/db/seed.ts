@@ -1,126 +1,182 @@
-import { and, eq, sql } from "drizzle-orm"
+import fs from "fs"
+import { getCart, getStoreBooks } from "@/server/fetchers.js"
+import { clerkClient } from "@clerk/nextjs"
+import { Clerk, EmailAddress, User } from "@clerk/nextjs/server"
+import { Faker, faker } from "@faker-js/faker"
+import { and, eq, inArray, sql } from "drizzle-orm"
+import fetch from "node-fetch"
 
 import { db } from "./index.js"
 import {
+    addresses as addressesTable,
     books as booksTable,
     cartItems as cartItemsTable,
-    carts,
+    carts as cartsTable,
+    orderItems as orderItemsTable,
+    orders as ordersTable,
     stores as storesTable,
+    type NewAddress,
+    type NewOrder,
 } from "./schema.js"
 
-const data = [
-    {
-        id: 3,
-        userId: "user_2cUPWoTcIyoHmf844ktO7kPM112",
-        storeId: 25,
-        author: "mohammed raad",
-        title: "Who Can You Trust?",
-        description: "this a book about Who Can You Trust",
-        cover: "https://uploadthing.com/f/fe493552-f291-4735-ba67-8519a0981b34-x01bw1.webp",
-        price: "50.00",
-        inventory: 0,
-        slug: "who-can-you-trust",
-    },
-    {
-        id: 4,
-        userId: "user_2cUPWoTcIyoHmf844ktO7kPM112",
-        storeId: 25,
-        author: "mohammed raad",
-        title: "by the sea",
-        description: "this is a book talk about the sea ",
-        cover: "https://uploadthing.com/f/ddafb983-0226-4b57-be9a-cb1a4a6c8276-x01bw2.webp",
-        price: "9.00",
-        inventory: 8,
-        slug: "by-the-sea",
-    },
+const stroeBooks = [
     {
         id: 5,
         userId: "user_2cUPWoTcIyoHmf844ktO7kPM112",
         storeId: 24,
-        author: "mohammed raad",
-        title: "Beautifull Day",
-        description: "this is a book my kate anthony",
-        cover: "https://uploadthing.com/f/44fe5751-29b0-4c02-be98-0fc5ab07e199-x01bvz.webp",
-        price: "100.00",
-        inventory: 20,
-        slug: "beautifull-day",
     },
     {
-        id: 6,
+        id: 7,
         userId: "user_2cUPWoTcIyoHmf844ktO7kPM112",
-        storeId: 25,
-        author: "mohammed raad",
-        title: "The Good Guy",
-        description: "this is a book about a movie",
-        cover: "https://uploadthing.com/f/49c758d6-10de-4e99-8b65-84d24ab4dd4f-x01bvy.webp",
-        price: "50.00",
-        inventory: 7,
-        slug: "the-good-guy",
+        storeId: 24,
+    },
+    {
+        id: 11,
+        userId: "user_2cUPWoTcIyoHmf844ktO7kPM112",
+        storeId: 24,
     },
 ]
 
+const clerk = Clerk({
+    secretKey: "sk_test_ms6XosVnETxrdffiWsdqKuIDqO2BCl7Ydygutl3o7l",
+})
+
 const main = async () => {
     console.log("Seed start")
-    // await db.delete(booksTable)
-
-    // await db.insert(cartItemsTable).values([
-    //     {
-    //         cartId: 32,
-    //         bookId: 3,
-    //         storeId: 25,
-    //         quantity: 2,
-    //     },
-    //     {
-    //         cartId: 32,
-    //         bookId: 5,
-    //         storeId: 24,
-    //         quantity: 2,
-    //     },
-    // ])
-
-    const cart = await db
+    const stroeOrders = await db
         .select({
-            id: carts.id,
-            items: sql<
-                {
-                    id: number
-                    storeId: number
-                    bookId: number
-                    quantity: number
-                    book: {
-                        title: string
-                        cover: string | null
-                        price: string
-                    }
-                }[]
-            >`JSON_ARRAYAGG(
-                JSON_OBJECT(
-                'id', ${cartItemsTable.id},
-                'bookId', ${cartItemsTable.bookId},
-                'storeId', ${cartItemsTable.storeId},
-                'quantity', ${cartItemsTable.quantity},
-                'book', JSON_OBJECT(
-                    'cover', ${booksTable.cover},
-                    'title', ${booksTable.title},
-                    'price', ${booksTable.price}
-                )
-            ))`,
+            month: sql<string>`MONTHNAME(${ordersTable.createdAt})`,
+            total: sql`SUM(${ordersTable.total})`.mapWith(Number),
+            orders: sql`COUNT(*)`.mapWith(Number),
         })
-        .from(carts)
-        .where(eq(carts.userId, "user_2cUPWoTcIyoHmf844ktO7kPM112"))
-        .leftJoin(cartItemsTable, eq(carts.id, cartItemsTable.cartId))
-        .leftJoin(booksTable, eq(booksTable.id, cartItemsTable.bookId))
-        .innerJoin(
-            storesTable,
-            and(
-                eq(booksTable.storeId, storesTable.id),
-                eq(storesTable.isDeleted, false)
-            )
-        )
-        .groupBy(carts.id)
+        .from(ordersTable)
+        .where(eq(ordersTable.storeId, 24))
+        .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
 
-    console.log("cart: ", cart[0])
+    const data = stroeOrders.flatMap(({ month, total, orders }) => [
+        { month, total },
+        { month, orders },
+    ])
+
+    console.log("storeOrders: ", data)
+
     console.log("Seed done")
 }
 
 void main()
+
+async function seedStoreOrders(storeId: number, ordersNmuber: number) {
+    const array = new Array(ordersNmuber).fill(0)
+    const users = await clerk.users.getUserList({
+        limit: 40,
+    })
+
+    const newAddresses = array.map(generateRandomAddress)
+
+    await db.insert(addressesTable).values(newAddresses)
+
+    const newOrders = newAddresses.map(({ id }) =>
+        generateRandomOrder(24, generateRandomUser(users).id, id!)
+    )
+
+    await db.insert(ordersTable).values(newOrders)
+
+    const orderItems = newOrders.flatMap(({ id }) => generateRandomItems(id!))
+
+    await db.insert(orderItemsTable).values(orderItems)
+}
+
+function generateClerkRandomUser() {
+    const email = faker.internet.email()
+
+    return {
+        emailAddress: [faker.internet.email()],
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
+        username: email.split("@")[0],
+    }
+}
+
+function generateRandomOrder(
+    storeId: number,
+    userId: string,
+    addressId: number
+): NewOrder {
+    return {
+        id: faker.number.int({
+            min: 0,
+            max: 1_000_000,
+        }),
+        storeId,
+        userId,
+        addressId,
+        name: faker.person.fullName(),
+        email: faker.internet.email(),
+        stripePaymentIntentId: userId,
+        stripePaymentIntentStatus: "seccess",
+        total: faker.finance.amount({
+            min: 0,
+            max: 500,
+        }),
+        createdAt: faker.date.between({
+            from: "2023-01-01T00:00:00.000Z",
+            to: "2024-01-01T00:00:00.000Z",
+        }),
+    }
+}
+
+function generateRandomItems(orderId: number) {
+    const start = faker.number.int({
+        min: 0,
+        max: stroeBooks.length - 1,
+    })
+
+    // copilot give me the bulit in js min funciton
+    const end = faker.number.int({
+        min: Math.min(start + 1, stroeBooks.length),
+        max: stroeBooks.length,
+    })
+
+    return stroeBooks.slice(start, end).map((item) => ({
+        orderId,
+        bookId: item.id,
+        quantity: faker.number.int({
+            min: 1,
+            max: 10,
+        }),
+    }))
+}
+
+function generateRandomAddress(): NewAddress {
+    return {
+        id: faker.number.int({
+            min: 0,
+            max: 1_000_000,
+        }),
+        line1: faker.location.street(),
+        line2: faker.location.street(),
+        city: faker.location.city(),
+        country: faker.location.country(),
+        postalCode: faker.location.zipCode(),
+        state: faker.location.state(),
+    }
+}
+
+function generateRandomUser(users: User[]) {
+    return users[
+        faker.number.int({
+            min: 0,
+            max: users.length - 1,
+        })
+    ]
+}
+
+async function downloadImage(imageUrl: string) {
+    const response = await fetch(imageUrl)
+    const imageBuffer = await response.buffer()
+    console.log("type: ", response.headers.get("content-type"))
+
+    return new Blob([imageBuffer], {
+        type: response.headers.get("content-type") as string,
+    })
+}

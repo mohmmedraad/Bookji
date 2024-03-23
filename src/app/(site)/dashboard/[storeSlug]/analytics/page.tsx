@@ -1,4 +1,10 @@
 import { type FC } from "react"
+import { notFound, redirect } from "next/navigation"
+import { db } from "@/db"
+import { orders as ordersTable } from "@/db/schema"
+import { getStoreOrders } from "@/server/fetchers"
+import { currentUser } from "@clerk/nextjs"
+import { and, eq, sql } from "drizzle-orm"
 import {
     BadgeDollarSign,
     UserPlus,
@@ -6,7 +12,6 @@ import {
     type LucideIcon,
 } from "lucide-react"
 
-import { orders } from "@/config/site"
 import Book from "@/components/ui/BookCover"
 import {
     Card,
@@ -22,7 +27,11 @@ import { Columns } from "../orders/_components/OrdersColumns"
 import SalesChart from "./_components/SalesChart"
 import TrendingArrow from "./_components/TrendingArrow"
 
-interface pageProps {}
+interface pageProps {
+    params: {
+        storeSlug: string
+    }
+}
 
 const cards: {
     Icon: LucideIcon
@@ -61,7 +70,44 @@ const cards: {
     },
 ]
 
-const page: FC<pageProps> = ({}) => {
+const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
+    const user = await currentUser()
+
+    if (!user) {
+        return redirect(`/sign-in?_origin=/dashboard/${storeSlug}/analytics`)
+    }
+
+    const store = await db.query.stores.findFirst({
+        columns: {
+            id: true,
+        },
+        where: (store, { eq }) =>
+            and(
+                eq(store.ownerId, user.id),
+                eq(store.slug, storeSlug),
+                eq(store.isDeleted, false)
+            ),
+    })
+
+    if (!store) return notFound()
+
+    const orders = await getStoreOrders(user.id, store.id, {})
+
+    const chartOrders = await db
+        .select({
+            month: sql<string>`MONTHNAME(${ordersTable.createdAt})`,
+            total: sql`SUM(${ordersTable.total})`.mapWith(Number),
+            orders: sql`COUNT(*)`.mapWith(Number),
+        })
+        .from(ordersTable)
+        .where(eq(ordersTable.storeId, store.id))
+        .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
+
+    const data = chartOrders.flatMap(({ month, total, orders }) => [
+        { month, total },
+        { month, orders },
+    ])
+
     return (
         <div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
@@ -95,7 +141,7 @@ const page: FC<pageProps> = ({}) => {
                     </Card>
                 ))}
             </div>
-            <SalesChart />
+            <SalesChart data={data} />
             <div className="mt-10 grid items-start gap-8 md:grid-cols-analytics">
                 <Card className="overflow-x-hidden">
                     <CardHeader>
@@ -108,7 +154,6 @@ const page: FC<pageProps> = ({}) => {
                     <CardContent>
                         <DataTable
                             columns={Columns}
-                            // @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
                             data={orders}
                             withPagination={false}
                         />
