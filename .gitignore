@@ -8,6 +8,8 @@
 # testing
 /coverage
 
+/src/db/seed.ts
+
 # next.js
 /.next/
 /out/
