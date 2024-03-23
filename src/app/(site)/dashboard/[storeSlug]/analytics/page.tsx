@@ -1,12 +1,12 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
-import { getStoreOrders } from "@/server/fetchers"
 import {
-    BadgeDollarSign,
-    UserPlus,
-    Wallet,
-    type LucideIcon,
-} from "lucide-react"
+    getStoreOrders,
+    getTotalCustomers,
+    getTotalOrders,
+    getTotalSales,
+} from "@/server/fetchers"
+import { BadgeDollarSign, UserPlus, Wallet } from "lucide-react"
 
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 import Book from "@/components/ui/BookCover"
@@ -29,39 +29,33 @@ interface pageProps {
         storeSlug: string
     }
 }
-
-const cards: {
-    Icon: LucideIcon
-    title: string
-    number: string
-    status: "up" | "down"
-    percent: string
-}[] = [
+const cards = [
     {
         Icon: UserPlus,
         title: "Total customers",
-        number: "1,200",
+        getValue: getTotalCustomers,
         status: "up",
         percent: "15%",
     },
     {
         Icon: Wallet,
         title: "Total revenue",
-        number: "$0.00",
+        getValue: getTotalSales,
         status: "down",
         percent: "40%",
     },
     {
         Icon: BadgeDollarSign,
         title: "Total sales",
-        number: "$100.00",
+        getValue: getTotalSales,
         status: "up",
         percent: "33%",
     },
     {
         Icon: Wallet,
         title: "Total orders",
-        number: "1000",
+        getValue: getTotalOrders,
+
         status: "up",
         percent: "80%",
     },
@@ -83,35 +77,37 @@ const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
     return (
         <div>
             <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-                {cards.map(({ title, Icon, number, status, percent }) => (
-                    <Card key={title}>
-                        <CardHeader>
-                            <CardTitle className="flex items-center gap-3">
-                                <div className="rounded-md border-1 border-slate-200 p-3 ">
-                                    <Icon className="h-6 w-6 text-[#344054]" />
+                {cards.map(
+                    async ({ title, Icon, getValue, status, percent }) => (
+                        <Card key={title}>
+                            <CardHeader>
+                                <CardTitle className="flex items-center gap-3">
+                                    <div className="rounded-md border-1 border-slate-200 p-3 ">
+                                        <Icon className="h-6 w-6 text-[#344054]" />
+                                    </div>
+                                    {title}
+                                </CardTitle>
+                            </CardHeader>
+                            <CardContent className="flex items-center gap-4">
+                                <div className="flex items-start gap-2">
+                                    <span className="text-4xl text-[#101828]">
+                                        {await getValue(store.id)}
+                                    </span>
+                                    <TrendingArrow
+                                        status={status}
+                                        percent={percent}
+                                        // className="absolute right-2 top-0"
+                                    />
                                 </div>
-                                {title}
-                            </CardTitle>
-                        </CardHeader>
-                        <CardContent className="flex items-center gap-4">
-                            <div className="flex items-start gap-2">
-                                <span className="text-4xl text-[#101828]">
-                                    {number}
-                                </span>
-                                <TrendingArrow
-                                    status={status}
-                                    percent={percent}
-                                    // className="absolute right-2 top-0"
-                                />
-                            </div>
-                            {status === "up" ? (
-                                <Icons.UpChart />
-                            ) : (
-                                <Icons.DownChart />
-                            )}
-                        </CardContent>
-                    </Card>
-                ))}
+                                {status === "up" ? (
+                                    <Icons.UpChart />
+                                ) : (
+                                    <Icons.DownChart />
+                                )}
+                            </CardContent>
+                        </Card>
+                    )
+                )}
             </div>
             <Charts storeSlug={storeSlug} />
             <div className="mt-10 grid items-start gap-8 md:grid-cols-analytics">

@@ -1,10 +1,7 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
-import { db } from "@/db"
 import { getStoreCustomers } from "@/server/fetchers"
 import { type SearchParams } from "@/types"
-import { currentUser } from "@clerk/nextjs"
-import { and } from "drizzle-orm"
 import { parse } from "valibot"
 
 import { searchParamsString } from "@/lib/utils"

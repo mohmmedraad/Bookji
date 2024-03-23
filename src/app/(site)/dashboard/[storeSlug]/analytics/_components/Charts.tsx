@@ -1,10 +1,11 @@
 import { type FC } from "react"
 import { notFound } from "next/navigation"
-import { db } from "@/db"
-import { orders as ordersTable } from "@/db/schema"
-import { eq, sql } from "drizzle-orm"
 
-import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import {
+    getCachedStore,
+    getCachedStoreOrders,
+    getCachedUser,
+} from "@/lib/utils/cachedResources"
 
 import SalesChart from "./SalesChart"
 
@@ -21,15 +22,7 @@ const Charts: FC<ChartsProps> = async ({ storeSlug }) => {
 
     if (!store) return notFound()
 
-    const chartOrders = await db
-        .select({
-            month: sql<string>`MONTHNAME(${ordersTable.createdAt})`,
-            total: sql`SUM(${ordersTable.total})`.mapWith(Number),
-            orders: sql`COUNT(*)`.mapWith(Number),
-        })
-        .from(ordersTable)
-        .where(eq(ordersTable.storeId, store.id))
-        .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
+    const chartOrders = await getCachedStoreOrders(store.id)
 
     const data = chartOrders.flatMap(({ month, total, orders }) => [
         { month, name: "total", value: total },

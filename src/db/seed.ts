@@ -54,8 +54,8 @@ const main = async () => {
         .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
 
     const data = stroeOrders.flatMap(({ month, total, orders }) => [
-        { month, total },
-        { month, orders },
+        { month, name: "total", value: total },
+        { month, name: "orders", value: orders },
     ])
 
     console.log("storeOrders: ", data)

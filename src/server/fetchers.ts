@@ -37,6 +37,7 @@ import { parse } from "valibot"
 
 import { storeSubscriptionPlans } from "@/config/site"
 import { stripe } from "@/lib/stripe"
+import { getCachedStoreOrders } from "@/lib/utils/cachedResources"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import {
     booksSearchParamsSchema,
@@ -782,12 +783,36 @@ export async function getCart(userId: string) {
 
     const userCart = cart[0]
 
-    if (userCart.items[0].id === null)  {
+    if (userCart.items[0].id === null) {
         return {
             id: userCart.id,
-            items: []
+            items: [],
         }
     }
 
     return userCart
+}
+
+export const getTotalCustomers = async (storeId: number) => {
+    const totalCustomers = await db
+        .select({
+            count: sql<string>`COUNT(${ordersTable.userId})`,
+        })
+        .from(ordersTable)
+        .where(eq(ordersTable.storeId, storeId))
+        .groupBy(ordersTable.userId)
+
+    return totalCustomers.length > 0 ? totalCustomers[0].count : "0"
+}
+
+export const getTotalSales = async (storeId: number) => {
+    const storeOrders = await getCachedStoreOrders(storeId)
+
+    return storeOrders.reduce((acc, { total }) => acc + total, 0).toString()
+}
+
+export const getTotalOrders = async (storeId: number) => {
+    const storeOrders = await getCachedStoreOrders(storeId)
+
+    return storeOrders.reduce((acc, { orders }) => acc + orders, 0).toString()
 }

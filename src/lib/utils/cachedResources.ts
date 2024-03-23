@@ -1,8 +1,8 @@
 import { cache } from "react"
 import { db } from "@/db"
-import { stores as storesTable } from "@/db/schema"
+import { orders as ordersTable, stores as storesTable } from "@/db/schema"
 import { currentUser } from "@clerk/nextjs"
-import { and, eq } from "drizzle-orm"
+import { and, eq, sql } from "drizzle-orm"
 
 export const getCachedStore = cache(
     async (storeSlug: string, userId: string) => {
@@ -35,4 +35,16 @@ export const getCachedUser = cache(async () => {
         console.error(err)
         return null
     }
+})
+
+export const getCachedStoreOrders = cache(async (storeId: number) => {
+    return await db
+        .select({
+            month: sql<string>`MONTHNAME(${ordersTable.createdAt})`,
+            total: sql`SUM(${ordersTable.total})`.mapWith(Number),
+            orders: sql`COUNT(*)`.mapWith(Number),
+        })
+        .from(ordersTable)
+        .where(eq(ordersTable.storeId, storeId))
+        .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
 })
