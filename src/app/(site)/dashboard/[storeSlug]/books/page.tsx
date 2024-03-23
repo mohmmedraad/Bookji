@@ -6,6 +6,8 @@ import { type SearchParams } from "@/types"
 import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"
 
+import { searchParamsString } from "@/lib/utils"
+
 import BooksTable from "./_components/BooksTable"
 
 interface pageProps {
@@ -18,7 +20,12 @@ interface pageProps {
 const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
     const user = await currentUser()
 
-    if (!user?.id) return redirect(`/sign-in?_origin=/dashboard`)
+    if (!user?.id)
+        return redirect(
+            `/sign-in?_origin=/dashboard/${storeSlug}/books?${searchParamsString(
+                searchParams
+            )}`
+        )
 
     const store = await db.query.stores.findFirst({
         columns: {

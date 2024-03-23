@@ -7,6 +7,7 @@ import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"
 import { parse } from "valibot"
 
+import { searchParamsString } from "@/lib/utils"
 import { customersSearchParamsSchema } from "@/lib/validations/params"
 
 import CustomersTable from "./_components/CustomersTable"
@@ -23,15 +24,9 @@ const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
 
     const user = await currentUser()
     if (!user) {
-        const userSearchParams = []
-        for (const key in searchParams) {
-            userSearchParams.push(
-                `${key}=${searchParams[key]?.toString() || ""}`
-            )
-        }
-        return redirect(
-            `/sign-in?_origin=/dashboard/${storeSlug}/orders?${userSearchParams.join(
-                "&"
+        redirect(
+            `/sign-in?_origin=/dashboard/${storeSlug}/customers?${searchParamsString(
+                searchParams
             )}`
         )
     }
