@@ -769,7 +769,7 @@ export async function getCart(userId: string) {
         .where(eq(cartsTable.userId, userId))
         .leftJoin(cartItemsTable, eq(cartsTable.id, cartItemsTable.cartId))
         .leftJoin(booksTable, eq(booksTable.id, cartItemsTable.bookId))
-        .innerJoin(
+        .leftJoin(
             storesTable,
             and(
                 eq(booksTable.storeId, storesTable.id),
@@ -780,5 +780,14 @@ export async function getCart(userId: string) {
 
     if (cart.length === 0) return undefined
 
-    return cart[0]
+    const userCart = cart[0]
+
+    if (userCart.items[0].id === null)  {
+        return {
+            id: userCart.id,
+            items: []
+        }
+    }
+
+    return userCart
 }
