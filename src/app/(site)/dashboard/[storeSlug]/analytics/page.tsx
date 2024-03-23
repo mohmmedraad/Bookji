@@ -1,10 +1,6 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
-import { db } from "@/db"
-import { orders as ordersTable } from "@/db/schema"
 import { getStoreOrders } from "@/server/fetchers"
-import { currentUser } from "@clerk/nextjs"
-import { and, eq, sql } from "drizzle-orm"
 import {
     BadgeDollarSign,
     UserPlus,
@@ -12,6 +8,7 @@ import {
     type LucideIcon,
 } from "lucide-react"
 
+import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 import Book from "@/components/ui/BookCover"
 import {
     Card,
@@ -24,7 +21,7 @@ import { DataTable } from "@/components/ui/DataTable"
 import { Icons } from "@/components/Icons"
 
 import { Columns } from "../orders/_components/OrdersColumns"
-import SalesChart from "./_components/SalesChart"
+import Charts from "./_components/Charts"
 import TrendingArrow from "./_components/TrendingArrow"
 
 interface pageProps {
@@ -71,42 +68,17 @@ const cards: {
 ]
 
 const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
 
     if (!user) {
         return redirect(`/sign-in?_origin=/dashboard/${storeSlug}/analytics`)
     }
 
-    const store = await db.query.stores.findFirst({
-        columns: {
-            id: true,
-        },
-        where: (store, { eq }) =>
-            and(
-                eq(store.ownerId, user.id),
-                eq(store.slug, storeSlug),
-                eq(store.isDeleted, false)
-            ),
-    })
+    const store = await getCachedStore(storeSlug, user.id)
 
     if (!store) return notFound()
 
     const orders = await getStoreOrders(user.id, store.id, {})
-
-    const chartOrders = await db
-        .select({
-            month: sql<string>`MONTHNAME(${ordersTable.createdAt})`,
-            total: sql`SUM(${ordersTable.total})`.mapWith(Number),
-            orders: sql`COUNT(*)`.mapWith(Number),
-        })
-        .from(ordersTable)
-        .where(eq(ordersTable.storeId, store.id))
-        .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
-
-    const data = chartOrders.flatMap(({ month, total, orders }) => [
-        { month, total },
-        { month, orders },
-    ])
 
     return (
         <div>
@@ -141,7 +113,7 @@ const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
                     </Card>
                 ))}
             </div>
-            <SalesChart data={data} />
+            <Charts storeSlug={storeSlug} />
             <div className="mt-10 grid items-start gap-8 md:grid-cols-analytics">
                 <Card className="overflow-x-hidden">
                     <CardHeader>

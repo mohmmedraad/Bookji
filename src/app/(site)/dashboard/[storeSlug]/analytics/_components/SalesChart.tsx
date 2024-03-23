@@ -26,8 +26,8 @@ const SalesChart: FC<SalesChartProps> = ({ data }) => {
                         shape="smooth"
                         point
                         area
-                        position="month*temperature"
-                        color="city"
+                        position="month*value"
+                        color="name"
                     />
                 </Chart>
             </CardContent>
