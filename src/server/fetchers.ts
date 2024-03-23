@@ -802,13 +802,13 @@ export const getTotalCustomers = async (storeId: number) => {
         .where(eq(ordersTable.storeId, storeId))
         .groupBy(ordersTable.userId)
 
-    return totalCustomers.length > 0 ? totalCustomers[0].count : "0"
+    return totalCustomers.length.toString()
 }
 
 export const getTotalSales = async (storeId: number) => {
     const storeOrders = await getCachedStoreOrders(storeId)
 
-    return storeOrders.reduce((acc, { total }) => acc + total, 0).toString()
+    return `${storeOrders.reduce((acc, { total }) => acc + total, 0).toString()}$`
 }
 
 export const getTotalOrders = async (storeId: number) => {

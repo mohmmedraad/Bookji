@@ -43,22 +43,15 @@ const clerk = Clerk({
 
 const main = async () => {
     console.log("Seed start")
-    const stroeOrders = await db
+    const totalCustomers = await db
         .select({
-            month: sql<string>`MONTHNAME(${ordersTable.createdAt})`,
-            total: sql`SUM(${ordersTable.total})`.mapWith(Number),
-            orders: sql`COUNT(*)`.mapWith(Number),
+            count: sql<string>`COUNT(${ordersTable.userId})`
         })
         .from(ordersTable)
         .where(eq(ordersTable.storeId, 24))
-        .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
+        .groupBy(ordersTable.userId)
 
-    const data = stroeOrders.flatMap(({ month, total, orders }) => [
-        { month, name: "total", value: total },
-        { month, name: "orders", value: orders },
-    ])
-
-    console.log("storeOrders: ", data)
+    console.log("totalCustomers: ", totalCustomers.length)
 
     console.log("Seed done")
 }
