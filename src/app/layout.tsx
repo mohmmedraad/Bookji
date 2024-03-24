@@ -28,7 +28,7 @@ export default function RootLayout({
                 <body className={`${inter.className} bg-background`}>
                     <Providers>
                         {children}
-                        <Toaster />
+                        <Toaster richColors />
                     </Providers>
                 </body>
             </html>
