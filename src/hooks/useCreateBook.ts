@@ -1,5 +1,6 @@
 import { type Dispatch, type SetStateAction } from "react"
 import { useRouter } from "next/navigation"
+import type { TRPCErrorCause } from "@/types"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
@@ -26,6 +27,7 @@ export const useCreateBook = (setOpen: SetOpen) => {
         },
         onError: (error) => {
             const errorCode = error.data?.code
+            const errorMessage = error.message as TRPCErrorCause
             if (errorCode === "UNAUTHORIZED") {
                 router.push(`/sign-in?_origin=/dashboard/${storeSlug}`)
                 return toast.error("You must be logged in to add a book")
@@ -41,6 +43,32 @@ export const useCreateBook = (setOpen: SetOpen) => {
                     message: "Book with same title already exists",
                 })
                 return
+            }
+
+            const isForbidden = errorCode === "FORBIDDEN"
+
+            if (isForbidden && errorMessage === "no_subscription") {
+                return toast.error(
+                    "You need to subscribe to a plan to create a book",
+                    {
+                        action: {
+                            label: "Subscribe",
+                            onClick: () => router.push("/dashboard/billing"),
+                        },
+                    }
+                )
+            }
+
+            if (isForbidden && errorMessage === "books_limit_reached") {
+                return toast.error(
+                    "You reached the limit of books you can add per this store. Please upgrade your plan to add more books.",
+                    {
+                        action: {
+                            label: "Upgrade",
+                            onClick: () => router.push("/dashboard/billing"),
+                        },
+                    }
+                )
             }
 
             if (errorCode === "BAD_REQUEST")

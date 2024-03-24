@@ -32,7 +32,12 @@ import {
     userRatingSchema,
 } from "@/lib/validations/book"
 
-import { getShopPageBooks } from "../fetchers"
+import {
+    getPlanLimits,
+    getShopPageBooks,
+    getStoreBooksCount,
+    getSubscriptionPlan,
+} from "../fetchers"
 import { privateProcedure, publicProcedure, router } from "../trpc"
 import { isBookExists, isInputEmpty, isStoreExists, withUsers } from "../utils"
 
@@ -51,7 +56,32 @@ export const booksRouter = router({
             if (!(await isStoreExists(input.storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
+                })
+            }
+
+            const subscriptionPlan = await getSubscriptionPlan(ctx.user.id)
+
+            if (!subscriptionPlan) {
+                throw new TRPCError({
+                    code: "FORBIDDEN",
+                    message: "no_subscription",
+                })
+            }
+
+            const { booksLimit } = getPlanLimits({
+                planId: subscriptionPlan.id,
+            })
+
+            const { booksCount } = await getStoreBooksCount(
+                ctx.user.id,
+                input.storeId
+            )
+
+            if (booksCount >= booksLimit) {
+                throw new TRPCError({
+                    code: "FORBIDDEN",
+                    message: "books_limit_reached",
                 })
             }
 
@@ -68,7 +98,7 @@ export const booksRouter = router({
             if (bookWithSameTitle) {
                 throw new TRPCError({
                     code: "CONFLICT",
-                    message: "Book with same title already exists",
+                    message: "book_title_exists",
                 })
             }
 
@@ -107,7 +137,7 @@ export const booksRouter = router({
             if (!(await isBookExists(bookId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Book not found",
+                    message: "no_book",
                 })
             }
 
@@ -126,7 +156,7 @@ export const booksRouter = router({
                 if (bookWithSameTitle) {
                     throw new TRPCError({
                         code: "CONFLICT",
-                        message: "Book with same title already exists",
+                        message: "book_title_exists",
                     })
                 }
             }
@@ -151,7 +181,6 @@ export const booksRouter = router({
                         categoryId: category.id,
                     }))
                 )
-
             }
             if (isInputEmpty(input)) {
                 return
@@ -175,7 +204,7 @@ export const booksRouter = router({
             if (!(await isBookExists(input.bookId))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Book not found",
+                    message: "no_book",
                 })
             }
 
@@ -232,7 +261,7 @@ export const booksRouter = router({
             if (!(await isBookExists(bookId))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Book not found",
+                    message: "no_book",
                 })
             }
 
@@ -247,7 +276,7 @@ export const booksRouter = router({
             if (isUserAlreadyRateBook) {
                 throw new TRPCError({
                     code: "CONFLICT",
-                    message: "You already rate this book",
+                    message: "already_rated",
                 })
             }
 
@@ -274,7 +303,7 @@ export const booksRouter = router({
             if (!(await isBookExists(input.bookId))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Book not found",
+                    message: "no_book",
                 })
             }
             const userRating = await db.query.ratings.findFirst({
@@ -300,7 +329,7 @@ export const booksRouter = router({
             if (!(await isBookExists(input.bookId))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Book not found",
+                    message: "no_book",
                 })
             }
             const bookRating = await db.query.ratings.findMany({
@@ -324,7 +353,7 @@ export const booksRouter = router({
             if (!(await isBookExists(bookId))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Book not found",
+                    message: "no_book",
                 })
             }
 
@@ -356,7 +385,7 @@ export const booksRouter = router({
             if (!(await isStoreExists(storeId))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
                 })
             }
 

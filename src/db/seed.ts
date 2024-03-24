@@ -1,9 +1,5 @@
-import fs from "fs"
-import { getCart, getStoreBooks } from "@/server/fetchers.js"
-import { clerkClient } from "@clerk/nextjs"
-import { Clerk, EmailAddress, User } from "@clerk/nextjs/server"
-import { Faker, faker } from "@faker-js/faker"
-import { and, eq, inArray, sql } from "drizzle-orm"
+import { Clerk, type User } from "@clerk/nextjs/server"
+import { faker } from "@faker-js/faker"
 import fetch from "node-fetch"
 
 import { db } from "./index.js"
@@ -41,17 +37,8 @@ const clerk = Clerk({
     secretKey: "sk_test_ms6XosVnETxrdffiWsdqKuIDqO2BCl7Ydygutl3o7l",
 })
 
-const main = async () => {
+const main = () => {
     console.log("Seed start")
-    const totalCustomers = await db
-        .select({
-            count: sql<string>`COUNT(${ordersTable.userId})`
-        })
-        .from(ordersTable)
-        .where(eq(ordersTable.storeId, 24))
-        .groupBy(ordersTable.userId)
-
-    console.log("totalCustomers: ", totalCustomers.length)
 
     console.log("Seed done")
 }

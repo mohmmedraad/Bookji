@@ -16,6 +16,7 @@ import type {
     Customer,
     GetBooksSchema,
     SearchParams,
+    SubscriptionPlan,
     UserSubscriptionPlan,
 } from "@/types"
 import { clerkClient } from "@clerk/nextjs/server"
@@ -24,6 +25,7 @@ import {
     and,
     asc,
     between,
+    countDistinct,
     desc,
     eq,
     exists,
@@ -35,7 +37,7 @@ import {
 } from "drizzle-orm"
 import { parse } from "valibot"
 
-import { storeSubscriptionPlans } from "@/config/site"
+import { subscriptionPlans } from "@/config/site"
 import { stripe } from "@/lib/stripe"
 import { getCachedStoreOrders } from "@/lib/utils/cachedResources"
 import { userPrivateMetadataSchema } from "@/lib/validations/auth"
@@ -143,11 +145,11 @@ export async function getSubscriptionPlan(
             ).getTime() > Date.now()
 
         const plan = isSubscribed
-            ? storeSubscriptionPlans.find(
+            ? Object.values(subscriptionPlans).find(
                   (plan) =>
                       plan.stripePriceId === userPrivateMetadata.stripePriceId
               )
-            : storeSubscriptionPlans[0]
+            : subscriptionPlans.Basic
 
         if (!plan) {
             throw new Error("Plan not found.")
@@ -174,6 +176,64 @@ export async function getSubscriptionPlan(
     } catch (err) {
         console.error(err)
         return null
+    }
+}
+
+export function getPlanLimits({ planId }: { planId?: SubscriptionPlan["id"] }) {
+    const { features } = subscriptionPlans[planId ?? "Basic"]
+
+    const [storesLimit, booksLimit] = features.map((feature) => {
+        const [value] = feature.match(/\d+/) || []
+        return value ? parseInt(value, 10) : 0
+    })
+
+    return {
+        storesLimit: storesLimit ?? 0,
+        booksLimit: booksLimit ?? 0,
+    }
+}
+
+export async function getStoresCount(userId: string) {
+    try {
+        const data = await db
+            .select({
+                storeCount: countDistinct(storesTable.id),
+            })
+            .from(storesTable)
+            .where(eq(storesTable.ownerId, userId))
+            .groupBy(storesTable.ownerId)
+            .execute()
+            .then((res) => res[0])
+
+        return {
+            storeCount: data?.storeCount ?? 0,
+        }
+    } catch (err) {
+        return {
+            storeCount: 0,
+        }
+    }
+}
+
+export async function getStoreBooksCount(userId: string, storeId: number) {
+    try {
+        const data = await db
+            .select({
+                booksCount: countDistinct(booksTable.id),
+            })
+            .from(booksTable)
+            .where(and(eq(booksTable.storeId, storeId)))
+            .groupBy(booksTable.storeId)
+            .execute()
+            .then((res) => res[0])
+
+        return {
+            booksCount: data?.booksCount ?? 0,
+        }
+    } catch (err) {
+        return {
+            booksCount: 0,
+        }
     }
 }
 
@@ -808,7 +868,9 @@ export const getTotalCustomers = async (storeId: number) => {
 export const getTotalSales = async (storeId: number) => {
     const storeOrders = await getCachedStoreOrders(storeId)
 
-    return `${storeOrders.reduce((acc, { total }) => acc + total, 0).toString()}$`
+    return `${storeOrders
+        .reduce((acc, { total }) => acc + total, 0)
+        .toString()}$`
 }
 
 export const getTotalOrders = async (storeId: number) => {

@@ -14,7 +14,14 @@ import {
     updateStoreSchema,
 } from "@/lib/validations/store"
 
-import { getStoreBooks, getStoreCustomers, getStoreOrders } from "../fetchers"
+import {
+    getPlanLimits,
+    getStoreBooks,
+    getStoreCustomers,
+    getStoreOrders,
+    getStoresCount,
+    getSubscriptionPlan,
+} from "../fetchers"
 import { privateProcedure, publicProcedure, router } from "../trpc"
 import { isStoreExists } from "../utils"
 
@@ -47,6 +54,28 @@ export const storeRouter = router({
     create: privateProcedure
         .input(wrap(newStoreSchema))
         .mutation(async ({ ctx, input }) => {
+            const subscriptionPlan = await getSubscriptionPlan(ctx.user.id)
+
+            if (!subscriptionPlan) {
+                throw new TRPCError({
+                    code: "FORBIDDEN",
+                    message: "no_subscription",
+                })
+            }
+
+            const { storesLimit } = getPlanLimits({
+                planId: subscriptionPlan.id,
+            })
+
+            const { storeCount } = await getStoresCount(ctx.user.id)
+
+            if (storeCount >= storesLimit) {
+                throw new TRPCError({
+                    code: "FORBIDDEN",
+                    message: "stores_limit_reached",
+                })
+            }
+
             const { name, description, logo, thumbnail } = input
             const storeWithSameName = await db.query.stores.findFirst({
                 where: and(eq(stores.name, name), eq(stores.isDeleted, false)),
@@ -55,11 +84,11 @@ export const storeRouter = router({
             if (storeWithSameName) {
                 throw new TRPCError({
                     code: "CONFLICT",
-                    message: "Store with same name already exists",
+                    message: "store_title_exists",
                 })
             }
 
-            const store = await db.insert(stores).values({
+            await db.insert(stores).values({
                 name,
                 description,
                 logo,
@@ -67,8 +96,6 @@ export const storeRouter = router({
                 ownerId: ctx.user.id,
                 slug: slugify(name),
             })
-
-            return store.insertId
         }),
 
     update: privateProcedure
@@ -77,7 +104,7 @@ export const storeRouter = router({
             if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
                 })
             }
 
@@ -93,7 +120,7 @@ export const storeRouter = router({
                 if (storeWithSameName) {
                     throw new TRPCError({
                         code: "CONFLICT",
-                        message: "A store with same name already exists",
+                        message: "store_title_exists",
                     })
                 }
             }
@@ -116,7 +143,7 @@ export const storeRouter = router({
                 if (!(await isStoreExists(storeId, ctx.user.id))) {
                     return new TRPCError({
                         code: "NOT_FOUND",
-                        message: "Store not found",
+                        message: "no_store",
                     })
                 }
 
@@ -127,7 +154,7 @@ export const storeRouter = router({
             } catch (error) {
                 throw new TRPCError({
                     code: "INTERNAL_SERVER_ERROR",
-                    message: "Something went wrong",
+                    message: "server_error",
                 })
             }
         }),
@@ -155,7 +182,7 @@ export const storeRouter = router({
             if (!store) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
                 })
             }
 
@@ -168,7 +195,7 @@ export const storeRouter = router({
             if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
                 })
             }
             try {
@@ -180,7 +207,7 @@ export const storeRouter = router({
                 if (error instanceof ValiError) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
-                        message: "Invalid search parameters.",
+                        message: "invalid_search_params",
                     })
                 }
             }
@@ -192,7 +219,7 @@ export const storeRouter = router({
             if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
                 })
             }
             try {
@@ -204,7 +231,7 @@ export const storeRouter = router({
                 if (error instanceof ValiError) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
-                        message: "Invalid search parameters.",
+                        message: "invalid_search_params",
                     })
                 }
             }
@@ -216,7 +243,7 @@ export const storeRouter = router({
             if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
                 })
             }
             try {
@@ -232,7 +259,7 @@ export const storeRouter = router({
                 if (error instanceof ValiError) {
                     throw new TRPCError({
                         code: "BAD_REQUEST",
-                        message: "Invalid search parameters.",
+                        message: "invalid_search_params",
                     })
                 }
             }
@@ -250,7 +277,7 @@ export const storeRouter = router({
             if (!(await isStoreExists(storeId, ctx.user.id))) {
                 throw new TRPCError({
                     code: "NOT_FOUND",
-                    message: "Store not found",
+                    message: "no_store",
                 })
             }
             const customersIds = await db.query.orders.findMany({

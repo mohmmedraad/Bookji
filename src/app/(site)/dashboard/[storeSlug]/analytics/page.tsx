@@ -2,6 +2,7 @@ import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
 import {
     getStoreOrders,
+    getSubscriptionPlan,
     getTotalCustomers,
     getTotalOrders,
     getTotalSales,
@@ -66,6 +67,12 @@ const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
 
     if (!user) {
         return redirect(`/sign-in?_origin=/dashboard/${storeSlug}/analytics`)
+    }
+
+    const subscriptionPlan = await getSubscriptionPlan(user.id)
+
+    if (!subscriptionPlan || !subscriptionPlan.analytics) {
+        return redirect(`/dashboard/billing`)
     }
 
     const store = await getCachedStore(storeSlug, user.id)

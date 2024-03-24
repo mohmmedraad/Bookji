@@ -4,7 +4,7 @@ import { getSubscriptionPlan } from "@/server/fetchers"
 import { currentUser } from "@clerk/nextjs"
 import { Check } from "lucide-react"
 
-import { storeSubscriptionPlans } from "@/config/site"
+import { subscriptionPlans } from "@/config/site"
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import {
@@ -38,7 +38,7 @@ const Page: FC<pageProps> = async ({}) => {
             <Separator className="mt-6" />
             <h2 className="mb-6 mt-8 text-2xl font-bold">Subscription plans</h2>
             <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3">
-                {storeSubscriptionPlans.map((plan, index) => (
+                {Object.values(subscriptionPlans).map((plan, index) => (
                     <Card key={index}>
                         <CardHeader>
                             {plan.id === subscriptionPlan?.id ? (
@@ -60,7 +60,7 @@ const Page: FC<pageProps> = async ({}) => {
                                 ${plan.price}
                                 <span className="text-base">/mo</span>
                             </div>
-                            {plan.id === "basic" ? (
+                            {plan.id === "Basic" ? (
                                 <Button className="mt-8 w-full">
                                     Get Started
                                 </Button>

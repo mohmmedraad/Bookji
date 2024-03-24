@@ -1,4 +1,4 @@
-import { OauthProvider, type SubscriptionPlan } from "@/types"
+import { type OauthProvider, type SubscriptionPlan } from "@/types"
 
 import { Icons } from "@/components/Icons"
 
@@ -500,9 +500,12 @@ export const contactLinks = [
 ]
 export type BooksType = typeof books
 
-export const storeSubscriptionPlans: SubscriptionPlan[] = [
-    {
-        id: "basic",
+export const subscriptionPlans: Record<
+    SubscriptionPlan["id"],
+    SubscriptionPlan
+> = {
+    Basic: {
+        id: "Basic",
         name: "BookWorm Free",
         description:
             "Start selling books for free with basic essentials for your store.",
@@ -511,38 +514,41 @@ export const storeSubscriptionPlans: SubscriptionPlan[] = [
             "Create up to 10 products",
             "Free customer support.",
         ],
+        analytics: false,
         stripePriceId: "",
         price: 0,
     },
-    {
-        id: "standard",
+    Standard: {
+        id: "Standard",
         name: "Literary Pro",
         description:
             "Upgrade for more benefits to enhance your book-selling experience.",
         features: [
             "Create up to 2 store",
-            "Create up to 30 products per store",
+            "Create up to 30 books per store",
             "Free customer support.",
             "Free analytics.",
         ],
+        analytics: true,
         stripePriceId: process.env.STRIPE_STD_MONTHLY_PRICE_ID!,
         price: 15,
     },
-    {
-        id: "pro",
+    Pro: {
+        id: "Pro",
         name: "Book Maverick Plus",
         description:
             "Unlock premium advantages for a more advanced marketplace presence.",
         features: [
             "Create up to 3 stores",
-            "Create up to 50 products per store",
+            "Create up to 50 books per store",
             "Free customer support.",
             "Free analytics.",
         ],
+        analytics: true,
         stripePriceId: process.env.STRIPE_PRO_MONTHLY_PRICE_ID!,
         price: 25,
     },
-]
+}
 
 export const oauthProviders: OauthProvider[] = [
     { name: "Google", strategy: "oauth_google", icon: "Google" },

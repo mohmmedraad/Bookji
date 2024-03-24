@@ -69,12 +69,13 @@ export interface TRPCErrorType {
 export type Endpoint = keyof OurFileRouter
 
 export interface SubscriptionPlan {
-    id: "basic" | "standard" | "pro"
+    id: "Basic" | "Standard" | "Pro"
     name: string
     description: string
     features: string[]
     stripePriceId: string
     price: number
+    analytics: boolean
 }
 
 export interface UserSubscriptionPlan extends SubscriptionPlan {
@@ -138,3 +139,14 @@ export type GetBooksSchema = {
 }
 
 export type ShopPageBook = Awaited<ReturnType<typeof getShopPageBooks>>[number]
+
+export type TRPCErrorCause =
+    | "invalid_search_params"
+    | "no_subscription"
+    | "no_store"
+    | "store_title_exists"
+    | "stores_limit_reached"
+    | "no_book"
+    | "book_title_exists"
+    | "books_limit_reached"
+    | "already_rated"
