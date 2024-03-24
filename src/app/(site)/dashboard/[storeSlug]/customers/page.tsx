@@ -1,11 +1,11 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
-import { getStoreCustomers } from "@/server/fetchers"
 import { type SearchParams } from "@/types"
 import { parse } from "valibot"
 
 import { searchParamsString } from "@/lib/utils"
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import { getStoreCustomers } from "@/lib/utils/store"
 import { customersSearchParamsSchema } from "@/lib/validations/params"
 
 import CustomersTable from "./_components/CustomersTable"

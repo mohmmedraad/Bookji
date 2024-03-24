@@ -1,44 +1,15 @@
+import { db } from "@/db"
+import {
+    books as booksTable,
+    cartItems as cartItemsTable,
+    carts as cartsTable,
+    stores as storesTable,
+    type NewCartItem,
+} from "@/db/schema"
 import { type CartItem } from "@/types"
+import { and, eq, sql } from "drizzle-orm"
 
 import { type ExtendedCartItem } from "@/hooks/useCart"
-
-export function updateCartBook(cartBooks: CartItem[], bookToUpdate: CartItem) {
-    if (isBookNotExists(cartBooks, bookToUpdate)) {
-        cartBooks.push(bookToUpdate)
-        return cartBooks
-    }
-
-    return cartBooks.map((book) => {
-        if (book.bookId !== bookToUpdate.bookId) {
-            return book
-        }
-
-        return {
-            ...book,
-            quantity: book.quantity + bookToUpdate.quantity,
-        }
-    })
-}
-
-export function decreaseBookQuantity(
-    cartBooks: CartItem[],
-    bookToUpdate: CartItem
-) {
-    const updatedCartBooks: CartItem[] = []
-
-    cartBooks.forEach((book) => {
-        if (book.bookId !== bookToUpdate.bookId) {
-            updatedCartBooks.push(book)
-        }
-        if (book.quantity !== 1) {
-            updatedCartBooks.push({
-                ...book,
-                quantity: book.quantity - bookToUpdate.quantity,
-            })
-        }
-    })
-    return updatedCartBooks
-}
 
 export function isBookNotExists(cartBooks: CartItem[], bookToCheck: CartItem) {
     return !cartBooks.some((book) => book.bookId === bookToCheck.bookId)
@@ -49,4 +20,89 @@ export function getCartTotal(cartBooks: ExtendedCartItem[]) {
         (total, book) => total + +book.price! * book.quantity,
         0
     )
+}
+
+export async function getCart(userId: string) {
+    const cart = await db
+        .select({
+            id: cartsTable.id,
+            items: sql<
+                {
+                    id: number
+                    storeId: number
+                    bookId: number
+                    quantity: number
+                    book: {
+                        title: string
+                        cover: string | null
+                        price: string
+                    }
+                }[]
+            >`JSON_ARRAYAGG(
+        JSON_OBJECT(
+        'id', ${cartItemsTable.id},
+        'bookId', ${cartItemsTable.bookId},
+        'storeId', ${cartItemsTable.storeId},
+        'quantity', ${cartItemsTable.quantity},
+        'book', JSON_OBJECT(
+            'cover', ${booksTable.cover},
+            'title', ${booksTable.title},
+            'price', ${booksTable.price}
+        )
+    ))`,
+        })
+        .from(cartsTable)
+        .where(eq(cartsTable.userId, userId))
+        .leftJoin(cartItemsTable, eq(cartsTable.id, cartItemsTable.cartId))
+        .leftJoin(booksTable, eq(booksTable.id, cartItemsTable.bookId))
+        .leftJoin(
+            storesTable,
+            and(
+                eq(booksTable.storeId, storesTable.id),
+                eq(storesTable.isDeleted, false)
+            )
+        )
+        .groupBy(cartsTable.id)
+
+    if (cart.length === 0) return undefined
+
+    const userCart = cart[0]
+
+    if (userCart.items[0].id === null) {
+        return {
+            id: userCart.id,
+            items: [],
+        }
+    }
+
+    return userCart
+}
+
+export async function createCart(userId: string, items: NewCartItem[] = []) {
+    const cart = await db.insert(cartsTable).values({
+        userId,
+    })
+
+    if (items.length === 0) {
+        return cart
+    }
+
+    await db.insert(cartItemsTable).values(
+        items.map((item) => ({
+            storeId: item.storeId,
+            bookId: item.bookId,
+            cartId: Number(cart.insertId),
+        }))
+    )
+    return cart
+}
+
+export async function isCartExist(userId: string) {
+    const cart = await db.query.carts.findFirst({
+        columns: {
+            id: true,
+        },
+        where: (cart) => eq(cart.userId, userId),
+    })
+    return cart
 }

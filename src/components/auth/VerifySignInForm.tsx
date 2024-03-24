@@ -6,12 +6,12 @@ import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { PenSquare } from "lucide-react"
 import { toast } from "sonner"
 
+import { handleGenericError } from "@/lib/utils"
 import {
     clerkError,
-    handleGenericError,
     handleSessionExistsError,
     sendSignInVerificationEmail,
-} from "@/lib/utils"
+} from "@/lib/utils/auth"
 import useCount from "@/hooks/useCount"
 import useSignInForm from "@/hooks/useSignInForm"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"

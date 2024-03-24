@@ -7,11 +7,14 @@ import { PenSquare } from "lucide-react"
 import { toast } from "sonner"
 
 import {
+    handleGenericError
+} from "@/lib/utils"
+import {
     clerkError,
     handleGenericError,
     handleSessionExistsError,
     sendSignUpVerificationEmail,
-} from "@/lib/utils"
+} from "@/lib/utils/auth"
 import useCount from "@/hooks/useCount"
 import useSignUpForm from "@/hooks/useSignUpForm"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"

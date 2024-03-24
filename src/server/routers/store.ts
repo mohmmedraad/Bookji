@@ -8,22 +8,24 @@ import { number, object, string, ValiError } from "valibot"
 
 import { slugify } from "@/lib/utils"
 import {
+    getStoreBooks,
+    getStoreCustomers,
+    getStoreOrders,
+    isStoreExists,
+} from "@/lib/utils/store"
+import {
+    getPlanLimits,
+    getStoresCount,
+    getSubscriptionPlan,
+} from "@/lib/utils/subscription"
+import {
     deleteStoreSchema,
     newStoreSchema,
     storeResourcesSchema,
     updateStoreSchema,
 } from "@/lib/validations/store"
 
-import {
-    getPlanLimits,
-    getStoreBooks,
-    getStoreCustomers,
-    getStoreOrders,
-    getStoresCount,
-    getSubscriptionPlan,
-} from "../fetchers"
 import { privateProcedure, publicProcedure, router } from "../trpc"
-import { isStoreExists } from "../utils"
 
 export const storeRouter = router({
     getStores: publicProcedure

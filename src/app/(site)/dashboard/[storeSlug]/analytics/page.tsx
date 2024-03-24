@@ -1,15 +1,15 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
-import {
-    getStoreOrders,
-    getSubscriptionPlan,
-    getTotalCustomers,
-    getTotalOrders,
-    getTotalSales,
-} from "@/server/fetchers"
 import { BadgeDollarSign, UserPlus, Wallet } from "lucide-react"
 
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import {
+    getStoreOrders,
+    getTotalCustomers,
+    getTotalOrders,
+    getTotalSales,
+} from "@/lib/utils/store"
+import { getSubscriptionPlan } from "@/lib/utils/subscription"
 import Book from "@/components/ui/BookCover"
 import {
     Card,

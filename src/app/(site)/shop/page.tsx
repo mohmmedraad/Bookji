@@ -1,8 +1,8 @@
 import { type FC } from "react"
-import { getShopPageBooks } from "@/server/fetchers"
 import type { SearchParams } from "@/types"
 import { parse } from "valibot"
 
+import { getShopPageBooks } from "@/lib/utils/store"
 import { getBooksSchema } from "@/lib/validations/book"
 import Container from "@/components/ui/Container"
 

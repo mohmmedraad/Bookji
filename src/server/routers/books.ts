@@ -20,7 +20,14 @@ import {
 } from "drizzle-orm"
 import { number, object } from "valibot"
 
-import { slugify } from "@/lib/utils"
+import { isInputEmpty, slugify } from "@/lib/utils"
+import { isBookExists, withUsers } from "@/lib/utils/book"
+import { getShopPageBooks, isStoreExists } from "@/lib/utils/store"
+import {
+    getPlanLimits,
+    getStoreBooksCount,
+    getSubscriptionPlan,
+} from "@/lib/utils/subscription"
 import {
     deleteBookSchema,
     extendedBookSchema,
@@ -32,14 +39,7 @@ import {
     userRatingSchema,
 } from "@/lib/validations/book"
 
-import {
-    getPlanLimits,
-    getShopPageBooks,
-    getStoreBooksCount,
-    getSubscriptionPlan,
-} from "../fetchers"
 import { privateProcedure, publicProcedure, router } from "../trpc"
-import { isBookExists, isInputEmpty, isStoreExists, withUsers } from "../utils"
 
 export const booksRouter = router({
     get: publicProcedure

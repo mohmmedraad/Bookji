@@ -4,9 +4,9 @@ import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { nullable, object, record, string, ValiError } from "valibot"
 
+import { getPurchases } from "@/lib/utils/store"
 import { updateUserSchema } from "@/lib/validations/auth"
 
-import { getPurchases } from "../fetchers"
 import { privateProcedure, router } from "../trpc"
 
 export const usersRouter = router({

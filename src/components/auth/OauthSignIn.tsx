@@ -6,11 +6,8 @@ import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { type OAuthStrategy } from "@clerk/types"
 
 import { oauthProviders } from "@/config/site"
-import {
-    clerkError,
-    handleGenericError,
-    handleSessionExistsError,
-} from "@/lib/utils"
+import { handleGenericError } from "@/lib/utils"
+import { clerkError, handleSessionExistsError } from "@/lib/utils/auth"
 
 import { Icons } from "../Icons"
 import { Button } from "../ui/Button"

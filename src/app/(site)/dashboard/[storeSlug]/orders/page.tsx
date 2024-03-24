@@ -1,13 +1,10 @@
 import { type FC } from "react"
 import { notFound, redirect } from "next/navigation"
-import { db } from "@/db"
-import { getStoreOrders } from "@/server/fetchers"
 import { type SearchParams } from "@/types"
-import { currentUser } from "@clerk/nextjs"
-import { and } from "drizzle-orm"
 
 import { searchParamsString } from "@/lib/utils"
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import { getStoreOrders } from "@/lib/utils/store"
 
 import OrdersTable from "./_components/OrdersTable"
 

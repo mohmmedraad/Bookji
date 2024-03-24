@@ -14,6 +14,9 @@ import {
     handleSessionExistsError,
     isAuthNotComplete,
     sendSignInVerificationEmail,
+} from "@/lib/utils/auth"
+import {
+    handleGenericError
 } from "@/lib/utils"
 import useSignInForm from "@/hooks/useSignInForm"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"

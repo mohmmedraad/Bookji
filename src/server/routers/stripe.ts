@@ -5,15 +5,16 @@ import { eq } from "drizzle-orm"
 import { number, object, string } from "valibot"
 
 import { stripe } from "@/lib/stripe"
-import { absoluteUrl, getUserEmail } from "@/lib/utils"
+import { absoluteUrl } from "@/lib/utils"
+import { absoluteUrl, getUserEmail } from "@/lib/auth"
+import { createCart } from "@/lib/utils/cart"
+import { getStripeAccount ,createStripeAccount} from "@/lib/utils/stripe"
 import {
     createPaymentIntentSchema,
     manageSubscriptionSchema,
 } from "@/lib/validations/stripe"
 
-import { getStripeAccount } from "../fetchers"
 import { privateProcedure, router } from "../trpc"
-import { createCart, createStripeAccount } from "../utils"
 
 export const stripeRouter = router({
     createAccountLink: privateProcedure

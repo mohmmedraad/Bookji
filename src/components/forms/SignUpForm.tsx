@@ -15,13 +15,13 @@ import {
     type Input,
 } from "valibot"
 
+import { handleGenericError } from "@/lib/utils"
 import {
     clerkError,
-    handleGenericError,
     handleSessionExistsError,
     isAuthNotComplete,
     sendSignUpVerificationEmail,
-} from "@/lib/utils"
+} from "@/lib/utils/auth"
 import useSignUpForm from "@/hooks/useSignUpForm"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 import { Button } from "@/components/ui/Button"

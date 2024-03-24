@@ -1,9 +1,9 @@
 import { type FC } from "react"
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
-import { getCart } from "@/server/fetchers"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCart } from "@/lib/utils/cart"
 import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 

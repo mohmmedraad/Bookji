@@ -5,11 +5,11 @@ import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
 import { number, object } from "valibot"
 
+import { isBookExists } from "@/lib/utils/book"
+import { createCart, getCart, isCartExist } from "@/lib/utils/cart"
 import { cartItemSchema } from "@/lib/validations/cart"
 
-import { getCart } from "../fetchers"
 import { privateProcedure, router } from "../trpc"
-import { createCart, isBookExists, isCartExist } from "../utils"
 
 export const cartRouter = router({
     get: privateProcedure.query(async ({ ctx }) => {

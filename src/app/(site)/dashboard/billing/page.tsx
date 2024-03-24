@@ -1,10 +1,10 @@
 import { type FC } from "react"
 import { redirect } from "next/navigation"
-import { getSubscriptionPlan } from "@/server/fetchers"
 import { currentUser } from "@clerk/nextjs"
 import { Check } from "lucide-react"
 
 import { subscriptionPlans } from "@/config/site"
+import { getSubscriptionPlan } from "@/lib/utils/subscription"
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
 import {

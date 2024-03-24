@@ -3,29 +3,18 @@ import {
     addresses as addressesTable,
     books as booksTable,
     booksToCategories,
-    cartItems as cartItemsTable,
-    carts as cartsTable,
     categories as categoriesTable,
     orderItems as orderItemsTable,
     orders as ordersTable,
-    payments,
     ratings as ratingsTable,
     stores as storesTable,
 } from "@/db/schema"
-import type {
-    Customer,
-    GetBooksSchema,
-    SearchParams,
-    SubscriptionPlan,
-    UserSubscriptionPlan,
-} from "@/types"
+import type { Customer, GetBooksSchema, SearchParams } from "@/types"
 import { clerkClient } from "@clerk/nextjs/server"
-import { addDays } from "date-fns"
 import {
     and,
     asc,
     between,
-    countDistinct,
     desc,
     eq,
     exists,
@@ -37,10 +26,7 @@ import {
 } from "drizzle-orm"
 import { parse } from "valibot"
 
-import { subscriptionPlans } from "@/config/site"
-import { stripe } from "@/lib/stripe"
 import { getCachedStoreOrders } from "@/lib/utils/cachedResources"
-import { userPrivateMetadataSchema } from "@/lib/validations/auth"
 import {
     booksSearchParamsSchema,
     customersSearchParamsSchema,
@@ -48,193 +34,19 @@ import {
     purchasesSearchParamsSchema,
 } from "@/lib/validations/params"
 
-export async function getStripeAccount(
-    storeId: number,
-    retrieveAccount = true
-) {
-    const falsyReturn = {
-        isConnected: false,
-        account: null,
-        payment: null,
-    }
-
-    try {
-        const store = await db.query.stores.findFirst({
-            columns: {
-                stripeAccountId: true,
-            },
-            where: eq(storesTable.id, storeId),
-        })
-
-        if (!store) return falsyReturn
-
-        const payment = await db.query.payments.findFirst({
-            columns: {
-                stripeAccountId: true,
-                detailsSubmitted: true,
-            },
-            where: eq(payments.storeId, storeId),
-        })
-
-        if (!payment || !payment.stripeAccountId) return falsyReturn
-
-        if (!retrieveAccount)
-            return {
-                isConnected: true,
-                account: null,
-                payment,
-            }
-
-        const account = await stripe.accounts.retrieve(payment.stripeAccountId)
-
-        if (!account) return falsyReturn
-
-        // If the account details have been submitted, we update the store and payment records
-        if (account.details_submitted && !payment.detailsSubmitted) {
-            await db.transaction(async (tx) => {
-                await tx
-                    .update(payments)
-                    .set({
-                        detailsSubmitted: account.details_submitted,
-                        stripeAccountCreatedAt: account.created,
-                    })
-                    .where(eq(payments.storeId, storeId))
-
-                await tx
-                    .update(storesTable)
-                    .set({
-                        stripeAccountId: account.id,
-                        active: true,
-                    })
-                    .where(eq(storesTable.id, storeId))
-            })
-        }
-
-        return {
-            isConnected: payment.detailsSubmitted,
-            account: account.details_submitted ? account : null,
-            payment,
-        }
-    } catch (err) {
-        err instanceof Error && console.error(err.message)
-        return falsyReturn
-    }
-}
-
-export async function getSubscriptionPlan(
-    userId: string
-): Promise<UserSubscriptionPlan | null> {
-    try {
-        const user = await clerkClient.users.getUser(userId)
-
-        if (!user) {
-            throw new Error("User not found.")
-        }
-
-        const userPrivateMetadata = parse(
-            userPrivateMetadataSchema,
-            user.privateMetadata
-        )
-
-        const isSubscribed =
-            !!userPrivateMetadata.stripePriceId &&
-            !!userPrivateMetadata.stripeCurrentPeriodEnd &&
-            addDays(
-                new Date(userPrivateMetadata.stripeCurrentPeriodEnd),
-                1
-            ).getTime() > Date.now()
-
-        const plan = isSubscribed
-            ? Object.values(subscriptionPlans).find(
-                  (plan) =>
-                      plan.stripePriceId === userPrivateMetadata.stripePriceId
-              )
-            : subscriptionPlans.Basic
-
-        if (!plan) {
-            throw new Error("Plan not found.")
-        }
-
-        // Check if user has canceled subscription
-        let isCanceled = false
-        if (isSubscribed && !!userPrivateMetadata.stripeSubscriptionId) {
-            const stripePlan = await stripe.subscriptions.retrieve(
-                userPrivateMetadata.stripeSubscriptionId
-            )
-            isCanceled = stripePlan.cancel_at_period_end
-        }
-
-        return {
-            ...plan,
-            stripeSubscriptionId: userPrivateMetadata.stripeSubscriptionId,
-            stripeCurrentPeriodEnd: userPrivateMetadata.stripeCurrentPeriodEnd,
-            stripeCustomerId: userPrivateMetadata.stripeCustomerId,
-            isSubscribed,
-            isCanceled,
-            isActive: isSubscribed && !isCanceled,
-        }
-    } catch (err) {
-        console.error(err)
-        return null
-    }
-}
-
-export function getPlanLimits({ planId }: { planId?: SubscriptionPlan["id"] }) {
-    const { features } = subscriptionPlans[planId ?? "Basic"]
-
-    const [storesLimit, booksLimit] = features.map((feature) => {
-        const [value] = feature.match(/\d+/) || []
-        return value ? parseInt(value, 10) : 0
+export async function isStoreExists(storeId: number, userId?: string) {
+    const store = await db.query.stores.findFirst({
+        columns: {
+            id: true,
+        },
+        where: and(
+            eq(storesTable.id, storeId),
+            userId ? eq(storesTable.ownerId, userId) : undefined,
+            eq(storesTable.isDeleted, false)
+        ),
     })
 
-    return {
-        storesLimit: storesLimit ?? 0,
-        booksLimit: booksLimit ?? 0,
-    }
-}
-
-export async function getStoresCount(userId: string) {
-    try {
-        const data = await db
-            .select({
-                storeCount: countDistinct(storesTable.id),
-            })
-            .from(storesTable)
-            .where(eq(storesTable.ownerId, userId))
-            .groupBy(storesTable.ownerId)
-            .execute()
-            .then((res) => res[0])
-
-        return {
-            storeCount: data?.storeCount ?? 0,
-        }
-    } catch (err) {
-        return {
-            storeCount: 0,
-        }
-    }
-}
-
-export async function getStoreBooksCount(userId: string, storeId: number) {
-    try {
-        const data = await db
-            .select({
-                booksCount: countDistinct(booksTable.id),
-            })
-            .from(booksTable)
-            .where(and(eq(booksTable.storeId, storeId)))
-            .groupBy(booksTable.storeId)
-            .execute()
-            .then((res) => res[0])
-
-        return {
-            booksCount: data?.booksCount ?? 0,
-        }
-    } catch (err) {
-        return {
-            booksCount: 0,
-        }
-    }
+    return store !== undefined
 }
 
 export async function getStoreOrders(
@@ -795,62 +607,6 @@ export async function getShopPageBooks({
         .offset(offset)
 
     return books
-}
-
-export async function getCart(userId: string) {
-    const cart = await db
-        .select({
-            id: cartsTable.id,
-            items: sql<
-                {
-                    id: number
-                    storeId: number
-                    bookId: number
-                    quantity: number
-                    book: {
-                        title: string
-                        cover: string | null
-                        price: string
-                    }
-                }[]
-            >`JSON_ARRAYAGG(
-        JSON_OBJECT(
-        'id', ${cartItemsTable.id},
-        'bookId', ${cartItemsTable.bookId},
-        'storeId', ${cartItemsTable.storeId},
-        'quantity', ${cartItemsTable.quantity},
-        'book', JSON_OBJECT(
-            'cover', ${booksTable.cover},
-            'title', ${booksTable.title},
-            'price', ${booksTable.price}
-        )
-    ))`,
-        })
-        .from(cartsTable)
-        .where(eq(cartsTable.userId, userId))
-        .leftJoin(cartItemsTable, eq(cartsTable.id, cartItemsTable.cartId))
-        .leftJoin(booksTable, eq(booksTable.id, cartItemsTable.bookId))
-        .leftJoin(
-            storesTable,
-            and(
-                eq(booksTable.storeId, storesTable.id),
-                eq(storesTable.isDeleted, false)
-            )
-        )
-        .groupBy(cartsTable.id)
-
-    if (cart.length === 0) return undefined
-
-    const userCart = cart[0]
-
-    if (userCart.items[0].id === null) {
-        return {
-            id: userCart.id,
-            items: [],
-        }
-    }
-
-    return userCart
 }
 
 export const getTotalCustomers = async (storeId: number) => {
