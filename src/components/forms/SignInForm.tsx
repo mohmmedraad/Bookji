@@ -10,7 +10,6 @@ import { email, minLength, object, string, type Input } from "valibot"
 
 import {
     clerkError,
-    handleGenericError,
     handleSessionExistsError,
     isAuthNotComplete,
     sendSignInVerificationEmail,
