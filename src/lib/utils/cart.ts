@@ -13,14 +13,6 @@ import { and, eq, sql } from "drizzle-orm"
 export function isBookNotExists(cartBooks: CartItem[], bookToCheck: CartItem) {
     return !cartBooks.some((book) => book.bookId === bookToCheck.bookId)
 }
-
-export function getCartTotal(cartBooks: ExtendedCartItem[]) {
-    return cartBooks.reduce(
-        (total, book) => total + +book.price! * book.quantity,
-        0
-    )
-}
-
 export async function getCart(userId: string) {
     const cart = await db
         .select({

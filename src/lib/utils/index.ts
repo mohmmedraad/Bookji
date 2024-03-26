@@ -1,3 +1,4 @@
+import { ExtendedCartItem } from "@/store/useCart"
 import type { SearchParams } from "@/types"
 import { clsx, type ClassValue } from "clsx"
 import slugifyStr from "slugify"
@@ -50,4 +51,11 @@ export function formatDate(
 export function searchParamsString(searchParams: SearchParams) {
     const searchParamsString = new URLSearchParams(searchParams).toString()
     return searchParamsString ? `?${searchParamsString}` : ""
+}
+
+export function getCartTotal(cartBooks: ExtendedCartItem[]) {
+    return cartBooks.reduce(
+        (total, book) => total + +book.price! * book.quantity,
+        0
+    )
 }
