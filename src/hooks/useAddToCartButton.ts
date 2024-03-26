@@ -23,15 +23,10 @@ export const useAddToCartButton = () => {
                 (item) => item.bookId === book.id
             )
 
-            if (isBookInCart) {
-                return updateCart({
-                    bookId: book.id,
-                    quantity: isBookInCart.quantity + 1,
-                    ...book,
-                })
-            }
-            updateCart({ bookId: book.id, quantity: 1, ...book })
-            toast.success("Added to cart")
+            const quantity = isBookInCart ? isBookInCart.quantity + 1 : 1
+
+            updateCart({ bookId: book.id, quantity, ...book })
+            return toast.success("Added to cart")
         },
         onError: (error) => {
             undoChanging()
