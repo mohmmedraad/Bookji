@@ -2,21 +2,18 @@
 
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
+import useSignUpForm from "@/store/useSignUpForm"
 import { isClerkAPIResponseError, useSignUp } from "@clerk/nextjs"
 import { PenSquare } from "lucide-react"
 import { toast } from "sonner"
 
-import {
-    handleGenericError
-} from "@/lib/utils"
+import { handleGenericError } from "@/lib/utils"
 import {
     clerkError,
-    handleGenericError,
     handleSessionExistsError,
     sendSignUpVerificationEmail,
 } from "@/lib/utils/auth"
 import useCount from "@/hooks/useCount"
-import useSignUpForm from "@/store/useSignUpForm"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 
 import { Button } from "../ui/Button"
