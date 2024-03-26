@@ -1,4 +1,4 @@
-import { type FC } from "react"
+import { memo, type FC } from "react"
 
 import { trpc } from "@/app/_trpc/client"
 
@@ -22,4 +22,4 @@ const CategoriesFilterOption: FC<CategoriesFilterOptionProps> = ({}) => {
     )
 }
 
-export default CategoriesFilterOption
+export default memo(CategoriesFilterOption)

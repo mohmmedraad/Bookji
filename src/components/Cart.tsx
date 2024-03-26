@@ -1,8 +1,8 @@
 "use client"
 
 import { type FC } from "react"
+import useCart from "@/store/useCart"
 
-import useCart from "@/hooks/useCart"
 import { trpc } from "@/app/_trpc/client"
 
 import CartItems from "./CartItems"

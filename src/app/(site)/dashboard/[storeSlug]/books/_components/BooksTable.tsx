@@ -19,7 +19,7 @@ interface BooksTableProps {
 
 const BooksTable: FC<BooksTableProps> = ({ initialBooks }) => {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { handleClearSearch, ...searchParams } = useBooksSearchParams()
+    const searchParams = useBooksSearchParams()
     const { id: storeId, slug: storeSlug } = useStore()
     const router = useRouter()
     const [isInitialLoading, setIsInitialLoading] = useState(true)

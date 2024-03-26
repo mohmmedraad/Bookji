@@ -5,7 +5,7 @@ import { handleGenericError } from "@/lib/utils"
 import { trpc } from "@/app/_trpc/client"
 
 import useBook from "../store/useBook"
-import useCart from "./useCart"
+import useCart from "../store/useCart"
 
 export const useAddToCartButton = () => {
     const { updateCart, undoChanging, cartBooks } = useCart((store) => ({

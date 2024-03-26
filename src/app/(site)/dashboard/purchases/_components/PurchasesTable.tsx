@@ -17,8 +17,7 @@ interface PurchasesTableProps {
 }
 
 const PurchasesTable: FC<PurchasesTableProps> = ({ initialOrders }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { handleClearSearch, ...searchParams } = usePurchasesSearchParams()
+    const searchParams = usePurchasesSearchParams()
     const router = useRouter()
     const [isInitialLoading, setIsInitialLoading] = useState(true)
     const redirectSearchParams = useSearchParams()

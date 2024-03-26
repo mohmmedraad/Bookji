@@ -1,8 +1,8 @@
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
+import { type ExtendedCartItem } from "@/store/useCart"
 import { toast } from "sonner"
 
-import { type ExtendedCartItem } from "@/hooks/useCart"
 import { Button } from "@/components/ui/Button"
 import { trpc } from "@/app/_trpc/client"
 

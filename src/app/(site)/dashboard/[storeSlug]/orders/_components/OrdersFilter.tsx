@@ -1,24 +1,17 @@
 import { type FC } from "react"
 import { FilterIcon } from "lucide-react"
 
-import { useOrdersSearchParams } from "@/hooks/useOrdersSearchParams"
 import { Button } from "@/components/ui/Button"
+import CustomersFilterOption from "@/components/ui/CustomersFilterOption"
 import Filter from "@/components/ui/Filter"
 import FilterLabel from "@/components/ui/FilterLabel"
 import FilterOption from "@/components/ui/FilterOption"
 import RangeFilterOption from "@/components/ui/RangeFilterOption"
 import SearchInput from "@/components/ui/SearchInput"
-import CustomersFilterOption from "@/components/ui/CustomersFilterOption"
 
 interface DashboardOrdersFilterProps {}
 
 const DashboardOrdersFilter: FC<DashboardOrdersFilterProps> = ({}) => {
-    const { handleClearSearch } = useOrdersSearchParams()
-
-    function handleClearFilters() {
-        handleClearSearch()
-    }
-
     return (
         <Filter
             renderButton={() => (
@@ -27,7 +20,6 @@ const DashboardOrdersFilter: FC<DashboardOrdersFilterProps> = ({}) => {
                 </Button>
             )}
             renderTitle={() => "Filters"}
-            onClearFilters={handleClearFilters}
         >
             <FilterOption>
                 <FilterLabel>Total range</FilterLabel>

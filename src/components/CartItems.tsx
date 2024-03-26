@@ -1,8 +1,7 @@
 "use client"
 
 import { type FC } from "react"
-
-import useCart from "@/hooks/useCart"
+import useCart from "@/store/useCart"
 
 import CartItem from "./CartItem"
 import { ScrollArea } from "./ui/ScrollArea"

@@ -3,9 +3,9 @@
 import { type FC, type HTMLAttributes } from "react"
 import { motion } from "framer-motion"
 import { Search } from "lucide-react"
-import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
+import { useSearchBar } from "@/hooks/useSearchBar"
 
 interface MobileSearchBarProps extends HTMLAttributes<HTMLDivElement> {
     param?: string
@@ -21,7 +21,7 @@ const MobileSearchBar: FC<MobileSearchBarProps> = ({
     isFocused,
     isBlurred,
 }) => {
-    const [textParam, setTextParam] = useQueryState(param)
+    const { text, setText } = useSearchBar(param)
 
     return (
         <motion.div
@@ -49,9 +49,9 @@ const MobileSearchBar: FC<MobileSearchBarProps> = ({
             {isClosed ? null : (
                 <input
                     className="outline-none placeholder:text-muted-foreground"
+                    value={text || ""}
                     placeholder={"Type here to search..."}
-                    defaultValue={textParam || ""}
-                    onChange={(e) => void setTextParam(e.target.value)}
+                    onChange={(e) => void setText(e.target.value)}
                     onFocus={isFocused}
                     onBlur={() => isBlurred()}
                     autoFocus

@@ -1,10 +1,10 @@
 import { type FC } from "react"
 import { usePathname, useRouter } from "next/navigation"
+import useCart from "@/store/useCart"
 import { Trash } from "lucide-react"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
-import useCart from "@/hooks/useCart"
 import { trpc } from "@/app/_trpc/client"
 
 import EditQuantity from "./EditQuantity"

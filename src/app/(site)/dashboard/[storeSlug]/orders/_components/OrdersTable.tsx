@@ -18,8 +18,7 @@ interface OrdersTableProps {
 }
 
 const OrdersTable: FC<OrdersTableProps> = ({ initialOrders }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { handleClearSearch, ...searchParams } = useOrdersSearchParams()
+    const searchParams = useOrdersSearchParams()
     const { id: storeId, slug: storeSlug } = useStore()
     const router = useRouter()
     const [isInitialLoading, setIsInitialLoading] = useState(true)

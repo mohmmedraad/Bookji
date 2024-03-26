@@ -18,8 +18,7 @@ interface CustomersTableProps {
 }
 
 const CustomersTable: FC<CustomersTableProps> = ({ initialCustomers }) => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { handleClearSearch, ...searchParams } = useCustomersSearchParams()
+    const searchParams = useCustomersSearchParams()
     const { id: storeId, slug: storeSlug } = useStore()
     const router = useRouter()
     const [isInitialLoading, setIsInitialLoading] = useState(true)

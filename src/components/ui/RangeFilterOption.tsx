@@ -1,4 +1,4 @@
-import { type FC } from "react"
+import { memo, type FC } from "react"
 
 import {
     useRangeFilterOption,
@@ -75,4 +75,4 @@ const RangeFilterOption: FC<RangeFilterOptionProps> = ({
     )
 }
 
-export default RangeFilterOption
+export default memo(RangeFilterOption)

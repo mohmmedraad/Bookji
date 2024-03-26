@@ -2,8 +2,8 @@
 
 import { type FC } from "react"
 import Image from "next/image"
+import useCart from "@/store/useCart"
 
-import useCart from "@/hooks/useCart"
 import BookWrapper from "@/components/ui/BookWrapper"
 import {
     Card,

@@ -6,10 +6,9 @@ import {
     stores as storesTable,
     type NewCartItem,
 } from "@/db/schema"
+import { type ExtendedCartItem } from "@/store/useCart"
 import { type CartItem } from "@/types"
 import { and, eq, sql } from "drizzle-orm"
-
-import { type ExtendedCartItem } from "@/hooks/useCart"
 
 export function isBookNotExists(cartBooks: CartItem[], bookToCheck: CartItem) {
     return !cartBooks.some((book) => book.bookId === bookToCheck.bookId)

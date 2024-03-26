@@ -2,10 +2,10 @@
 
 import { type FC } from "react"
 import Link from "next/link"
+import useCart from "@/store/useCart"
 
 import { cn } from "@/lib/utils"
 import { getCartTotal } from "@/lib/utils/cart"
-import useCart from "@/hooks/useCart"
 
 import { buttonVariants } from "./ui/Button"
 import { Separator } from "./ui/Separator"

@@ -2,9 +2,9 @@
 
 import { type FC, type HTMLAttributes } from "react"
 import { Search } from "lucide-react"
-import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
+import { useSearchBar } from "@/hooks/useSearchBar"
 
 import { Input } from "./Input"
 
@@ -17,16 +17,17 @@ const SearchBar: FC<SearchBarProps> = ({
     param = "text",
     ...props
 }) => {
-    const [textParam, setTextParam] = useQueryState(param)
+    const { text, setText } = useSearchBar(param)
+
     return (
         <div className={cn("relative", className)} {...props}>
             <Search className="absolute left-4 top-3 h-4 w-4 text-slate-900" />
             <Input
                 className="pl-10"
-                defaultValue={textParam || ""}
+                value={text || ""}
                 placeholder="Type here to search..."
                 onChange={(e) => {
-                    void setTextParam(e.target.value)
+                    void setText(e.target.value)
                 }}
             />
         </div>

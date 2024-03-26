@@ -1,7 +1,6 @@
 import { type FC } from "react"
 import { FilterIcon } from "lucide-react"
 
-import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
 import { Button } from "@/components/ui/Button"
 import CategoriesFilterOption from "@/components/ui/CategoriesFilterOption"
 import Filter from "@/components/ui/Filter"
@@ -13,12 +12,6 @@ import StoresFilterOption from "@/components/ui/StoresFilterOption"
 interface ShopFilterProps {}
 
 const ShopFilter: FC<ShopFilterProps> = ({}) => {
-    const { handleClearSearch } = useBooksSearchParams()
-
-    function handleClearFilters() {
-        handleClearSearch()
-    }
-
     return (
         <Filter
             renderButton={() => (
@@ -27,7 +20,6 @@ const ShopFilter: FC<ShopFilterProps> = ({}) => {
                 </Button>
             )}
             renderTitle={() => "Filters"}
-            onClearFilters={handleClearFilters}
         >
             <FilterOption>
                 <FilterLabel>Price range</FilterLabel>

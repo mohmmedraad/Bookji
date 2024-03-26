@@ -1,10 +1,10 @@
 import { useEffect, useState, type FC } from "react"
 import { usePathname, useRouter } from "next/navigation"
+import useCart from "@/store/useCart"
 import { Minus, Plus } from "lucide-react"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
-import useCart from "@/hooks/useCart"
 import useDebounce from "@/hooks/useDebounce"
 import { useIsMount } from "@/hooks/useIsMount"
 import { trpc } from "@/app/_trpc/client"

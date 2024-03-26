@@ -20,7 +20,10 @@ export const useRangeFilterOption = ({
     minRangeValue,
     param,
 }: UseRangeFilterOptionProps) => {
-    const [rangeParam, setRangeParam] = useQueryState(param)
+    const [rangeParam, setRangeParam] = useQueryState(param, {
+        throttleMs: 500,
+        history: "push",
+    })
     const isMount = useIsMount()
 
     const [range, setRange] = useState<{

@@ -1,6 +1,6 @@
 import React from "react"
 
-import { Button } from "./Button"
+import ClearFiltersButton from "./ClearFiltersButton"
 import { ScrollArea } from "./ScrollArea"
 import {
     Sheet,
@@ -16,7 +16,6 @@ interface FilterProps {
     renderTitle: React.FC
     renderDescription?: React.FC
     children: React.ReactNode
-    onClearFilters: () => void
 }
 
 const Filter: React.FC<FilterProps> = ({
@@ -24,7 +23,6 @@ const Filter: React.FC<FilterProps> = ({
     renderTitle,
     renderDescription,
     children,
-    onClearFilters,
 }) => {
     return (
         <Sheet>
@@ -43,9 +41,9 @@ const Filter: React.FC<FilterProps> = ({
                         {children}
                     </ScrollArea>
                     <div className="shrink-0 py-4">
-                        <Button className="w-full" onClick={onClearFilters}>
+                        <ClearFiltersButton className="w-full">
                             Clear filters
-                        </Button>
+                        </ClearFiltersButton>
                     </div>
                 </div>
             </SheetContent>

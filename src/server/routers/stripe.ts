@@ -6,9 +6,9 @@ import { number, object, string } from "valibot"
 
 import { stripe } from "@/lib/stripe"
 import { absoluteUrl } from "@/lib/utils"
-import { absoluteUrl, getUserEmail } from "@/lib/auth"
+import { getUserEmail } from "@/lib/utils/auth"
 import { createCart } from "@/lib/utils/cart"
-import { getStripeAccount ,createStripeAccount} from "@/lib/utils/stripe"
+import { createStripeAccount, getStripeAccount } from "@/lib/utils/stripe"
 import {
     createPaymentIntentSchema,
     manageSubscriptionSchema,
