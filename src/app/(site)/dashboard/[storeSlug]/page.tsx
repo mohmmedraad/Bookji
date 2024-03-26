@@ -2,11 +2,11 @@ import { type FC } from "react"
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 import { db } from "@/db"
-import { getStripeAccount } from "@/server/fetchers"
 import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"
 
 import { cn, formatDate } from "@/lib/utils"
+import { getStripeAccount } from "@/lib/utils/stripe"
 import { buttonVariants } from "@/components/ui/Button"
 import {
     Card,
