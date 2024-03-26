@@ -1,9 +1,9 @@
 "use client"
 
 import { type FC } from "react"
+import useBook from "@/store/useBook"
 import { Progress, Skeleton } from "@nextui-org/react"
 
-import useBook from "@/hooks/useBook"
 import { trpc } from "@/app/_trpc/client"
 
 import Stars from "./Stars"

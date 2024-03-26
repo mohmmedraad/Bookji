@@ -2,10 +2,10 @@
 
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
+import { useStore } from "@/store/useStore"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
-import { useStore } from "@/hooks/useStore"
 import { Button } from "@/components/ui/Button"
 import { trpc } from "@/app/_trpc/client"
 

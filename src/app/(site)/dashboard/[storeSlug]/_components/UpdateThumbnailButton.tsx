@@ -1,4 +1,5 @@
 import { useEffect, useState, type FC } from "react"
+import { useStore } from "@/store/useStore"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { Camera, Pencil, Upload } from "lucide-react"
 import { useForm } from "react-hook-form"
@@ -9,7 +10,6 @@ import {
     storeLogoSchema,
     storeThumbnailSchema,
 } from "@/lib/validations/store"
-import { useStore } from "@/hooks/useStore"
 import { useUpdateThumbnail } from "@/hooks/useUpdateThumbnail"
 import { Button } from "@/components/ui/Button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog"

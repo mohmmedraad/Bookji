@@ -8,7 +8,7 @@ import { handleGenericError } from "@/lib/utils"
 import { newStoreSchema, type StoreInfoSchema } from "@/lib/validations/store"
 import { trpc } from "@/app/_trpc/client"
 
-import { useStore } from "./useStore"
+import { useStore } from "../store/useStore"
 
 export function getValues(data: StoreInfoSchema, store: StoreInfoSchema) {
     const values = new Map<string, string>()

@@ -12,7 +12,7 @@ import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/scrollbar"
 
-import useBook from "@/hooks/useBook"
+import useBook from "@/store/useBook"
 
 import UserBooksSkeleton from "../_components/UserBooksSkeleton"
 

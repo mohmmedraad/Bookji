@@ -1,8 +1,7 @@
 "use client"
 
 import { useEffect, type FC } from "react"
-
-import { useUserInfo } from "@/hooks/useUserInfo"
+import { useUserInfo } from "@/store/useUserInfo"
 
 interface UserInfoProviderProps {
     username: string | null

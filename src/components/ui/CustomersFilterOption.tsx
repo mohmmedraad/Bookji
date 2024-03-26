@@ -1,8 +1,8 @@
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
+import { useStore } from "@/store/useStore"
 import { toast } from "sonner"
 
-import { useStore } from "@/hooks/useStore"
 import { trpc } from "@/app/_trpc/client"
 
 import { UserAvatar } from "../UserAvatar"

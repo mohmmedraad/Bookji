@@ -7,8 +7,8 @@ import { handleGenericError } from "@/lib/utils"
 import { type BookFormSchema } from "@/lib/validations/book"
 import { trpc } from "@/app/_trpc/client"
 
-import { useBookForm } from "./useBookForm"
-import { useStore } from "./useStore"
+import { useBookForm } from "../store/useBookForm"
+import { useStore } from "../store/useStore"
 
 type SetOpen = Dispatch<SetStateAction<boolean>>
 

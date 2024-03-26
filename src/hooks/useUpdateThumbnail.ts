@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import { handleGenericError } from "@/lib/utils"
 import { trpc } from "@/app/_trpc/client"
 
-import { useStore } from "./useStore"
+import { useStore } from "../store/useStore"
 
 export const useUpdateThumbnail = (
     setOpen: Dispatch<SetStateAction<boolean>>

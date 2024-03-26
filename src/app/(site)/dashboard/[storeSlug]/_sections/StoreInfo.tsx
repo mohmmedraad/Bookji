@@ -2,9 +2,9 @@
 
 import { type FC } from "react"
 import Image from "next/image"
+import { useStore } from "@/store/useStore"
 import { Camera, Pencil, Share2 } from "lucide-react"
 
-import { useStore } from "@/hooks/useStore"
 import { Button } from "@/components/ui/Button"
 
 import UpdateLogoButton from "../_components/UpdateLogoButton"

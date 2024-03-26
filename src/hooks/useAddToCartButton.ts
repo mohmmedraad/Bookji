@@ -4,7 +4,7 @@ import { toast } from "sonner"
 import { handleGenericError } from "@/lib/utils"
 import { trpc } from "@/app/_trpc/client"
 
-import useBook from "./useBook"
+import useBook from "../store/useBook"
 import useCart from "./useCart"
 
 export const useAddToCartButton = () => {

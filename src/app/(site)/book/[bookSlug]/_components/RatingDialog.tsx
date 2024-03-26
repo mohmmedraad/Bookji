@@ -1,6 +1,7 @@
 "use client"
 
 import { useState, type Dispatch, type FC, type SetStateAction } from "react"
+import useBook from "@/store/useBook"
 import { type StarType } from "@/types"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { Skeleton } from "@nextui-org/react"
@@ -8,7 +9,6 @@ import { useForm } from "react-hook-form"
 import { omit } from "valibot"
 
 import { rateBookSchema, type RateBookSchema } from "@/lib/validations/book"
-import useBook from "@/hooks/useBook"
 import { Button } from "@/components/ui/Button"
 import {
     Dialog,

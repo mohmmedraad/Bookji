@@ -16,7 +16,7 @@ import {
     sendSignUpVerificationEmail,
 } from "@/lib/utils/auth"
 import useCount from "@/hooks/useCount"
-import useSignUpForm from "@/hooks/useSignUpForm"
+import useSignUpForm from "@/store/useSignUpForm"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"
 
 import { Button } from "../ui/Button"

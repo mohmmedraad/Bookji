@@ -2,8 +2,7 @@
 
 import { useEffect, type FC } from "react"
 import { type Store } from "@/db/schema"
-
-import { useStore } from "@/hooks/useStore"
+import { useStore } from "@/store/useStore"
 
 type StoreProviderProps = Omit<
     Store,

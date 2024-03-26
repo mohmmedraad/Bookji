@@ -2,12 +2,12 @@
 
 import { useState, type FC } from "react"
 import { useRouter } from "next/navigation"
+import useBook from "@/store/useBook"
 import { type TRPCErrorType } from "@/types"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
 import { type RateBookSchema } from "@/lib/validations/book"
-import useBook from "@/hooks/useBook"
 import { trpc } from "@/app/_trpc/client"
 
 import RatingDialog from "./RatingDialog"

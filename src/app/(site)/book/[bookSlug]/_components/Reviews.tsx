@@ -1,9 +1,9 @@
 "use client"
 
 import { useEffect, useRef, type FC } from "react"
+import useBook from "@/store/useBook"
 import { useIntersection } from "@mantine/hooks"
 
-import useBook from "@/hooks/useBook"
 import { trpc } from "@/app/_trpc/client"
 
 import BookReview from "./BookReview"

@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import { useRouter } from "next/navigation"
+import { useUserInfo } from "@/store/useUserInfo"
 import { type GeneralInformationSchema } from "@/types"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { useForm } from "react-hook-form"
@@ -7,7 +8,6 @@ import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
 import { generalInformationSchema } from "@/lib/validations/auth"
-import { useUserInfo } from "@/hooks/useUserInfo"
 import { trpc } from "@/app/_trpc/client"
 
 interface UseGeneralInformationFormProps {

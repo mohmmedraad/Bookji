@@ -2,11 +2,11 @@
 
 import { useEffect, useState, type FC } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
+import { useStore } from "@/store/useStore"
 import type { CustomerColumn } from "@/types"
 import { toast } from "sonner"
 
 import { useCustomersSearchParams } from "@/hooks/useCustomersSearchParams"
-import { useStore } from "@/hooks/useStore"
 import { DataTable } from "@/components/ui/DataTable"
 import { trpc } from "@/app/_trpc/client"
 

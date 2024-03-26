@@ -5,9 +5,9 @@ import { handleGenericError } from "@/lib/utils"
 import { type BookFormSchema } from "@/lib/validations/book"
 import { trpc } from "@/app/_trpc/client"
 
+import { useBookForm } from "../store/useBookForm"
+import { useStore } from "../store/useStore"
 import { useBookCategories } from "./useBookCategories"
-import { useBookForm } from "./useBookForm"
-import { useStore } from "./useStore"
 
 export const useUpdateBook = ({
     id: bookId,

@@ -1,11 +1,11 @@
 import { useEffect, useState, type FC } from "react"
+import { useStore } from "@/store/useStore"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { Pencil, Upload } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { pick } from "valibot"
 
 import { newStoreSchema, storeLogoSchema } from "@/lib/validations/store"
-import { useStore } from "@/hooks/useStore"
 import { useUpdateLogo } from "@/hooks/useUpdateLogo"
 import { Button } from "@/components/ui/Button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog"

@@ -4,7 +4,7 @@ import { toast } from "sonner"
 import { handleGenericError } from "@/lib/utils"
 import { trpc } from "@/app/_trpc/client"
 
-import { useStore } from "./useStore"
+import { useStore } from "../store/useStore"
 
 export const useDeleteStore = () => {
     const storeId = useStore((store) => store.id)

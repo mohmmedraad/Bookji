@@ -1,9 +1,9 @@
 import { type FC } from "react"
+import { useStore } from "@/store/useStore"
 import { Spinner } from "@nextui-org/react"
 import { toast } from "sonner"
 
 import { useDeleteStore } from "@/hooks/useDeleteStore"
-import { useStore } from "@/hooks/useStore"
 import { Button } from "@/components/ui/Button"
 import {
     Dialog,

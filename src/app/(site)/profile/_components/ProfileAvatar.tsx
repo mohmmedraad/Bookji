@@ -1,8 +1,8 @@
 "use client"
 
 import { type FC } from "react"
+import { useUserInfo } from "@/store/useUserInfo"
 
-import { useUserInfo } from "@/hooks/useUserInfo"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
 import { UserAvatar } from "@/components/UserAvatar"
 
