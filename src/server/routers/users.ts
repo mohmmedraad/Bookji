@@ -41,7 +41,7 @@ export const usersRouter = router({
         .input(
             wrap(
                 object({
-                    searchParams: record(string(), nullable(string(), "")),
+                    searchParams: record(string(), nullable(string())),
                 })
             )
         )
