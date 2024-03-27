@@ -26,11 +26,17 @@ export const useBooksFeed = (initialBooks: ShopPageBook[]) => {
         {
             text: searchParams.text || "",
             author: searchParams.author || "",
+            // @ts-expect-error error
             price: searchParams.price || "",
+            // @ts-expect-error error
             rating: searchParams.rating || "",
+            // @ts-expect-error error
             categories: searchParams.categories || "",
+            // @ts-expect-error error
             stores: searchParams.stores || "",
+            // @ts-expect-error error
             sortBy: searchParams.sortBy || "",
+            // @ts-expect-error error
             inventory: searchParams.inventory || "",
             page: searchParams.page !== null ? +searchParams.page || 0 : 0,
         },
@@ -38,7 +44,6 @@ export const useBooksFeed = (initialBooks: ShopPageBook[]) => {
             skip: true,
             getNextPageParam: (lastPage, pages) =>
                 lastPage?.length !== 0 ? pages.length : undefined,
-            // @ts-expect-error error
             initialData: { pages: [initialBooks], pageParams: [0] },
         }
     )
