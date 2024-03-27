@@ -1,6 +1,5 @@
 import { db } from "@/db"
 import { cartItems as cartItemsTable, carts as cartsTable } from "@/db/schema"
-import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
 import { number, object } from "valibot"
@@ -8,6 +7,7 @@ import { number, object } from "valibot"
 import { isBookExists } from "@/lib/utils/book"
 import { createCart, getCart, isCartExist } from "@/lib/utils/cart"
 import { cartItemSchema } from "@/lib/validations/cart"
+import { wrap } from "@/lib/validations/wrap"
 
 import { privateProcedure, router } from "../trpc"
 

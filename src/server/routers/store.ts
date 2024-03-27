@@ -1,7 +1,6 @@
 import { db } from "@/db"
 import { stores } from "@/db/schema"
 import { clerkClient } from "@clerk/nextjs/server"
-import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, eq, like, ne } from "drizzle-orm"
 import { number, object, string, ValiError } from "valibot"
@@ -24,6 +23,7 @@ import {
     storeResourcesSchema,
     updateStoreSchema,
 } from "@/lib/validations/store"
+import { wrap } from "@/lib/validations/wrap"
 
 import { privateProcedure, publicProcedure, router } from "../trpc"
 

@@ -6,7 +6,6 @@ import {
     categories as categoriesTable,
     ratings as ratingsTable,
 } from "@/db/schema"
-import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import {
     and,
@@ -38,6 +37,7 @@ import {
     updateBookSchema,
     userRatingSchema,
 } from "@/lib/validations/book"
+import { wrap } from "@/lib/validations/wrap"
 
 import { privateProcedure, publicProcedure, router } from "../trpc"
 
