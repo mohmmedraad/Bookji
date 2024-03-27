@@ -1,26 +1,18 @@
 import {
     boolean,
-    custom,
-    date,
     maxLength,
-    merge,
     minLength,
-    nullType,
-    number,
     object,
-    omit,
+    optional,
     string,
-    transform,
-    undefinedType,
-    union,
 } from "valibot"
 
 export const userPrivateMetadataSchema = object({
     // role: enum(["user", "admin", "super_admin"]),
-    stripePriceId: union([string(), nullType(), undefinedType()]),
-    stripeSubscriptionId: union([string(), nullType(), undefinedType()]),
-    stripeCustomerId: union([string(), nullType(), undefinedType()]),
-    stripeCurrentPeriodEnd: union([string(), nullType(), undefinedType()]),
+    stripePriceId: optional(string()),
+    stripeSubscriptionId: optional(string()),
+    stripeCustomerId: optional(string()),
+    stripeCurrentPeriodEnd: optional(string()),
 })
 
 export const generalInformationSchema = object({

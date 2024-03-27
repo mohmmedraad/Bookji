@@ -9,7 +9,7 @@
         }
     ],
     "scripts": {
-        "dev": "next dev",
+        "dev": "next dev --turbo",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
@@ -26,8 +26,7 @@
         "lt": "lt --port 3000"
     },
     "dependencies": {
-        "@clerk/nextjs": "^4.23.2",
-        "@decs/typeschema": "^0.12.1",
+        "@clerk/nextjs": "^4.29.9",
         "@hookform/resolvers": "^3.3.1",
         "@mantine/hooks": "^7.2.1",
         "@nextui-org/react": "^2.2.9",
@@ -77,12 +76,11 @@
         "swiper": "^10.2.0",
         "tailwind-merge": "^1.14.0",
         "tailwindcss-animate": "^1.0.6",
-        "valibot": "^0.17.1",
+        "valibot": "^0.30.0",
         "vaul": "^0.9.0",
         "zustand": "^4.4.3"
     },
     "devDependencies": {
-        "@clerk/types": "^3.49.0",
         "@faker-js/faker": "^8.4.1",
         "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
         "@size-limit/preset-app": "^9.0.0",

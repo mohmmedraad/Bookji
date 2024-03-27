@@ -1,4 +1,4 @@
-import { merge, minValue, number, object, string } from "valibot"
+import { merge, minValue, number, object } from "valibot"
 
 export const cartItemSchema = object({
     bookId: number(),

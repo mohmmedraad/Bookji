@@ -10,7 +10,6 @@ import {
     mimeType,
     minLength,
     minValue,
-    nullType,
     number,
     object,
     optional,
@@ -18,7 +17,6 @@ import {
     string,
     toTrimmed,
     transform,
-    union,
     url,
     type Input,
 } from "valibot"
@@ -139,13 +137,13 @@ export const userRatingSchema = object({
 
 export const getRatingsSchema = object({
     limit: coerce(number([minValue(1)]), Number),
-    cursor: union([nullType(), number()]),
+    cursor: optional(number()),
     bookId: number(),
 })
 
 export const getUserBooksSchema = object({
     limit: coerce(number([minValue(1)]), Number),
-    cursor: union([nullType(), number()]),
+    cursor: optional(number()),
     storeId: number(),
     excludedBooks: array(number()),
 })
