@@ -1,17 +1,9 @@
-import {
-    boolean,
-    nullType,
-    number,
-    object,
-    string,
-    undefinedType,
-    union,
-} from "valibot"
+import { boolean, number, object, optional, string } from "valibot"
 
 export const manageSubscriptionSchema = object({
     stripePriceId: string(),
-    stripeCustomerId: union([string(), nullType(), undefinedType()]),
-    stripeSubscriptionId: union([string(), nullType(), undefinedType()]),
+    stripeCustomerId: optional(string()),
+    stripeSubscriptionId: optional(string()),
     isSubscribed: boolean(),
     isCurrentPlan: boolean(),
 })

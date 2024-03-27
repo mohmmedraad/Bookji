@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { createEnv } from "@t3-oss/env-nextjs"
-import { email, enumType, string, url } from "valibot"
+import { email, enum_, string, url } from "valibot"
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export const env = createEnv({
@@ -10,7 +10,8 @@ export const env = createEnv({
      */
     server: {
         DATABASE_URL: string(),
-        NODE_ENV: enumType(["development", "test", "production"]),
+        // NODE_ENV: enum_(
+        //     Environment),
         CLERK_SECRET_KEY: string(),
         // RESEND_API_KEY: string(),
         // EMAIL_FROM_ADDRESS: string([email()]),

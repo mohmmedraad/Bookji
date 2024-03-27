@@ -1,14 +1,15 @@
-"use client"
-
 import { type FC } from "react"
-import useBook from "@/store/useBook"
-import { Progress, Skeleton } from "@nextui-org/react"
+import { db } from "@/db"
+import { eq } from "drizzle-orm"
 
-import { trpc } from "@/app/_trpc/client"
+import { getBook } from "@/lib/utils/cachedResources"
 
+import ProgressBar from "./ProgressBar"
 import Stars from "./Stars"
 
-interface BookStarsProps {}
+interface BookStarsProps {
+    bookSlug: string
+}
 
 const getStarsAverage = (stars: Record<string, number>, totalStars: number) => {
     const keys = Object.keys(stars)
@@ -24,9 +25,6 @@ function calculateAverageRating(
         rating: number
     }[]
 ) {
-    // Check if the ratings array is not empty
-    console.log("ratings: ", ratings)
-
     const stars: Record<string, number> = {
         "1": 0,
         "2": 0,
@@ -55,35 +53,34 @@ function calculateAverageRating(
     return { averageRating, stars: getStarsAverage(stars, totalResponses) }
 }
 
-const BookStars: FC<BookStarsProps> = ({}) => {
-    const book = useBook((state) => state.book)
-    const { data, isFetching, isRefetching } = trpc.books.bookRating.useQuery({
-        bookId: book?.id || 0,
+const BookStars: FC<BookStarsProps> = async ({ bookSlug }) => {
+    const book = await getBook(bookSlug)
+
+    if (!book) return
+
+    const bookRating = await db.query.ratings.findMany({
+        columns: {
+            rating: true,
+        },
+        where: (rate) => eq(rate.bookId, book.id),
     })
 
-    const { averageRating, stars } = calculateAverageRating(data || [])
+    const { averageRating, stars } = calculateAverageRating(bookRating)
     return (
         <div className="my-8 flex flex-wrap items-center gap-8">
             <div>
                 <div className="mx-auto text-6xl font-bold text-gray-900 md:text-7xl">
                     {averageRating.toFixed(1)}
                 </div>
-                {isFetching && !isRefetching ? (
-                    <div className="mt-4 flex">
-                        {new Array(5).fill(0).map((_, i) => (
-                            <Skeleton key={i} className="star h-4 w-4" />
-                        ))}
-                    </div>
-                ) : (
-                    <Stars
-                        className="mt-4 gap-0"
-                        starsClassName="h-4 w-4"
-                        isStatic={true}
-                        stars={averageRating}
-                    />
-                )}
+                <Stars
+                    className="mt-4 gap-0"
+                    starsClassName="h-4 w-4"
+                    isStatic={true}
+                    stars={averageRating}
+                />
+                {/* )} */}
                 <p className="mt-2 text-sm text-gray-500">
-                    {data?.length.toLocaleString() || 0}
+                    {bookRating?.length.toLocaleString() || 0}
                 </p>
             </div>
             <div className="grid w-28 gap-4 ">
@@ -92,7 +89,7 @@ const BookStars: FC<BookStarsProps> = ({}) => {
                         <div className="flex items-center gap-2" key={star}>
                             <div className="text-xs text-gray-500">{star}</div>
                             <label className="sr-only">Rating</label>
-                            <Progress
+                            <ProgressBar
                                 size="sm"
                                 className="w-32"
                                 aria-label="Rating"

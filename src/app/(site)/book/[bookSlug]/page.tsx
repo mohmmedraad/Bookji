@@ -1,9 +1,7 @@
 import { type FC } from "react"
 import { notFound } from "next/navigation"
-import { db } from "@/db"
-import { books as booksTable } from "@/db/schema"
-import { and, eq } from "drizzle-orm"
 
+import { getBook } from "@/lib/utils/cachedResources"
 import Book from "@/components/ui/BookCover"
 import Container from "@/components/ui/Container"
 import BookProvider from "@/components/BookProvider"
@@ -19,22 +17,7 @@ interface pageProps {
 }
 
 const Page: FC<pageProps> = async ({ params: { bookSlug } }) => {
-    const book = await db.query.books.findFirst({
-        columns: {
-            id: true,
-            author: true,
-            cover: true,
-            description: true,
-            title: true,
-            price: true,
-            storeId: true,
-            slug: true,
-        },
-        where: and(
-            eq(booksTable.slug, bookSlug),
-            eq(booksTable.isDeleted, false)
-        ),
-    })
+    const book = await getBook(bookSlug)
 
     if (!book) {
         return notFound()
@@ -60,11 +43,7 @@ const Page: FC<pageProps> = async ({ params: { bookSlug } }) => {
                     </div>
                 </div>
 
-                <BookInfo
-                    storeId={book.storeId}
-                    title={book.title}
-                    description={book.description}
-                />
+                <BookInfo bookSlug={book.slug} />
 
                 <div className="hidden xl:block">
                     <h4 className="mb-8 text-sm font-bold text-gray-900">
