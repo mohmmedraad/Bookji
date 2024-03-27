@@ -2,9 +2,9 @@ import { type FC } from "react"
 import Image from "next/image"
 import Link from "next/link"
 import { db } from "@/db"
-import { currentUser } from "@clerk/nextjs"
 import { and, eq } from "drizzle-orm"
 
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import {
     Card,
     CardContent,
@@ -20,7 +20,7 @@ import { StoreLogo } from "./_components/StoreLogo"
 interface pageProps {}
 
 const Page: FC<pageProps> = async () => {
-    const user = await currentUser()
+    const user = await getCachedUser()
     if (!user || !user.id) {
         return
     }

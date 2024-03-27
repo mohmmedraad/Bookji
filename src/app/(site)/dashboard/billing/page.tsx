@@ -4,6 +4,7 @@ import { currentUser } from "@clerk/nextjs"
 import { Check } from "lucide-react"
 
 import { subscriptionPlans } from "@/config/site"
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import { getSubscriptionPlan } from "@/lib/utils/subscription"
 import { Badge } from "@/components/ui/Badge"
 import { Button } from "@/components/ui/Button"
@@ -22,7 +23,8 @@ import ManageSubscriptionButton from "./_components/ManageSubscriptionButton"
 interface pageProps {}
 
 const Page: FC<pageProps> = async ({}) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
+
     if (!user) {
         return redirect("sign-in")
     }

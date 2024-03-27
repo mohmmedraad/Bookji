@@ -6,6 +6,7 @@ import { currentUser } from "@clerk/nextjs"
 import { and } from "drizzle-orm"
 
 import { cn, formatDate } from "@/lib/utils"
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import { getStripeAccount } from "@/lib/utils/stripe"
 import { buttonVariants } from "@/components/ui/Button"
 import {
@@ -30,7 +31,7 @@ interface pageProps {
 }
 
 const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
 
     if (!user || !user.id) {
         return redirect(`/sing-in?origin=/dashboard/${storeSlug}`)

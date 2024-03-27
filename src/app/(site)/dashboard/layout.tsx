@@ -1,16 +1,11 @@
 import React from "react"
-import { redirect } from "next/navigation"
-import { currentUser } from "@clerk/nextjs"
 
+import { getCachedUser } from "@/lib/utils/cachedResources"
 import Breadcrumbs from "@/components/ui/Breadcrumbs"
 import Container from "@/components/ui/Container"
-import NavLink from "@/components/ui/NavLink"
-import ProfileContainer from "@/components/ui/ProfileContainer"
 import { Separator } from "@/components/ui/Separator"
 
 import DashboardNav from "./_components/DashboardNav"
-import ProfileInfo from "./_sections/ProfileInfo"
-import ProfilePagesLinks from "./_sections/ProfilePages"
 
 const dashboardLinks = [
     {
@@ -28,7 +23,7 @@ const dashboardLinks = [
 ]
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
-    const user = await currentUser()
+    const user = await getCachedUser()
 
     if (user == null || user.id == null) return
     return (
