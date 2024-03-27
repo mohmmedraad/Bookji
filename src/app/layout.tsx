@@ -3,6 +3,7 @@ import "@/styles/globals.css"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import { ClerkProvider } from "@clerk/nextjs"
+import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Toaster } from "sonner"
 
 import Providers from "@/components/Providers"
@@ -30,6 +31,7 @@ export default function RootLayout({
                         {children}
                         <Toaster richColors />
                     </Providers>
+                    <SpeedInsights />
                 </body>
             </html>
         </ClerkProvider>

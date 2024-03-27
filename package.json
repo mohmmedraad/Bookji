@@ -54,6 +54,7 @@
         "@trpc/react-query": "^10.43.6",
         "@trpc/server": "^10.43.6",
         "@uploadthing/react": "^5.3.0",
+        "@vercel/speed-insights": "^1.0.10",
         "bizcharts": "^4.1.23",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.0.0",
