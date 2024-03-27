@@ -1,6 +1,5 @@
 import { type FC } from "react"
 import { redirect } from "next/navigation"
-import { currentUser } from "@clerk/nextjs"
 import { Check } from "lucide-react"
 
 import { subscriptionPlans } from "@/config/site"

@@ -10,9 +10,9 @@ import { trpc } from "@/app/_trpc/client"
 
 interface ManageSubscriptionButtonProps {
     isCurrentPlan: boolean
-    stripeSubscriptionId?: string | null
+    stripeSubscriptionId?: string
     stripeCurrentPeriodEnd?: string | null
-    stripeCustomerId?: string | null
+    stripeCustomerId?: string
     isSubscribed: boolean
     stripePriceId: string
 }
