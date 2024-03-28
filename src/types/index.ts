@@ -87,7 +87,7 @@ export interface UserSubscriptionPlan extends SubscriptionPlan {
     isActive: boolean
 }
 
-export type SearchParams = Record<string, string | null>
+export type SearchParams = Record<string, string>
 
 export type Customer = Pick<
     User,

@@ -1,4 +1,5 @@
 import { db } from "@/db"
+import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { eq } from "drizzle-orm"
 import { number, object, string } from "valibot"
@@ -12,7 +13,6 @@ import {
     createPaymentIntentSchema,
     manageSubscriptionSchema,
 } from "@/lib/validations/stripe"
-import { wrap } from "@/lib/validations/wrap"
 
 import { privateProcedure, router } from "../trpc"
 

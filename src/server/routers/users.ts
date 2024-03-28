@@ -5,7 +5,7 @@ import { nullable, object, record, string, ValiError } from "valibot"
 
 import { getPurchases } from "@/lib/utils/store"
 import { updateUserSchema } from "@/lib/validations/auth"
-import { wrap } from "@/lib/validations/wrap"
+import {wrap} from "@decs/typeschema"
 
 import { privateProcedure, router } from "../trpc"
 
@@ -41,7 +41,7 @@ export const usersRouter = router({
         .input(
             wrap(
                 object({
-                    searchParams: record(string(), nullable(string())),
+                    searchParams: record(string(), nullable(string(), "")),
                 })
             )
         )

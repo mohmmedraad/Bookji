@@ -68,7 +68,7 @@ export const deleteStoreSchema = object({
 
 export const storeResourcesSchema = object({
     storeId: number(),
-    searchParams: record(string(), nullable(string())),
+    searchParams: record(string(), nullable(string(), "")),
 })
 
 export type StoreInfoSchema = Input<typeof storeInfoSchema>
