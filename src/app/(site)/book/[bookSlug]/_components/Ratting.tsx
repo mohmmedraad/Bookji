@@ -25,7 +25,9 @@ const Ratting: FC<RateProps> = ({}) => {
             const message = error.message
             handleTRPCError({ code, message })
         },
-        onSuccess: () => {},
+        onSuccess: () => {
+            router.refresh()
+        },
         retry: 0,
     })
 

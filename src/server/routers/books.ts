@@ -287,15 +287,6 @@ export const booksRouter = router({
                 rating,
                 comment,
             })
-
-            revalidatePath("/")
-
-            return {
-                message: "success",
-                data: {
-                    rateId: rate.insertId,
-                },
-            }
         }),
 
     userRating: privateProcedure
