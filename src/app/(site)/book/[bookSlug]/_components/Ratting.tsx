@@ -54,10 +54,6 @@ const Ratting: FC<RateProps> = ({}) => {
 
     return (
         <>
-            <p className="text-sm text-gray-900">Rate {book?.title}</p>
-            <p className="mt-2 text-xs text-gray-500">
-                Tell other what your thinks
-            </p>
             <RatingDialog open={open} onSubmit={onSubmit} setOpen={setOpen} />
         </>
     )

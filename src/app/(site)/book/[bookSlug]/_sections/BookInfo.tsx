@@ -28,6 +28,10 @@ const BookInfo: FC<BookInfoProps> = async ({ bookSlug }) => {
             <BookStars bookSlug={book.slug} />
             <AddToCartButton />
             <Separator className="my-8" />
+            <p className="text-sm text-gray-900">Rate {book?.title}</p>
+            <p className="mt-2 text-xs text-gray-500">
+                Tell other what your thinks
+            </p>
             <Ratting />
             <Reviews />
         </div>
