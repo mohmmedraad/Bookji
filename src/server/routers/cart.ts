@@ -118,7 +118,7 @@ export const cartRouter = router({
                 })
             }
 
-            if (input.quantity === 0) {
+            if (input.quantity <= 0) {
                 const deletedCart = await db
                     .delete(cartItemsTable)
                     .where(
@@ -137,7 +137,7 @@ export const cartRouter = router({
                 })
                 .where(
                     and(
-                        eq(cartItemsTable.cartId, cartsTable.id),
+                        eq(cartItemsTable.cartId, cart.id),
                         eq(cartItemsTable.bookId, input.bookId)
                     )
                 )
