@@ -28,7 +28,7 @@ const Page: FC<pageProps> = async ({ params: { bookSlug } }) => {
             <BookProvider {...book} />
             <Container className="grid gap-48 pt-40 md:grid-cols-2 lg:gap-14 xl:grid-cols-bookPage xl:justify-between">
                 <div className="grid items-start justify-center lg:block">
-                    <div className="sticky top-14">
+                    <div className="sticky top-24">
                         <Book
                             alt="book cover"
                             className="h-[340px] w-[230px] sm:h-[420px] sm:w-[280px]"

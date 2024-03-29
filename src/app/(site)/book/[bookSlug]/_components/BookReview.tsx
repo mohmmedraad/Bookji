@@ -29,7 +29,7 @@ const BookReview: FC<BookReviewProps> = ({
                         lastName,
                         imageUrl: userImage || "",
                     }}
-                    className="h-8 w-8"
+                    className="h-8 w-8  shadow-xl"
                 />
                 <div>
                     <h5 className="text-xs font-bold text-gray-900">
