@@ -39,8 +39,12 @@ export async function isBookExists<T extends number[] | number>(
 }
 
 const getUsers = async (userList: string[]) => {
-    //@ts-expect-error clerk types are UserListParam but they are actually string[]
-    const users = await clerkClient.users.getUserList(userList)
+    const users = await clerkClient.users.getUserList({
+        userId: userList,
+        limit: userList.length,
+    })
+    console.log("users: ", users)
+
     const usersFullNames: Map<string, string> = new Map()
 
     users.forEach((user) => {
@@ -56,7 +60,11 @@ const getUsersIds = <T extends { userId: string }>(list: T[]) => {
 
 export const withUsers = async <T extends { userId: string }>(list: T[]) => {
     const usersIds = getUsersIds(list)
+    console.log("usersIds: ", usersIds)
+
     const usersFullNames = await getUsers(usersIds)
+
+    console.log("usersFullNames: ", usersFullNames)
 
     return list.map((item) => {
         return {

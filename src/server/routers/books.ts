@@ -365,6 +365,8 @@ export const booksRouter = router({
                 return []
             }
             const ratings = await withUsers(foundRatings)
+            console.log("ratings: ", ratings)
+
             return ratings
         }),
 
