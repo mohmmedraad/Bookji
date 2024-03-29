@@ -38,3 +38,6 @@ next-env.d.ts
 
 #excalidraw
 .excalidraw
+
+# unlighthouse
+*unlighthouse*
