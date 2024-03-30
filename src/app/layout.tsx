@@ -18,8 +18,8 @@ const inter = Inter({
 export const metadata: Metadata = {
     metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
     title: {
-        default: site.title,
-        template: `${site.name} | %s`,
+        default: `${site.name} - ${site.title}`,
+        template: `%s - ${site.name}`,
     },
     description: site.description,
     keywords: site.keywords,
@@ -36,7 +36,7 @@ export const metadata: Metadata = {
         url: site.url,
         images: [
             {
-                url: `${site.url}/opengraph-image.jpg`,
+                url: `${site.url}/og.jpg`,
                 width: 1200,
                 height: 630,
                 alt: site.name,
@@ -47,7 +47,7 @@ export const metadata: Metadata = {
         card: "summary_large_image",
         title: site.name,
         description: site.description,
-        images: [`${site.url}/opengraph-image.jpg`],
+        images: [`${site.url}/og.jpg`],
         creator: site.links.x,
     },
     icons: {
