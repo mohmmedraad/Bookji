@@ -11,7 +11,7 @@ const links = {
 
 export const site = {
     name: "Bookji",
-    title: "Open-Source E-Commerce for Selling Books built with Next.js and TypeScript",
+    title: "Open-Source Books E-Commerce built with Next.js",
     description:
         "Bookji is an open-source e-commerce platform built with Next.js, TypeScript, and TailwindCSS. Sell and buy books hassle-free with secure payments via Stripe.",
     url: "https://bookji.vercel.app",

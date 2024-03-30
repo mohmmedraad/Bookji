@@ -30,24 +30,17 @@ export const metadata: Metadata = {
     openGraph: {
         type: "website",
         locale: "en_US",
-        title: site.title,
+        title: `${site.name} - ${site.title}`,
         siteName: site.name,
         description: site.description,
         url: site.url,
-        images: [
-            {
-                url: `${site.url}/og.jpg`,
-                width: 1200,
-                height: 630,
-                alt: site.name,
-            },
-        ],
+        images: `${site.url}/og.png`,
     },
     twitter: {
         card: "summary_large_image",
-        title: site.name,
+        title: `${site.name} - ${site.title}`,
         description: site.description,
-        images: [`${site.url}/og.jpg`],
+        images: `${site.url}/og.png`,
         creator: site.links.x,
     },
     icons: {
