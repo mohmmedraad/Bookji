@@ -1,4 +1,5 @@
 import { type FC } from "react"
+import { type Metadata } from "next"
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 
@@ -8,6 +9,12 @@ import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 
 import StoreCheckoutCard from "./_components/StoreCheckoutCard"
+
+export const metadata: Metadata = {
+    title: "Cart",
+    description:
+        "Review and manage items in your Bookji shopping cart. Easily add, remove, or update quantities before checkout.",
+}
 
 interface PageProps {}
 

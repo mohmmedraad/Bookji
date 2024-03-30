@@ -1,4 +1,5 @@
 import { type FC } from "react"
+import { type Metadata } from "next"
 import { redirect } from "next/navigation"
 import { Check } from "lucide-react"
 
@@ -20,6 +21,12 @@ import PageHeading from "../_components/PageHeading"
 import ManageSubscriptionButton from "./_components/ManageSubscriptionButton"
 
 interface pageProps {}
+
+export const metadata: Metadata = {
+    title: "Billing",
+    description:
+        "Easily manage your billing details and payments on Bookji. Secure transactions and hassle-free invoicing.",
+}
 
 const Page: FC<pageProps> = async ({}) => {
     const user = await getCachedUser()

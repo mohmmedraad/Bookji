@@ -1,4 +1,5 @@
 import React from "react"
+import { type Metadata } from "next"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import Breadcrumbs from "@/components/ui/Breadcrumbs"
@@ -21,6 +22,15 @@ const dashboardLinks = [
         label: "Purchases",
     },
 ]
+
+export const metadata: Metadata = {
+    title: {
+        default: "Dashboard",
+        template: "%s - Dashboard",
+    },
+    description:
+        "Gain insights into your Bookji activities with the personalized dashboard. Track orders, manage billing, and analyze stores performance.",
+}
 
 const Layout = async ({ children }: { children: React.ReactNode }) => {
     const user = await getCachedUser()

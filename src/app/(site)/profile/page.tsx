@@ -1,4 +1,5 @@
 import { type FC } from "react"
+import { type Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
@@ -10,9 +11,13 @@ import GeneralInformation from "./_components/GeneralInformation"
 import ProfileAvatar from "./_components/ProfileAvatar"
 import UserInfoProvider from "./_components/UserInfoProvider"
 
-// import SocialAccounts from "./_components/SocialAccounts"
-
 interface pageProps {}
+
+export const metadata: Metadata = {
+    title: "Profile",
+    description:
+        "Manage your Bookji profile settings and preferences. Customize your book-buying experience with ease.",
+}
 
 const page: FC<pageProps> = async ({}) => {
     const user = await getCachedUser()

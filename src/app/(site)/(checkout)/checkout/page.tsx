@@ -7,9 +7,9 @@ import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 
 export const metadata: Metadata = {
-    // metadataBase: new URL(env.NEXT_PUBLIC_APP_URL),
     title: "Checkout",
-    description: "Checkout with store items",
+    description:
+        "Complete your book purchase securely on Bookji. select store books, and proceed to checkout.",
 }
 
 interface CheckoutPageProps {

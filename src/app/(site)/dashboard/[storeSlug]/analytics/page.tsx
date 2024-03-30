@@ -1,7 +1,9 @@
 import { type FC } from "react"
+import { type Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 import { BadgeDollarSign, UserPlus, Wallet } from "lucide-react"
 
+import { title } from "@/lib/utils"
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 import {
     getStoreOrders,
@@ -61,6 +63,29 @@ const cards = [
         percent: "80%",
     },
 ]
+
+export const generateMetadata = async ({
+    params: { storeSlug },
+}: pageProps): Promise<Metadata | undefined> => {
+    const user = await getCachedUser()
+
+    if (!user || !user.id) {
+        return
+    }
+
+    const store = await getCachedStore(storeSlug, user.id)
+
+    if (!store) {
+        return
+    }
+
+    return {
+        title: "Analytics",
+        description: `Get detailed analytics and performance metrics for ${title(
+            store.name
+        )} store. Make informed decisions to grow your business.`,
+    }
+}
 
 const page: FC<pageProps> = async ({ params: { storeSlug } }) => {
     const user = await getCachedUser()

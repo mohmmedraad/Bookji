@@ -59,3 +59,12 @@ export function getCartTotal(cartBooks: ExtendedCartItem[]) {
         0
     )
 }
+
+export function title(text: string) {
+    return text
+        .split(" ")
+        .map((word) => {
+            return word[0].toUpperCase() + word.slice(1)
+        })
+        .join(" ")
+}

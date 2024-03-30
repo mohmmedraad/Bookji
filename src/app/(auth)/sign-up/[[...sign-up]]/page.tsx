@@ -1,4 +1,5 @@
 import { type FC } from "react"
+import { type Metadata } from "next"
 import Image from "next/image"
 import { redirect } from "next/navigation"
 
@@ -10,6 +11,12 @@ interface pageProps {
     searchParams: {
         _origin: string | undefined
     }
+}
+
+export const metadata: Metadata = {
+    title: "Sign-in",
+    description:
+        "Sign up and create your account on Bookji to enjoy exclusive offers, personalized recommendations, and seamless book shopping.",
 }
 
 const page: FC<pageProps> = async ({ searchParams }) => {

@@ -1,6 +1,9 @@
 import React from "react"
+import { type Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 
+import { site } from "@/config/site"
+import { title } from "@/lib/utils"
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 import { Separator } from "@/components/ui/Separator"
 
@@ -30,9 +33,36 @@ const storeLinks = [
         label: "Analytics",
     },
 ]
+
 type pageParams = {
     params: {
         storeSlug: string
+    }
+}
+
+export const generateMetadata = async ({
+    params: { storeSlug },
+}: pageParams): Promise<Metadata | undefined> => {
+    const user = await getCachedUser()
+
+    if (!user || !user.id) {
+        return
+    }
+
+    const store = await getCachedStore(storeSlug, user.id)
+
+    if (!store) {
+        return
+    }
+
+    return {
+        title: {
+            default: `${title(store.name)}`,
+            template: `%s - ${title(store.name)}`,
+        },
+        description:
+            "manage your own book store on Bookji. Showcase your collection, manage orders, and engage with customers.",
+        icons: { icon: store.logo || `${site.url}/icon.png` },
     }
 }
 

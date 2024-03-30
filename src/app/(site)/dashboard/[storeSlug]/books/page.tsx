@@ -1,8 +1,9 @@
 import { type FC } from "react"
+import { type Metadata } from "next"
 import { notFound, redirect } from "next/navigation"
 import { type SearchParams } from "@/types"
 
-import { searchParamsString } from "@/lib/utils"
+import { searchParamsString, title } from "@/lib/utils"
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
 import { getStoreBooks } from "@/lib/utils/store"
 
@@ -13,6 +14,29 @@ interface pageProps {
         storeSlug: string
     }
     searchParams: SearchParams
+}
+
+export const generateMetadata = async ({
+    params: { storeSlug },
+}: pageProps): Promise<Metadata | undefined> => {
+    const user = await getCachedUser()
+
+    if (!user || !user.id) {
+        return
+    }
+
+    const store = await getCachedStore(storeSlug, user.id)
+
+    if (!store) {
+        return
+    }
+
+    return {
+        title: "Books",
+        description: `Explore exclusive books curated for your ${title(
+            store.name
+        )} store, this collection allows you to curate your inventory and showcase unique reads to your customers.`,
+    }
 }
 
 const Page: FC<pageProps> = async ({ params: { storeSlug }, searchParams }) => {
