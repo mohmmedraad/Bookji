@@ -2,6 +2,46 @@ import { type OauthProvider, type SubscriptionPlan } from "@/types"
 
 import { Icons } from "@/components/Icons"
 
+const links = {
+    github: "https://github.com/mohammedraad/Bookji",
+    githubAccount: "https://github.com/mohammedraad",
+    x: "https://twitter.com/mohammedraad_0",
+    telegram: "https://t.me/mohammedraad_0",
+}
+
+export const site = {
+    name: "Bookji",
+    title: "Open-Source E-Commerce for Selling Books built with Next.js and TypeScript",
+    description:
+        "Bookji is an open-source e-commerce platform built with Next.js, TypeScript, and TailwindCSS. Sell and buy books hassle-free with secure payments via Stripe.",
+    url: "https://bookji.vercel.app",
+    keywords: [
+        "Open-source e-commerce app",
+        "next.js",
+        "react",
+        "trpc",
+        "valibot",
+        "clerk",
+        "drizzle orm",
+        "typeScript",
+        "tailwindCSS",
+        "stripe payments",
+        "books selling",
+        "e-commerce for books",
+        "secure online payments",
+        "open-source development",
+        "typeScript app development",
+    ],
+    links,
+    authors: [
+        {
+            name: "mohammed raad",
+            // TODO: add your portfolio link
+        },
+    ],
+    creator: "mohammed raad",
+}
+
 export const navLinks = [
     {
         name: "Home",
