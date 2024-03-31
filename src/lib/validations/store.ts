@@ -18,7 +18,7 @@ import {
 
 export const storeInfoSchema = object({
     name: string([
-        minLength(10, "the name must be at least 10 character long"),
+        minLength(3, "the name must be at least 3 character long"),
         maxLength(50, "the name must be below the 50 character"),
     ]),
     description: string([
@@ -28,7 +28,7 @@ export const storeInfoSchema = object({
 
 export const newStoreSchema = object({
     name: string([
-        minLength(10, "the name must be at least 10 character long"),
+        minLength(3, "the name must be at least 3 character long"),
         maxLength(50, "the name must be below the 50 character"),
         toTrimmed(),
     ]),

@@ -39,16 +39,16 @@ export type BookType = Input<typeof bookSchema>
 export const bookFormSchema = object({
     title: string([
         minLength(5, "The title must be above the 5 characters"),
+        maxLength(100, "The title name must be blew the 100 characters"),
         toTrimmed(),
     ]),
     author: string([
         minLength(5, "The author name must be above the 5 characters"),
-        maxLength(191, "The author name must be blew the 191 characters"),
         toTrimmed(),
     ]),
     description: string([
-        minLength(10, "The description length must be above 10 characters"),
-        maxLength(250, "The description length must be below 250 characters"),
+        minLength(55, "The description length must be above 55 characters"),
+        maxLength(200, "The description length must be below 200 characters"),
     ]),
     categories: array(
         object({
