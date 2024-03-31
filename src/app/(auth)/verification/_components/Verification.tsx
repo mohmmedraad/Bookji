@@ -10,7 +10,7 @@ type VerificationStatus = "loading" | "failed" | "expired" | "verified" | null
 
 interface VerificationProps {}
 
-const Verification: FC<VerificationProps> = ({}) => {
+const Verification: React.FC<VerificationProps> = ({}) => {
     const [verificationStatus, setVerificationStatus] =
         React.useState<VerificationStatus>("loading")
     const searchParams = useSearchParams()

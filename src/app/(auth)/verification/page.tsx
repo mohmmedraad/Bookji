@@ -1,5 +1,5 @@
-import React from "react"
-import { Metadata } from "next"
+import { type FC } from "react"
+import { type Metadata } from "next"
 
 import Verification from "./_components/Verification"
 
@@ -9,8 +9,9 @@ export const metadata: Metadata = {
         "Verify your account for added security on Bookji. Follow the verification process to access exclusive features and benefits.",
 }
 
-function page() {
-    ;<Verification />
+interface pageProps {}
+const page: FC<pageProps> = ({}) => {
+    return <Verification />
 }
 
 export default page
