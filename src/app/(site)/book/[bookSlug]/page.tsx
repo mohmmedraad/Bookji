@@ -1,6 +1,9 @@
 import { type FC } from "react"
+import { type Metadata } from "next"
 import { notFound } from "next/navigation"
 
+import { site } from "@/config/site"
+import { title } from "@/lib/utils"
 import { getBook } from "@/lib/utils/cachedResources"
 import Book from "@/components/ui/BookCover"
 import Container from "@/components/ui/Container"
@@ -13,6 +16,40 @@ import StoresBooks from "./_sections/StoresBooks"
 interface pageProps {
     params: {
         bookSlug: string
+    }
+}
+
+export const generateMetadata = async ({
+    params: { bookSlug },
+}: pageProps): Promise<Metadata> => {
+    const book = await getBook(bookSlug)
+
+    if (!book) {
+        return {}
+    }
+
+    return {
+        metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
+        title: title(book.title),
+        description: book.description,
+        authors: [{ name: book.author }],
+        creator: book.storeName,
+        generator: "Next.js",
+        openGraph: {
+            type: "website",
+            locale: "en_US",
+            title: book.title,
+            siteName: site.name,
+            description: book.description!,
+            url: `${site.url}/book/${book.slug}`,
+            images: book.cover!,
+        },
+        twitter: {
+            card: "summary_large_image",
+            title: book.title,
+            description: book.description!,
+            images: book.cover!,
+        },
     }
 }
 
