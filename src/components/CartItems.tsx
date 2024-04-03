@@ -4,6 +4,7 @@ import { type FC } from "react"
 import useCart from "@/store/useCart"
 
 import CartItem from "./CartItem"
+import { Button } from "./ui/Button"
 import { ScrollArea } from "./ui/ScrollArea"
 
 interface CartItemsProps {}
@@ -14,7 +15,12 @@ const CartItems: FC<CartItemsProps> = ({}) => {
     return (
         <>
             {cartBooks.length === 0 ? (
-                <div className="h-full">The cart is empty</div>
+                <div className="flex h-full flex-col items-center justify-center gap-4 ">
+                    <p className="text-center text-xl text-gray-500">
+                        Your Cart is Empty
+                    </p>
+                    <Button>Start Purchasing</Button>
+                </div>
             ) : (
                 <ScrollArea className="h-full">
                     <div className="grid gap-8">
