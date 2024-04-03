@@ -383,7 +383,7 @@ export const booksRouter = router({
                 })
             }
 
-            const foundBooks = await db.query.books.findMany({
+            const books = await db.query.books.findMany({
                 limit,
                 offset,
                 columns: {
@@ -392,20 +392,16 @@ export const booksRouter = router({
                     cover: true,
                     author: true,
                 },
-                where: (book) =>
-                    and(
-                        eq(book.storeId, storeId),
-                        excludedBooks.length === 0
-                            ? undefined
-                            : notInArray(book.id, excludedBooks)
-                    ),
-                orderBy: (book) => [asc(book.createdAt)],
+                where: and(
+                    eq(booksTable.storeId, storeId),
+                    eq(booksTable.isDeleted, false),
+                    excludedBooks.length === 0
+                        ? undefined
+                        : notInArray(booksTable.id, excludedBooks)
+                ),
+                orderBy: [asc(booksTable.createdAt)],
             })
 
-            return foundBooks
-
-            if (!foundBooks) {
-                return []
-            }
+            return books
         }),
 })
