@@ -3,6 +3,7 @@
 import { useEffect, useRef, type FC } from "react"
 import useBook from "@/store/useBook"
 import { useIntersection } from "@mantine/hooks"
+import { StarOff } from "lucide-react"
 
 import { trpc } from "@/app/_trpc/client"
 
@@ -50,7 +51,12 @@ const Reviews: FC<ReviewsProps> = () => {
                 Ratings and Reviews
             </h4>
             {reviews?.length === 0 ? (
-                <p className="mt-4">No reviews yet</p>
+                <div className="flex h-60 flex-col items-center justify-center gap-4 ">
+                    <StarOff className="h-16 w-16 text-gray-400" />
+                    <p className="text-center text-lg text-gray-500">
+                        No reviews yet
+                    </p>
+                </div>
             ) : (
                 <div className="mt-4 grid gap-8">
                     {isFetching && !isFetchingNextPage && !isRefetching
