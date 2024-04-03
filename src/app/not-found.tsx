@@ -1,8 +1,9 @@
 import { type FC } from "react"
 import { type Metadata } from "next"
+import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-import { Button } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 import GoBackButton from "@/components/ui/GoBackButton"
 import { Icons } from "@/components/Icons"
@@ -16,7 +17,7 @@ export const metadata: Metadata = {
 
 const NotFound: FC<NotFoundProps> = ({}) => {
     return (
-        <Container className="flex min-h-screen flex-col-reverse items-center justify-between gap-6 lg:flex-row">
+        <Container className="flex min-h-screen flex-col-reverse items-center justify-between gap-6 pb-6 lg:flex-row">
             <div className="text-center lg:text-start">
                 <p className="text-6xl font-semibold text-gray-900">
                     Oops! Page not found
@@ -31,7 +32,12 @@ const NotFound: FC<NotFoundProps> = ({}) => {
                         <ArrowLeft className="h-6 w-6" />
                         Go back
                     </GoBackButton>
-                    <Button variant={"outline"}>Home</Button>
+                    <Link
+                        className={buttonVariants({ variant: "outline" })}
+                        href={"/"}
+                    >
+                        Home
+                    </Link>
                 </div>
             </div>
 
