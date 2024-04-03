@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 const NotFound: FC<NotFoundProps> = ({}) => {
     return (
-        <Container className="flex flex-col-reverse items-center justify-between gap-6 lg:flex-row">
+        <Container className="flex min-h-screen flex-col-reverse items-center justify-between gap-6 lg:flex-row">
             <div className="text-center lg:text-start">
                 <p className="text-6xl font-semibold text-gray-900">
                     Oops! Page not found
