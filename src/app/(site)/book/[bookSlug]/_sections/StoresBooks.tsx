@@ -6,15 +6,16 @@ import { Swiper } from "swiper/react"
 
 import { trpc } from "@/app/_trpc/client"
 
-import SwiperSlide from "../_components/UserBookSlide"
+import SwiperSlide from "../_components/StoreBookSlide"
 
 import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/scrollbar"
 
 import useBook from "@/store/useBook"
+import { BookX } from "lucide-react"
 
-import UserBooksSkeleton from "../_components/UserBooksSkeleton"
+import StoreBooksSkeleton from "../_components/StoreBooksSkeleton"
 
 interface StoresBooksProps {}
 
@@ -57,12 +58,17 @@ const StoresBooks: FC<StoresBooksProps> = ({}) => {
                 <div className="flex h-full flex-col items-end gap-6 overflow-hidden">
                     {new Array(3).fill(0).map((_, i) => (
                         <div key={i}>
-                            <UserBooksSkeleton />
+                            <StoreBooksSkeleton />
                         </div>
                     ))}
                 </div>
             ) : books?.length === 0 ? (
-                <p>this is only book for this store</p>
+                <div className="flex h-60 flex-col items-center justify-center gap-4 ">
+                    <BookX className="h-16 w-16 text-gray-400" />
+                    <p className="text-center text-lg text-gray-500">
+                        This is the only book for this store
+                    </p>
+                </div>
             ) : (
                 <Swiper
                     className="mt-36 h-full"
