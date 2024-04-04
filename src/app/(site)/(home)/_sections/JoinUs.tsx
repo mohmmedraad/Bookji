@@ -1,6 +1,7 @@
 import { type FC } from "react"
+import Link from "next/link"
 
-import { Button } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 
 interface JoinUsProps {}
@@ -15,13 +16,15 @@ const JoinUs: FC<JoinUsProps> = ({}) => {
                 <div className="max-w-lg text-center">
                     <p className="mb-2 text-sm text-primary">Join Us</p>
                     <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-5xl">
-                        Become one of our authors
+                        Become one of our members
                     </h2>
                     <p className="mb-6 mt-4 max-w-lg text-base text-gray-500">
-                        we started this business sice 1934, in that year there
-                        was no online sale...
+                        We started this business in 1934. In that year, there
+                        were no online sales...
                     </p>
-                    <Button>join as author</Button>
+                    <Link href="/sign-up" className={buttonVariants()}>
+                        Join Bookji For Free
+                    </Link>
                 </div>
             </Container>
         </section>
