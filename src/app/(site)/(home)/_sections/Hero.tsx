@@ -38,10 +38,12 @@ const Hero: FC = ({}) => {
                     <p className="mt-4 text-base text-gray-500">
                         Dive into the Realm of Endless Narratives
                     </p>
-                    <Link href="/sign-up"  className={buttonVariants({
-                            variant: "outline",
+                    <Link
+                        href="/sign-up"
+                        className={buttonVariants({
                             className: "mt-8 w-full xs:w-auto",
-                        })}>
+                        })}
+                    >
                         Join Bookji For Free
                     </Link>
                 </Container>
