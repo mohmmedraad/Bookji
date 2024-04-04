@@ -1,11 +1,12 @@
 "use client"
 
 import { type FC } from "react"
-import { motion } from "framer-motion"
+import Link from "next/link"
+import { Github } from "lucide-react"
 
 import { books } from "@/config/site"
 import BookCover from "@/components/ui/BookCover"
-import { Button } from "@/components/ui/Button"
+import { Button, buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 import HeroSvg from "@/components/HeroSvg"
 
@@ -18,9 +19,16 @@ const Hero: FC = ({}) => {
             <HeroSvg />
             <div className="">
                 <Container className="isolate text-center">
-                    <span className="mb-1 text-sm text-primary">
-                        Online-BookStore
-                    </span>
+                    <Link
+                        href="https://github.com/mohmmedraad/Bookji"
+                        className={buttonVariants({
+                            variant: "secondary",
+                            className: "mb-4",
+                        })}
+                    >
+                        <Github className="mr-2 h-4 w-4" />
+                        Github Repo
+                    </Link>
                     <h1 className="text-[3.5rem] font-bold leading-none tracking-tighter text-accent-foreground md:text-[4.5rem] md:leading-[80px]">
                         A World of{" "}
                         <span className="inline-block bg-gradient-to-r from-purple-500 to-pink-500 bg-clip-text text-transparent">
