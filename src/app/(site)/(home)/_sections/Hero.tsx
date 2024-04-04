@@ -6,7 +6,7 @@ import { Github } from "lucide-react"
 
 import { books } from "@/config/site"
 import BookCover from "@/components/ui/BookCover"
-import { Button, buttonVariants } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/Button"
 import Container from "@/components/ui/Container"
 import HeroSvg from "@/components/HeroSvg"
 
@@ -38,9 +38,12 @@ const Hero: FC = ({}) => {
                     <p className="mt-4 text-base text-gray-500">
                         Dive into the Realm of Endless Narratives
                     </p>
-                    <Button className="mt-8 w-full xs:w-auto">
-                        Join Bookie For Free
-                    </Button>
+                    <Link href="/sign-up"  className={buttonVariants({
+                            variant: "outline",
+                            className: "mt-8 w-full xs:w-auto",
+                        })}>
+                        Join Bookji For Free
+                    </Link>
                 </Container>
                 <div className="grid justify-center py-20">
                     <div className="relative flex items-center gap-24 before:absolute before:left-[-30%] before:z-10 before:h-[44.375rem] before:w-[50vw] before:bg-gradient-boxGradient before:opacity-50 before:blur-[20px] after:absolute after:right-[-30%] after:z-10 after:h-[44.375rem] after:w-[50vw] after:bg-gradient-boxGradient after:opacity-50 after:blur-[20px]">
