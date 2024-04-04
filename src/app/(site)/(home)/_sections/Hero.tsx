@@ -22,8 +22,8 @@ const Hero: FC = ({}) => {
                     <Link
                         href="https://github.com/mohmmedraad/Bookji"
                         className={buttonVariants({
-                            variant: "secondary",
-                            className: "mb-4",
+                            variant: "outline",
+                            className: "mb-2 bg-white shadow-xl",
                         })}
                     >
                         <Github className="mr-2 h-4 w-4" />
