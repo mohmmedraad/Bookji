@@ -2,7 +2,7 @@
 
 Bookji is an open-source e-commerce platform built with Next.js, TypeScript, and TailwindCSS. Sell and buy books hassle-free with secure payments via Stripe.
 
-[![Bookji](./public/website_screenshot.png)](https://bookji.vercel.app/)
+[![Bookji](./public/bookji_screenshot.png)](https://bookji.vercel.app/)
 
 > **Warning**
 > This project is still in development and is not ready for production use.
