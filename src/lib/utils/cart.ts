@@ -70,9 +70,14 @@ export async function getCart(userId: string) {
 }
 
 export async function createCart(userId: string, items: NewCartItem[] = []) {
-    const cart = await db.insert(cartsTable).values({
-        userId,
-    })
+    const cart = (
+        await db
+            .insert(cartsTable)
+            .values({
+                userId,
+            })
+            .returning({ insertId: cartsTable.id })
+    )[0]
 
     if (items.length === 0) {
         return cart

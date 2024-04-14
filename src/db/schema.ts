@@ -2,32 +2,32 @@ import { relations } from "drizzle-orm"
 import {
     boolean,
     decimal,
-    int,
-    mysqlTable,
+    integer,
+    pgTable,
     primaryKey,
     serial,
     text,
     timestamp,
     varchar,
-} from "drizzle-orm/mysql-core"
+} from "drizzle-orm/pg-core"
 
 const APP_NAME = "Bookji"
 
-export const books = mysqlTable(`${APP_NAME}_books`, {
+export const books = pgTable(`${APP_NAME}_books`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    storeId: int("storeId").notNull(),
+    storeId: integer("storeId").notNull(),
     title: varchar("title", { length: 191 }).notNull(),
     author: varchar("author", { length: 191 }).notNull(),
     description: text("description"),
     cover: varchar("cover", { length: 200 }),
     price: decimal("price", { precision: 10, scale: 2 }).notNull().default("0"),
-    inventory: int("inventory").notNull().default(0),
+    inventory: integer("inventory").notNull().default(0),
     slug: text("slug").notNull(),
     isDeleted: boolean("is_deleted").notNull().default(false),
     deletedAt: timestamp("deletedAt"),
     createdAt: timestamp("createdAt").defaultNow(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    updatedAt: timestamp("updated_at"),
 })
 
 export type Book = typeof books.$inferSelect
@@ -43,9 +43,9 @@ export const booksRelations = relations(books, ({ many, one }) => ({
     }),
 }))
 
-export const orders = mysqlTable(`${APP_NAME}_orders`, {
+export const orders = pgTable(`${APP_NAME}_orders`, {
     id: serial("id").primaryKey(),
-    storeId: int("storeId").notNull(),
+    storeId: integer("storeId").notNull(),
     userId: varchar("userId", { length: 191 }).notNull(),
     total: decimal("total", { precision: 10, scale: 2 }).notNull().default("0"),
     stripePaymentIntentId: varchar("stripePaymentIntentId", {
@@ -59,7 +59,7 @@ export const orders = mysqlTable(`${APP_NAME}_orders`, {
     ).notNull(),
     name: varchar("name", { length: 191 }),
     email: varchar("email", { length: 191 }),
-    addressId: int("addressId"),
+    addressId: integer("addressId"),
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
@@ -80,11 +80,11 @@ export const ordersRelations = relations(orders, ({ one, many }) => ({
 export type Order = typeof orders.$inferSelect
 export type NewOrder = typeof orders.$inferInsert
 
-export const orderItems = mysqlTable(`${APP_NAME}_orderItems`, {
+export const orderItems = pgTable(`${APP_NAME}_orderItems`, {
     id: serial("id").primaryKey(),
-    orderId: int("orderId").notNull(),
-    bookId: int("bookId").notNull(),
-    quantity: int("quantity").notNull().default(1),
+    orderId: integer("orderId").notNull(),
+    bookId: integer("bookId").notNull(),
+    quantity: integer("quantity").notNull().default(1),
     createdAt: timestamp("createdAt").defaultNow(),
 })
 
@@ -99,11 +99,11 @@ export const orderItemsRelations = relations(orderItems, ({ one }) => ({
     }),
 }))
 
-export const ratings = mysqlTable(`${APP_NAME}_ratings`, {
+export const ratings = pgTable(`${APP_NAME}_ratings`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }).notNull(),
-    bookId: int("bookId").notNull(),
-    rating: int("rating").notNull(),
+    bookId: integer("bookId").notNull(),
+    rating: integer("rating").notNull(),
     comment: text("comment"),
     createdAt: timestamp("createdAt").defaultNow(),
 })
@@ -118,7 +118,7 @@ export const ratingsRelations = relations(ratings, ({ one }) => ({
     }),
 }))
 
-export const categories = mysqlTable(`${APP_NAME}_categories`, {
+export const categories = pgTable(`${APP_NAME}_categories`, {
     id: serial("id").primaryKey(),
     name: varchar("name", { length: 191 }).notNull(),
     createdAt: timestamp("createdAt").defaultNow(),
@@ -128,11 +128,11 @@ export const categoriesRelations = relations(categories, ({ many }) => ({
     book: many(booksToCategories),
 }))
 
-export const booksToCategories = mysqlTable(
+export const booksToCategories = pgTable(
     `${APP_NAME}_booksToCategories`,
     {
-        bookId: int("bookId").notNull(),
-        categoryId: int("categoryId").notNull(),
+        bookId: integer("bookId").notNull(),
+        categoryId: integer("categoryId").notNull(),
     },
     (t) => ({
         pk: primaryKey({ columns: [t.bookId, t.categoryId] }),
@@ -153,7 +153,7 @@ export const booksToCategoriesRelations = relations(
     })
 )
 
-export const carts = mysqlTable(`${APP_NAME}_carts`, {
+export const carts = pgTable(`${APP_NAME}_carts`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }),
     paymentIntentId: varchar("paymentIntentId", { length: 191 }),
@@ -169,12 +169,12 @@ export const cartsRelations = relations(carts, ({ many }) => ({
 export type Cart = typeof carts.$inferSelect
 export type NewCart = typeof carts.$inferInsert
 
-export const cartItems = mysqlTable(`${APP_NAME}_cartItems`, {
+export const cartItems = pgTable(`${APP_NAME}_cartItems`, {
     id: serial("id").primaryKey(),
-    cartId: int("cart_id").notNull(),
-    bookId: int("book_id").notNull(),
-    storeId: int("store_id").notNull(),
-    quantity: int("quantity").notNull().default(1),
+    cartId: integer("cart_id").notNull(),
+    bookId: integer("book_id").notNull(),
+    storeId: integer("store_id").notNull(),
+    quantity: integer("quantity").notNull().default(1),
     createdAt: timestamp("created_at").defaultNow(),
 })
 
@@ -199,7 +199,7 @@ export const cartItemsRelations = relations(cartItems, ({ one }) => ({
     }),
 }))
 
-export const stores = mysqlTable(`${APP_NAME}_stores`, {
+export const stores = pgTable(`${APP_NAME}_stores`, {
     id: serial("id").primaryKey(),
     ownerId: varchar("userId", { length: 191 }).notNull(),
     name: varchar("name", { length: 191 }).notNull(),
@@ -212,7 +212,7 @@ export const stores = mysqlTable(`${APP_NAME}_stores`, {
     isDeleted: boolean("is_deleted").notNull().default(false),
     deletedAt: timestamp("deletedAt"),
     createdAt: timestamp("createdAt").defaultNow(),
-    updatedAt: timestamp("updatedAt").onUpdateNow(),
+    updatedAt: timestamp("updated_at"),
 })
 
 export const storesRelations = relations(stores, ({ many }) => ({
@@ -224,7 +224,7 @@ export const storesRelations = relations(stores, ({ many }) => ({
 export type Store = typeof stores.$inferSelect
 export type NewStore = typeof stores.$inferInsert
 
-export const emailPreferences = mysqlTable(`${APP_NAME}_email_preferences`, {
+export const emailPreferences = pgTable(`${APP_NAME}_email_preferences`, {
     id: serial("id").primaryKey(),
     userId: varchar("userId", { length: 191 }),
     email: varchar("email", { length: 191 }).notNull(),
@@ -238,21 +238,21 @@ export const emailPreferences = mysqlTable(`${APP_NAME}_email_preferences`, {
 export type EmailPreference = typeof emailPreferences.$inferSelect
 export type NewEmailPreference = typeof emailPreferences.$inferInsert
 
-export const payments = mysqlTable(`${APP_NAME}_payments`, {
+export const payments = pgTable(`${APP_NAME}_payments`, {
     id: serial("id").primaryKey(),
-    storeId: int("storeId").notNull(),
+    storeId: integer("storeId").notNull(),
     stripeAccountId: varchar("stripe_account_id", { length: 191 }).notNull(),
-    stripeAccountCreatedAt: int("stripe_account_created_at"),
-    stripeAccountExpiresAt: int("stripe_account_expires_at"),
+    stripeAccountCreatedAt: integer("stripe_account_created_at"),
+    stripeAccountExpiresAt: integer("stripe_account_expires_at"),
     detailsSubmitted: boolean("details_submitted").notNull().default(false),
     createdAt: timestamp("created_at").defaultNow().notNull(),
-    updatedAt: timestamp("updated_at").onUpdateNow(),
+    updatedAt: timestamp("updated_at"),
 })
 
 export type Payment = typeof payments.$inferSelect
 export type NewPayment = typeof payments.$inferInsert
 
-export const addresses = mysqlTable(`${APP_NAME}_addresses`, {
+export const addresses = pgTable(`${APP_NAME}_addresses`, {
     id: serial("id").primaryKey(),
     line1: varchar("line1", { length: 191 }),
     line2: varchar("line2", { length: 191 }),

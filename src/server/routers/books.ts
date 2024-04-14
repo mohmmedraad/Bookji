@@ -103,11 +103,16 @@ export const booksRouter = router({
                 })
             }
 
-            const book = await db.insert(booksTable).values({
-                ...input,
-                slug: slugify(input.title),
-                userId: ctx.userId,
-            })
+            const book = (
+                await db
+                    .insert(booksTable)
+                    .values({
+                        ...input,
+                        slug: slugify(input.title),
+                        userId: ctx.userId,
+                    })
+                    .returning({ insertId: booksTable.id })
+            )[0]
 
             await db.insert(booksToCategories).values(
                 categories.map((category) => ({

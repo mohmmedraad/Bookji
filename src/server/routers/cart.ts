@@ -1,5 +1,5 @@
 import { db } from "@/db"
-import { cartItems as cartItemsTable, carts as cartsTable } from "@/db/schema"
+import { cartItems as cartItemsTable } from "@/db/schema"
 import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { and, eq } from "drizzle-orm"
@@ -46,8 +46,8 @@ export const cartRouter = router({
             }
 
             if (!cart) {
-                const insertedCart = await createCart(ctx.userId, [input])
-                return insertedCart.insertId
+                await createCart(ctx.userId, [input])
+                return
             }
 
             const isItemAlreadyExist = await db.query.cartItems.findFirst({
@@ -62,22 +62,22 @@ export const cartRouter = router({
             })
 
             if (isItemAlreadyExist) {
-                const updatedItem = await db
+                await db
                     .update(cartItemsTable)
                     .set({
                         quantity: isItemAlreadyExist.quantity + 1,
                     })
                     .where(eq(cartItemsTable.id, isItemAlreadyExist.id))
-                return updatedItem.insertId
+                return
             }
 
-            const updatedCart = await db.insert(cartItemsTable).values({
+            await db.insert(cartItemsTable).values({
                 storeId: input.storeId,
                 bookId: input.bookId,
                 cartId: cart.id,
             })
 
-            return updatedCart.insertId
+            return
         }),
 
     update: privateProcedure
@@ -119,7 +119,7 @@ export const cartRouter = router({
             }
 
             if (input.quantity <= 0) {
-                const deletedCart = await db
+                await db
                     .delete(cartItemsTable)
                     .where(
                         and(
@@ -127,10 +127,10 @@ export const cartRouter = router({
                             eq(cartItemsTable.bookId, input.bookId)
                         )
                     )
-                return deletedCart.insertId
+                return
             }
 
-            const updatedCart = await db
+            await db
                 .update(cartItemsTable)
                 .set({
                     quantity: input.quantity,
@@ -142,6 +142,6 @@ export const cartRouter = router({
                     )
                 )
 
-            return updatedCart.insertId
+            return
         }),
 })
