@@ -101,10 +101,7 @@ export async function getStoreOrders(
                 {
                     cover: string
                 }[]
-            >`JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'cover', ${booksTable.cover}
-            ))`,
+            >`json_agg(json_build_object('cover',${booksTable.cover}))`,
             country: addressesTable.country,
             createdAt: ordersTable.createdAt,
         })
@@ -129,7 +126,12 @@ export async function getStoreOrders(
                 eq(booksTable.isDeleted, false)
             )
         )
-        .groupBy(ordersTable.id)
+        .groupBy(
+            ordersTable.id,
+            addressesTable.city,
+            addressesTable.state,
+            addressesTable.country
+        )
         .having(
             and(
                 city ? like(addressesTable.city, `%${city}%`) : undefined,
@@ -461,10 +463,7 @@ export async function getPurchases(
                 {
                     cover: string
                 }[]
-            >`JSON_ARRAYAGG(
-            JSON_OBJECT(
-                'cover', ${booksTable.cover}
-            ))`,
+            >`json_agg(json_build_object('cover',${booksTable.cover}))`,
             createdAt: ordersTable.createdAt,
         })
         .from(ordersTable)
@@ -481,7 +480,7 @@ export async function getPurchases(
         .innerJoin(orderItemsTable, eq(ordersTable.id, orderItemsTable.orderId))
         .leftJoin(booksTable, eq(orderItemsTable.bookId, booksTable.id))
         .innerJoin(storesTable, eq(storesTable.id, ordersTable.storeId))
-        .groupBy(ordersTable.id)
+        .groupBy(ordersTable.id, storesTable.name, storesTable.logo)
         .orderBy((order) => {
             return column in order
                 ? orderBy === "asc"
