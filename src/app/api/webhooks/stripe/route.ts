@@ -181,36 +181,44 @@ export async function POST(req: Request) {
                     const stripeAddress =
                         paymentIntentSucceeded?.shipping?.address
 
-                    const newAddress = await db.insert(addresses).values({
-                        line1: stripeAddress?.line1,
-                        line2: stripeAddress?.line2,
-                        city: stripeAddress?.city,
-                        state: stripeAddress?.state,
-                        country: stripeAddress?.country,
-                        postalCode: stripeAddress?.postal_code,
-                    })
+                    const newAddress = (
+                        await db
+                            .insert(addresses)
+                            .values({
+                                line1: stripeAddress?.line1,
+                                line2: stripeAddress?.line2,
+                                city: stripeAddress?.city,
+                                state: stripeAddress?.state,
+                                country: stripeAddress?.country,
+                                postalCode: stripeAddress?.postal_code,
+                            })
+                            .returning({ insertId: addresses.id })
+                    )[0]
 
                     if (!newAddress.insertId)
                         throw new Error("No address created.")
                     // Create new order in db
-                    const { insertId: insertedOrderId } = await db
-                        .insert(orders)
-                        .values({
-                            // @ts-expect-error - storeId is not in the insert type
-                            storeId: payment.storeId,
-                            userId: userCart.userId,
-                            quantity: safeParsedItems.output.reduce(
-                                (acc, item) => acc + item.quantity,
-                                0
-                            ),
-                            total: Number(orderAmount) / 100,
-                            stripePaymentIntentId: paymentIntentId,
-                            stripePaymentIntentStatus:
-                                paymentIntentSucceeded?.status,
-                            name: paymentIntentSucceeded?.shipping?.name,
-                            email: paymentIntentSucceeded?.receipt_email,
-                            addressId: Number(newAddress.insertId),
-                        })
+                    const { insertId: insertedOrderId } = (
+                        await db
+                            .insert(orders)
+                            .values({
+                                // @ts-expect-error - storeId is not in the insert type
+                                storeId: payment.storeId,
+                                userId: userCart.userId,
+                                quantity: safeParsedItems.output.reduce(
+                                    (acc, item) => acc + item.quantity,
+                                    0
+                                ),
+                                total: Number(orderAmount) / 100,
+                                stripePaymentIntentId: paymentIntentId,
+                                stripePaymentIntentStatus:
+                                    paymentIntentSucceeded?.status,
+                                name: paymentIntentSucceeded?.shipping?.name,
+                                email: paymentIntentSucceeded?.receipt_email,
+                                addressId: Number(newAddress.insertId),
+                            })
+                            .returning({ insertId: orders.id })
+                    )[0]
 
                     const newOrderItems = safeParsedItems.output.map(
                         ({ bookId, quantity }) => ({
