@@ -518,7 +518,7 @@ export async function getShopPageBooks({
             title: booksTable.title,
             slug: booksTable.slug,
             author: booksTable.author,
-            rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0)) AS DECIMAL(10,2)) `.mapWith(
+            rating: sql<number>` CAST(AVG(COALESCE(${ratingsTable.rating}, 0.0)) AS NUMERIC(10,2)) `.mapWith(
                 Number
             ),
             isDeleted: booksTable.isDeleted,
@@ -584,7 +584,7 @@ export async function getShopPageBooks({
                 eq(storesTable.isDeleted, false)
             )
         )
-        .groupBy(booksTable.id, booksTable.title)
+        .groupBy(booksTable.id, booksTable.title, storesTable.name)
         .having(
             between(
                 sql` AVG(COALESCE(${ratingsTable.rating}, 0)) `,
