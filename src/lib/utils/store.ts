@@ -379,7 +379,7 @@ export async function getStoreCustomers(
                 )
             )
         )
-        .groupBy(ordersTable.userId)
+        .groupBy(ordersTable.userId, ordersTable.storeId)
         .orderBy((order) => {
             return column in order
                 ? orderBy === "asc"
