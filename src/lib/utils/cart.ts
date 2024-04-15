@@ -29,18 +29,19 @@ export async function getCart(userId: string) {
                         price: string
                     }
                 }[]
-            >`JSON_ARRAYAGG(
-        JSON_OBJECT(
-        'id', ${cartItemsTable.id},
-        'bookId', ${cartItemsTable.bookId},
-        'storeId', ${cartItemsTable.storeId},
-        'quantity', ${cartItemsTable.quantity},
-        'book', JSON_OBJECT(
-            'cover', ${booksTable.cover},
-            'title', ${booksTable.title},
-            'price', ${booksTable.price}
-        )
-    ))`,
+            >`json_agg(
+                json_build_object(
+                    'id', ${cartItemsTable.id},
+                    'bookId', ${cartItemsTable.bookId},
+                    'storeId', ${cartItemsTable.storeId},
+                    'quantity', ${cartItemsTable.quantity},
+                    'book', json_build_object(
+                        'cover', ${booksTable.cover},
+                        'title', ${booksTable.title},
+                        'price', ${booksTable.price}
+                    )
+                )
+            )`,
         })
         .from(cartsTable)
         .where(eq(cartsTable.userId, userId))
