@@ -594,5 +594,4 @@ export const oauthProviders: OauthProvider[] = [
     { name: "Google", strategy: "oauth_google", icon: "Google" },
     { name: "Facebook", strategy: "oauth_facebook", icon: "Facebook" },
     { name: "Apple", strategy: "oauth_apple", icon: "Apple" },
-    { name: "Github", strategy: "oauth_github", icon: "Github" },
 ]
