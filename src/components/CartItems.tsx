@@ -1,10 +1,10 @@
 "use client"
 
 import { type FC } from "react"
+import Link from "next/link"
 import useCart from "@/store/useCart"
 
 import CartItem from "./CartItem"
-import { Button } from "./ui/Button"
 import { ScrollArea } from "./ui/ScrollArea"
 
 interface CartItemsProps {}
@@ -19,7 +19,7 @@ const CartItems: FC<CartItemsProps> = ({}) => {
                     <p className="text-center text-xl text-gray-500">
                         Your Cart is Empty
                     </p>
-                    <Button>Start Purchasing</Button>
+                    <Link href="/shop">Start Purchasing</Link>
                 </div>
             ) : (
                 <ScrollArea className="h-full">
