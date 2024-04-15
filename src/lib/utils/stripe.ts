@@ -79,23 +79,24 @@ export async function getStripeAccount(
 
         // If the account details have been submitted, we update the store and payment records
         if (account.details_submitted && !payment.detailsSubmitted) {
-            await db.transaction(async (tx) => {
-                await tx
+            const transaction = Promise.all([
+                await db
                     .update(payments)
                     .set({
                         detailsSubmitted: account.details_submitted,
                         stripeAccountCreatedAt: account.created,
                     })
-                    .where(eq(payments.storeId, storeId))
-
-                await tx
+                    .where(eq(payments.storeId, storeId)),
+                await db
                     .update(storesTable)
                     .set({
                         stripeAccountId: account.id,
                         active: true,
                     })
-                    .where(eq(storesTable.id, storeId))
-            })
+                    .where(eq(storesTable.id, storeId)),
+            ])
+
+            await transaction
         }
 
         return {
