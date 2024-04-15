@@ -59,6 +59,7 @@ const getUsersIds = <T extends { userId: string }>(list: T[]) => {
 }
 
 export const withUsers = async <T extends { userId: string }>(list: T[]) => {
+    if (list.length === 0) return []
     const usersIds = getUsersIds(list)
     console.log("usersIds: ", usersIds)
 
