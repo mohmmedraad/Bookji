@@ -46,13 +46,13 @@ export const getCachedUser = cache(async () => {
 export const getCachedStoreOrders = cache(async (storeId: number) => {
     return await db
         .select({
-            month: sql<string>`MONTHNAME(${ordersTable.createdAt})`,
+            month: sql<string>`DATE_TRUNC('month', ${ordersTable.createdAt})`,
             total: sql`SUM(${ordersTable.total})`.mapWith(Number),
             orders: sql`COUNT(*)`.mapWith(Number),
         })
         .from(ordersTable)
         .where(eq(ordersTable.storeId, storeId))
-        .groupBy(sql`MONTHNAME(${ordersTable.createdAt})`)
+        .groupBy(sql`DATE_TRUNC('month', ${ordersTable.createdAt})`)
 })
 
 export const getBook = cache(async (bookSlug: string) => {
