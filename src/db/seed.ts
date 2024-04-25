@@ -313,72 +313,76 @@ const users = [
 ]
 
 const clerk = Clerk({
-    secretKey: "sk_test_ms6XosVnETxrdffiWsdqKuIDqO2BCl7Ydygutl3o7l",
+    secretKey: process.env.CLERK_SECRET_KEY,
 })
 
 const main = async () => {
-    await db.insert(storesTable).values(
-        users.map((user) => ({
-            id: user.store.id,
-            userId: user.userId,
-            ownerId: user.userId,
-            name: user.store.name,
-            description: user.store.description,
-            logo: user.store.logo,
-            slug: user.store.slug,
-            active: user.store.active,
-        }))
-    )
+    // await db.insert(storesTable).values(
+    //     users.map((user) => ({
+    //         id: user.store.id,
+    //         userId: user.userId,
+    //         ownerId: user.userId,
+    //         name: user.store.name,
+    //         description: user.store.description,
+    //         logo: user.store.logo,
+    //         slug: user.store.slug,
+    //         active: user.store.active,
+    //     }))
+    // )
 
-    await db.insert(booksTable).values(
-        users.flatMap((user) =>
-            user.store.books.map((book) => ({
-                id: book.id,
-                title: book.title,
-                description: book.description,
-                price: book.price,
-                inventory: book.inventory,
-                slug: book.slug,
-                conver: book.cover,
-                author: book.author,
-                storeId: book.storeId,
-                userId: book.userId,
-            }))
-        )
-    )
-    const booksCategories = users
-        .map((user) =>
-            user.store.books.map((book) =>
-                book.categories.map((c) => ({ bookId: book.id, categoryId: c }))
-            )
-        )
-        .flat(3)
+    // await db.insert(booksTable).values(
+    //     users.flatMap((user) =>
+    //         user.store.books.map((book) => ({
+    //             id: book.id,
+    //             title: book.title,
+    //             description: book.description,
+    //             price: book.price,
+    //             inventory: book.inventory,
+    //             slug: book.slug,
+    //             conver: book.cover,
+    //             author: book.author,
+    //             storeId: book.storeId,
+    //             userId: book.userId,
+    //         }))
+    //     )
+    // )
+    // const booksCategories = users
+    //     .map((user) =>
+    //         user.store.books.map((book) =>
+    //             book.categories.map((c) => ({ bookId: book.id, categoryId: c }))
+    //         )
+    //     )
+    //     .flat(3)
 
-    const ratings = await db.insert(booksToCategories).values(booksCategories)
+    // const ratings = await db.insert(booksToCategories).values(booksCategories)
+
+    await seedStoreOrders(4, 10)
 }
 
 void main()
 
-// async function seedStoreOrders(storeId: number, ordersNmuber: number) {
-//     const array = new Array(ordersNmuber).fill(0)
-//     const users = await clerk.users.getUserList({
-//         limit: 40,
-//     })
+async function seedStoreOrders(storeId: number, ordersCount: number) {
+    const array = new Array(ordersCount).fill(0)
+    const users = await clerk.users.getUserList({
+        limit: 40,
+    })
 
-//     const newAddresses = array.map(generateRandomAddress)
+    const newAddresses = array.map(generateRandomAddress)
 
-//     await db.insert(addressesTable).values(newAddresses)
+    await db.insert(addressesTable).values(newAddresses)
 
-//     const newOrders = newAddresses.map(({ id }) =>
-//         generateRandomOrder(24, generateRandomUser(users).id, id!)
-//     )
+    const newOrders = newAddresses.map(({ id }) =>
+        generateRandomOrder(storeId, generateRandomUser(users).id, id!)
+    )
 
-//     await db.insert(ordersTable).values(newOrders)
+    await db.insert(ordersTable).values(newOrders)
 
-//     const orderItems = newOrders.flatMap(({ id }) => generateRandomItems(id!))
+    const orderItems = newOrders.flatMap(({ id }) =>
+        generateRandomItems(id!, 6)
+    )
 
-//     await db.insert(orderItemsTable).values(orderItems)
-// }
+    await db.insert(orderItemsTable).values(orderItems)
+}
 
 function generateClerkRandomUser() {
     const email = faker.internet.email()
@@ -419,34 +423,34 @@ function generateRandomOrder(
     }
 }
 
-// function generateRandomItems(orderId: number) {
-//     const start = faker.number.int({
-//         min: 0,
-//         max: stroeBooks.length - 1,
-//     })
+function generateRandomItems(orderId: number, bookId: number) {
+    // const start = faker.number.int({
+    //     min: 0,
+    //     max: stroeBooks.length - 1,
+    // })
 
-//     // copilot give me the bulit in js min funciton
-//     const end = faker.number.int({
-//         min: Math.min(start + 1, stroeBooks.length),
-//         max: stroeBooks.length,
-//     })
+    // // copilot give me the bulit in js min funciton
+    // const end = faker.number.int({
+    //     min: Math.min(start + 1, stroeBooks.length),
+    //     max: stroeBooks.length,
+    // })
 
-//     return stroeBooks.slice(start, end).map((item) => ({
-//         orderId,
-//         bookId: item.id,
-//         quantity: faker.number.int({
-//             min: 1,
-//             max: 10,
-//         }),
-//     }))
-// }
+    return {
+        orderId,
+        bookId,
+        quantity: faker.number.int({
+            min: 1,
+            max: 10,
+        }),
+    }
+}
 
 function generateRandomAddress(): NewAddress {
     return {
-        id: faker.number.int({
-            min: 0,
-            max: 1_000_000,
-        }),
+        // id: faker.number.int({
+        //     min: 0,
+        //     max: 1_000_000,
+        // }),
         line1: faker.location.street(),
         line2: faker.location.street(),
         city: faker.location.city(),
