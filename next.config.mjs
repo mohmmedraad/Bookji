@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
+import MillionLint from "@million/lint"
+
 const nextConfig = {
     images: {
         domains: ["img.clerk.com", "uploadthing.com", "utfs.io"],
@@ -10,4 +12,4 @@ const nextConfig = {
     },
 }
 
-module.exports = nextConfig
+export default MillionLint.next({ rsc: true })(nextConfig)
