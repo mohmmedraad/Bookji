@@ -5,11 +5,11 @@ import { type SearchParams } from "@/types"
 import { parse } from "valibot"
 
 import { searchParamsString, title } from "@/lib/utils"
-import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedStore, getCachedUser } from "@/lib/utils/cached-data"
 import { getStoreCustomers } from "@/lib/utils/store"
 import { customersSearchParamsSchema } from "@/lib/validations/params"
 
-import CustomersTable from "./_components/CustomersTable"
+import CustomersTable from "./_components/customers-table"
 
 interface pageProps {
     params: {

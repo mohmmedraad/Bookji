@@ -7,8 +7,8 @@ import { getShopPageBooks } from "@/lib/utils/store"
 import { getBooksSchema } from "@/lib/validations/book"
 import Container from "@/components/ui/container"
 
-import BooksFeed from "./_sections/BooksFeed"
-import FilterBar from "./_sections/FilterBar"
+import BooksFeed from "./_sections/books-feed"
+import FilterBar from "./_sections/filter-bar"
 
 interface PageProps {
     searchParams: SearchParams

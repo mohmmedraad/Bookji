@@ -2,7 +2,7 @@
 
 import { useState, type FC } from "react"
 import { useRouter } from "next/navigation"
-import useBook from "@/store/useBook"
+import useBook from "@/store/use-book"
 import { type TRPCErrorType } from "@/types"
 import { toast } from "sonner"
 
@@ -10,7 +10,7 @@ import { handleGenericError } from "@/lib/utils"
 import { type RateBookSchema } from "@/lib/validations/book"
 import { trpc } from "@/app/_trpc/client"
 
-import RatingDialog from "./RatingDialog"
+import RatingDialog from "./rating-dialog"
 
 interface RateProps {}
 

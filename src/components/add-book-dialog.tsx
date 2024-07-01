@@ -4,7 +4,7 @@ import { useState, type FC } from "react"
 import { BookUp } from "lucide-react"
 
 import { type BookFormSchema } from "@/lib/validations/book"
-import { useCreateBook } from "@/hooks/useCreateBook"
+import { useCreateBook } from "@/hooks/use-create-book"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,

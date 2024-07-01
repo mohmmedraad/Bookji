@@ -2,7 +2,7 @@ import { useEffect, useState, type FC, type InputHTMLAttributes } from "react"
 import { useRouter } from "next/navigation"
 import { useQueryState } from "nuqs"
 
-import useDebounce from "@/hooks/useDebounce"
+import useDebounce from "@/hooks/use-debounce"
 import { Input } from "@/components/ui/input"
 
 interface DataTableToolbarSearchInputProps

@@ -4,7 +4,7 @@ import React from "react"
 import { useSearchParams } from "next/navigation"
 import { useClerk } from "@clerk/nextjs"
 
-import { useWebsiteURL } from "@/hooks/useWebsiteURL"
+import { useWebsiteURL } from "@/hooks/use-website-URL"
 
 type VerificationStatus = "loading" | "failed" | "expired" | "verified" | null
 

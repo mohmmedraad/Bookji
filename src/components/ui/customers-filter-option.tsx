@@ -1,6 +1,6 @@
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
-import { useStore } from "@/store/useStore"
+import { useStore } from "@/store/use-store"
 import { toast } from "sonner"
 
 import MultiSelectFilterOption from "@/components/ui/multi-select-filter-option"

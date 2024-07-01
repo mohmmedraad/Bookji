@@ -1,4 +1,4 @@
-import { ExtendedCartItem } from "@/store/useCart"
+import { ExtendedCartItem } from "@/store/use-cart"
 import type { SearchParams } from "@/types"
 import { clsx, type ClassValue } from "clsx"
 import slugifyStr from "slugify"

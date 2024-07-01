@@ -1,7 +1,7 @@
 "use client"
 
 import { type FC } from "react"
-import useCart from "@/store/useCart"
+import useCart from "@/store/use-cart"
 
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"

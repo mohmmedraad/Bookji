@@ -5,7 +5,7 @@ import { motion } from "framer-motion"
 import { Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { useSearchBar } from "@/hooks/useSearchBar"
+import { useSearchBar } from "@/hooks/use-search-bar"
 
 interface MobileSearchBarProps extends HTMLAttributes<HTMLDivElement> {
     param?: string

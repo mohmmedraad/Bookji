@@ -3,7 +3,7 @@ import { type Endpoint } from "@/types"
 import { type BlobSchema } from "valibot"
 
 import { cn } from "@/lib/utils"
-import { useUploadFile } from "@/hooks/useUploadFile"
+import { useUploadFile } from "@/hooks/use-upload-file"
 
 import DropFileZone from "./drop-file-zone"
 import DropdownZoneOverlay from "./dropdown-zone-overlay"

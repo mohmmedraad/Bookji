@@ -4,8 +4,8 @@ import { useEffect, useState, type FC, type HTMLAttributes } from "react"
 import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
-import useDebounce from "@/hooks/useDebounce"
-import { useIsMount } from "@/hooks/useIsMount"
+import useDebounce from "@/hooks/use-debounce"
+import { useIsMount } from "@/hooks/use-is-mount"
 import { Input } from "@/components/ui/input"
 
 interface SearchInputProps extends HTMLAttributes<HTMLInputElement> {

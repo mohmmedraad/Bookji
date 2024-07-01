@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useRouter } from "next/navigation"
-import useSignInForm from "@/store/useSignInForm"
+import useSignInForm from "@/store/use-sign-in-form"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { useForm } from "react-hook-form"
@@ -16,7 +16,7 @@ import {
     isAuthNotComplete,
     sendSignInVerificationEmail,
 } from "@/lib/utils/auth"
-import { useWebsiteURL } from "@/hooks/useWebsiteURL"
+import { useWebsiteURL } from "@/hooks/use-website-URL"
 import { Button } from "@/components/ui/button"
 import {
     Form,

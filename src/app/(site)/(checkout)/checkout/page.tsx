@@ -2,7 +2,7 @@ import type { Metadata } from "next"
 import Link from "next/link"
 import { redirect } from "next/navigation"
 
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 

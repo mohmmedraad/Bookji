@@ -4,7 +4,7 @@ import { redirect } from "next/navigation"
 import { Check } from "lucide-react"
 
 import { subscriptionPlans } from "@/config/site"
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import { getSubscriptionPlan } from "@/lib/utils/subscription"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
@@ -17,8 +17,8 @@ import {
 } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 
-import PageHeading from "../_components/PageHeading"
-import ManageSubscriptionButton from "./_components/ManageSubscriptionButton"
+import PageHeading from "../_components/page-heading"
+import ManageSubscriptionButton from "./_components/manage-subscription-button"
 
 interface pageProps {}
 

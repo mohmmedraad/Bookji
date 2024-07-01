@@ -3,7 +3,7 @@ import Link from "next/link"
 import type { EmailAddress } from "@clerk/nextjs/server"
 
 import { navLinks } from "@/config/site"
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 import NavLink from "@/components/ui/nav-link"

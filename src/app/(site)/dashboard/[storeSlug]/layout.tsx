@@ -4,12 +4,12 @@ import { notFound, redirect } from "next/navigation"
 
 import { site } from "@/config/site"
 import { title } from "@/lib/utils"
-import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedStore, getCachedUser } from "@/lib/utils/cached-data"
 import { Separator } from "@/components/ui/separator"
 
-import DashboardNav from "../_components/DashboardNav"
-import PageHeading from "../_components/PageHeading"
-import StoreProvider from "./_components/StoreProvider"
+import DashboardNav from "../_components/dashboard-nav"
+import PageHeading from "../_components/page-heading"
+import StoreProvider from "./_components/store-provider"
 
 const storeLinks = [
     {

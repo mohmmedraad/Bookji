@@ -4,10 +4,10 @@ import { notFound, redirect } from "next/navigation"
 import { type SearchParams } from "@/types"
 
 import { searchParamsString, title } from "@/lib/utils"
-import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedStore, getCachedUser } from "@/lib/utils/cached-data"
 import { getStoreBooks } from "@/lib/utils/store"
 
-import BooksTable from "./_components/BooksTable"
+import BooksTable from "./_components/books-table"
 
 interface pageProps {
     params: {

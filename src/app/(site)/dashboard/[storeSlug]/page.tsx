@@ -5,7 +5,7 @@ import { db } from "@/db"
 import { and } from "drizzle-orm"
 
 import { cn, formatDate } from "@/lib/utils"
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import { getStripeAccount } from "@/lib/utils/stripe"
 import { buttonVariants } from "@/components/ui/button"
 import {
@@ -19,9 +19,9 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-import ConnectToStripeButton from "./_components/ConnectToStripeButton"
-import UpdateStoreForm from "./_components/UpdateStoreForm"
-import StoreInfo from "./_sections/StoreInfo"
+import ConnectToStripeButton from "./_components/connect-to-stripe-button"
+import UpdateStoreForm from "./_components/update-store-form"
+import StoreInfo from "./_sections/store-info"
 
 interface pageProps {
     params: {

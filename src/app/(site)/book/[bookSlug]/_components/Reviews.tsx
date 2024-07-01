@@ -1,14 +1,14 @@
 "use client"
 
 import { useEffect, useRef, type FC } from "react"
-import useBook from "@/store/useBook"
+import useBook from "@/store/use-book"
 import { useIntersection } from "@mantine/hooks"
 import { StarOff } from "lucide-react"
 
 import { trpc } from "@/app/_trpc/client"
 
-import BookReview from "./BookReview"
-import RatingSkeleton from "./RatingSkeleton"
+import BookReview from "./book-review"
+import RatingSkeleton from "./rating-skeleton"
 
 interface ReviewsProps {}
 

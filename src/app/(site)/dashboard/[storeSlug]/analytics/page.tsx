@@ -4,7 +4,7 @@ import { notFound, redirect } from "next/navigation"
 import { BadgeDollarSign, UserPlus, Wallet } from "lucide-react"
 
 import { title } from "@/lib/utils"
-import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedStore, getCachedUser } from "@/lib/utils/cached-data"
 import {
     getStoreOrders,
     getTotalCustomers,
@@ -23,9 +23,9 @@ import {
 import { DataTable } from "@/components/ui/data-table"
 import { Icons } from "@/components/icons"
 
-import { Columns } from "../orders/_components/OrdersColumns"
-import Charts from "./_components/Charts"
-import TrendingArrow from "./_components/TrendingArrow"
+import { Columns } from "../orders/_components/orders-columns"
+import Charts from "./_components/charts"
+import TrendingArrow from "./_components/trending-arrow"
 
 interface pageProps {
     params: {

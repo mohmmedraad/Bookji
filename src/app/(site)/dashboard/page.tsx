@@ -4,7 +4,7 @@ import Link from "next/link"
 import { db } from "@/db"
 import { and, eq } from "drizzle-orm"
 
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import {
     Card,
     CardContent,
@@ -13,9 +13,9 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 
-import CreateStoreForm from "./_components/CreateStoreForm"
-import PageHeading from "./_components/PageHeading"
-import { StoreLogo } from "./_components/StoreLogo"
+import CreateStoreForm from "./_components/create-store-form"
+import PageHeading from "./_components/page-heading"
+import { StoreLogo } from "./_components/store-logo"
 
 interface pageProps {}
 

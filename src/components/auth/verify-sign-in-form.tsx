@@ -2,7 +2,7 @@
 
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
-import useSignInForm from "@/store/useSignInForm"
+import useSignInForm from "@/store/use-sign-in-form"
 import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
 import { PenSquare } from "lucide-react"
 import { toast } from "sonner"
@@ -13,8 +13,8 @@ import {
     handleSessionExistsError,
     sendSignInVerificationEmail,
 } from "@/lib/utils/auth"
-import useCount from "@/hooks/useCount"
-import { useWebsiteURL } from "@/hooks/useWebsiteURL"
+import useCount from "@/hooks/use-count"
+import { useWebsiteURL } from "@/hooks/use-website-URL"
 import { Button } from "@/components/ui/button"
 
 const VerifySignInForm: FC = () => {

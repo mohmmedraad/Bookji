@@ -1,10 +1,10 @@
 import { type FC } from "react"
 import { type Metadata } from "next"
 
-import ContactForm from "./_sections/ContactForm"
-import Enquiries from "./_sections/Enquiries"
-import Hero from "./_sections/Hero"
-import Locations from "./_sections/Locations"
+import ContactForm from "./_sections/contact-form"
+import Enquiries from "./_sections/enquiries"
+import Hero from "./_sections/hero"
+import Locations from "./_sections/locations"
 
 interface pageProps {}
 

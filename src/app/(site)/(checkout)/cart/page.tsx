@@ -3,12 +3,12 @@ import { type Metadata } from "next"
 import Link from "next/link"
 import { notFound, redirect } from "next/navigation"
 
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import { getCart } from "@/lib/utils/cart"
 import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 
-import StoreCheckoutCard from "./_components/StoreCheckoutCard"
+import StoreCheckoutCard from "./_components/store-checkout-card"
 
 export const metadata: Metadata = {
     title: "Cart",

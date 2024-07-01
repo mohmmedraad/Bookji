@@ -2,7 +2,7 @@
 
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
-import useSignUpForm from "@/store/useSignUpForm"
+import useSignUpForm from "@/store/use-sign-up-form"
 import { isClerkAPIResponseError, useSignUp } from "@clerk/nextjs"
 import { PenSquare } from "lucide-react"
 import { toast } from "sonner"
@@ -13,8 +13,8 @@ import {
     handleSessionExistsError,
     sendSignUpVerificationEmail,
 } from "@/lib/utils/auth"
-import useCount from "@/hooks/useCount"
-import { useWebsiteURL } from "@/hooks/useWebsiteURL"
+import useCount from "@/hooks/use-count"
+import { useWebsiteURL } from "@/hooks/use-website-URL"
 import { Button } from "@/components/ui/button"
 
 const VerifySignUpForm: FC = () => {

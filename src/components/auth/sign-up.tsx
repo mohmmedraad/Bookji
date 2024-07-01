@@ -2,7 +2,7 @@
 
 import { useEffect, type FC } from "react"
 import Link from "next/link"
-import useSignUpForm from "@/store/useSignUpForm"
+import useSignUpForm from "@/store/use-sign-up-form"
 
 import OauthSignIn from "@/components/auth/oauth-sign-in"
 import VerifySignUpForm from "@/components/auth/verify-sign-up-form"

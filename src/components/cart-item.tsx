@@ -1,6 +1,6 @@
 import { type FC } from "react"
 import { usePathname, useRouter } from "next/navigation"
-import useCart from "@/store/useCart"
+import useCart from "@/store/use-cart"
 import { Trash } from "lucide-react"
 import { toast } from "sonner"
 

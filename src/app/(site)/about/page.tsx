@@ -1,10 +1,10 @@
 import { type FC } from "react"
 import { type Metadata } from "next"
 
-import About from "./_sections/About"
-import Hero from "./_sections/Hero"
-import OurValues from "./_sections/OurValues"
-import OurVision from "./_sections/OurVision"
+import About from "./_sections/about"
+import Hero from "./_sections/hero"
+import OurValues from "./_sections/our-values"
+import OurVision from "./_sections/our-vision"
 
 interface pageProps {}
 

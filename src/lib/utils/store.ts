@@ -26,7 +26,7 @@ import {
 } from "drizzle-orm"
 import { parse } from "valibot"
 
-import { getCachedStoreOrders } from "@/lib/utils/cachedResources"
+import { getCachedStoreOrders } from "@/lib/utils/cached-data"
 import {
     booksSearchParamsSchema,
     customersSearchParamsSchema,

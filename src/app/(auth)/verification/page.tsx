@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import { type Metadata } from "next"
 
-import Verification from "./_components/Verification"
+import Verification from "./_components/verification"
 
 export const metadata: Metadata = {
     title: "Verification",

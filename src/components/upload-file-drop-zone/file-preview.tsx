@@ -4,7 +4,7 @@ import { useState, type FC, type HTMLAttributes } from "react"
 import Image from "next/image"
 
 import { cn } from "@/lib/utils"
-import { FileError } from "@/lib/utils/fileUploading"
+import { FileError } from "@/lib/utils/file-uploading"
 
 interface FilePreviewProps extends HTMLAttributes<HTMLImageElement> {
     file: File | null

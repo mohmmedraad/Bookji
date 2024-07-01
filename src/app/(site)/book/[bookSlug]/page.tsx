@@ -4,14 +4,14 @@ import { notFound } from "next/navigation"
 
 import { site } from "@/config/site"
 import { title } from "@/lib/utils"
-import { getBook } from "@/lib/utils/cachedResources"
+import { getBook } from "@/lib/utils/cached-data"
 import Book from "@/components/ui/book-cover"
 import Container from "@/components/ui/container"
 import BookProvider from "@/components/book-provider"
 import { Icons } from "@/components/icons"
 
-import BookInfo from "./_sections/BookInfo"
-import StoresBooks from "./_sections/StoresBooks"
+import BookInfo from "./_sections/book-info"
+import StoresBooks from "./_sections/stores-books"
 
 interface pageProps {
     params: {

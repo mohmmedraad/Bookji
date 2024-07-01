@@ -2,14 +2,14 @@ import { type FC } from "react"
 import { type Metadata } from "next"
 import { redirect } from "next/navigation"
 
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import Container from "@/components/ui/container"
 
-import CookiesSettings from "./_components/CookiesSettings"
-import EmailSetting from "./_components/EmailSetting"
-import GeneralInformation from "./_components/GeneralInformation"
-import ProfileAvatar from "./_components/ProfileAvatar"
-import UserInfoProvider from "./_components/UserInfoProvider"
+import CookiesSettings from "./_components/cookies-settings"
+import EmailSetting from "./_components/email-setting"
+import GeneralInformation from "./_components/general-information"
+import ProfileAvatar from "./_components/profile-avatar"
+import UserInfoProvider from "./_components/user-info-provider"
 
 interface pageProps {}
 

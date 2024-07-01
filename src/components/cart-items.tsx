@@ -2,7 +2,7 @@
 
 import { type FC } from "react"
 import Link from "next/link"
-import useCart from "@/store/useCart"
+import useCart from "@/store/use-cart"
 
 import { ScrollArea } from "@/components/ui/scroll-area"
 import CartItem from "@/components/cart-item"

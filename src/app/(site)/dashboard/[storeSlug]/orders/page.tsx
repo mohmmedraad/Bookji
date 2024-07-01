@@ -4,10 +4,10 @@ import { notFound, redirect } from "next/navigation"
 import { type SearchParams } from "@/types"
 
 import { searchParamsString, title } from "@/lib/utils"
-import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedStore, getCachedUser } from "@/lib/utils/cached-data"
 import { getStoreOrders } from "@/lib/utils/store"
 
-import OrdersTable from "./_components/OrdersTable"
+import OrdersTable from "./_components/orders-table"
 
 interface pageProps {
     params: {

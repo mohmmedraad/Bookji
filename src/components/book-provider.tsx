@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, type FC } from "react"
-import useBook, { type BookType } from "@/store/useBook"
+import useBook, { type BookType } from "@/store/use-book"
 
 const BookProvider: FC<BookType> = (book) => {
     const setBook = useBook((state) => state.setBook)

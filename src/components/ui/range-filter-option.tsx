@@ -3,7 +3,7 @@ import { memo, type FC } from "react"
 import {
     useRangeFilterOption,
     type UseRangeFilterOptionProps,
-} from "@/hooks/useRangeFilterOption"
+} from "@/hooks/use-range-filter-option"
 import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 

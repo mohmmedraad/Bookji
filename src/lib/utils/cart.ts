@@ -6,7 +6,7 @@ import {
     stores as storesTable,
     type NewCartItem,
 } from "@/db/schema"
-import { type ExtendedCartItem } from "@/store/useCart"
+import { type ExtendedCartItem } from "@/store/use-cart"
 import { type CartItem } from "@/types"
 import { and, eq, sql } from "drizzle-orm"
 

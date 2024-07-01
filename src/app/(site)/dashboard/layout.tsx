@@ -1,12 +1,12 @@
 import React from "react"
 import { type Metadata } from "next"
 
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { getCachedUser } from "@/lib/utils/cached-data"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import Container from "@/components/ui/container"
 import { Separator } from "@/components/ui/separator"
 
-import DashboardNav from "./_components/DashboardNav"
+import DashboardNav from "./_components/dashboard-nav"
 
 const dashboardLinks = [
     {

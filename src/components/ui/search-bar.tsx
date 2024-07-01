@@ -4,7 +4,7 @@ import { type FC, type HTMLAttributes } from "react"
 import { Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
-import { useSearchBar } from "@/hooks/useSearchBar"
+import { useSearchBar } from "@/hooks/use-search-bar"
 import { Input } from "@/components/ui/input"
 
 interface SearchBarProps extends HTMLAttributes<HTMLDivElement> {

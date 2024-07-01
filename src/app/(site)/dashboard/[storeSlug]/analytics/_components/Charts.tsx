@@ -5,9 +5,9 @@ import {
     getCachedStore,
     getCachedStoreOrders,
     getCachedUser,
-} from "@/lib/utils/cachedResources"
+} from "@/lib/utils/cached-data"
 
-import SalesChart from "./SalesChart"
+import SalesChart from "./sales-chart"
 
 interface ChartsProps {
     storeSlug: string
