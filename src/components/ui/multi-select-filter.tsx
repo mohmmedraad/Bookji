@@ -5,9 +5,9 @@ import { CircularProgress } from "@nextui-org/react"
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { Command as CommandPrimitive } from "cmdk"
 
-import { Badge } from "@/components/ui/Badge"
-import { Button } from "@/components/ui/Button"
-import { Command, CommandGroup, CommandItem } from "@/components/ui/Command"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Command, CommandGroup, CommandItem } from "@/components/ui/command"
 import { trpc } from "@/app/_trpc/client"
 
 export interface Option {

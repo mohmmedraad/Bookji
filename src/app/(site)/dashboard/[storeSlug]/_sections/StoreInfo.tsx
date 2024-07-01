@@ -5,7 +5,7 @@ import Image from "next/image"
 import { useStore } from "@/store/useStore"
 import { Camera, Pencil, Share2 } from "lucide-react"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 
 import UpdateLogoButton from "../_components/UpdateLogoButton"
 import UpdateThumbnailButton from "../_components/UpdateThumbnailButton"

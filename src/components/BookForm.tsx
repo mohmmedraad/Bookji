@@ -12,11 +12,8 @@ import {
     bookFormSchema,
     type BookFormSchema,
 } from "@/lib/validations/book"
-import { Input as FormInput } from "@/components/ui/Input"
-import { trpc } from "@/app/_trpc/client"
-
-import Book from "./ui/BookCover"
-import { Button } from "./ui/Button"
+import Book from "@/components/ui/book-cover"
+import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
@@ -25,9 +22,12 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "./ui/Form"
-import { MultiSelect } from "./ui/MultiSelect"
-import { Textarea } from "./ui/Textarea"
+} from "@/components/ui/form"
+import { Input as FormInput } from "@/components/ui/input"
+import { MultiSelect } from "@/components/ui/multi-select"
+import { Textarea } from "@/components/ui/textarea"
+import { trpc } from "@/app/_trpc/client"
+
 import UploadingZone from "./uploadFileDropZone copy/UploadingZone"
 
 interface BookFormProps extends Partial<BookFormSchema> {

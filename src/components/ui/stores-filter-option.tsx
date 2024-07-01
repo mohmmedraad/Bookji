@@ -1,9 +1,8 @@
 import { type FC } from "react"
 import Image from "next/image"
 
+import MultiSelectFilterOption from "@/components/ui/multi-select-filter-option"
 import { trpc } from "@/app/_trpc/client"
-
-import MultiSelectFilterOption from "./MultiSelectFilterOption"
 
 interface StoresFilterOptionProps {}
 

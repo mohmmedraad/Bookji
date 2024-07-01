@@ -12,15 +12,15 @@ import {
     getTotalSales,
 } from "@/lib/utils/store"
 import { getSubscriptionPlan } from "@/lib/utils/subscription"
-import Book from "@/components/ui/BookCover"
+import Book from "@/components/ui/book-cover"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/Card"
-import { DataTable } from "@/components/ui/DataTable"
+} from "@/components/ui/card"
+import { DataTable } from "@/components/ui/data-table"
 import { Icons } from "@/components/Icons"
 
 import { Columns } from "../orders/_components/OrdersColumns"

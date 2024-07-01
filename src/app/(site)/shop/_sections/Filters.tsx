@@ -2,18 +2,18 @@ import { type FC } from "react"
 import { Filter } from "lucide-react"
 import { useQueryState } from "nuqs"
 
-import { Button } from "@/components/ui/Button"
-import { Label } from "@/components/ui/Label"
-import RangeFilter from "@/components/ui/RangeFilterOption"
+import { Button } from "@/components/ui/button"
+import CategoriesFilter from "@/components/ui/categories-filter-option"
+import { Label } from "@/components/ui/label"
+import RangeFilter from "@/components/ui/range-filter-option"
 import {
     Sheet,
     SheetContent,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/Sheet"
-import CategoriesFilter from "@/components/ui/CategoriesFilterOption"
-import StoresFilter from "@/components/ui/StoresFilterOption"
+} from "@/components/ui/sheet"
+import StoresFilter from "@/components/ui/stores-filter-option"
 
 interface FiltersProps {}
 

@@ -3,20 +3,20 @@
 import { type FC } from "react"
 import useCart from "@/store/useCart"
 
-import { trpc } from "@/app/_trpc/client"
-
-import CartItems from "./CartItems"
-import Checkout from "./Checkout"
-import { Icons } from "./Icons"
-import { Button } from "./ui/Button"
-import { Separator } from "./ui/Separator"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import {
     Sheet,
     SheetContent,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "./ui/Sheet"
+} from "@/components/ui/sheet"
+import { trpc } from "@/app/_trpc/client"
+
+import CartItems from "./CartItems"
+import Checkout from "./Checkout"
+import { Icons } from "./Icons"
 
 const Cart: FC = () => {
     const setCartBooks = useCart((state) => state.setCartBooks)

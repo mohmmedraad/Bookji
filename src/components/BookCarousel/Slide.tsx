@@ -4,9 +4,9 @@ import { type FC } from "react"
 import { SwiperSlide } from "swiper/react"
 
 import { cn } from "@/lib/utils"
+import BookCover from "@/components/ui/book-cover"
 
 import MaskText from "../MaskText"
-import BookCover from "../ui/BookCover"
 
 interface SlideProps {
     author: string

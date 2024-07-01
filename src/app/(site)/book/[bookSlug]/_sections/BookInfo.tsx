@@ -1,7 +1,7 @@
 import { type FC } from "react"
 
 import { getBook } from "@/lib/utils/cachedResources"
-import { Separator } from "@/components/ui/Separator"
+import { Separator } from "@/components/ui/separator"
 
 import AddToCartButton from "../_components/AddToCartButton"
 import BookStars from "../_components/BookStars"

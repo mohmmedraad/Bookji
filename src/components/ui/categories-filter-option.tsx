@@ -1,8 +1,7 @@
 import { memo, type FC } from "react"
 
+import MultiSelectFilterOption from "@/components/ui/multi-select-filter-option"
 import { trpc } from "@/app/_trpc/client"
-
-import MultiSelectFilterOption from "./MultiSelectFilterOption"
 
 interface CategoriesFilterOptionProps {}
 

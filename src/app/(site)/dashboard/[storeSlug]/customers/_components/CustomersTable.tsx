@@ -7,7 +7,7 @@ import type { CustomerColumn } from "@/types"
 import { toast } from "sonner"
 
 import { useCustomersSearchParams } from "@/hooks/useCustomersSearchParams"
-import { DataTable } from "@/components/ui/DataTable"
+import { DataTable } from "@/components/ui/data-table"
 import { trpc } from "@/app/_trpc/client"
 
 import { Columns } from "./CustomersColumns"

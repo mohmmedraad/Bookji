@@ -2,7 +2,7 @@ import { type FC } from "react"
 import Image from "next/image"
 
 import { values } from "@/config/site"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 
 interface AboutProps {}
 

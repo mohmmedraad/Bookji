@@ -5,7 +5,7 @@ import { notFound, redirect } from "next/navigation"
 import { site } from "@/config/site"
 import { title } from "@/lib/utils"
 import { getCachedStore, getCachedUser } from "@/lib/utils/cachedResources"
-import { Separator } from "@/components/ui/Separator"
+import { Separator } from "@/components/ui/separator"
 
 import DashboardNav from "../_components/DashboardNav"
 import PageHeading from "../_components/PageHeading"

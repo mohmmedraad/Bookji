@@ -3,17 +3,17 @@ import Link from "next/link"
 import type { EmailAddress } from "@clerk/nextjs/server"
 
 import { navLinks } from "@/config/site"
+import { getCachedUser } from "@/lib/utils/cachedResources"
+import { buttonVariants } from "@/components/ui/button"
+import Container from "@/components/ui/container"
+import NavLink from "@/components/ui/nav-link"
+import { Separator } from "@/components/ui/separator"
 
 import Cart from "./Cart"
 import { Icons } from "./Icons"
 import MobileNav from "./MobileNav"
-import AuthLink from "./ui/AuthLink"
-import { buttonVariants } from "./ui/Button"
-import Container from "./ui/Container"
-import NavLink from "./ui/NavLink"
-import { Separator } from "./ui/Separator"
+import AuthLink from "./ui/auth-link"
 import { UserAccountNav } from "./UserAccountNav"
-import { getCachedUser } from "@/lib/utils/cachedResources"
 
 function getUserPrimaryEmailAddress(
     emailAddresses: EmailAddress[],
@@ -25,7 +25,7 @@ function getUserPrimaryEmailAddress(
 
 const NavBar: FC = async ({}) => {
     const user = await getCachedUser()
-    
+
     let primaryEmailAddress: string | undefined
 
     if (user != null) {

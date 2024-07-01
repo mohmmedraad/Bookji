@@ -5,17 +5,17 @@ import { BookUp } from "lucide-react"
 
 import { type BookFormSchema } from "@/lib/validations/book"
 import { useCreateBook } from "@/hooks/useCreateBook"
-import { Separator } from "@/components/ui/Separator"
-
-import BookForm from "./BookForm"
-import { Button } from "./ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "./ui/Dialog"
+} from "@/components/ui/dialog"
+import { Separator } from "@/components/ui/separator"
+
+import BookForm from "./BookForm"
 
 interface AddBookDialogProps {}
 

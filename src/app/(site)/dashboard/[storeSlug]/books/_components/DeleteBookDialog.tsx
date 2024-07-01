@@ -5,7 +5,7 @@ import {
     type SetStateAction,
 } from "react"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,
@@ -14,11 +14,11 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/Dialog"
+} from "@/components/ui/dialog"
 import {
     DropdownMenuItem,
     DropdownMenuShortcut,
-} from "@/components/ui/DropdownMenu"
+} from "@/components/ui/dropdown-menu"
 
 interface DeleteBookDialogProps
     extends ButtonHTMLAttributes<HTMLButtonElement> {

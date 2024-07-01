@@ -3,16 +3,16 @@
 import { type FC } from "react"
 
 import { useGeneralInformationForm } from "@/hooks/useGeneralInformationForm"
-import { Button } from "@/components/ui/Button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/Form"
-import { Input } from "@/components/ui/Input"
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
 
 interface GeneralInformationProps {
     firstName: string | null

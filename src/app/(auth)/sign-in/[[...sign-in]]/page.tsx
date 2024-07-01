@@ -4,7 +4,7 @@ import Image from "next/image"
 import { redirect } from "next/navigation"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 import SignIn from "@/components/auth/SignIn"
 
 interface pageProps {

@@ -4,14 +4,14 @@ import { type FC } from "react"
 
 import { type StoreInfoSchema } from "@/lib/validations/store"
 import { useUpdateStore } from "@/hooks/useUpdateStore"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/Card"
+} from "@/components/ui/card"
 import {
     Form,
     FormControl,
@@ -19,9 +19,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/Form"
-import { Input } from "@/components/ui/Input"
-import { Textarea } from "@/components/ui/Textarea"
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 
 import DeleteStoreDialog from "./DeleteStoreDialog"
 

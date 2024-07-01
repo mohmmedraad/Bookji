@@ -4,9 +4,8 @@ import {
     useRangeFilterOption,
     type UseRangeFilterOptionProps,
 } from "@/hooks/useRangeFilterOption"
-
-import { Input } from "./Input"
-import { Slider } from "./Slider"
+import { Input } from "@/components/ui/input"
+import { Slider } from "@/components/ui/slider"
 
 interface RangeFilterOptionProps extends UseRangeFilterOptionProps {
     step?: number

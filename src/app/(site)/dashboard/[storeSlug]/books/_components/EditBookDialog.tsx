@@ -11,9 +11,9 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/Dialog"
-import { DropdownMenuItem } from "@/components/ui/DropdownMenu"
-import { Separator } from "@/components/ui/Separator"
+} from "@/components/ui/dialog"
+import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
+import { Separator } from "@/components/ui/separator"
 import BookForm from "@/components/BookForm"
 
 interface EditBookDialogProps {

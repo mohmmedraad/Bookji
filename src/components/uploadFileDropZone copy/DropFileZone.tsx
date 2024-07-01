@@ -1,6 +1,6 @@
 import React, { type FC } from "react"
 
-import { Label } from "../ui/Label"
+import { Label } from "@/components/ui/label"
 
 interface DropFileZoneProps {
     uploadContent: React.ReactNode

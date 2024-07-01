@@ -16,8 +16,9 @@ import {
     type VisibilityState,
 } from "@tanstack/react-table"
 
-import { DataTablePagination } from "@/components/ui/DataTablePagination"
-import { DataTableToolbar } from "@/components/ui/DataTableToolbar"
+import { DataTablePagination } from "@/components/ui/data-table-pagination"
+import { DataTableToolbar } from "@/components/ui/data-table-toolbar"
+import { Skeleton } from "@/components/ui/skeleton"
 import {
     Table,
     TableBody,
@@ -25,9 +26,7 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/Table"
-
-import { Skeleton } from "./Skeleton"
+} from "@/components/ui/table"
 
 interface DataTableProps<TData, TValue> {
     columns: ColumnDef<TData, TValue>[]

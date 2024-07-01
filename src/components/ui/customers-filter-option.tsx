@@ -3,10 +3,10 @@ import { useRouter } from "next/navigation"
 import { useStore } from "@/store/useStore"
 import { toast } from "sonner"
 
+import MultiSelectFilterOption from "@/components/ui/multi-select-filter-option"
 import { trpc } from "@/app/_trpc/client"
 
 import { UserAvatar } from "../UserAvatar"
-import MultiSelectFilterOption from "./MultiSelectFilterOption"
 
 interface CustomersFilterOptionProps {}
 

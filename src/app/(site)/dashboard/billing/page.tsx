@@ -6,16 +6,16 @@ import { Check } from "lucide-react"
 import { subscriptionPlans } from "@/config/site"
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import { getSubscriptionPlan } from "@/lib/utils/subscription"
-import { Badge } from "@/components/ui/Badge"
-import { Button } from "@/components/ui/Button"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/Card"
-import { Separator } from "@/components/ui/Separator"
+} from "@/components/ui/card"
+import { Separator } from "@/components/ui/separator"
 
 import PageHeading from "../_components/PageHeading"
 import ManageSubscriptionButton from "./_components/ManageSubscriptionButton"

@@ -7,10 +7,9 @@ import { toast } from "sonner"
 import { handleGenericError } from "@/lib/utils"
 import useDebounce from "@/hooks/useDebounce"
 import { useIsMount } from "@/hooks/useIsMount"
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 import { trpc } from "@/app/_trpc/client"
-
-import { Button } from "./ui/Button"
-import { Input } from "./ui/Input"
 
 interface EditQuantityProps {
     bookId: number

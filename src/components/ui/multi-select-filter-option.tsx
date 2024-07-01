@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useQueryState } from "nuqs"
 
-import { MultiSelect } from "./MultiSelect"
+import { MultiSelect } from "@/components/ui/multi-select"
 
 type Option = {
     id: number | string

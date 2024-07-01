@@ -4,16 +4,16 @@ import { type FC } from "react"
 import Image from "next/image"
 import useCart from "@/store/useCart"
 
-import BookWrapper from "@/components/ui/BookWrapper"
+import BookWrapper from "@/components/ui/book-wrapper"
 import {
     Card,
     CardContent,
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/Card"
-import { ScrollArea } from "@/components/ui/ScrollArea"
-import { Skeleton } from "@/components/ui/Skeleton"
+} from "@/components/ui/card"
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Skeleton } from "@/components/ui/skeleton"
 import CartItem from "@/components/CartItem"
 import { trpc } from "@/app/_trpc/client"
 

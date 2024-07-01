@@ -5,9 +5,9 @@ import Link from "next/link"
 import { Github } from "lucide-react"
 
 import { books } from "@/config/site"
-import BookCover from "@/components/ui/BookCover"
-import { buttonVariants } from "@/components/ui/Button"
-import Container from "@/components/ui/Container"
+import BookCover from "@/components/ui/book-cover"
+import { buttonVariants } from "@/components/ui/button"
+import Container from "@/components/ui/container"
 import HeroSvg from "@/components/HeroSvg"
 
 const Hero: FC = ({}) => {

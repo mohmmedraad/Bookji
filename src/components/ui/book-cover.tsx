@@ -1,7 +1,7 @@
 import type { FC, HTMLAttributes } from "react"
 import Image from "next/image"
 
-import BookWrapper from "./BookWrapper"
+import BookWrapper from "./book-wrapper"
 
 interface BookProps extends HTMLAttributes<HTMLDivElement> {
     src: string

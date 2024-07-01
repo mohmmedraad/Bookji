@@ -1,7 +1,7 @@
 import React from "react"
 
-import ClearFiltersButton from "./ClearFiltersButton"
-import { ScrollArea } from "./ScrollArea"
+import ClearFiltersButton from "@/components/ui/clear-filters-button"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import {
     Sheet,
     SheetContent,
@@ -9,7 +9,7 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "./Sheet"
+} from "@/components/ui/sheet"
 
 interface FilterProps {
     renderButton: React.FC

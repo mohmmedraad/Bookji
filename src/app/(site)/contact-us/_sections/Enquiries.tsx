@@ -1,6 +1,6 @@
 import { type FC } from "react"
 
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 
 interface EnquiriesProps {}
 

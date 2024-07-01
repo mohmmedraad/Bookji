@@ -6,8 +6,7 @@ import { useQueryState } from "nuqs"
 import { cn } from "@/lib/utils"
 import useDebounce from "@/hooks/useDebounce"
 import { useIsMount } from "@/hooks/useIsMount"
-
-import { Input } from "./Input"
+import { Input } from "@/components/ui/input"
 
 interface SearchInputProps extends HTMLAttributes<HTMLInputElement> {
     param?: string

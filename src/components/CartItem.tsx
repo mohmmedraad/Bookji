@@ -5,13 +5,13 @@ import { Trash } from "lucide-react"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
+import Book from "@/components/ui/book-cover"
+import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import { trpc } from "@/app/_trpc/client"
 
 import EditQuantity from "./EditQuantity"
 import Price from "./Price"
-import Book from "./ui/BookCover"
-import { Button } from "./ui/Button"
-import { Separator } from "./ui/Separator"
 
 interface CartItemProps {
     bookId: number

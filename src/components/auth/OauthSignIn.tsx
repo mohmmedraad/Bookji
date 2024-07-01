@@ -8,9 +8,9 @@ import { type OAuthStrategy } from "@clerk/types"
 import { oauthProviders } from "@/config/site"
 import { handleGenericError } from "@/lib/utils"
 import { clerkError, handleSessionExistsError } from "@/lib/utils/auth"
+import { Button } from "@/components/ui/button"
 
 import { Icons } from "../Icons"
-import { Button } from "../ui/Button"
 
 interface OauthSignInProps {
     redirectUrlComplete?: string

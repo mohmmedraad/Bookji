@@ -2,9 +2,9 @@ import { type FC } from "react"
 
 import { books, socialMediaLinks } from "@/config/site"
 import { cn } from "@/lib/utils"
-import BookCover from "@/components/ui/BookCover"
-import { buttonVariants } from "@/components/ui/Button"
-import Container from "@/components/ui/Container"
+import BookCover from "@/components/ui/book-cover"
+import { buttonVariants } from "@/components/ui/button"
+import Container from "@/components/ui/container"
 import { Icons } from "@/components/Icons"
 
 interface AboutUsProps {}

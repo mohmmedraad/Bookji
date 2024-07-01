@@ -7,7 +7,7 @@ import { valibotResolver } from "@hookform/resolvers/valibot"
 import { useForm } from "react-hook-form"
 
 import { cookiesSettingsSchema } from "@/lib/validations/auth"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
     Form,
     FormControl,
@@ -15,8 +15,8 @@ import {
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/Form"
-import { Switch } from "@/components/ui/Switch"
+} from "@/components/ui/form"
+import { Switch } from "@/components/ui/switch"
 
 interface CookiesSettingsProps {}
 

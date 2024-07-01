@@ -12,15 +12,15 @@ import {
     type NewStoreSchema,
 } from "@/lib/validations/store"
 import { useCreateStore } from "@/hooks/useCreateStore"
-import { Button } from "@/components/ui/Button"
-import { Card } from "@/components/ui/Card"
+import { Button } from "@/components/ui/button"
+import { Card } from "@/components/ui/card"
 import {
     Dialog,
     DialogContent,
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/Dialog"
+} from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
@@ -29,9 +29,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/Form"
-import { Input } from "@/components/ui/Input"
-import { Textarea } from "@/components/ui/Textarea"
+} from "@/components/ui/form"
+import { Input } from "@/components/ui/input"
+import { Textarea } from "@/components/ui/textarea"
 import UploadingZone from "@/components/uploadFileDropZone copy/UploadingZone"
 
 interface CreateStoreButtonProps {}

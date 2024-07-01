@@ -3,9 +3,9 @@
 import { Cross2Icon } from "@radix-ui/react-icons"
 import { type Table } from "@tanstack/react-table"
 
-import { Button } from "@/components/ui/Button"
-import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
-import SearchInput from "@/components/ui/SearchInput"
+import { Button } from "@/components/ui/button"
+import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
+import SearchInput from "@/components/ui/search-input"
 
 import OrdersFilter from "./OrdersFilter"
 

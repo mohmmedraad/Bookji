@@ -5,8 +5,7 @@ import { Search } from "lucide-react"
 
 import { cn } from "@/lib/utils"
 import { useSearchBar } from "@/hooks/useSearchBar"
-
-import { Input } from "./Input"
+import { Input } from "@/components/ui/input"
 
 interface SearchBarProps extends HTMLAttributes<HTMLDivElement> {
     param?: string

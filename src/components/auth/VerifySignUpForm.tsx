@@ -15,8 +15,7 @@ import {
 } from "@/lib/utils/auth"
 import useCount from "@/hooks/useCount"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"
-
-import { Button } from "../ui/Button"
+import { Button } from "@/components/ui/button"
 
 const VerifySignUpForm: FC = () => {
     const { countdownTime, restartCountdown } = useCount({

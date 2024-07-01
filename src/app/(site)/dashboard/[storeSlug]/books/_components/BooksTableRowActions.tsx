@@ -6,13 +6,13 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type Row, type Table } from "@tanstack/react-table"
 
 import { useDeleteBooks } from "@/hooks/useDeleteBooks"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu"
+} from "@/components/ui/dropdown-menu"
 
 import DeleteBookDialog from "./DeleteBookDialog"
 import EditBookDialog from "./EditBookDialog"

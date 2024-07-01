@@ -1,7 +1,7 @@
 import { forwardRef, type FC } from "react"
 import Link from "next/link"
 
-import Book from "@/components/ui/BookCover"
+import Book from "@/components/ui/book-cover"
 
 interface ShopBookProps {
     title: string

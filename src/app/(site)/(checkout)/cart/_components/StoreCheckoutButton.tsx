@@ -3,7 +3,7 @@ import { useRouter } from "next/navigation"
 import { type ExtendedCartItem } from "@/store/useCart"
 import { toast } from "sonner"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { trpc } from "@/app/_trpc/client"
 
 interface StoreCheckoutButtonProps {

@@ -3,9 +3,9 @@ import { type Metadata } from "next"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 
-import { buttonVariants } from "@/components/ui/Button"
-import Container from "@/components/ui/Container"
-import GoBackButton from "@/components/ui/GoBackButton"
+import { buttonVariants } from "@/components/ui/button"
+import Container from "@/components/ui/container"
+import GoBackButton from "@/components/ui/go-back-button"
 import { Icons } from "@/components/Icons"
 
 interface NotFoundProps {}

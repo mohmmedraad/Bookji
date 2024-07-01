@@ -3,7 +3,7 @@
 import { type FC } from "react"
 import { useUserInfo } from "@/store/useUserInfo"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { UserAvatar } from "@/components/UserAvatar"
 
 import ChangeAvatarButton from "./ChangeAvatarButton"

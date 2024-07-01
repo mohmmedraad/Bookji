@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import { PencilLine } from "lucide-react"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 
 interface ChangeAvatarButtonProps {}
 

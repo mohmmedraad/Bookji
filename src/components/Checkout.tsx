@@ -5,9 +5,8 @@ import Link from "next/link"
 import useCart from "@/store/useCart"
 
 import { cn, getCartTotal } from "@/lib/utils"
-
-import { buttonVariants } from "./ui/Button"
-import { Separator } from "./ui/Separator"
+import { buttonVariants } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 
 interface CheckOutProps {}
 

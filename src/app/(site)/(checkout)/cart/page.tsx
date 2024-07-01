@@ -5,8 +5,8 @@ import { notFound, redirect } from "next/navigation"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import { getCart } from "@/lib/utils/cart"
-import { buttonVariants } from "@/components/ui/Button"
-import Container from "@/components/ui/Container"
+import { buttonVariants } from "@/components/ui/button"
+import Container from "@/components/ui/container"
 
 import StoreCheckoutCard from "./_components/StoreCheckoutCard"
 

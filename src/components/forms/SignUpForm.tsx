@@ -24,7 +24,7 @@ import {
     sendSignUpVerificationEmail,
 } from "@/lib/utils/auth"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,
@@ -32,8 +32,8 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/Form"
-import { Input as FormInput } from "@/components/ui/Input"
+} from "@/components/ui/form"
+import { Input as FormInput } from "@/components/ui/input"
 
 const signUpFormSchema = object({
     email: string([

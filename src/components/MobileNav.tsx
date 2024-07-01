@@ -2,9 +2,9 @@ import type { FC } from "react"
 import Link from "next/link"
 
 import { navLinks } from "@/config/site"
+import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 
 import { Icons } from "./Icons"
-import { Sheet, SheetContent, SheetTrigger } from "./ui/Sheet"
 
 const MobileNav: FC = ({}) => {
     return (
