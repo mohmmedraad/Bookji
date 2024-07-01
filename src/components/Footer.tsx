@@ -3,8 +3,7 @@ import Link from "next/link"
 
 import { footerLinks } from "@/config/site"
 import Container from "@/components/ui/container"
-
-import { Icons } from "./Icons"
+import { Icons } from "@/components/icons"
 
 interface FooterProps {}
 

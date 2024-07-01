@@ -12,11 +12,10 @@ import {
     SheetTitle,
     SheetTrigger,
 } from "@/components/ui/sheet"
+import CartItems from "@/components/cart-items"
+import Checkout from "@/components/checkout"
+import { Icons } from "@/components/icons"
 import { trpc } from "@/app/_trpc/client"
-
-import CartItems from "./CartItems"
-import Checkout from "./Checkout"
-import { Icons } from "./Icons"
 
 const Cart: FC = () => {
     const setCartBooks = useCart((state) => state.setCartBooks)

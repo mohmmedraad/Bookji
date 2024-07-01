@@ -4,7 +4,7 @@ import { type CustomerColumn } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
-import { UserAvatar } from "@/components/UserAvatar"
+import { UserAvatar } from "@/components/user-avatar"
 
 export const Columns: ColumnDef<CustomerColumn>[] = [
     {

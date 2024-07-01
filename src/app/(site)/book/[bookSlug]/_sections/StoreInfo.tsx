@@ -1,7 +1,7 @@
 import { type FC } from "react"
 
 import { getBook } from "@/lib/utils/cachedResources"
-import { UserAvatar } from "@/components/UserAvatar"
+import { UserAvatar } from "@/components/user-avatar"
 
 interface UserInfoProps {
     bookSlug: string

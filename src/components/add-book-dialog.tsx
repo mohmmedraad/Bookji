@@ -14,8 +14,7 @@ import {
     DialogTrigger,
 } from "@/components/ui/dialog"
 import { Separator } from "@/components/ui/separator"
-
-import BookForm from "./BookForm"
+import BookForm from "@/components/book-form"
 
 interface AddBookDialogProps {}
 

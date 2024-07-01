@@ -1,6 +1,6 @@
 import { type OauthProvider, type SubscriptionPlan } from "@/types"
 
-import { Icons } from "@/components/Icons"
+import { Icons } from "@/components/icons"
 
 const links = {
     github: "https://github.com/mohammedraad/Bookji",

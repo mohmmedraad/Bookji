@@ -8,12 +8,12 @@ import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 import NavLink from "@/components/ui/nav-link"
 import { Separator } from "@/components/ui/separator"
+import Cart from "@/components/cart"
+import { Icons } from "@/components/icons"
+import MobileNav from "@/components/mobile-nav"
+import { UserAccountNav } from "@/components/user-account-nav"
 
-import Cart from "./Cart"
-import { Icons } from "./Icons"
-import MobileNav from "./MobileNav"
 import AuthLink from "./ui/auth-link"
-import { UserAccountNav } from "./UserAccountNav"
 
 function getUserPrimaryEmailAddress(
     emailAddresses: EmailAddress[],

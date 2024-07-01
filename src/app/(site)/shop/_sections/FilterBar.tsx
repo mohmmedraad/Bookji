@@ -3,7 +3,7 @@
 import { useState, type FC } from "react"
 
 import SearchBar from "@/components/ui/search-bar"
-import MobileSearchBar from "@/components/MobileSearchBar"
+import MobileSearchBar from "@/components/mobile-search-bar"
 
 import ShopFilter from "./ShopFilter"
 

@@ -5,7 +5,7 @@ import { redirect } from "next/navigation"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import Container from "@/components/ui/container"
-import SignUp from "@/components/auth/SignUp"
+import SignUp from "@/components/auth/sign-up"
 
 interface pageProps {
     searchParams: {

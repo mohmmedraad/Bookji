@@ -8,7 +8,7 @@ import { books } from "@/config/site"
 import BookCover from "@/components/ui/book-cover"
 import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/container"
-import HeroSvg from "@/components/HeroSvg"
+import HeroSvg from "@/components/hero-svg"
 
 const Hero: FC = ({}) => {
     return (

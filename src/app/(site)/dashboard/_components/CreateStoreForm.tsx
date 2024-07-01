@@ -32,7 +32,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
-import UploadingZone from "@/components/uploadFileDropZone copy/UploadingZone"
+import UploadingZone from "@/components/upload-file-drop-zone/uploading-zone"
 
 interface CreateStoreButtonProps {}
 

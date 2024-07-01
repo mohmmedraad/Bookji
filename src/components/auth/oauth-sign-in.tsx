@@ -9,8 +9,7 @@ import { oauthProviders } from "@/config/site"
 import { handleGenericError } from "@/lib/utils"
 import { clerkError, handleSessionExistsError } from "@/lib/utils/auth"
 import { Button } from "@/components/ui/button"
-
-import { Icons } from "../Icons"
+import { Icons } from "@/components/icons"
 
 interface OauthSignInProps {
     redirectUrlComplete?: string

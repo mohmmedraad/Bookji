@@ -21,7 +21,7 @@ import {
     CardTitle,
 } from "@/components/ui/card"
 import { DataTable } from "@/components/ui/data-table"
-import { Icons } from "@/components/Icons"
+import { Icons } from "@/components/icons"
 
 import { Columns } from "../orders/_components/OrdersColumns"
 import Charts from "./_components/Charts"

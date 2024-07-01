@@ -1,7 +1,7 @@
 import { type FC } from "react"
 
 import { Separator } from "@/components/ui/separator"
-import { UserAvatar } from "@/components/UserAvatar"
+import { UserAvatar } from "@/components/user-avatar"
 
 import Stars from "./Stars"
 

@@ -10,7 +10,7 @@ import { useUpdateLogo } from "@/hooks/useUpdateLogo"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
-import UploadingZone from "@/components/uploadFileDropZone copy/UploadingZone"
+import UploadingZone from "@/components/upload-file-drop-zone/uploading-zone"
 
 interface UpdateLogoButtonProps {}
 

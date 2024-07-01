@@ -5,8 +5,8 @@ import { type Table } from "@tanstack/react-table"
 
 import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
 import SearchInput from "@/components/ui/search-input"
-import AddBookDialog from "@/components/AddBookDialog"
-import MobileSearchBar from "@/components/MobileSearchBar"
+import AddBookDialog from "@/components/add-book-dialog"
+import MobileSearchBar from "@/components/mobile-search-bar"
 
 import DashboardBooksFilter from "./BooksFilter"
 

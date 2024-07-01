@@ -21,7 +21,7 @@ import {
     type cartItemSchema,
     type checkoutItemSchema,
 } from "@/lib/validations/cart"
-import { type Icons } from "@/components/Icons"
+import { type Icons } from "@/components/icons"
 import { type OurFileRouter } from "@/app/api/uploadthing/core"
 
 export type CartItem = Input<typeof cartItemSchema>

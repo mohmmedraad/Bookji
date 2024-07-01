@@ -6,7 +6,7 @@ import { ArrowLeft } from "lucide-react"
 import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 import GoBackButton from "@/components/ui/go-back-button"
-import { Icons } from "@/components/Icons"
+import { Icons } from "@/components/icons"
 
 interface NotFoundProps {}
 

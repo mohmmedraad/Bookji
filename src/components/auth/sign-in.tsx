@@ -4,9 +4,9 @@ import { useEffect, type FC } from "react"
 import Link from "next/link"
 import useSignInForm from "@/store/useSignInForm"
 
-import SignInForm from "../forms/SignInForm"
-import OauthSignIn from "./OauthSignIn"
-import VerifySignInForm from "./VerifySignInForm"
+import SignInForm from "@/components/forms/sign-in-form"
+import OauthSignIn from "@/components/auth/oauth-sign-in"
+import VerifySignInForm from "@/components/auth/verify-sign-in-form"
 
 interface SignInProps {
     origin: string | undefined

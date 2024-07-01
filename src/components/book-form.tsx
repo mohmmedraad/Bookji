@@ -28,7 +28,7 @@ import { MultiSelect } from "@/components/ui/multi-select"
 import { Textarea } from "@/components/ui/textarea"
 import { trpc } from "@/app/_trpc/client"
 
-import UploadingZone from "./uploadFileDropZone copy/UploadingZone"
+import UploadingZone from "./upload-file-drop-zone/uploading-zone"
 
 interface BookFormProps extends Partial<BookFormSchema> {
     isLoading?: boolean

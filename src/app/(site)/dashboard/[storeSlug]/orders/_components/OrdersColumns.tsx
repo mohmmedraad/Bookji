@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import Book from "@/components/ui/book-cover"
 import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
-import { UserAvatar } from "@/components/UserAvatar"
+import { UserAvatar } from "@/components/user-avatar"
 
 export const Columns: ColumnDef<OrderColumn>[] = [
     {

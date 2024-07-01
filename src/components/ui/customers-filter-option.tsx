@@ -4,9 +4,8 @@ import { useStore } from "@/store/useStore"
 import { toast } from "sonner"
 
 import MultiSelectFilterOption from "@/components/ui/multi-select-filter-option"
+import { UserAvatar } from "@/components/user-avatar"
 import { trpc } from "@/app/_trpc/client"
-
-import { UserAvatar } from "../UserAvatar"
 
 interface CustomersFilterOptionProps {}
 

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { DropdownMenuItem } from "@/components/ui/dropdown-menu"
 import { Separator } from "@/components/ui/separator"
-import BookForm from "@/components/BookForm"
+import BookForm from "@/components/book-form"
 
 interface EditBookDialogProps {
     book: Omit<BookFormSchema, "categories"> & { id: number }

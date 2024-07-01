@@ -2,8 +2,8 @@ import { type FC, type HtmlHTMLAttributes, type ReactNode } from "react"
 
 import { type Testimonial } from "@/config/site"
 import { cn } from "@/lib/utils"
+import { Icons } from "@/components/icons"
 
-import { Icons } from "./Icons"
 import { Avatar, AvatarImage } from "./ui/avatar"
 
 interface TestimonialCardProps

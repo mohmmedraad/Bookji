@@ -8,10 +8,9 @@ import { handleGenericError } from "@/lib/utils"
 import Book from "@/components/ui/book-cover"
 import { Button } from "@/components/ui/button"
 import { Separator } from "@/components/ui/separator"
+import EditQuantity from "@/components/edit-quantity"
+import Price from "@/components/price"
 import { trpc } from "@/app/_trpc/client"
-
-import EditQuantity from "./EditQuantity"
-import Price from "./Price"
 
 interface CartItemProps {
     bookId: number

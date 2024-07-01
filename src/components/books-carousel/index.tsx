@@ -12,8 +12,8 @@ import "swiper/css/scrollbar"
 
 import Client from "@/components/ui/client"
 
-import SwiperSlide from "./Slide"
-import SwiperNavButtons from "./SwiperNavButtons"
+import SwiperSlide from "./slide"
+import SwiperNavButtons from "./swiper-nav-buttons"
 
 interface BookCarouselProps {
     items: BooksType

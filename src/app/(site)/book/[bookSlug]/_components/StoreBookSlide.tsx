@@ -5,7 +5,7 @@ import Link from "next/link"
 import { SwiperSlide } from "swiper/react"
 
 import Book from "@/components/ui/book-cover"
-import MaskText from "@/components/MaskText"
+import MaskText from "@/components/mask-text"
 
 interface SlideProps {
     id: number

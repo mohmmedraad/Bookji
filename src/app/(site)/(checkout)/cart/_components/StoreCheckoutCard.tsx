@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
-import CartItem from "@/components/CartItem"
+import CartItem from "@/components/cart-item"
 import { trpc } from "@/app/_trpc/client"
 
 import StoreCheckoutButton from "./StoreCheckoutButton"

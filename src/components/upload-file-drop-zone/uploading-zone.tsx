@@ -5,9 +5,9 @@ import { type BlobSchema } from "valibot"
 import { cn } from "@/lib/utils"
 import { useUploadFile } from "@/hooks/useUploadFile"
 
-import DropdownZoneOverlay from "./DropdownZoneOverlay"
-import DropFileZone from "./DropFileZone"
-import FilePreview from "./FilePreview"
+import DropFileZone from "./drop-file-zone"
+import DropdownZoneOverlay from "./dropdown-zone-overlay"
+import FilePreview from "./file-preview"
 
 interface UploadingZoneProps {
     className?: string

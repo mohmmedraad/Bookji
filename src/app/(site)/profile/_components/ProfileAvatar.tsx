@@ -4,7 +4,7 @@ import { type FC } from "react"
 import { useUserInfo } from "@/store/useUserInfo"
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { UserAvatar } from "@/components/UserAvatar"
+import { UserAvatar } from "@/components/user-avatar"
 
 import ChangeAvatarButton from "./ChangeAvatarButton"
 
