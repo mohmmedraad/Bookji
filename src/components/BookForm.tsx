@@ -15,7 +15,7 @@ import {
 import { Input as FormInput } from "@/components/ui/Input"
 import { trpc } from "@/app/_trpc/client"
 
-import Book from "./ui/BookCover"
+import Book from "./ui/book-cover"
 import { Button } from "./ui/button"
 import {
     Form,

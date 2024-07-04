@@ -2,7 +2,7 @@ import React from "react"
 import { type Metadata } from "next"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
-import Breadcrumbs from "@/components/ui/Breadcrumbs"
+import Breadcrumbs from "@/components/ui/breadcrumbs"
 import Container from "@/components/ui/Container"
 import { Separator } from "@/components/ui/Separator"
 

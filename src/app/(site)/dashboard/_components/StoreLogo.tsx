@@ -4,7 +4,7 @@ import Image from "next/image"
 import type { User } from "@clerk/nextjs/server"
 import { type AvatarProps } from "@radix-ui/react-avatar"
 
-import { Avatar, AvatarFallback } from "@/components/ui/Avatar"
+import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 
 interface StoreLogoProps extends AvatarProps {
     logo: string

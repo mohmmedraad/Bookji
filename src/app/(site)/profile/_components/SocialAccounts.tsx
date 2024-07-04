@@ -6,7 +6,7 @@ import { useUser } from "@clerk/nextjs"
 
 import { oauthProviders } from "@/config/site"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Icons } from "@/components/Icons"
 
 import ProfileAvatarSkeleton from "./ProfileAvatarSkeleton"

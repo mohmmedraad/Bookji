@@ -6,7 +6,7 @@ import { SwiperSlide } from "swiper/react"
 import { cn } from "@/lib/utils"
 
 import MaskText from "../MaskText"
-import BookCover from "../ui/BookCover"
+import BookCover from "../ui/book-cover"
 
 interface SlideProps {
     author: string

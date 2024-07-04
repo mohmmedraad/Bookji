@@ -4,7 +4,7 @@ import { type FC } from "react"
 import Link from "next/link"
 import { SwiperSlide } from "swiper/react"
 
-import Book from "@/components/ui/BookCover"
+import Book from "@/components/ui/book-cover"
 import MaskText from "@/components/MaskText"
 
 interface SlideProps {
@@ -15,13 +15,7 @@ interface SlideProps {
     isActive: boolean
 }
 
-const Slide: FC<SlideProps> = ({
-    id,
-    author,
-    title,
-    cover,
-    isActive,
-}) => {
+const Slide: FC<SlideProps> = ({ id, author, title, cover, isActive }) => {
     return (
         <SwiperSlide
             key={title}
@@ -41,11 +35,7 @@ const Slide: FC<SlideProps> = ({
                 <MaskText text={title} isActive={isActive} />
             </h4>
             <p className="-mt-2 text-sm text-gray-500">
-                <MaskText
-                    text={author}
-                    isActive={isActive}
-                    delay={0.25}
-                />
+                <MaskText text={author} isActive={isActive} delay={0.25} />
             </p>
         </SwiperSlide>
     )

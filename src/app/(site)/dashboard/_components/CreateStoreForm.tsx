@@ -13,7 +13,7 @@ import {
 } from "@/lib/validations/store"
 import { useCreateStore } from "@/hooks/useCreateStore"
 import { Button } from "@/components/ui/button"
-import { Card } from "@/components/ui/Card"
+import { Card } from "@/components/ui/card"
 import {
     Dialog,
     DialogContent,

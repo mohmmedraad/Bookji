@@ -1,6 +1,6 @@
 import { type FC } from "react"
 
-import BookWrapper from "@/components/ui/BookWrapper"
+import BookWrapper from "@/components/ui/book-wrapper"
 import { Skeleton } from "@/components/ui/Skeleton"
 
 interface ShopBookSkeletonProps {}

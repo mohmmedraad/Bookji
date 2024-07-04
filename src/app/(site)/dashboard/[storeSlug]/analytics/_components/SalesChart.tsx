@@ -3,7 +3,7 @@
 import { type FC } from "react"
 import { Chart, LineAdvance } from "bizcharts"
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
 interface SalesChartProps {
     data: Record<string, unknown>[]

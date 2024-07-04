@@ -11,7 +11,7 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/Card"
+} from "@/components/ui/card"
 
 import CreateStoreForm from "./_components/CreateStoreForm"
 import PageHeading from "./_components/PageHeading"

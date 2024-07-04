@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import { Skeleton } from "@nextui-org/react"
 
-import BookWrapper from "@/components/ui/BookWrapper"
+import BookWrapper from "@/components/ui/book-wrapper"
 
 interface StoreBooksSkeletonProps {}
 

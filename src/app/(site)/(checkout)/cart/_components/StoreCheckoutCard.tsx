@@ -4,14 +4,14 @@ import { type FC } from "react"
 import Image from "next/image"
 import useCart from "@/store/useCart"
 
-import BookWrapper from "@/components/ui/BookWrapper"
+import BookWrapper from "@/components/ui/book-wrapper"
 import {
     Card,
     CardContent,
     CardFooter,
     CardHeader,
     CardTitle,
-} from "@/components/ui/Card"
+} from "@/components/ui/card"
 import { ScrollArea } from "@/components/ui/ScrollArea"
 import { Skeleton } from "@/components/ui/Skeleton"
 import CartItem from "@/components/CartItem"

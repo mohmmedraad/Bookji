@@ -4,7 +4,7 @@ import { type FC } from "react"
 
 import { useGeneralInformationForm } from "@/hooks/useGeneralInformationForm"
 import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
     Form,
     FormControl,

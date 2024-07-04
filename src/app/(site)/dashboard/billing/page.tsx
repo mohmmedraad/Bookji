@@ -6,7 +6,7 @@ import { Check } from "lucide-react"
 import { subscriptionPlans } from "@/config/site"
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import { getSubscriptionPlan } from "@/lib/utils/subscription"
-import { Badge } from "@/components/ui/Badge"
+import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
     Card,
@@ -14,7 +14,7 @@ import {
     CardDescription,
     CardHeader,
     CardTitle,
-} from "@/components/ui/Card"
+} from "@/components/ui/card"
 import { Separator } from "@/components/ui/Separator"
 
 import PageHeading from "../_components/PageHeading"
