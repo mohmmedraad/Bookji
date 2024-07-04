@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import { Mail, MoveRight } from "lucide-react"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import Container from "@/components/ui/Container"
 import { Input } from "@/components/ui/Input"
 import { Textarea } from "@/components/ui/Textarea"
@@ -20,7 +20,7 @@ const ContactForm: FC<ContactFormProps> = ({}) => {
                     clipPath: "polygon(0 0, 100% 0, 100% 60%, 0 80%)",
                 }}
             />
-            <Container className="grid items-center gap-20 lg:grid-cols-2 isolate">
+            <Container className="isolate grid items-center gap-20 lg:grid-cols-2">
                 <div className="max-w-2xl">
                     <h2 className="text-[2.5rem] font-bold leading-none tracking-tighter text-white md:text-5xl">
                         Have a Problem!

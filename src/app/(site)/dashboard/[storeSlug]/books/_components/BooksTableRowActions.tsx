@@ -6,7 +6,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type Row, type Table } from "@tanstack/react-table"
 
 import { useDeleteBooks } from "@/hooks/useDeleteBooks"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,

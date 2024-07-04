@@ -2,7 +2,7 @@
 
 import { type FC, type HTMLAttributes } from "react"
 
-import { Button } from "./Button"
+import { Button } from "./button"
 
 interface ClearFiltersButtonProps extends HTMLAttributes<HTMLButtonElement> {}
 

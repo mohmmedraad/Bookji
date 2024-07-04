@@ -4,7 +4,7 @@ import { type FC } from "react"
 
 import { type StoreInfoSchema } from "@/lib/validations/store"
 import { useUpdateStore } from "@/hooks/useUpdateStore"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,

@@ -4,7 +4,7 @@ import { useQueryState } from "nuqs"
 
 import { cn } from "@/lib/utils"
 
-import { Button } from "./Button"
+import { Button } from "./button"
 
 interface DataTablePaginationProps<TData> {
     table: Table<TData>

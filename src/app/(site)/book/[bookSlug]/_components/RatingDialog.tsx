@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form"
 import { omit } from "valibot"
 
 import { rateBookSchema, type RateBookSchema } from "@/lib/validations/book"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,

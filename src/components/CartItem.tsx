@@ -10,7 +10,7 @@ import { trpc } from "@/app/_trpc/client"
 import EditQuantity from "./EditQuantity"
 import Price from "./Price"
 import Book from "./ui/BookCover"
-import { Button } from "./ui/Button"
+import { Button } from "./ui/button"
 import { Separator } from "./ui/Separator"
 
 interface CartItemProps {

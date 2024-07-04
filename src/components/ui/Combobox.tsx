@@ -4,7 +4,7 @@ import * as React from "react"
 import { CaretSortIcon, CheckIcon } from "@radix-ui/react-icons"
 
 import { cn } from "@/lib/utils"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Command,
     CommandGroup,
@@ -69,7 +69,7 @@ export const Combobox: React.FC<ComboboxDemoProps> = ({
                     className="pointer-events-auto h-9"
                 />
                 {open && (
-                    <div className="animate-in absolute top-0 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none">
+                    <div className="absolute top-0 w-full rounded-md border bg-popover text-popover-foreground shadow-md outline-none animate-in">
                         <CommandGroup>
                             {options.map((option) => (
                                 <CommandItem

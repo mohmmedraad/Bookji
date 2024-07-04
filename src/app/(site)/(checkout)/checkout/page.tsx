@@ -3,7 +3,7 @@ import Link from "next/link"
 import { redirect } from "next/navigation"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
-import { buttonVariants } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/Container"
 
 export const metadata: Metadata = {

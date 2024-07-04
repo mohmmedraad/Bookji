@@ -2,7 +2,7 @@ import type { FC } from "react"
 import Image from "next/image"
 import { Camera, PencilLine, Share2 } from "lucide-react"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import Container from "@/components/ui/Container"
 import ProfileContainer from "@/components/ui/ProfileContainer"
 import { Separator } from "@/components/ui/Separator"

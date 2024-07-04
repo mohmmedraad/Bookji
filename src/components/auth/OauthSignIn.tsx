@@ -10,7 +10,7 @@ import { handleGenericError } from "@/lib/utils"
 import { clerkError, handleSessionExistsError } from "@/lib/utils/auth"
 
 import { Icons } from "../Icons"
-import { Button } from "../ui/Button"
+import { Button } from "../ui/button"
 
 interface OauthSignInProps {
     redirectUrlComplete?: string

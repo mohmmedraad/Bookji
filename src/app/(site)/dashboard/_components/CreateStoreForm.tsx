@@ -12,7 +12,7 @@ import {
     type NewStoreSchema,
 } from "@/lib/validations/store"
 import { useCreateStore } from "@/hooks/useCreateStore"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/Card"
 import {
     Dialog,

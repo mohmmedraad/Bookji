@@ -9,7 +9,7 @@ import useDebounce from "@/hooks/useDebounce"
 import { useIsMount } from "@/hooks/useIsMount"
 import { trpc } from "@/app/_trpc/client"
 
-import { Button } from "./ui/Button"
+import { Button } from "./ui/button"
 import { Input } from "./ui/Input"
 
 interface EditQuantityProps {

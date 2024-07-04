@@ -7,7 +7,7 @@ import { subscriptionPlans } from "@/config/site"
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import { getSubscriptionPlan } from "@/lib/utils/subscription"
 import { Badge } from "@/components/ui/Badge"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,

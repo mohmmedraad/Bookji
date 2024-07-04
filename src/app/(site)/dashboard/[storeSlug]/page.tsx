@@ -7,7 +7,7 @@ import { and } from "drizzle-orm"
 import { cn, formatDate } from "@/lib/utils"
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import { getStripeAccount } from "@/lib/utils/stripe"
-import { buttonVariants } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/button"
 import {
     Card,
     CardContent,

@@ -4,7 +4,7 @@ import { Spinner } from "@nextui-org/react"
 import { toast } from "sonner"
 
 import { useDeleteStore } from "@/hooks/useDeleteStore"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Dialog,
     DialogContent,

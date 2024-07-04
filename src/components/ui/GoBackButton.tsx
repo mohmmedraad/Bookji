@@ -3,7 +3,7 @@
 import { type ComponentProps, type FC } from "react"
 import { useRouter } from "next/navigation"
 
-import { Button } from "./Button"
+import { Button } from "./button"
 
 interface GoBackButtonProps extends ComponentProps<typeof Button> {}
 

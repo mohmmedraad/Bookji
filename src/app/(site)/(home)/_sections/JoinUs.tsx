@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import Link from "next/link"
 
-import { buttonVariants } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/Container"
 
 interface JoinUsProps {}

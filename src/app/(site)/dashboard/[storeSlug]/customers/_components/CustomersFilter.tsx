@@ -1,7 +1,7 @@
 import { type FC } from "react"
 import { FilterIcon } from "lucide-react"
 
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import CustomersFilterOption from "@/components/ui/CustomersFilterOption"
 import Filter from "@/components/ui/Filter"
 import FilterLabel from "@/components/ui/FilterLabel"

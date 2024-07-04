@@ -8,7 +8,7 @@ import { trpc } from "@/app/_trpc/client"
 import CartItems from "./CartItems"
 import Checkout from "./Checkout"
 import { Icons } from "./Icons"
-import { Button } from "./ui/Button"
+import { Button } from "./ui/button"
 import { Separator } from "./ui/Separator"
 import {
     Sheet,

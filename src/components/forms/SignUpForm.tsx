@@ -24,7 +24,7 @@ import {
     sendSignUpVerificationEmail,
 } from "@/lib/utils/auth"
 import { useWebsiteURL } from "@/hooks/useWebsiteURL"
-import { Button } from "@/components/ui/Button"
+import { Button } from "@/components/ui/button"
 import {
     Form,
     FormControl,

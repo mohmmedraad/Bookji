@@ -6,7 +6,7 @@ import { Github } from "lucide-react"
 
 import { books } from "@/config/site"
 import BookCover from "@/components/ui/BookCover"
-import { buttonVariants } from "@/components/ui/Button"
+import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/Container"
 import HeroSvg from "@/components/HeroSvg"
 
