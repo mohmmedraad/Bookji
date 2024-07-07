@@ -43,7 +43,7 @@ const defaultValues: Partial<SignInFormSchema> = {
 }
 
 const SignInForm = () => {
-    const { isLoaded, signIn, setSession } = useSignIn()
+    const { isLoaded, signIn, setActive } = useSignIn()
     const setFormState = useSignInForm((state) => state.setFormState)
     const setEmailAddress = useSignInForm((state) => state.setEmailAddress)
     const origin = useSignInForm((state) => state.origin)
@@ -79,7 +79,12 @@ const SignInForm = () => {
     async function setUserSession() {
         if (isAuthNotComplete(signIn!.status)) return
 
-        await setSession!(signIn!.createdSessionId, handleSignInComplete)
+        if (!setActive) return
+
+        await setActive({
+            session: signIn.createdSessionId,
+        })
+        handleSignInComplete()
     }
 
     function handleSignInComplete() {

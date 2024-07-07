@@ -54,7 +54,7 @@ const defaultValues: Partial<SignUpFormSchema> = {
 }
 
 const SignUpForm = () => {
-    const { isLoaded, signUp, setSession } = useSignUp()
+    const { isLoaded, signUp, setActive } = useSignUp()
     const { setFormState, setEmailAddress, origin } = useSignUpForm()
     const form = useForm<SignUpFormSchema>({
         resolver: valibotResolver(signUpFormSchema),
@@ -91,7 +91,9 @@ const SignUpForm = () => {
     async function setUserSession() {
         if (isAuthNotComplete(signUp!.status)) return
 
-        await setSession!(signUp!.createdSessionId, handleSignUpComplete)
+        if (!setActive) return
+        await setActive({ session: signUp.createdSessionId })
+        handleSignUpComplete()
     }
 
     function handleSignUpComplete() {

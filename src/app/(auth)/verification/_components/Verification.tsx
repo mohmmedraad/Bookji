@@ -18,7 +18,7 @@ const Verification: React.FC<VerificationProps> = ({}) => {
         "__clerk_status"
     ) as VerificationStatus
 
-    const { handleMagicLinkVerification } = useClerk()
+    const { handleEmailLinkVerification } = useClerk()
     const { websiteURL } = useWebsiteURL()
     React.useEffect(() => {
         async function verify() {
@@ -28,7 +28,7 @@ const Verification: React.FC<VerificationProps> = ({}) => {
                     return
                 }
 
-                await handleMagicLinkVerification({
+                await handleEmailLinkVerification({
                     redirectUrl: `${websiteURL}/pending`,
                     redirectUrlComplete: `${websiteURL}`,
                 })
@@ -43,7 +43,7 @@ const Verification: React.FC<VerificationProps> = ({}) => {
         function handleMagicLinkVerificationError(_: unknown) {
             setVerificationStatus("failed")
         }
-    }, [websiteURL, handleMagicLinkVerification, verificationLinkStatus])
+    }, [websiteURL, handleEmailLinkVerification, verificationLinkStatus])
 
     if (verificationStatus === "loading") {
         return <div>Loading...</div>
