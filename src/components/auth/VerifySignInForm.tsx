@@ -3,7 +3,8 @@
 import { type FC } from "react"
 import { useRouter } from "next/navigation"
 import useSignInForm from "@/store/useSignInForm"
-import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
+import { useSignIn } from "@clerk/nextjs"
+import { isClerkAPIResponseError } from "@clerk/nextjs/errors"
 import { PenSquare } from "lucide-react"
 import { toast } from "sonner"
 

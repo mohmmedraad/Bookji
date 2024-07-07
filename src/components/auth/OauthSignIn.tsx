@@ -2,7 +2,8 @@
 
 import { useState, type FC } from "react"
 import { useRouter } from "next/navigation"
-import { isClerkAPIResponseError, useSignIn } from "@clerk/nextjs"
+import { useSignIn } from "@clerk/nextjs"
+import { isClerkAPIResponseError } from "@clerk/nextjs/errors"
 import { type OAuthStrategy } from "@clerk/types"
 
 import { oauthProviders } from "@/config/site"
