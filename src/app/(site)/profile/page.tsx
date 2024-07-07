@@ -32,7 +32,7 @@ const page: FC<pageProps> = async ({}) => {
                 username={user.username}
                 firstName={user.firstName}
                 lastName={user.lastName}
-                birthday={new Date(user.birthday)}
+                birthday={null}
             />
             <div className="flex flex-col items-start gap-8 md:flex-row">
                 <div className="grid w-full gap-8 md:w-80 md:shrink-0">
