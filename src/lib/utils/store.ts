@@ -70,9 +70,11 @@ export async function getStoreOrders(
     const customers = new Map<string, { id: string } & Customer>()
 
     if (customersUsernames.length !== 0) {
-        const customersAccounts = await clerkClient.users.getUserList({
-            username: customersUsernames,
-        })
+        const { data: customersAccounts } = await clerkClient.users.getUserList(
+            {
+                username: customersUsernames,
+            }
+        )
         customersAccounts.forEach(
             ({ username, firstName, lastName, imageUrl, id }) => {
                 customers.set(id, {
@@ -160,9 +162,11 @@ export async function getStoreOrders(
             ...new Set(orders.map((order) => order.customerId)),
         ]
 
-        const customersAccounts = await clerkClient.users.getUserList({
-            userId: customersIds,
-        })
+        const { data: customersAccounts } = await clerkClient.users.getUserList(
+            {
+                userId: customersIds,
+            }
+        )
 
         customersAccounts.forEach((customer) => {
             customers.set(customer.id, {
@@ -324,9 +328,11 @@ export async function getStoreCustomers(
     >()
 
     if (customersUsernames.length !== 0) {
-        const customersAccounts = await clerkClient.users.getUserList({
-            username: customersUsernames,
-        })
+        const { data: customersAccounts } = await clerkClient.users.getUserList(
+            {
+                username: customersUsernames,
+            }
+        )
         customersAccounts.forEach(
             ({
                 username,
@@ -399,9 +405,11 @@ export async function getStoreCustomers(
             ...new Set(customersOrders.map((order) => order.customerId)),
         ]
 
-        const customersAccounts = await clerkClient.users.getUserList({
-            userId: customersIds,
-        })
+        const { data: customersAccounts } = await clerkClient.users.getUserList(
+            {
+                userId: customersIds,
+            }
+        )
 
         customersAccounts.forEach((customer) => {
             customers.set(customer.id, {
