@@ -7,7 +7,7 @@ import { SpeedInsights } from "@vercel/speed-insights/next"
 import { Toaster } from "sonner"
 
 import { site } from "@/config/site"
-import Providers from "@/components/Providers"
+import Providers from "@/components/providers"
 
 const inter = Inter({
     subsets: ["latin"],

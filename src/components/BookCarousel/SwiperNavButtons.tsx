@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 
 import { Icons } from "../Icons"
 import { Button } from "../ui/button"
-import Container from "../ui/Container"
+import Container from "../ui/container"
 
 const SwiperNavButtons: FC = ({}) => {
     const swiper = useSwiper()

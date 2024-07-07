@@ -12,7 +12,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { ScrollArea } from "@/components/ui/ScrollArea"
+import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/Skeleton"
 import CartItem from "@/components/CartItem"
 import { trpc } from "@/app/_trpc/client"

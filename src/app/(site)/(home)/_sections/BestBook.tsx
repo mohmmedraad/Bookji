@@ -1,7 +1,7 @@
 import { type FC } from "react"
 
 import { books } from "@/config/site"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 import BookCarousel from "@/components/BookCarousel"
 
 const BestBook: FC = ({}) => {

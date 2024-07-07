@@ -8,7 +8,7 @@ import { type ColumnDef } from "@tanstack/react-table"
 import { cn } from "@/lib/utils"
 import { Badge } from "@/components/ui/badge"
 import Book from "@/components/ui/book-cover"
-import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 
 export const Columns: ColumnDef<PurchasesColumn>[] = [
     {

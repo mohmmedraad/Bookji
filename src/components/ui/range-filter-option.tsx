@@ -5,7 +5,7 @@ import {
     type UseRangeFilterOptionProps,
 } from "@/hooks/useRangeFilterOption"
 
-import { Input } from "./Input"
+import { Input } from "./input"
 import { Slider } from "./Slider"
 
 interface RangeFilterOptionProps extends UseRangeFilterOptionProps {

@@ -18,7 +18,7 @@ import {
 import {
     DropdownMenuItem,
     DropdownMenuShortcut,
-} from "@/components/ui/DropdownMenu"
+} from "@/components/ui/dropdown-menu"
 
 interface DeleteBookDialogProps
     extends ButtonHTMLAttributes<HTMLButtonElement> {

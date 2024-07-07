@@ -7,7 +7,7 @@ import { Command as CommandPrimitive } from "cmdk"
 
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { Command, CommandGroup, CommandItem } from "@/components/ui/Command"
+import { Command, CommandGroup, CommandItem } from "@/components/ui/command"
 
 type Option = {
     id: number | string

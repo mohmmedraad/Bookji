@@ -20,7 +20,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/Form"
-import { Input } from "@/components/ui/Input"
+import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/Textarea"
 
 import DeleteStoreDialog from "./DeleteStoreDialog"

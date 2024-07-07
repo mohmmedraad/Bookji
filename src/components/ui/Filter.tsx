@@ -1,7 +1,7 @@
 import React from "react"
 
-import ClearFiltersButton from "./ClearFiltersButton"
-import { ScrollArea } from "./ScrollArea"
+import ClearFiltersButton from "./clear-filters-button"
+import { ScrollArea } from "./scroll-area"
 import {
     Sheet,
     SheetContent,

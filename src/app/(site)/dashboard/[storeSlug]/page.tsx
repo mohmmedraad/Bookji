@@ -16,8 +16,8 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/Input"
-import { Label } from "@/components/ui/Label"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
 
 import ConnectToStripeButton from "./_components/ConnectToStripeButton"
 import UpdateStoreForm from "./_components/UpdateStoreForm"

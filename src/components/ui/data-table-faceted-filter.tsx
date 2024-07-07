@@ -13,7 +13,7 @@ import {
     CommandItem,
     CommandList,
     CommandSeparator,
-} from "@/components/ui/Command"
+} from "@/components/ui/command"
 import {
     Popover,
     PopoverContent,

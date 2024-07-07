@@ -6,7 +6,7 @@ import { site } from "@/config/site"
 import { title } from "@/lib/utils"
 import { getBook } from "@/lib/utils/cachedResources"
 import Book from "@/components/ui/book-cover"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 import BookProvider from "@/components/BookProvider"
 import { Icons } from "@/components/Icons"
 

@@ -3,7 +3,7 @@ import Image from "next/image"
 
 import { trpc } from "@/app/_trpc/client"
 
-import MultiSelectFilterOption from "./MultiSelectFilterOption"
+import MultiSelectFilterOption from "./multi-select-filter-option"
 
 interface StoresFilterOptionProps {}
 

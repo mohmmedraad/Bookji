@@ -11,7 +11,7 @@ import {
     DropdownMenuContent,
     DropdownMenuLabel,
     DropdownMenuSeparator,
-} from "@/components/ui/DropdownMenu"
+} from "@/components/ui/dropdown-menu"
 
 interface DataTableViewOptionsProps<TData> {
     table: Table<TData>

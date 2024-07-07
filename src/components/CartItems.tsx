@@ -5,7 +5,7 @@ import Link from "next/link"
 import useCart from "@/store/useCart"
 
 import CartItem from "./CartItem"
-import { ScrollArea } from "./ui/ScrollArea"
+import { ScrollArea } from "./ui/scroll-area"
 
 interface CartItemsProps {}
 

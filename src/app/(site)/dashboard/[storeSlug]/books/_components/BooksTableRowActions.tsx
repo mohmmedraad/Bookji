@@ -12,7 +12,7 @@ import {
     DropdownMenuContent,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/DropdownMenu"
+} from "@/components/ui/dropdown-menu"
 
 import DeleteBookDialog from "./DeleteBookDialog"
 import EditBookDialog from "./EditBookDialog"

@@ -3,7 +3,7 @@ import { type Metadata } from "next"
 import { redirect } from "next/navigation"
 
 import { getCachedUser } from "@/lib/utils/cachedResources"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 
 import CookiesSettings from "./_components/CookiesSettings"
 import EmailSetting from "./_components/EmailSetting"

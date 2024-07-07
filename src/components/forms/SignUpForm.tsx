@@ -33,7 +33,7 @@ import {
     FormLabel,
     FormMessage,
 } from "@/components/ui/Form"
-import { Input as FormInput } from "@/components/ui/Input"
+import { Input as FormInput } from "@/components/ui/input"
 
 const signUpFormSchema = object({
     email: string([

@@ -2,8 +2,8 @@ import { type FC } from "react"
 import { Mail, MoveRight } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import Container from "@/components/ui/Container"
-import { Input } from "@/components/ui/Input"
+import Container from "@/components/ui/container"
+import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/Textarea"
 
 interface ContactFormProps {}

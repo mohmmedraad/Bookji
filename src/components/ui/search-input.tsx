@@ -7,7 +7,7 @@ import { cn } from "@/lib/utils"
 import useDebounce from "@/hooks/useDebounce"
 import { useIsMount } from "@/hooks/useIsMount"
 
-import { Input } from "./Input"
+import { Input } from "./input"
 
 interface SearchInputProps extends HTMLAttributes<HTMLInputElement> {
     param?: string

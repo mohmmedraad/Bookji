@@ -3,8 +3,8 @@
 import { useState } from "react"
 import { type Table } from "@tanstack/react-table"
 
-import { DataTableViewOptions } from "@/components/ui/DataTableViewOptions"
-import SearchInput from "@/components/ui/SearchInput"
+import { DataTableViewOptions } from "@/components/ui/data-table-view-options"
+import SearchInput from "@/components/ui/search-input"
 import AddBookDialog from "@/components/AddBookDialog"
 import MobileSearchBar from "@/components/MobileSearchBar"
 

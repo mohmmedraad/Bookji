@@ -1,6 +1,6 @@
 import type { FC } from "react"
 
-import NavLink from "@/components/ui/NavLink"
+import NavLink from "@/components/ui/nav-link"
 
 interface ProfilePagesProps {}
 

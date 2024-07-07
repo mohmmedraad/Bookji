@@ -2,11 +2,11 @@ import { type FC } from "react"
 import { FilterIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import CategoriesFilterOption from "@/components/ui/CategoriesFilterOption"
+import CategoriesFilterOption from "@/components/ui/categories-filter-option"
 import Filter from "@/components/ui/Filter"
-import FilterLabel from "@/components/ui/FilterLabel"
-import FilterOption from "@/components/ui/FilterOption"
-import RangeFilterOption from "@/components/ui/RangeFilterOption"
+import FilterLabel from "@/components/ui/filter-label"
+import FilterOption from "@/components/ui/filter-option"
+import RangeFilterOption from "@/components/ui/range-filter-option"
 
 interface BooksFilterProps {}
 

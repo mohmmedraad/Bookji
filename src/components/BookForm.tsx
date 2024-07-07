@@ -12,7 +12,7 @@ import {
     bookFormSchema,
     type BookFormSchema,
 } from "@/lib/validations/book"
-import { Input as FormInput } from "@/components/ui/Input"
+import { Input as FormInput } from "@/components/ui/input"
 import { trpc } from "@/app/_trpc/client"
 
 import Book from "./ui/book-cover"
@@ -26,7 +26,7 @@ import {
     FormLabel,
     FormMessage,
 } from "./ui/Form"
-import { MultiSelect } from "./ui/MultiSelect"
+import { MultiSelect } from "./ui/multi-select"
 import { Textarea } from "./ui/Textarea"
 import UploadingZone from "./uploadFileDropZone copy/UploadingZone"
 

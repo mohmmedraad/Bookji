@@ -10,7 +10,7 @@ import {
     CommandGroup,
     CommandInput,
     CommandItem,
-} from "@/components/ui/Command"
+} from "@/components/ui/command"
 
 export interface Option {
     label: string

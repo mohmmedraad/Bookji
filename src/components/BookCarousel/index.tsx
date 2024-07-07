@@ -10,7 +10,7 @@ import "swiper/css"
 import "swiper/css/pagination"
 import "swiper/css/scrollbar"
 
-import Client from "../ui/Client"
+import Client from "../ui/client"
 import SwiperSlide from "./Slide"
 import SwiperNavButtons from "./SwiperNavButtons"
 

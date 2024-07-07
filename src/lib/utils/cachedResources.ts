@@ -5,7 +5,7 @@ import {
     orders as ordersTable,
     stores as storesTable,
 } from "@/db/schema"
-import { currentUser } from "@clerk/nextjs"
+import { currentUser } from "@clerk/nextjs/server"
 import { and, eq, sql } from "drizzle-orm"
 
 export const getCachedStore = cache(

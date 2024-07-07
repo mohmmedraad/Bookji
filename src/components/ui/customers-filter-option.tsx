@@ -6,7 +6,7 @@ import { toast } from "sonner"
 import { trpc } from "@/app/_trpc/client"
 
 import { UserAvatar } from "../UserAvatar"
-import MultiSelectFilterOption from "./MultiSelectFilterOption"
+import MultiSelectFilterOption from "./multi-select-filter-option"
 
 interface CustomersFilterOptionProps {}
 

@@ -4,7 +4,7 @@ import { useQueryState } from "nuqs"
 
 import useDebounce from "@/hooks/useDebounce"
 
-import { Input } from "./Input"
+import { Input } from "./input"
 
 interface DataTableToolbarSearchInputProps
     extends InputHTMLAttributes<HTMLInputElement> {

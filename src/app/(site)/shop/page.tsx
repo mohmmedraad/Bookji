@@ -5,7 +5,7 @@ import { parse } from "valibot"
 
 import { getShopPageBooks } from "@/lib/utils/store"
 import { getBooksSchema } from "@/lib/validations/book"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 
 import BooksFeed from "./_sections/BooksFeed"
 import FilterBar from "./_sections/FilterBar"

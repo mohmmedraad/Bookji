@@ -2,7 +2,7 @@ import { type FC } from "react"
 
 import { contactLinks } from "@/config/site"
 import { buttonVariants } from "@/components/ui/button"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 
 interface HeroProps {}
 

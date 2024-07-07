@@ -3,7 +3,7 @@ import Image from "next/image"
 import { ChevronRight } from "lucide-react"
 
 import { buttonVariants } from "@/components/ui/button"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 
 interface LocationsProps {}
 

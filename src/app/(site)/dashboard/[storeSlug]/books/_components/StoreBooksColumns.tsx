@@ -4,8 +4,8 @@ import type { BookColumn } from "@/types"
 import { type ColumnDef } from "@tanstack/react-table"
 
 import BookCover from "@/components/ui/book-cover"
-import { Checkbox } from "@/components/ui/Checkbox"
-import { DataTableColumnHeader } from "@/components/ui/DataTableColumnHeader"
+import { Checkbox } from "@/components/ui/checkbox"
+import { DataTableColumnHeader } from "@/components/ui/data-table-column-header"
 import Stars from "@/app/(site)/book/[bookSlug]/_components/Stars"
 
 import { BooksTableRowActions } from "./BooksTableRowActions"

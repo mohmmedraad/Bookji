@@ -10,7 +10,7 @@ import { useIsMount } from "@/hooks/useIsMount"
 import { trpc } from "@/app/_trpc/client"
 
 import { Button } from "./ui/button"
-import { Input } from "./ui/Input"
+import { Input } from "./ui/input"
 
 interface EditQuantityProps {
     bookId: number

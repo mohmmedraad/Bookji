@@ -1,7 +1,7 @@
 import { type FC } from "react"
 
 import { testimonials } from "@/config/site"
-import Container from "@/components/ui/Container"
+import Container from "@/components/ui/container"
 import TestimonialCard from "@/components/TestimonialCard"
 
 interface TestimonialsProps {}

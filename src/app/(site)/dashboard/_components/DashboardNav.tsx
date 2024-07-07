@@ -1,7 +1,7 @@
 import { type FC } from "react"
 
 import { cn } from "@/lib/utils"
-import NavLink from "@/components/ui/NavLink"
+import NavLink from "@/components/ui/nav-link"
 
 type Link = {
     href: string
