@@ -293,12 +293,16 @@ export const storeRouter = router({
                 return []
             }
 
-            const customersInfo = await clerkClient.users.getUserList({
-                // remove duplicates from userIds
-                userId: [
-                    ...new Set(customersIds.map((customer) => customer.userId)),
-                ],
-            })
+            const { data: customersInfo } = await clerkClient.users.getUserList(
+                {
+                    // remove duplicates from userIds
+                    userId: [
+                        ...new Set(
+                            customersIds.map((customer) => customer.userId)
+                        ),
+                    ],
+                }
+            )
 
             if (customersInfo.length === 0) {
                 return []

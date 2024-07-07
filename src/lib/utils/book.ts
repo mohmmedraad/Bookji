@@ -1,6 +1,6 @@
 import { db } from "@/db"
 import { books as booksTable, stores as storesTable } from "@/db/schema"
-import { clerkClient } from "@clerk/nextjs"
+import { clerkClient } from "@clerk/nextjs/server"
 import { and, eq, inArray } from "drizzle-orm"
 
 export async function isBookExists<T extends number[] | number>(
@@ -39,7 +39,7 @@ export async function isBookExists<T extends number[] | number>(
 }
 
 const getUsers = async (userList: string[]) => {
-    const users = await clerkClient.users.getUserList({
+    const { data: users } = await clerkClient.users.getUserList({
         userId: userList,
         limit: userList.length,
     })

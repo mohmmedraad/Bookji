@@ -1,11 +1,10 @@
-import { clerkClient } from "@clerk/nextjs"
-import { type User } from "@clerk/nextjs/server"
+import { clerkClient, type User } from "@clerk/nextjs/server"
+import { wrap } from "@decs/typeschema"
 import { TRPCError } from "@trpc/server"
 import { nullable, object, record, string, ValiError } from "valibot"
 
 import { getPurchases } from "@/lib/utils/store"
 import { updateUserSchema } from "@/lib/validations/auth"
-import {wrap} from "@decs/typeschema"
 
 import { privateProcedure, router } from "../trpc"
 
@@ -65,6 +64,8 @@ export const usersRouter = router({
 async function isUsernameTaken(user: User, username: string) {
     if (user.username === username) return false
 
-    const users = await clerkClient.users.getUserList({ username: [username] })
+    const { data: users } = await clerkClient.users.getUserList({
+        username: [username],
+    })
     return users.length > 0
 }
