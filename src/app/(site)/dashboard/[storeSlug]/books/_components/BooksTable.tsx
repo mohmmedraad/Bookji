@@ -7,7 +7,7 @@ import { type BookColumn } from "@/types"
 import { toast } from "sonner"
 
 import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
-import { DataTable } from "@/components/ui/DataTable"
+import { DataTable } from "@/components/ui/data-table"
 import { trpc } from "@/app/_trpc/client"
 
 import { BooksTableToolbar } from "../../books/_components/BooksTableToolbar"

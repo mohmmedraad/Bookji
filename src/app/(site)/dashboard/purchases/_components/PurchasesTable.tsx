@@ -6,7 +6,7 @@ import { type PurchasesColumn } from "@/types"
 import { toast } from "sonner"
 
 import { usePurchasesSearchParams } from "@/hooks/usePurchasesSearchParams"
-import { DataTable } from "@/components/ui/DataTable"
+import { DataTable } from "@/components/ui/data-table"
 import { trpc } from "@/app/_trpc/client"
 
 import { Columns } from "./PurchasesColumns"

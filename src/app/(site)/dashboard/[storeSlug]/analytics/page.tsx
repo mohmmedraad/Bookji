@@ -20,7 +20,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { DataTable } from "@/components/ui/DataTable"
+import { DataTable } from "@/components/ui/data-table"
 import { Icons } from "@/components/Icons"
 
 import { Columns } from "../orders/_components/OrdersColumns"

@@ -7,7 +7,7 @@ import { type OrderColumn } from "@/types"
 import { toast } from "sonner"
 
 import { useOrdersSearchParams } from "@/hooks/useOrdersSearchParams"
-import { DataTable } from "@/components/ui/DataTable"
+import { DataTable } from "@/components/ui/data-table"
 import { trpc } from "@/app/_trpc/client"
 
 import { Columns } from "./OrdersColumns"
