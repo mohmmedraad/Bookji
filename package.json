@@ -9,7 +9,7 @@
         }
     ],
     "scripts": {
-        "dev": "next dev",
+        "dev": "next dev --turbo",
         "build": "next build",
         "start": "next start",
         "lint": "next lint",
@@ -26,7 +26,7 @@
         "lt": "lt --port 3000"
     },
     "dependencies": {
-        "@clerk/nextjs": "^4.29.9",
+        "@clerk/nextjs": "^5.2.2",
         "@decs/typeschema": "^0.12.2",
         "@hookform/resolvers": "^3.3.1",
         "@mantine/hooks": "^7.2.1",
