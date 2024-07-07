@@ -1,5 +1,5 @@
 import { headers } from "next/headers"
-import { clerkClient } from "@clerk/nextjs"
+import { clerkClient } from "@clerk/nextjs/server"
 import type Stripe from "stripe"
 
 import { stripe } from "@/lib/stripe"

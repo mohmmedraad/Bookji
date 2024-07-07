@@ -9,7 +9,7 @@ import {
     payments,
 } from "@/db/schema"
 import type { CheckoutItem } from "@/types"
-import { clerkClient } from "@clerk/nextjs"
+import { clerkClient } from "@clerk/nextjs/server"
 import { and, eq } from "drizzle-orm"
 import type Stripe from "stripe"
 import { array, safeParse } from "valibot"
