@@ -3,7 +3,7 @@ import { type FC, type HTMLAttributes, type ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
 interface BookWrapperProps extends HTMLAttributes<HTMLDivElement> {
-    children: ReactNode
+    children?: ReactNode
 }
 
 const BookWrapper: FC<BookWrapperProps> = ({

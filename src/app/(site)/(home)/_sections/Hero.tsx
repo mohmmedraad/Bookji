@@ -6,6 +6,7 @@ import { Github } from "lucide-react"
 
 import { books } from "@/config/site"
 import BookCover from "@/components/ui/book-cover"
+import BookWrapper from "@/components/ui/book-wrapper"
 import { buttonVariants } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 import HeroSvg from "@/components/HeroSvg"
@@ -55,15 +56,13 @@ const Hero: FC = ({}) => {
                                 .map(({ userFullName, title, cover }) => (
                                     <div
                                         key={title}
-                                        className="w-[7.1875rem] text-center"
+                                        className="hidden w-[7.1875rem] text-center md:block"
                                     >
-                                        <BookCover
-                                            alt={title}
-                                            src={cover}
-                                            width={200}
-                                            height={300}
-                                            loading="eager"
-                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
+                                        <BookWrapper
+                                            className="hidden h-[10.3125rem] w-[7.1875rem] overflow-hidden bg-cover bg-center md:block"
+                                            style={{
+                                                backgroundImage: `url(${cover})`,
+                                            }}
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
                                             {title}
@@ -80,15 +79,13 @@ const Hero: FC = ({}) => {
                                 .map(({ userFullName, title, cover }) => (
                                     <div
                                         key={title}
-                                        className="w-[7.1875rem] text-center"
+                                        className="hidden w-[7.1875rem] text-center sm:block"
                                     >
-                                        <BookCover
-                                            alt={title}
-                                            src={cover}
-                                            width={200}
-                                            height={300}
-                                            loading="eager"
-                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
+                                        <BookWrapper
+                                            className="hidden h-[10.3125rem] w-[7.1875rem] overflow-hidden bg-cover bg-center sm:block"
+                                            style={{
+                                                backgroundImage: `url(${cover})`,
+                                            }}
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
                                             {title}
@@ -123,15 +120,13 @@ const Hero: FC = ({}) => {
                                 .map(({ userFullName, title, cover }) => (
                                     <div
                                         key={title}
-                                        className="w-[7.1875rem] text-center"
+                                        className="hidden w-[7.1875rem] text-center sm:block"
                                     >
-                                        <BookCover
-                                            alt={title}
-                                            src={cover}
-                                            width={200}
-                                            height={300}
-                                            loading="eager"
-                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
+                                        <BookWrapper
+                                            className="hidden h-[10.3125rem] w-[7.1875rem] overflow-hidden bg-cover bg-center sm:block"
+                                            style={{
+                                                backgroundImage: `url(${cover})`,
+                                            }}
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
                                             {title}
@@ -148,15 +143,13 @@ const Hero: FC = ({}) => {
                                 .map(({ userFullName, title, cover }) => (
                                     <div
                                         key={title}
-                                        className="w-[7.1875rem] text-center"
+                                        className="hidden w-[7.1875rem] text-center md:block"
                                     >
-                                        <BookCover
-                                            alt={title}
-                                            src={cover}
-                                            width={200}
-                                            height={300}
-                                            loading="eager"
-                                            className="h-[10.3125rem] w-[7.1875rem] overflow-hidden "
+                                        <BookWrapper
+                                            className="hidden h-[10.3125rem] w-[7.1875rem] overflow-hidden bg-cover bg-center md:block"
+                                            style={{
+                                                backgroundImage: `url(${cover})`,
+                                            }}
                                         />
                                         <h3 className="mt-2 text-sm font-semibold">
                                             {title}
