@@ -18,7 +18,7 @@ import {
     Popover,
     PopoverContent,
     PopoverTrigger,
-} from "@/components/ui/Popover"
+} from "@/components/ui/popover"
 import { Separator } from "@/components/ui/separator"
 
 interface DataTableFacetedFilter<TData, TValue> {
