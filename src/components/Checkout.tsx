@@ -7,7 +7,7 @@ import useCart from "@/store/useCart"
 import { cn, getCartTotal } from "@/lib/utils"
 
 import { buttonVariants } from "./ui/button"
-import { Separator } from "./ui/Separator"
+import { Separator } from "./ui/separator"
 
 interface CheckOutProps {}
 

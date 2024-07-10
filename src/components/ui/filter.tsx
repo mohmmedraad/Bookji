@@ -9,7 +9,7 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "./Sheet"
+} from "./sheet"
 
 interface FilterProps {
     renderButton: React.FC

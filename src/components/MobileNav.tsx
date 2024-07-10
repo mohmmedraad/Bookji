@@ -4,7 +4,7 @@ import Link from "next/link"
 import { navLinks } from "@/config/site"
 
 import { Icons } from "./Icons"
-import { Sheet, SheetContent, SheetTrigger } from "./ui/Sheet"
+import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet"
 
 const MobileNav: FC = ({}) => {
     return (

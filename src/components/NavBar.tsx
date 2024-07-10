@@ -12,7 +12,7 @@ import AuthLink from "./ui/auth-link"
 import { buttonVariants } from "./ui/button"
 import Container from "./ui/container"
 import NavLink from "./ui/nav-link"
-import { Separator } from "./ui/Separator"
+import { Separator } from "./ui/separator"
 import { UserAccountNav } from "./UserAccountNav"
 
 function getUserPrimaryEmailAddress(

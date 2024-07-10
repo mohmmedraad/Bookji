@@ -5,7 +5,7 @@ import { Camera, PencilLine, Share2 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Container from "@/components/ui/container"
 import ProfileContainer from "@/components/ui/profile-container"
-import { Separator } from "@/components/ui/Separator"
+import { Separator } from "@/components/ui/separator"
 
 interface ProfileInfoProps {
     userName: string

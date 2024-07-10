@@ -2,7 +2,7 @@ import { type FC } from "react"
 import { FilterIcon } from "lucide-react"
 
 import { Button } from "@/components/ui/button"
-import Filter from "@/components/ui/Filter"
+import Filter from "@/components/ui/filter"
 import FilterLabel from "@/components/ui/filter-label"
 import FilterOption from "@/components/ui/filter-option"
 import RangeFilterOption from "@/components/ui/range-filter-option"

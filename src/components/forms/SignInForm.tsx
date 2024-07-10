@@ -26,7 +26,7 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/Form"
+} from "@/components/ui/form"
 import { Input as FormInput } from "@/components/ui/input"
 
 const signInFormSchema = object({

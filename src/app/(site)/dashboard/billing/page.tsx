@@ -15,7 +15,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Separator } from "@/components/ui/Separator"
+import { Separator } from "@/components/ui/separator"
 
 import PageHeading from "../_components/PageHeading"
 import ManageSubscriptionButton from "./_components/ManageSubscriptionButton"

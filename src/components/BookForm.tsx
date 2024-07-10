@@ -25,9 +25,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "./ui/Form"
+} from "./ui/form"
 import { MultiSelect } from "./ui/multi-select"
-import { Textarea } from "./ui/Textarea"
+import { Textarea } from "./ui/textarea"
 import UploadingZone from "./uploadFileDropZone copy/UploadingZone"
 
 interface BookFormProps extends Partial<BookFormSchema> {

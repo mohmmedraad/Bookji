@@ -15,8 +15,8 @@ import {
     FormField,
     FormItem,
     FormLabel,
-} from "@/components/ui/Form"
-import { Switch } from "@/components/ui/Switch"
+} from "@/components/ui/form"
+import { Switch } from "@/components/ui/switch"
 
 interface CookiesSettingsProps {}
 

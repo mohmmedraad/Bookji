@@ -11,7 +11,7 @@ import EditQuantity from "./EditQuantity"
 import Price from "./Price"
 import Book from "./ui/book-cover"
 import { Button } from "./ui/button"
-import { Separator } from "./ui/Separator"
+import { Separator } from "./ui/separator"
 
 interface CartItemProps {
     bookId: number

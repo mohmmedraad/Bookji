@@ -12,8 +12,8 @@ import {
 } from "@/lib/validations/store"
 import { useUpdateThumbnail } from "@/hooks/useUpdateThumbnail"
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/Dialog"
-import { Form, FormControl, FormField, FormItem } from "@/components/ui/Form"
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
+import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
 import UploadingZone from "@/components/uploadFileDropZone copy/UploadingZone"
 
 interface UpdateThumbnailButtonProps {}

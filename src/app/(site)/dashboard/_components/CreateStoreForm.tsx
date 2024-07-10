@@ -20,7 +20,7 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/components/ui/Dialog"
+} from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
@@ -29,9 +29,9 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/Form"
+} from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/Textarea"
+import { Textarea } from "@/components/ui/textarea"
 import UploadingZone from "@/components/uploadFileDropZone copy/UploadingZone"
 
 interface CreateStoreButtonProps {}

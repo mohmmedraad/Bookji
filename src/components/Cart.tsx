@@ -9,14 +9,14 @@ import CartItems from "./CartItems"
 import Checkout from "./Checkout"
 import { Icons } from "./Icons"
 import { Button } from "./ui/button"
-import { Separator } from "./ui/Separator"
+import { Separator } from "./ui/separator"
 import {
     Sheet,
     SheetContent,
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "./ui/Sheet"
+} from "./ui/sheet"
 
 const Cart: FC = () => {
     const setCartBooks = useCart((state) => state.setCartBooks)

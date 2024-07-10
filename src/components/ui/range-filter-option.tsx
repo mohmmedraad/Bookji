@@ -6,7 +6,7 @@ import {
 } from "@/hooks/useRangeFilterOption"
 
 import { Input } from "./input"
-import { Slider } from "./Slider"
+import { Slider } from "./slider"
 
 interface RangeFilterOptionProps extends UseRangeFilterOptionProps {
     step?: number

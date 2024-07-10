@@ -1,7 +1,7 @@
 import { type FC } from "react"
 
 import { Card, CardContent, CardHeader } from "@/components/ui/card"
-import { Skeleton } from "@/components/ui/Skeleton"
+import { Skeleton } from "@/components/ui/skeleton"
 
 interface ProfileAvatarSkeletonProps {}
 

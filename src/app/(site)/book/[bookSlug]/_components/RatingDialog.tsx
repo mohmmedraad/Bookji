@@ -16,15 +16,15 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
-} from "@/components/ui/Dialog"
+} from "@/components/ui/dialog"
 import {
     Form,
     FormControl,
     FormField,
     FormItem,
     FormMessage,
-} from "@/components/ui/Form"
-import { Textarea } from "@/components/ui/Textarea"
+} from "@/components/ui/form"
+import { Textarea } from "@/components/ui/textarea"
 import { trpc } from "@/app/_trpc/client"
 
 import Stars from "./Stars"

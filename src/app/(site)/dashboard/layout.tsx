@@ -4,7 +4,7 @@ import { type Metadata } from "next"
 import { getCachedUser } from "@/lib/utils/cachedResources"
 import Breadcrumbs from "@/components/ui/breadcrumbs"
 import Container from "@/components/ui/container"
-import { Separator } from "@/components/ui/Separator"
+import { Separator } from "@/components/ui/separator"
 
 import DashboardNav from "./_components/DashboardNav"
 

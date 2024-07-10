@@ -12,7 +12,7 @@ import {
     SheetHeader,
     SheetTitle,
     SheetTrigger,
-} from "@/components/ui/Sheet"
+} from "@/components/ui/sheet"
 import StoresFilter from "@/components/ui/stores-filter-option"
 
 interface FiltersProps {}
