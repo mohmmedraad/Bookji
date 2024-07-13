@@ -14,6 +14,8 @@ export const metadata: Metadata = {
         "Have questions or feedback? Contact Bookji Support for assistance. We're here to help you with any queries.",
 }
 
+export const dynamic = "force-static"
+
 const page: FC<pageProps> = ({}) => {
     return (
         <>

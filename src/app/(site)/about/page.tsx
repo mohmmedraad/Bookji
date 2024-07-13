@@ -14,6 +14,8 @@ export const metadata: Metadata = {
         "Learn more about Bookji - your trusted online bookstore. Discover our mission, team, and commitment to book enthusiasts.",
 }
 
+export const dynamic = "force-static"
+
 const page: FC<pageProps> = ({}) => {
     return (
         <div className="bg-background">
