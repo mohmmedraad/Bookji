@@ -205,7 +205,7 @@ export const books = [
         id: 9,
         title: "Alone",
         userFullName: "Maurice Madremon",
-        cover: "/Book-9.jpg",
+        cover: "/Book-9.webp",
         inventory: 1,
         categories: "ui/ux design",
         rating: 3,
