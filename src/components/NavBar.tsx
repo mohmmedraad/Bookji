@@ -1,9 +1,12 @@
+"use client"
+
 import { type FC } from "react"
 import Link from "next/link"
+import { useUser } from "@clerk/nextjs"
 import type { EmailAddress } from "@clerk/nextjs/server"
 
 import { navLinks } from "@/config/site"
-import { getCachedUser } from "@/lib/utils/cachedResources"
+import { Skeleton } from "@/components/ui/skeleton"
 
 import Cart from "./Cart"
 import { Icons } from "./Icons"
@@ -23,17 +26,7 @@ function getUserPrimaryEmailAddress(
         ?.emailAddress
 }
 
-const NavBar: FC = async ({}) => {
-    const user = await getCachedUser()
-
-    let primaryEmailAddress: string | undefined
-
-    if (user != null) {
-        primaryEmailAddress = getUserPrimaryEmailAddress(
-            user.emailAddresses,
-            user.primaryEmailAddressId
-        )
-    }
+const NavBar: FC = ({}) => {
     return (
         <header className="fixed left-0 top-0 z-40 w-full bg-background/80 backdrop-blur-sm">
             <Container>
@@ -64,36 +57,57 @@ const NavBar: FC = async ({}) => {
                         </nav>
                     </div>
                     <div className="flex items-center justify-center gap-3 ">
-                        {user != null ? (
-                            /**
-                             * TODO: Add suspense
-                             */
-                            <>
-                                <Cart />
-                                <UserAccountNav
-                                    user={{
-                                        firstName: user.firstName,
-                                        lastName: user.lastName,
-                                        imageUrl: user.imageUrl,
-                                        primaryEmailAddress,
-                                    }}
-                                />
-                            </>
-                        ) : (
-                            <AuthLink
-                                className={buttonVariants({})}
-                                href={"/sign-in"}
-                            >
-                                Sign In
-                            </AuthLink>
-                        )}
-
+                        <RenderUser />
                         <MobileNav />
                     </div>
                 </div>
                 <Separator className="mt-4" />
             </Container>
         </header>
+    )
+}
+
+function RenderUser() {
+    const { user, isLoaded, isSignedIn } = useUser()
+
+    let primaryEmailAddress: string | undefined
+
+    if (user != null) {
+        primaryEmailAddress = getUserPrimaryEmailAddress(
+            user.emailAddresses as unknown as EmailAddress[],
+            user.primaryEmailAddressId
+        )
+    }
+
+    if (!isLoaded) {
+        return (
+            <>
+                <Skeleton className="h-9 w-10 rounded-md" />
+                <Skeleton className="h-8 w-8 rounded-full" />
+            </>
+        )
+    }
+
+    if (!isSignedIn) {
+        return (
+            <AuthLink className={buttonVariants({})} href={"/sign-in"}>
+                Sign In
+            </AuthLink>
+        )
+    }
+
+    return (
+        <>
+            <Cart />
+            <UserAccountNav
+                user={{
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    imageUrl: user.imageUrl,
+                    primaryEmailAddress,
+                }}
+            />
+        </>
     )
 }
 
