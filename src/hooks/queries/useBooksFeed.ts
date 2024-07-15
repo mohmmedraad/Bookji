@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react"
 import type { ShopPageBook } from "@/types"
 import { useIntersection } from "@mantine/hooks"
 
-import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
+import { useBooksSearchParams } from "@/hooks/params/useBooksSearchParams"
 import { trpc } from "@/app/_trpc/client"
 
 export const useBooksFeed = (initialBooks: ShopPageBook[]) => {

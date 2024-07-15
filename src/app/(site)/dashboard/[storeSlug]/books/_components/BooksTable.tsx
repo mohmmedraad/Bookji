@@ -6,7 +6,7 @@ import { useStore } from "@/store/useStore"
 import { type BookColumn } from "@/types"
 import { toast } from "sonner"
 
-import { useBooksSearchParams } from "@/hooks/useBooksSearchParams"
+import { useBooksSearchParams } from "@/hooks/params/useBooksSearchParams"
 import { DataTable } from "@/components/ui/data-table"
 import { trpc } from "@/app/_trpc/client"
 
