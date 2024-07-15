@@ -4,7 +4,7 @@ import { useState, type FC } from "react"
 import { Spinner } from "@nextui-org/react"
 
 import { type BookFormSchema } from "@/lib/validations/book"
-import { useUpdateBook } from "@/hooks/useUpdateBook"
+import { useUpdateBook } from "@/hooks/mutations/useUpdateBook"
 import {
     Dialog,
     DialogContent,
