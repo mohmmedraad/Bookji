@@ -3,7 +3,7 @@ import { useStore } from "@/store/useStore"
 import { Spinner } from "@nextui-org/react"
 import { toast } from "sonner"
 
-import { useDeleteStore } from "@/hooks/useDeleteStore"
+import { useDeleteStore } from "@/hooks/mutations/useDeleteStore"
 import { Button } from "@/components/ui/button"
 import {
     Dialog,
