@@ -2,7 +2,7 @@
 
 import { type FC } from "react"
 
-import { useGeneralInformationForm } from "@/hooks/useGeneralInformationForm"
+import { useGeneralInformationForm } from "@/hooks/mutations/useGeneralInformationForm"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
