@@ -10,7 +10,7 @@ import {
     storeLogoSchema,
     storeThumbnailSchema,
 } from "@/lib/validations/store"
-import { useUpdateThumbnail } from "@/hooks/useUpdateThumbnail"
+import { useUpdateThumbnail } from "@/hooks/mutations/useUpdateThumbnail"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
