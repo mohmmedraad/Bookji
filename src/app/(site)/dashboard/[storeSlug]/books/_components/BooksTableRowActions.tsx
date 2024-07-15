@@ -5,7 +5,7 @@ import type { BookColumn } from "@/types"
 import { DotsHorizontalIcon } from "@radix-ui/react-icons"
 import { type Row, type Table } from "@tanstack/react-table"
 
-import { useDeleteBooks } from "@/hooks/useDeleteBooks"
+import { useDeleteBooks } from "@/hooks/mutations/useDeleteBooks"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
