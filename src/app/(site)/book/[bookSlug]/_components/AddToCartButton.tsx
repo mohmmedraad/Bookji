@@ -2,7 +2,7 @@
 
 import { type FC } from "react"
 
-import { useAddToCartButton } from "@/hooks/useAddToCartButton"
+import { useAddToCartButton } from "@/hooks/mutations/useAddToCartButton"
 import { Button } from "@/components/ui/button"
 
 interface AddToCartButtonProps {}
