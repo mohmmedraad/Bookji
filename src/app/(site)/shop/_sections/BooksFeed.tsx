@@ -3,7 +3,7 @@
 import { type FC } from "react"
 import type { ShopPageBook } from "@/types"
 
-import { useBooksFeed } from "@/hooks/useBooksFeed"
+import { useBooksFeed } from "@/hooks/quires/useBooksFeed"
 import BooksWrapper from "@/components/ui/books-wrapper"
 
 import ShopBook from "../_components/ShopBook"
