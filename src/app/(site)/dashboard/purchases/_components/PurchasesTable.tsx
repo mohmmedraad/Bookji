@@ -5,7 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation"
 import { type PurchasesColumn } from "@/types"
 import { toast } from "sonner"
 
-import { usePurchasesSearchParams } from "@/hooks/usePurchasesSearchParams"
+import { usePurchasesSearchParams } from "@/hooks/params/usePurchasesSearchParams"
 import { DataTable } from "@/components/ui/data-table"
 import { trpc } from "@/app/_trpc/client"
 
