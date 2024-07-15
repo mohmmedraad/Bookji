@@ -5,7 +5,7 @@ import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
 import { type BookFormSchema } from "@/lib/validations/book"
-import { useBookCategories } from "@/hooks/quires/useBookCategories"
+import { useBookCategories } from "@/hooks/queries/useBookCategories"
 import { trpc } from "@/app/_trpc/client"
 
 export const useUpdateBook = ({
