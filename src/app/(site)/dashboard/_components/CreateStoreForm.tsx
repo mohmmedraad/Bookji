@@ -11,7 +11,7 @@ import {
     storeThumbnailSchema,
     type NewStoreSchema,
 } from "@/lib/validations/store"
-import { useCreateStore } from "@/hooks/useCreateStore"
+import { useCreateStore } from "@/hooks/mutations/useCreateStore"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import {
