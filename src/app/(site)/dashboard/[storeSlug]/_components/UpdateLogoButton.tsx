@@ -6,7 +6,7 @@ import { useForm } from "react-hook-form"
 import { pick } from "valibot"
 
 import { newStoreSchema, storeLogoSchema } from "@/lib/validations/store"
-import { useUpdateLogo } from "@/hooks/useUpdateLogo"
+import { useUpdateLogo } from "@/hooks/mutations/useUpdateLogo"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog"
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form"
