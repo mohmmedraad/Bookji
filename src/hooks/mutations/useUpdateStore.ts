@@ -1,4 +1,5 @@
 import { useRouter } from "next/navigation"
+import { useStore } from "@/store/useStore"
 import { valibotResolver } from "@hookform/resolvers/valibot"
 import { useForm } from "react-hook-form"
 import { toast } from "sonner"
@@ -7,8 +8,6 @@ import { pick } from "valibot"
 import { handleGenericError } from "@/lib/utils"
 import { newStoreSchema, type StoreInfoSchema } from "@/lib/validations/store"
 import { trpc } from "@/app/_trpc/client"
-
-import { useStore } from "../store/useStore"
 
 export function getValues(data: StoreInfoSchema, store: StoreInfoSchema) {
     const values = new Map<string, string>()
