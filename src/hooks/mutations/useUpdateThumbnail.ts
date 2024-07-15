@@ -1,12 +1,11 @@
 import { type Dispatch, type SetStateAction } from "react"
 import { useRouter } from "next/navigation"
+import { useStore } from "@/store/useStore"
 import { usePrevious } from "@mantine/hooks"
 import { toast } from "sonner"
 
 import { handleGenericError } from "@/lib/utils"
 import { trpc } from "@/app/_trpc/client"
-
-import { useStore } from "../store/useStore"
 
 export const useUpdateThumbnail = (
     setOpen: Dispatch<SetStateAction<boolean>>
