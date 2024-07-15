@@ -6,7 +6,7 @@ import { useStore } from "@/store/useStore"
 import { type OrderColumn } from "@/types"
 import { toast } from "sonner"
 
-import { useOrdersSearchParams } from "@/hooks/useOrdersSearchParams"
+import { useOrdersSearchParams } from "@/hooks/params/useOrdersSearchParams"
 import { DataTable } from "@/components/ui/data-table"
 import { trpc } from "@/app/_trpc/client"
 
